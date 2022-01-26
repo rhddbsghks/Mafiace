@@ -5,6 +5,11 @@ import com.ssafy.mafiace.api.response.UserLoginPostRes;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.auth.JwtTokenProvider;
 import com.ssafy.mafiace.db.entity.User;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(value = "인증 API", tags = {"Auth"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/auth")
@@ -26,9 +32,12 @@ public class AuthController {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    // 로그인
     @PostMapping("/login")
-    public ResponseEntity<UserLoginPostRes> login(@RequestBody UserLoginPostReq loginReq) {
+    @ApiOperation(value = "로그인", notes = "아이디와 패스워드를 전달받아 로그인")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+    })
+    public ResponseEntity<UserLoginPostRes> login(@ApiParam(value="로그인 정보", required = true) @RequestBody UserLoginPostReq loginReq) {
         User user = userService.getUserByUserId(loginReq.getUserId());
 
         // 존재하지 않은 아이디인 경우, 404로 응답.

@@ -4,12 +4,8 @@ import com.ssafy.mafiace.api.request.UserRegisterPostReq;
 import com.ssafy.mafiace.api.response.BaseResponseBody;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.db.entity.User;
-import com.ssafy.mafiace.db.repository.UserRepository;
-import java.util.Map;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,12 +25,24 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRegisterPostReq registerReq) {
+    public ResponseEntity<BaseResponseBody> register(@RequestBody UserRegisterPostReq registerReq) {
         User user = userService.getUserByUserId(registerReq.getUserId());
-        if(user==null){
-            userService.registerUser(registerReq);
-            return new ResponseEntity<String>("Success", HttpStatus.OK);
+        if (user != null) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 아이디입니다."));
         }
-        return new ResponseEntity<String>("이미 가입된 아이디입니다.", HttpStatus.CONFLICT);
+
+        user = userService.getUserByEmail(registerReq.getEmail());
+        if (user != null) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 이메일입니다."));
+        }
+
+        user = userService.getUserByNickname(registerReq.getNickname());
+        if (user != null) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
+        }
+
+        userService.registerUser(registerReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+
     }
 }
