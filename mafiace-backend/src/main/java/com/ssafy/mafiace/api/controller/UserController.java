@@ -1,7 +1,7 @@
 package com.ssafy.mafiace.api.controller;
 
-import com.ssafy.mafiace.common.db.entity.User;
-import com.ssafy.mafiace.common.db.repository.UserRepository;
+import com.ssafy.mafiace.db.entity.User;
+import com.ssafy.mafiace.db.repository.UserRepository;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

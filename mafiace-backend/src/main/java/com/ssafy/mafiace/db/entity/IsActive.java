@@ -1,4 +1,4 @@
-package com.ssafy.mafiace.common.db.entity;
+package com.ssafy.mafiace.db.entity;
 
 public enum IsActive {
     wait, playing, end

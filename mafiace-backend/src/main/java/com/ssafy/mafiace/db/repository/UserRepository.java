@@ -1,6 +1,6 @@
-package com.ssafy.mafiace.common.db.repository;
+package com.ssafy.mafiace.db.repository;
 
-import com.ssafy.mafiace.common.db.entity.User;
+import com.ssafy.mafiace.db.entity.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
