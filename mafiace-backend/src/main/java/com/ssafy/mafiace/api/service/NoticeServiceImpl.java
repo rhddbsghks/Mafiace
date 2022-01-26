@@ -4,6 +4,7 @@ import com.ssafy.mafiace.api.request.NoticePostReq;
 import com.ssafy.mafiace.db.entity.Notice;
 import com.ssafy.mafiace.db.repository.NoticeRepository;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,10 @@ public class NoticeServiceImpl implements NoticeService {
             .postTime(LocalDateTime.now())
             .postNum((int) noticeRepository.count() + 1)
             .build());
+    }
+
+    @Override
+    public Optional<Notice> getByPostNum(int postNum) {
+        return noticeRepository.findByPostNum(postNum);
     }
 }
