@@ -1,4 +1,4 @@
-package com.ssafy.mafiace.db.entity;
+package com.ssafy.mafiace.common.util.db.entity;
 
 import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
