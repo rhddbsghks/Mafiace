@@ -5,6 +5,9 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,4 +30,14 @@ public class Notice extends BaseEntity{
     LocalDateTime postTime;
     @Column(name = "post_num")
     int postNum;
+
+    public Notice () {}
+
+    @Builder
+    public Notice(String title, String content, LocalDateTime postTime, int postNum) {
+        this.title = title;
+        this.content = content;
+        this.postTime = postTime;
+        this.postNum = postNum;
+    }
 }

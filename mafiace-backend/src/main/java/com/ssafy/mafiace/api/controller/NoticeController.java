@@ -1,7 +1,9 @@
 package com.ssafy.mafiace.api.controller;
 
-import com.ssafy.mafiace.api.service.NoticeService;
-import com.ssafy.mafiace.common.model.NoticeSaveRequestDto;
+import com.ssafy.mafiace.db.entity.Notice;
+import com.ssafy.mafiace.db.repository.NoticeRepository;
+import java.time.LocalDateTime;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,10 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class NoticeController {
 
     @Autowired
-    private NoticeService noticeService;
+    NoticeRepository noticeRepository;
 
     @PostMapping()
-    public String save(@RequestBody NoticeSaveRequestDto requestDto) {
-        return noticeService.save(requestDto);
+    public String notice(@RequestBody Map<String, Object> body) {
+        return noticeRepository.save(Notice.builder()
+            .title(body.get("title").toString())
+            .content(body.get("content").toString())
+            .postTime(LocalDateTime.now())
+            .build()).getId();
     }
 }
