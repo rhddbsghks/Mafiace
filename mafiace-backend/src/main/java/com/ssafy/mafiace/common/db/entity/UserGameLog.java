@@ -1,4 +1,4 @@
-package com.ssafy.mafiace.common.util.db.entity;
+package com.ssafy.mafiace.common.db.entity;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;

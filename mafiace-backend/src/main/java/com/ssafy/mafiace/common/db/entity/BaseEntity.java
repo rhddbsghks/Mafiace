@@ -1,4 +1,4 @@
-package com.ssafy.mafiace.common.util.db.entity;
+package com.ssafy.mafiace.common.db.entity;
 
 import java.nio.ByteBuffer;
 import java.util.UUID;

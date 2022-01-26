@@ -1,8 +1,8 @@
 package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.common.auth.JwtTokenProvider;
-import com.ssafy.mafiace.common.util.db.entity.User;
-import com.ssafy.mafiace.common.util.db.repository.UserRepository;
+import com.ssafy.mafiace.common.db.entity.User;
+import com.ssafy.mafiace.common.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
