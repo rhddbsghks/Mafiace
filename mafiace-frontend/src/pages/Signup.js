@@ -10,7 +10,7 @@ const Signup = ({ clickSignup }) => {
     email: "",
     nickname: "",
   });
-  const [valid, setValid] = useState(false);
+  // const [valid, setValid] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,18 +27,19 @@ const Signup = ({ clickSignup }) => {
       })
       .then((res) => {
         console.log(res);
-        setValid(true);
+        // setValid(!valid);
+        clickSignup();
       })
       .catch((err) => {
         console.log(err.response);
-        if (err.response.data === "이미 가입된 아이디입니다.") {
+        if (err.response.data === "중복된 아이디입니다.") {
           console.log("아이디 중복");
         }
       });
 
-    if (valid) {
-      clickSignup();
-    }
+    // if (valid) {
+    //   clickSignup();
+    // }
   }; // 로그인
 
   return (
@@ -105,6 +106,12 @@ const Signup = ({ clickSignup }) => {
                 icon="signup"
                 inverted
                 color="red"
+              />
+              <Button
+                onClick={clickSignup}
+                content="뒤로가기"
+                inverted
+                color="blue"
               />
             </Button.Group>
           </Grid.Column>

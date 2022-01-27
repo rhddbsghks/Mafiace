@@ -35,6 +35,7 @@ const LoginForm = ({ login, getLogin }) => {
         console.log(res.data);
         console.log(res.data.accessToken);
         console.log(jwt(res.data.accessToken));
+        getLogin(!login);
       })
       .catch((err) => console.log(err.response.data));
   }; // 로그인
