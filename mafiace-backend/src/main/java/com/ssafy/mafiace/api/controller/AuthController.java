@@ -1,6 +1,7 @@
 package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.request.UserLoginPostReq;
+import com.ssafy.mafiace.api.response.BaseResponseBody;
 import com.ssafy.mafiace.api.response.UserLoginPostRes;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.auth.JwtTokenProvider;
@@ -17,12 +18,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
-@Api(value = "인증 API", tags = {"Auth"})
+@Api(value = "인증 API", tags = {"AuthController"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-
     @Autowired
     UserService userService;
     @Autowired
@@ -31,11 +31,13 @@ public class AuthController {
     JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    @ApiOperation(value = "로그인", notes = "아이디와 패스워드를 전달받아 로그인")
+    @ApiOperation(value = "로그인", notes = "아이디와 패스워드를 전달받아 로그인한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+        @ApiResponse(code = 401, message = "잘못된 비밀번호"),
+        @ApiResponse(code = 404, message = "존재하지 않는 아이디"),
     })
-    public ResponseEntity<UserLoginPostRes> login(@ApiParam(value="로그인 정보", required = true) @RequestBody UserLoginPostReq loginReq) {
+    public ResponseEntity<UserLoginPostRes> login(@ApiParam(value="로그인 요청 정보", required = true) @RequestBody UserLoginPostReq loginReq) {
         User user = userService.getUserByUserId(loginReq.getUserId());
 
         // 존재하지 않은 아이디인 경우, 404로 응답.
