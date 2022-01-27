@@ -1,5 +1,6 @@
 package com.ssafy.mafiace.api.service;
 
+import com.ssafy.mafiace.api.request.NoticePatchReq;
 import com.ssafy.mafiace.api.request.NoticePostReq;
 import com.ssafy.mafiace.db.entity.Notice;
 import com.ssafy.mafiace.db.repository.NoticeRepository;
@@ -27,5 +28,13 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public Optional<Notice> getByPostNum(int postNum) {
         return noticeRepository.findByPostNum(postNum);
+    }
+
+    @Override
+    public Notice modifyNotice(NoticePatchReq request, Notice notice) {
+        notice.setTitle(request.getTitle());
+        notice.setContent(request.getContent());
+
+        return noticeRepository.save(notice);
     }
 }
