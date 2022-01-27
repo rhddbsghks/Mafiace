@@ -1,9 +1,18 @@
 import { Link } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ login, getLogin }) => {
+  const onClick = () => {
+    getLogin(!login);
+  };
+
   return (
     <>
       <h1>Header</h1>
+
+      <Link to={"/"}>
+        <button onClick={onClick}>로그아웃</button>
+      </Link>
+
       <div>
         <Link to={"/notice"}>공지사항</Link>
         <Link to={"/rules"}>게임방법</Link>

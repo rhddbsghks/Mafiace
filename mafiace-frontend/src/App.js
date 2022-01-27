@@ -27,62 +27,64 @@ function App() {
   return (
     <>
       {login || ingame ? (
-        <Router>
-          {login ? <Header /> : null}
-          {ingame ? <HeaderIngame /> : null}
+        <>
+          <Router>
+            {login ? <Header login={login} getLogin={getLogin} /> : null}
+            {ingame ? <HeaderIngame /> : null}
 
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Main
-                  login={login}
-                  getLogin={getLogin}
-                  ingame={ingame}
-                  getIngame={getIngame}
-                />
-              }
-            />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Main
+                    login={login}
+                    getLogin={getLogin}
+                    ingame={ingame}
+                    getIngame={getIngame}
+                  />
+                }
+              />
 
-            <Route path="/notice" element={<Notice />} />
+              <Route path="/notice" element={<Notice />} />
 
-            <Route path="/rules" element={<Rules />} />
+              <Route path="/rules" element={<Rules />} />
 
-            <Route path="/mypage/:id" element={<Mypage />} />
-            <Route path="/mypage" element={<Mypage />} />
+              <Route path="/mypage/:id" element={<Mypage />} />
+              <Route path="/mypage" element={<Mypage />} />
 
-            <Route path="/ranking" element={<Ranking />} />
+              <Route path="/ranking" element={<Ranking />} />
 
-            <Route
-              path="/waiting/:roomNum"
-              element={
-                <Waiting
-                  login={login}
-                  getLogin={getLogin}
-                  ingame={ingame}
-                  getIngame={getIngame}
-                />
-              }
-            />
-            <Route
-              path="/waiting"
-              element={
-                <Waiting
-                  login={login}
-                  getLogin={getLogin}
-                  ingame={ingame}
-                  getIngame={getIngame}
-                />
-              }
-            />
+              <Route
+                path="/waiting/:roomNum"
+                element={
+                  <Waiting
+                    login={login}
+                    getLogin={getLogin}
+                    ingame={ingame}
+                    getIngame={getIngame}
+                  />
+                }
+              />
+              <Route
+                path="/waiting"
+                element={
+                  <Waiting
+                    login={login}
+                    getLogin={getLogin}
+                    ingame={ingame}
+                    getIngame={getIngame}
+                  />
+                }
+              />
 
-            <Route path="/start/:roomNum" element={<Start />} />
-            <Route path="/start" element={<Start />} />
+              <Route path="/start/:roomNum" element={<Start />} />
+              <Route path="/start" element={<Start />} />
 
-            <Route path="/result/:roomNum" element={<Result />} />
-            <Route path="/result" element={<Result />} />
-          </Routes>
-        </Router>
+              <Route path="/result/:roomNum" element={<Result />} />
+              <Route path="/result" element={<Result />} />
+            </Routes>
+          </Router>
+        </>
       ) : (
         <Login login={login} getLogin={getLogin} />
       )}
