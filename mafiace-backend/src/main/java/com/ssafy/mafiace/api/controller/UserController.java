@@ -24,24 +24,37 @@ public class UserController {
     // 회원가입
     @PostMapping("/register")
     public ResponseEntity<BaseResponseBody> register(@RequestBody UserRegisterPostReq registerReq) {
-        User user = userService.getUserByUserId(registerReq.getUserId());
+        userService.registerUser(registerReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입 완료"));
+    }
 
+    // 아이디 중복 체크
+    @GetMapping("/idcheck")
+    public ResponseEntity<BaseResponseBody> checkId(@RequestBody String userId) {
+        User user = userService.getUserByUserId(userId);
         if (user != null) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 아이디입니다."));
         }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사용 가능한 아이디입니다."));
+    }
 
-        user = userService.getUserByEmail(registerReq.getEmail());
+    // 이메일 중복 체크
+    @GetMapping("/emailcheck")
+    public ResponseEntity<BaseResponseBody> checkEmail(@RequestBody String email) {
+        User user = userService.getUserByEmail(email);
         if (user != null) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 이메일입니다."));
         }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사용 가능한 이메일입니다."));
+    }
 
-        user = userService.getUserByNickname(registerReq.getNickname());
+    // 닉네임 중복 체크
+    @GetMapping("/nicknamecheck")
+    public ResponseEntity<BaseResponseBody> checkNickname(@RequestBody String nickname) {
+        User user = userService.getUserByNickname(nickname);
         if (user != null) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
         }
-
-        userService.registerUser(registerReq);
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사용 가능한 닉네임입니다."));
     }
 }
