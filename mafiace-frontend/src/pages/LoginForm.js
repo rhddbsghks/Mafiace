@@ -6,6 +6,7 @@ import Signup from "./Signup";
 
 import { useSpring, a } from "@react-spring/web";
 import axios from "axios";
+import jwt from "jwt-decode";
 
 const LoginForm = ({ login, getLogin }) => {
   const [id, setId] = useState(true); // ID 찾기
@@ -27,13 +28,22 @@ const LoginForm = ({ login, getLogin }) => {
     console.log(values);
     // getLogin(!login);
     axios
-      .post("http://localhost:8080/api/auth/login", values)
-      .then((res) => console.log(res));
-  };
+      .post("http://localhost:8080/api/auth/login", values, {
+        headers: { "Content-Type": `application/json` },
+      })
+      .then((res) => {
+        console.log(res.data);
+        console.log(res.data.accessToken);
+        console.log(jwt(res.data.accessToken));
+      })
+      .catch((err) => console.log(err.response.data));
+  }; // 로그인
+
   const clickSignup = () => {
     setUp(!up);
     set((state) => !state);
-  };
+  }; // 회원가입
+
   const clickFindId = () => {
     setId(!id);
     set((state) => !state);
