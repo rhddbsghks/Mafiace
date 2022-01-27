@@ -28,6 +28,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByEmail(String email) {
+        Optional<User> opt = userRepository.findByEmail(email);
+        if (opt.isPresent()) {
+            return opt.get();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public User getUserByNickname(String nickname) {
+        Optional<User> opt = userRepository.findByNickname(nickname);
+        if (opt.isPresent()) {
+            return opt.get();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public User registerUser(UserRegisterPostReq request) {
         return userRepository.save(User.builder()
             .userId(request.getUserId())
