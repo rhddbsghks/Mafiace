@@ -24,7 +24,8 @@ const LoginForm = ({ login, getLogin }) => {
     config: { mass: 5, tension: 500, friction: 80 },
   });
 
-  const onClick = () => {
+  // 로그인 클릭
+  const onClickLogin = () => {
     console.log(values);
     // getLogin(!login);
     axios
@@ -35,25 +36,31 @@ const LoginForm = ({ login, getLogin }) => {
         console.log(res.data);
         console.log(res.data.accessToken);
         console.log(jwt(res.data.accessToken));
+        localStorage.setItem("jwt", res.data.accessToken);
         getLogin(!login);
       })
       .catch((err) => console.log(err.response.data));
-  }; // 로그인
+  };
 
+  // 회원가입 클릭
   const clickSignup = () => {
     setUp(!up);
     set((state) => !state);
-  }; // 회원가입
+  };
 
+  // ID찾기 클릭
   const clickFindId = () => {
     setId(!id);
     set((state) => !state);
   };
+
+  // PW찾기 클릭
   const clickFindPw = () => {
     setPw(!pw);
     set((state) => !state);
   };
 
+  // onChange state 값 갱신
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
@@ -89,7 +96,7 @@ const LoginForm = ({ login, getLogin }) => {
                   />
 
                   <Button
-                    onClick={onClick}
+                    onClick={onClickLogin}
                     content="LOGIN"
                     inverted
                     color="green"

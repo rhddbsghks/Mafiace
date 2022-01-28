@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import LoginForm from "./LoginForm";
+import LoginForm from "../../components/main/login/LoginForm";
 
 import { useTrail, a } from "@react-spring/web";
 import { Container } from "semantic-ui-react";
