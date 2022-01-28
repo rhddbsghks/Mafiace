@@ -10,7 +10,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,7 +32,7 @@ public class NoticeController {
         Notice notice = noticeService.postNotice(postReq);
 
         if (notice == null) {
-            return new ResponseEntity<String> ("공지사항 작성에 실패하였습니다.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("공지사항 작성에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<String>("Success", HttpStatus.OK);
@@ -47,41 +46,42 @@ public class NoticeController {
 
     // 특정 공지사항 조회
     @GetMapping("/{postNum}")
-    public ResponseEntity<? extends BaseResponse> getNotice(@PathVariable int postNum) {
+    public ResponseEntity<NoticeRes> getNotice(@PathVariable int postNum) {
         Optional<Notice> notice = noticeService.getByPostNum(postNum);
 
         if (notice.isPresent()) {
-            return ResponseEntity.status(200).body(NoticeRes.of(200, "공지사항을 성공적으로 조회하였습니다.", notice.get()));
+            return ResponseEntity.status(200)
+                .body(NoticeRes.of(200, "공지사항을 성공적으로 조회하였습니다.", notice.get()));
         }
 
-        return ResponseEntity.status(404).body(NoticeRes.of(404, "존재하지 않는 공지사항입니다."));
+        return ResponseEntity.status(404).body(NoticeRes.of(404, "존재하지 않는 공지사항입니다.",notice.get()));
     }
 
     // 공지사항 수정
     @PatchMapping("/{postNum}")
-    public ResponseEntity<? extends BaseResponse> modifyNotice (@PathVariable int postNum,
+    public ResponseEntity<NoticeRes> modifyNotice(@PathVariable int postNum,
         @RequestBody NoticePatchReq request) {
         Optional<Notice> optionalNotice = noticeService.getByPostNum(postNum);
 
         if (optionalNotice.isPresent()) {
             Notice notice = noticeService.modifyNotice(request, optionalNotice.get());
 
-            return ResponseEntity.status(201).body(NoticeRes.of(200, "공지사항을 수정하였습니다."));
+            return ResponseEntity.status(201).body(NoticeRes.of(200, "공지사항을 수정하였습니다.", optionalNotice.get()));
         }
 
-        return ResponseEntity.status(404).body(NoticeRes.of(404, "존재하지 않는 공지사항입니다."));
+        return ResponseEntity.status(404).body(NoticeRes.of(404, "존재하지 않는 공지사항입니다.", optionalNotice.get()));
     }
 
     // 공지사항 삭제
     @DeleteMapping("/{postNum}")
-    public ResponseEntity<? extends BaseResponse> deleteNotice (@PathVariable int postNum) {
+    public ResponseEntity<NoticeRes> deleteNotice(@PathVariable int postNum) {
         Optional<Notice> optionalNotice = noticeService.getByPostNum(postNum);
 
         if (optionalNotice.isPresent()) {
             noticeService.deleteNotice(optionalNotice.get());
-            return ResponseEntity.status(204).body(NoticeRes.of(204, "공지사항을 삭제하였습니다."));
+            return ResponseEntity.status(204).body(NoticeRes.of(204, "공지사항을 삭제하였습니다.",optionalNotice.get()));
         }
 
-        return ResponseEntity.status(404).body(NoticeRes.of(404, "존재하지 않는 공지사항입니다."));
+        return ResponseEntity.status(404).body(NoticeRes.of(404, "존재하지 않는 공지사항입니다.",optionalNotice.get()));
     }
 }

@@ -9,16 +9,16 @@ import lombok.Setter;
 @Getter
 @Setter
 // BaseResponse에서 statusCode, message 받음
-public class NoticeRes extends BaseResponse {
+public class NoticeRes extends BaseResponseBody {
     private String title;
     private String content;
     private LocalDateTime postTime;
     private int postNum;
 
-    public static NoticeRes of(int statusCode, String message, Notice notice) {
+    public static NoticeRes of(Integer statusCode, String message, Notice notice) {
         NoticeRes res = new NoticeRes();
 
-        res.setStatusCode(statusCode);
+        res.setStatus(statusCode);
         res.setMessage(message);
         // 조회하는 공지사항에서 가져올 값
         res.setTitle(notice.getTitle());
