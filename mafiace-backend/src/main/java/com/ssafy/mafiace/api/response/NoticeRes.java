@@ -1,6 +1,5 @@
 package com.ssafy.mafiace.api.response;
 
-import com.ssafy.mafiace.common.model.BaseResponse;
 import com.ssafy.mafiace.db.entity.Notice;
 import java.time.LocalDateTime;
 import lombok.Getter;
