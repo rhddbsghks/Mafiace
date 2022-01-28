@@ -44,7 +44,7 @@ public class User extends BaseEntity implements UserDetails {
     @NotNull @Column(name = "email")
     String email;
     @NotNull @Size(min = 2, max = 10)
-    @Column(name = "nickname")
+    @Column(name = "nickname", unique = true)
     String nickname;
     @Column(name = "is_deleted")
     boolean isDeleted;

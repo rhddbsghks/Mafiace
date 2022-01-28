@@ -29,8 +29,8 @@ public class GameLog extends BaseEntity{
     @NotNull @Column(name = "play_time")
     int playTime;
 
-    @OneToMany(mappedBy = "gameLog", fetch = FetchType.LAZY)
-    private List<UserGameLog> userGameLogs = new ArrayList<>();
+//    @OneToMany(mappedBy = "gameLog", fetch = FetchType.LAZY)
+//    private List<UserGameLog> userGameLogs = new ArrayList<>();
 
 
 

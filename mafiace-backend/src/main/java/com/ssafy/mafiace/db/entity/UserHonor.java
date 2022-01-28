@@ -22,9 +22,9 @@ import lombok.ToString;
 })
 public class UserHonor extends BaseEntity{
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_unique_id")
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_unique_id")
+//    private User user;
 
     @Column(name = "honor_no")
     private int honorNo;
