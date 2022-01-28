@@ -43,9 +43,8 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원정보 수정 완료"),
     })
-    public ResponseEntity<BaseResponseBody> update(@RequestBody @ApiParam(value="회원정보 수정 요청 정보", required = true) UserRegisterPostReq registerReq, @ApiIgnore Authentication authentication) {
-        authentication.getDetails();
-
+    public ResponseEntity<BaseResponseBody> update(@RequestBody @ApiParam(value="회원정보 수정 요청 정보", required = true) UserRegisterPostReq registerReq) {
+        userService.updateUser(registerReq);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원정보 수정완료"));
     }
 

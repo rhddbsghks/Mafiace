@@ -8,4 +8,6 @@ public interface UserService {
     User getUserByEmail(String email);
     User getUserByNickname(String nickname);
     User registerUser(UserRegisterPostReq request);
+
+    User updateUser(UserRegisterPostReq registerReq);
 }
