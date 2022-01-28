@@ -5,6 +5,7 @@ import com.ssafy.mafiace.api.request.NoticePostReq;
 import com.ssafy.mafiace.db.entity.Notice;
 import com.ssafy.mafiace.db.repository.NoticeRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Autowired
     NoticeRepository noticeRepository;
 
+    // 공지사항 작성 서비스
     @Override
     public Notice postNotice(NoticePostReq request) {
         return noticeRepository.save(Notice.builder()
@@ -25,11 +27,18 @@ public class NoticeServiceImpl implements NoticeService {
             .build());
     }
 
+    // 공지사항 전체 조회 서비스
+    public List<Notice> getAllNotice() {
+        return noticeRepository.findAll();
+    }
+
+    // 특정 공지사항 조회 서비스
     @Override
     public Optional<Notice> getByPostNum(int postNum) {
         return noticeRepository.findByPostNum(postNum);
     }
 
+    // 공지사항 수정 서비스
     @Override
     public Notice modifyNotice(NoticePatchReq request, Notice notice) {
         notice.setTitle(request.getTitle());
@@ -38,6 +47,7 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeRepository.save(notice);
     }
 
+    // 공지사항 삭제 서비스
     @Override
     public void deleteNotice(Notice notice) {
         noticeRepository.delete(notice);

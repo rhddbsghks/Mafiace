@@ -6,6 +6,7 @@ import com.ssafy.mafiace.api.response.NoticeRes;
 import com.ssafy.mafiace.api.service.NoticeService;
 import com.ssafy.mafiace.common.model.BaseResponse;
 import com.ssafy.mafiace.db.entity.Notice;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,13 @@ public class NoticeController {
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
-    // 공지사항 조회
+    // 공지사항 전체 조회
+    @GetMapping()
+    public List<Notice> getNoticeList() {
+        return noticeService.getAllNotice();
+    }
+
+    // 특정 공지사항 조회
     @GetMapping("/{postNum}")
     public ResponseEntity<? extends BaseResponse> getNotice(@PathVariable int postNum) {
         Optional<Notice> notice = noticeService.getByPostNum(postNum);
