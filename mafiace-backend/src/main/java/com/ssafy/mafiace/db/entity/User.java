@@ -1,6 +1,9 @@
 package com.ssafy.mafiace.db.entity;
 
 import java.util.Collection;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Table(name = "user")
@@ -30,11 +33,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 })
 public class User extends BaseEntity implements UserDetails {
 
+
     // java 는 카멜표기법을 권장하기때문에 카멜로 선언 후 스네이크로 db에 저장
-    @Column(name = "user_id")
+    @NotNull @Size(max = 12, min = 5)
+    @Column(name = "user_id", unique = true)
     String userId;
+    @NotNull @Size(min = 8, max = 16)
+    @Column(name = "password")
     String password;
+    @NotNull @Column(name = "email")
     String email;
+    @NotNull @Size(min = 2, max = 10)
+    @Column(name = "nickname")
     String nickname;
     @Column(name = "is_deleted")
     boolean isDeleted;
@@ -74,4 +84,5 @@ public class User extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

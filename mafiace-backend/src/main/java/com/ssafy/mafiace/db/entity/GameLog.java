@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,9 +24,9 @@ import lombok.ToString;
     @AttributeOverride(name = "id",column = @Column(name = "game_log_id"))
 })
 public class GameLog extends BaseEntity{
-    @Column(name = "win_team")
+    @NotNull @Column(name = "win_team")
     int winTeam;
-    @Column(name = "play_time")
+    @NotNull @Column(name = "play_time")
     int playTime;
 
     @OneToMany(mappedBy = "gameLog", fetch = FetchType.LAZY)

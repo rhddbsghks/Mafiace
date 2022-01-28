@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,7 @@ import javax.persistence.MappedSuperclass;
 @Setter
 @MappedSuperclass
 public class BaseEntity {
+    @NotNull
     @Id
     String id = shortUUID() ;
 

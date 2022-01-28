@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,9 +24,9 @@ import lombok.ToString;
 })
 public class DeleteAccount extends BaseEntity{
 
-    @Column(name = "request_date")
+    @NotNull @Column(name = "request_date")
     private LocalDate requestDate;
-    @Column(name = "finish_date")
+    @NotNull @Column(name = "finish_date")
     private LocalDate finishDate;
 
     @OneToOne(fetch = FetchType.LAZY)

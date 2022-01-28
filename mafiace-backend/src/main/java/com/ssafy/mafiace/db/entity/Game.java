@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -24,21 +25,21 @@ import lombok.ToString;
     @AttributeOverride(name = "id",column = @Column(name = "game_id"))
 })
 public class Game extends BaseEntity{
-    @Column(name = "room_num")
+    @NotNull @Column(name = "room_num")
     @GeneratedValue(strategy = GenerationType.AUTO)
     int roomNum;
-    @Column(name = "owner_id")
+    @NotNull @Column(name = "owner_id")
     String ownerId;
-    @Column(name = "game_title")
+    @NotNull @Column(name = "game_title")
     String gameTitle;
-    @Column(name = "is_public")
+    @NotNull @Column(name = "is_public")
     boolean isPublic;
-    @Column(name = "discussion_time")
+    @NotNull @Column(name = "discussion_time")
     int discussionTime;
-    @Column(name = "max_player")
+    @NotNull @Column(name = "max_player")
     int maxPlayer;
     String password;
-    @Column(name = "is_active")
+    @NotNull @Column(name = "is_active")
     @Enumerated
     IsActive isActive;
 

@@ -6,6 +6,7 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,10 +20,12 @@ import lombok.ToString;
     @AttributeOverride(name = "id",column = @Column(name = "notice_id"))
 })
 public class Notice extends BaseEntity{
+    @NotNull @Column(name = "title")
     String title;
+    @NotNull @Column(name = "content")
     String content;
-    @Column(name = "post_time")
+    @NotNull @Column(name = "post_time")
     LocalDateTime postTime;
-    @Column(name = "post_num")
+    @NotNull @Column(name = "post_num")
     int postNum;
 }
