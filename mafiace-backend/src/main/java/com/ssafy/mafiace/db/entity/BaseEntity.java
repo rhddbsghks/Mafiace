@@ -25,9 +25,8 @@ import javax.persistence.MappedSuperclass;
 @Setter
 @MappedSuperclass
 public class BaseEntity {
-    @NotNull
-    @Id
-    String id = shortUUID() ;
+    @Id @NotNull
+    String id = shortUUID();
 
     public static String shortUUID() {
         UUID uuid = UUID.randomUUID();

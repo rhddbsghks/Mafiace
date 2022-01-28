@@ -32,7 +32,11 @@ public class UserController {
         @ApiResponse(code = 200, message = "회원가입 완료"),
     })
     public ResponseEntity<BaseResponseBody> register(@RequestBody @ApiParam(value="회원가입 요청 정보", required = true) UserRegisterPostReq registerReq) {
-        userService.registerUser(registerReq);
+        try{
+            userService.registerUser(registerReq);
+        }catch (Exception e){
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "형식에 맞지 않는 계정"));
+        }
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입 완료"));
     }
 
