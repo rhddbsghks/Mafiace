@@ -37,4 +37,9 @@ public class NoticeServiceImpl implements NoticeService {
 
         return noticeRepository.save(notice);
     }
+
+    @Override
+    public void deleteNotice(Notice notice) {
+        noticeRepository.delete(notice);
+    }
 }

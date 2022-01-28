@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,6 +60,19 @@ public class NoticeController {
             Notice notice = noticeService.modifyNotice(request, optionalNotice.get());
 
             return ResponseEntity.status(201).body(NoticeRes.of(200, "공지사항을 수정하였습니다."));
+        }
+
+        return ResponseEntity.status(404).body(NoticeRes.of(404, "존재하지 않는 공지사항입니다."));
+    }
+
+    // 공지사항 삭제
+    @DeleteMapping("/{postNum}")
+    public ResponseEntity<? extends BaseResponse> deleteNotice (@PathVariable int postNum) {
+        Optional<Notice> optionalNotice = noticeService.getByPostNum(postNum);
+
+        if (optionalNotice.isPresent()) {
+            noticeService.deleteNotice(optionalNotice.get());
+            return ResponseEntity.status(204).body(NoticeRes.of(204, "공지사항을 삭제하였습니다."));
         }
 
         return ResponseEntity.status(404).body(NoticeRes.of(404, "존재하지 않는 공지사항입니다."));

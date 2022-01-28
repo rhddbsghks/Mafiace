@@ -9,4 +9,5 @@ public interface NoticeService {
     Notice postNotice(NoticePostReq request);  // 공지사항 작성
     Optional<Notice> getByPostNum(int postNum);
     Notice modifyNotice(NoticePatchReq noticePatchReq, Notice notice);
+    void deleteNotice(Notice notice);
 }
