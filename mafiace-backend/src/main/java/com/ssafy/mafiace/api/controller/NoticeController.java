@@ -29,7 +29,7 @@ public class NoticeController {
 
     // 공지사항 작성
     @PostMapping()
-    public ResponseEntity<String> postNotice(@RequestBody NoticePostReq postReq, Authentication authentication) {
+    public ResponseEntity<String> postNotice(@RequestBody NoticePostReq postReq) {
         Notice notice = noticeService.postNotice(postReq);
 
         if (notice == null) {
