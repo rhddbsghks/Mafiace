@@ -42,7 +42,7 @@ public class UserController {
         @ApiResponse(code = 409, message = "중복된 아이디입니다."),
     })
     @GetMapping("/idcheck")
-    public ResponseEntity<BaseResponseBody> checkId(@RequestBody @ApiParam(value="유저 아이디", required = true) String userId) {
+    public ResponseEntity<BaseResponseBody> checkId(@ApiParam(value="유저 아이디", required = true) String userId) {
         User user = userService.getUserByUserId(userId);
         if (user != null) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 아이디입니다."));
@@ -56,7 +56,7 @@ public class UserController {
         @ApiResponse(code = 409, message = "중복된 이메일입니다."),
     })
     @GetMapping("/emailcheck")
-    public ResponseEntity<BaseResponseBody> checkEmail(@RequestBody @ApiParam(value="유저 이메일", required = true) String email) {
+    public ResponseEntity<BaseResponseBody> checkEmail(@ApiParam(value="유저 이메일", required = true) String email) {
         User user = userService.getUserByEmail(email);
         if (user != null) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 이메일입니다."));
@@ -70,7 +70,7 @@ public class UserController {
         @ApiResponse(code = 409, message = "중복된 닉네임입니다."),
     })
     @GetMapping("/nicknamecheck")
-    public ResponseEntity<BaseResponseBody> checkNickname(@RequestBody @ApiParam(value="유저 닉네임", required = true) String nickname) {
+    public ResponseEntity<BaseResponseBody> checkNickname(@ApiParam(value="유저 닉네임", required = true) String nickname) {
         User user = userService.getUserByNickname(nickname);
         if (user != null) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
