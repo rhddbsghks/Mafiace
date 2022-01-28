@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+@Builder
 @Getter
 @ToString
 @Entity
@@ -31,4 +32,14 @@ public class Notice extends BaseEntity{
     LocalDateTime postTime;
     @NotNull @Column(name = "post_num")
     int postNum;
+
+    public Notice () {}
+
+    @Builder
+    public Notice(String title, String content, LocalDateTime postTime, int postNum) {
+        this.title = title;
+        this.content = content;
+        this.postTime = postTime;
+        this.postNum = postNum;
+    }
 }
