@@ -12,8 +12,10 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 @CrossOrigin("*")
 @Api(value = "유저 API", tags = {"UserController"})
@@ -34,6 +36,17 @@ public class UserController {
     public ResponseEntity<BaseResponseBody> register(@RequestBody @ApiParam(value="회원가입 요청 정보", required = true) UserRegisterPostReq registerReq) {
         userService.registerUser(registerReq);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입 완료"));
+    }
+
+    @PatchMapping("/update")
+    @ApiOperation(value = "회원정보 수정", notes = "마이페이지에서 회원정보를 수정한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "회원정보 수정 완료"),
+    })
+    public ResponseEntity<BaseResponseBody> update(@RequestBody @ApiParam(value="회원정보 수정 요청 정보", required = true) UserRegisterPostReq registerReq, @ApiIgnore Authentication authentication) {
+        authentication.getDetails();
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원정보 수정완료"));
     }
 
     @ApiOperation(value = "아이디 중복 체크", notes = "아이디를 전달받아서 중복 체크를 한다.")
