@@ -10,14 +10,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Builder
 @Getter
 @ToString
 @Entity
-@Builder
+@NoArgsConstructor
 @Table(name = "notice")
 @AttributeOverrides({
     @AttributeOverride(name = "id",column = @Column(name = "notice_id", unique = true))
@@ -33,8 +32,6 @@ public class Notice extends BaseEntity{
     @NotNull @Column(name = "post_num")
     int postNum;
 
-    public Notice () {}
-
     @Builder
     public Notice(String title, String content, LocalDateTime postTime, int postNum) {
         this.title = title;
@@ -42,4 +39,13 @@ public class Notice extends BaseEntity{
         this.postTime = postTime;
         this.postNum = postNum;
     }
+
+    public Notice modifyNotice(String title, String content){
+        this.title = title;
+        this.content = content;
+
+        return this;
+    }
+
+
 }

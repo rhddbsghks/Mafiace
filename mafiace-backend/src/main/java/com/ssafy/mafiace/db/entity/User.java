@@ -61,6 +61,14 @@ public class User extends BaseEntity implements UserDetails {
         }
     }
 
+    public User modifyUser(String password, String email, String nickname){
+        this.password = password;
+        this.email = email;
+        this.nickname = nickname;
+
+        return this;
+    }
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserGameLog> userGameLogs = new ArrayList<>();
 
