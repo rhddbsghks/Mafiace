@@ -38,6 +38,12 @@ dependencies {
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	implementation("com.google.guava:guava:29.0-jre")
 	annotationProcessor("com.google.guava:guava:29.0-jre")
+
+	// QueryDsl
+	implementation("com.querydsl:querydsl-jpa:4.4.0")
+	implementation("com.querydsl:querydsl-apt:4.4.0")
+	annotationProcessor("com.querydsl:querydsl-apt:4.4.0:jpa")
+
 }
 
 tasks.named('test') {
