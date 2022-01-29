@@ -1,7 +1,6 @@
 package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.request.UserLoginPostReq;
-import com.ssafy.mafiace.api.response.BaseResponseBody;
 import com.ssafy.mafiace.api.response.UserLoginPostRes;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.auth.JwtTokenProvider;
