@@ -61,6 +61,6 @@ public class UserServiceImpl implements UserService {
     public User updateUser(UserRegisterPostReq registerReq) {
         User user=getUserByUserId(registerReq.getUserId());
 
-        return userRepository.save(user.modifyUser(registerReq.getPassword(), registerReq.getEmail(), registerReq.getNickname()));
+        return userRepository.save(user.modifyUser(passwordEncoder.encode(registerReq.getPassword()), registerReq.getEmail(), registerReq.getNickname()));
     }
 }

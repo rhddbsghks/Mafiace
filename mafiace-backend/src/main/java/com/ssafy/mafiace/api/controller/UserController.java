@@ -28,7 +28,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/register")
+    @PostMapping
     @ApiOperation(value = "회원 가입", notes = "회원가입 정보를 받아서 회원가입을 진행한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "회원가입 완료"),
@@ -42,7 +42,7 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입 완료"));
     }
 
-    @PatchMapping("/update")
+    @PatchMapping
     @ApiOperation(value = "회원정보 수정", notes = "마이페이지에서 회원정보를 수정한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원정보 수정 완료"),
