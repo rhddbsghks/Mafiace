@@ -39,7 +39,6 @@ public class DeleteAccount extends BaseEntity{
     }
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_unique_id")
     private User user;
 
     public void setUser(User user) {
