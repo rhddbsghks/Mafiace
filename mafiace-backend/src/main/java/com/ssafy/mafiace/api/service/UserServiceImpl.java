@@ -48,6 +48,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByUserIdAndEmail(String userId, String email) {
+        Optional<User> opt = userRepository.findByUserIdAndEmail(userId, email);
+        if (opt.isPresent()) {
+            return opt.get();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public User registerUser(UserRegisterPostReq request) {
         if(request.getPassword().length() < 8 || request.getPassword().length()>12) return null;
         return userRepository.save(User.builder()
@@ -60,9 +70,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UserRegisterPostReq registerReq) {
-        if(registerReq.getPassword().length()<8 || registerReq.getPassword().length()>12) return null;
-        User user=getUserByUserId(registerReq.getUserId());
+        if(registerReq.getPassword().length() < 8 || registerReq.getPassword().length()>12) return null;
+        User user = getUserByUserId(registerReq.getUserId());
 
-        return userRepository.save(user.modifyUser(registerReq.getPassword(), registerReq.getEmail(), registerReq.getNickname()));
+        return userRepository.save(
+            user.modifyUser(passwordEncoder.encode(registerReq.getPassword()),
+                registerReq.getEmail(), registerReq.getNickname()));
+    }
+
+    @Override
+    public User changePassword(User user, String tmpPassword) {
+        if(tmpPassword.length() < 8 || tmpPassword.length() > 12) return null;
+        return userRepository.save(
+            user.modifyUser(passwordEncoder.encode(tmpPassword), user.getEmail(),
+                user.getNickname()));
     }
 }

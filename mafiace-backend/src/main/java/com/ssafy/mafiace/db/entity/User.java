@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -39,7 +38,7 @@ public class User extends BaseEntity implements UserDetails {
     String password;
     @NotNull @Column(name = "email", unique = true)
     String email;
-    @Pattern(regexp = "[a-zA-Z1-9가-힣]{2,10}")
+    @Pattern(regexp = "[a-zA-Z1-9가-힣\\s]{2,10}")
     @NotNull @Column(name = "nickname", unique = true)
     String nickname;
     @Column(name = "is_deleted")
