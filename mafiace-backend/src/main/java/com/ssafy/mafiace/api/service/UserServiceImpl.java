@@ -48,6 +48,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByUserIdAndEmail(String userId, String email) {
+        Optional<User> opt = userRepository.findByUserIdAndEmail(userId, email);
+        if (opt.isPresent()) {
+            return opt.get();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public User registerUser(UserRegisterPostReq request) {
         return userRepository.save(User.builder()
             .userId(request.getUserId())
@@ -59,8 +69,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UserRegisterPostReq registerReq) {
-        User user=getUserByUserId(registerReq.getUserId());
+        User user = getUserByUserId(registerReq.getUserId());
 
-        return userRepository.save(user.modifyUser(passwordEncoder.encode(registerReq.getPassword()), registerReq.getEmail(), registerReq.getNickname()));
+        return userRepository.save(
+            user.modifyUser(passwordEncoder.encode(registerReq.getPassword()),
+                registerReq.getEmail(), registerReq.getNickname()));
+    }
+
+    @Override
+    public User changePassword(User user, String tmpPassword) {
+        return userRepository.save(
+            user.modifyUser(passwordEncoder.encode(tmpPassword), user.getEmail(),
+                user.getNickname()));
     }
 }
