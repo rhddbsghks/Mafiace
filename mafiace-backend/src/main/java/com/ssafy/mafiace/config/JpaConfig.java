@@ -61,5 +61,6 @@ public class JpaConfig {
             .registerModule(timeModule)
             .registerModule(new ParameterNamesModule())
             .registerModule(new Jdk8Module());
+
     }
 }
