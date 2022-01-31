@@ -1,7 +1,7 @@
 const Play = () => {
   return (
     <>
-      <h1>Play__Page</h1>
+      <h1>Play__Compo</h1>
     </>
   );
 };

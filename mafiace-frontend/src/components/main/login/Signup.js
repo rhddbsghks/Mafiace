@@ -71,7 +71,7 @@ const Signup = ({ clickSignup }) => {
   const onClickSignup = () => {
     console.log(values);
     axios
-      .post("http://localhost:8080/api/user/register", values, {
+      .post("http://localhost:8080/api/user", values, {
         headers: { "Content-Type": `application/json` },
       })
       .then((res) => {
