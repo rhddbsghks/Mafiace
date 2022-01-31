@@ -75,11 +75,11 @@ const Signup = ({ clickSignup }) => {
         headers: { "Content-Type": `application/json` },
       })
       .then((res) => {
-        console.dir(res);
+        // console.dir(res);
         clickSignup();
       })
       .catch((err) => {
-        console.log(err.response);
+        // console.log(err.response);
       });
   };
 
@@ -93,14 +93,13 @@ const Signup = ({ clickSignup }) => {
           params: { nickname: values.nickname },
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setValidNick(true);
           setColor("green");
           setMsg("사용 가능한 닉네임입니다.");
         })
         .catch((err) => {
-          console.log(err.response);
-
+          // console.log(err.response);
           setMsg("중복된 닉네임입니다.");
         });
     } else {
@@ -116,14 +115,13 @@ const Signup = ({ clickSignup }) => {
           params: { email: values.email },
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setValidMail(true);
           setColor("green");
           setMsg("사용 가능한 이메일입니다.");
         })
         .catch((err) => {
-          console.log(err.response);
-
+          // console.log(err.response);
           setMsg("중복된 이메일입니다.");
         });
     } else {
@@ -131,7 +129,6 @@ const Signup = ({ clickSignup }) => {
     }
   }, [values.email]);
   useEffect(() => {
-    console.log("pw");
     if (pwVal(values.password)) {
       setValidPw(true);
       setColor("green");
@@ -151,13 +148,13 @@ const Signup = ({ clickSignup }) => {
           params: { userId: values.userId },
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setValidId(true);
           setColor("green");
           setMsg("사용 가능한 아이디입니다.");
         })
         .catch((err) => {
-          console.dir(err);
+          // console.dir(err);
           setMsg("중복된 아이디입니다.");
         });
     } else {
@@ -246,7 +243,7 @@ const Signup = ({ clickSignup }) => {
                 onClick={clickSignup}
                 content="뒤로가기"
                 inverted
-                color="blue"
+                color="purple"
               />
             </Button.Group>
           </Grid.Column>

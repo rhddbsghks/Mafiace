@@ -1,12 +1,12 @@
-const RoomList = ({ onClickIg }) => {
-  const onClick = () => {
-    onClickIg();
+const RoomList = ({ getIngame }) => {
+  const clickIngame = () => {
+    getIngame(true);
   };
   return (
     <>
       <h1>RoomList__Compo</h1>
 
-      <button onClick={onClick}>방 입장</button>
+      <button onClick={clickIngame}>방 입장</button>
     </>
   );
 };
