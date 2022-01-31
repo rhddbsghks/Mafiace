@@ -4,15 +4,12 @@ import Waiting from "../../components/ingame/ingame/Waiting";
 import Play from "../../components/ingame/ingame/Play";
 import Result from "../../components/ingame/ingame/Result";
 
-const Ingame = ({ ingame, getIngame }) => {
-  const onClickIg = () => {
-    getIngame(!ingame);
-  };
+const Ingame = ({ getIngame }) => {
   return (
     <>
       <HeaderIngame />
       <Ready />
-      <Waiting onClickIg={onClickIg} />
+      <Waiting getIngame={getIngame} />
       <Play />
       <Result />
     </>

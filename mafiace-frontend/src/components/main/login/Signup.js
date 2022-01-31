@@ -131,7 +131,6 @@ const Signup = ({ clickSignup }) => {
     }
   }, [values.email]);
   useEffect(() => {
-    console.log("pw");
     if (pwVal(values.password)) {
       setValidPw(true);
       setColor("green");

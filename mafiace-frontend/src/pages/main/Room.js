@@ -1,10 +1,10 @@
 import RoomList from "../../components/main/room/RoomList";
 
-const Room = ({ onClickIg }) => {
+const Room = ({ getIngame }) => {
   return (
     <>
       <h1>Room__Page</h1>
-      <RoomList onClickIg={onClickIg} />
+      <RoomList getIngame={getIngame} />
     </>
   );
 };

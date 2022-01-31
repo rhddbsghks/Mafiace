@@ -8,7 +8,7 @@ import { useSpring, a } from "@react-spring/web";
 import axios from "axios";
 import jwt from "jwt-decode";
 
-const LoginForm = ({ login, getLogin }) => {
+const LoginForm = ({ getLogin }) => {
   const [id, setId] = useState(true); // ID 찾기
   const [pw, setPw] = useState(true); // PW 찾기
   const [up, setUp] = useState(true); // 회원가입
@@ -26,18 +26,15 @@ const LoginForm = ({ login, getLogin }) => {
 
   // 로그인 클릭
   const onClickLogin = () => {
-    console.log(values);
-    // getLogin(!login);
     axios
       .post("http://localhost:8080/api/auth/login", values, {
         headers: { "Content-Type": `application/json` },
       })
       .then((res) => {
         console.log(res.data);
-        console.log(res.data.accessToken);
         console.log(jwt(res.data.accessToken));
         localStorage.setItem("jwt", res.data.accessToken);
-        getLogin(!login);
+        getLogin(true);
       })
       .catch((err) => console.log(err.response.data));
   };

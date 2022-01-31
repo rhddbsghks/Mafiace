@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
-const HeaderCompo = ({ login, getLogin }) => {
-  const onClick = () => {
-    localStorage.setItem("jwt", null);
-    getLogin(!login);
+const HeaderCompo = ({ getLogin }) => {
+  const clickLogout = () => {
+    localStorage.clear();
+    getLogin(false);
   };
 
   return (
@@ -11,7 +11,7 @@ const HeaderCompo = ({ login, getLogin }) => {
       <h1>Header</h1>
 
       <Link to={"/"}>
-        <button onClick={onClick}>로그아웃</button>
+        <button onClick={clickLogout}>로그아웃</button>
       </Link>
 
       <div>

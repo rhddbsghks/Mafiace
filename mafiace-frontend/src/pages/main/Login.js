@@ -5,12 +5,12 @@ import Logo from "../../components/main/login/Logo";
 
 import { Container } from "semantic-ui-react";
 
-const Login = ({ login, getLogin }) => {
+const Login = ({ getLogin }) => {
   return (
     <>
       <Container>
         <Logo />
-        <LoginForm login={login} getLogin={getLogin} />
+        <LoginForm getLogin={getLogin} />
       </Container>
     </>
   );

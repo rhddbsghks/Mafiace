@@ -5,16 +5,16 @@ import Ingame from "./pages/ingame/Ingame";
 function App() {
   const [ingame, setIngame] = useState(false);
 
-  const getIngame = (ig) => {
-    setIngame(ig);
+  const getIngame = (bool) => {
+    setIngame(bool);
   };
 
   return (
     <>
       {!ingame ? (
-        <Main ingame={ingame} getIngame={getIngame} />
+        <Main getIngame={getIngame} />
       ) : (
-        <Ingame ingame={ingame} getIngame={getIngame} />
+        <Ingame getIngame={getIngame} />
       )}
     </>
   );
