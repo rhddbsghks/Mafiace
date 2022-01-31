@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Button, Divider, Form, Grid, Segment } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Segment, Popup } from "semantic-ui-react";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
 import Signup from "./Signup";
 
 import { useSpring, a } from "@react-spring/web";
 import axios from "axios";
-import jwt from "jwt-decode";
+// import jwt from "jwt-decode";
 
 const LoginForm = ({ getLogin }) => {
   const [id, setId] = useState(true); // ID 찾기
@@ -16,6 +16,18 @@ const LoginForm = ({ getLogin }) => {
     userId: "",
     password: "",
   });
+
+  const clearValues = () => {
+    setValues({
+      userId: "",
+      password: "",
+    });
+  };
+
+  // Popup 관리
+  const [idOpen, setIdOpen] = useState(false);
+  const [pwOpen, setPwOpen] = useState(false);
+  const [msg, setMsg] = useState("");
 
   const [flipped, set] = useState(false);
   const { transform, opacity } = useSpring({
@@ -31,36 +43,51 @@ const LoginForm = ({ getLogin }) => {
         headers: { "Content-Type": `application/json` },
       })
       .then((res) => {
-        console.log(res.data);
-        console.log(jwt(res.data.accessToken));
+        // console.log(res.data);
+        // console.log(jwt(res.data.accessToken));
         localStorage.setItem("jwt", res.data.accessToken);
         getLogin(true);
+        clearValues();
       })
-      .catch((err) => console.log(err.response.data));
+      .catch((err) => {
+        // console.log(err.response.data);
+        if (err.response.data.status === 404) {
+          setMsg("존재하지 않는 ID 입니다.");
+          setIdOpen(true);
+        } else if (err.response.data.status === 401) {
+          setMsg("비밀번호가 틀렸습니다.");
+          setPwOpen(true);
+        }
+      });
   };
 
   // 회원가입 클릭
   const clickSignup = () => {
     setUp(!up);
     set((state) => !state);
+    clearValues();
   };
 
   // ID찾기 클릭
   const clickFindId = () => {
     setId(!id);
     set((state) => !state);
+    clearValues();
   };
 
   // PW찾기 클릭
   const clickFindPw = () => {
     setPw(!pw);
     set((state) => !state);
+    clearValues();
   };
 
   // onChange state 값 갱신
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
+    if (name === "userId") setIdOpen(false);
+    if (name === "password") setPwOpen(false);
   };
 
   return (
@@ -72,24 +99,40 @@ const LoginForm = ({ getLogin }) => {
             <Grid columns={2} relaxed="very" stackable>
               <Grid.Column>
                 <Form>
-                  <Form.Input
-                    icon="user"
-                    iconPosition="left"
-                    label="ID"
-                    placeholder="type your ID here"
-                    name="userId"
-                    value={values.userId}
-                    onChange={handleChange}
+                  <Popup
+                    content={msg}
+                    open={idOpen}
+                    trigger={
+                      <Form.Input
+                        icon="user"
+                        iconPosition="left"
+                        label="ID"
+                        placeholder="type your ID here"
+                        name="userId"
+                        value={values.userId}
+                        onChange={handleChange}
+                      />
+                    }
+                    position="bottom center"
+                    style={{ color: "red" }}
                   />
-                  <Form.Input
-                    icon="lock"
-                    iconPosition="left"
-                    label="PW"
-                    placeholder="type your PW here"
-                    type="password"
-                    name="password"
-                    value={values.password}
-                    onChange={handleChange}
+                  <Popup
+                    content={msg}
+                    open={pwOpen}
+                    trigger={
+                      <Form.Input
+                        icon="lock"
+                        iconPosition="left"
+                        label="PW"
+                        placeholder="type your PW here"
+                        type="password"
+                        name="password"
+                        value={values.password}
+                        onChange={handleChange}
+                      />
+                    }
+                    position="bottom center"
+                    style={{ color: "red" }}
                   />
 
                   <Button

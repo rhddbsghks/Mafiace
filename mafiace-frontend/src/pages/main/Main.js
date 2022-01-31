@@ -18,10 +18,8 @@ const Main = ({ getIngame }) => {
   useEffect(() => {
     if (localStorage.getItem("jwt") === null) {
       setLogin(false);
-      console.log("setLogin(false)");
     } else {
       setLogin(true);
-      console.log("setLogin(true)");
     }
   }, []);
 
