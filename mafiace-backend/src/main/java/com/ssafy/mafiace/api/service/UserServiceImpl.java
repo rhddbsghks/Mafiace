@@ -2,7 +2,9 @@ package com.ssafy.mafiace.api.service;
 
 import com.ssafy.mafiace.api.request.UserRegisterPostReq;
 import com.ssafy.mafiace.db.entity.User;
+import com.ssafy.mafiace.db.entity.UserRecords;
 import com.ssafy.mafiace.db.repository.UserRepository;
+import com.ssafy.mafiace.db.repository.UserRepositorySupport;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -85,4 +87,6 @@ public class UserServiceImpl implements UserService {
             user.modifyUser(passwordEncoder.encode(tmpPassword), user.getEmail(),
                 user.getNickname()));
     }
+
+
 }

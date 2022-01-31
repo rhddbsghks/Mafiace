@@ -22,7 +22,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "user")
 @ToString
 @AttributeOverrides({
@@ -77,6 +76,10 @@ public class User extends BaseEntity implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "delete_account_id")
     private DeleteAccount deleteAccount ;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn
+    private UserRecords userRecords;
 
     public void addUserGameLog(UserGameLog userGameLog){
         this.userGameLogs.add(userGameLog);
