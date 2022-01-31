@@ -2,6 +2,8 @@ import { useState } from "react";
 import Main from "./pages/main/Main";
 import Ingame from "./pages/ingame/Ingame";
 
+import { Container } from "semantic-ui-react";
+
 function App() {
   const [ingame, setIngame] = useState(false);
 
@@ -11,11 +13,13 @@ function App() {
 
   return (
     <>
-      {!ingame ? (
-        <Main getIngame={getIngame} />
-      ) : (
-        <Ingame getIngame={getIngame} />
-      )}
+      <Container>
+        {!ingame ? (
+          <Main getIngame={getIngame} />
+        ) : (
+          <Ingame getIngame={getIngame} />
+        )}
+      </Container>
     </>
   );
 }
