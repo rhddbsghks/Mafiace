@@ -71,8 +71,12 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserGameLog> userGameLogs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private  List<UserHonor> userHonors = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "delete_account_id")
+    private DeleteAccount deleteAccount ;
 
     public void addUserGameLog(UserGameLog userGameLog){
         this.userGameLogs.add(userGameLog);
