@@ -3,7 +3,6 @@ import Main from "./pages/main/Main";
 import Ingame from "./pages/ingame/Ingame";
 
 import { Container } from "semantic-ui-react";
-
 function App() {
   const [ingame, setIngame] = useState(false);
 
