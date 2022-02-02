@@ -122,7 +122,7 @@ const RoomList = ({ getIngame }) => {
                 style={{
                   display: "flex",
                   flexWrap: "wrap",
-                  minHeight: "55vh",
+                  minHeight: "50vh",
                 }}
               >
                 {list.slice(page * 6, page + 6).map((item) => (
@@ -186,6 +186,7 @@ const RoomList = ({ getIngame }) => {
                   }}
                 >
                   <div>
+                    {" "}
                     <button
                       className={"paginate left pageBtn"}
                       ref={pl}
