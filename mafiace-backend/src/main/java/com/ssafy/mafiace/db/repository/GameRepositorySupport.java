@@ -28,10 +28,10 @@ public class GameRepositorySupport {
         List<Game> list;
 
         if (isPublic == 0) {
-            return jpaQueryFactory.selectFrom(qGame).where(qGame.maxPlayer.loe(maxPlayer)).fetch();
+            return jpaQueryFactory.selectFrom(qGame).where(qGame.maxPlayer.loe(maxPlayer)).orderBy(qGame.roomNum.desc()).fetch();
         }
 
         return jpaQueryFactory.selectFrom(qGame)
-            .where(qGame.maxPlayer.loe(maxPlayer), qGame.isPublic.eq(isPublic == 1)).fetch();
+            .where(qGame.maxPlayer.loe(maxPlayer), qGame.isPublic.eq(isPublic == 1)).orderBy(qGame.roomNum.desc()).fetch();
     }
 }
