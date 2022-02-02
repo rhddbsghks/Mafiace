@@ -9,14 +9,20 @@
     #f3e7e9 100%
   );
 
-  /* background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%); */
+  /* background-image: linear-gradient(
+    to top,
+    #f3e7e9 0%,
+    #e3eeff 99%,
+    #e3eeff 100%
+  ); */
 
   /* background-image: linear-gradient(to top, #cd9cf2 0%, #f6f3ff 100%); */
 }
 
 body,
 h1,
-button {
+button,
+.counter {
   font-family: "Dongle", sans-serif !important;
 }
 
