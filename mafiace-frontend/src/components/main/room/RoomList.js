@@ -114,7 +114,7 @@ const RoomList = ({ getIngame }) => {
             <div
               style={{
                 display: "flex",
-                flexWrap: "wrap",
+                flexDirection: "column",
               }}
             >
               {/* 방 목록들 */}
@@ -122,7 +122,7 @@ const RoomList = ({ getIngame }) => {
                 style={{
                   display: "flex",
                   flexWrap: "wrap",
-                  height: "55vh",
+                  minHeight: "55vh",
                 }}
               >
                 {list.slice(page * 6, page + 6).map((item) => (
@@ -146,10 +146,10 @@ const RoomList = ({ getIngame }) => {
                   style={{
                     display: "flex",
                     flexWrap: "wrap",
-                    width: "25%",
+                    width: "30%",
                   }}
                 >
-                  <div style={{ width: "50%", margin: "auto" }}>
+                  <div style={{ width: "150px", margin: "auto" }}>
                     <Dropdown
                       selection
                       fluid
@@ -162,7 +162,7 @@ const RoomList = ({ getIngame }) => {
                       }}
                     />
                   </div>
-                  <div style={{ width: "50%", margin: "auto" }}>
+                  <div style={{ width: "150px", margin: "auto" }}>
                     <Dropdown
                       selection
                       fluid
@@ -180,28 +180,30 @@ const RoomList = ({ getIngame }) => {
                 {/* 페이징 네비바 */}
                 <div
                   style={{
-                    position: "relative",
-                    bottom: "10%",
+                    // position: "relative",
+                    width: "150px",
+                    // bottom: "10%",
                   }}
                 >
-                  <div className={"counter"} ref={counter}></div>
-
-                  <button
-                    className={"paginate left pageBtn"}
-                    ref={pl}
-                    onClick={initPageNav.bind(this, -1)}
-                  >
-                    <i></i>
-                    <i></i>
-                  </button>
-                  <button
-                    className={"paginate right pageBtn"}
-                    ref={pr}
-                    onClick={initPageNav.bind(this, 1)}
-                  >
-                    <i></i>
-                    <i></i>
-                  </button>
+                  <div>
+                    <button
+                      className={"paginate left pageBtn"}
+                      ref={pl}
+                      onClick={initPageNav.bind(this, -1)}
+                    >
+                      <i></i>
+                      <i></i>
+                    </button>
+                    <div className={"counter"} ref={counter}></div>
+                    <button
+                      className={"paginate right pageBtn"}
+                      ref={pr}
+                      onClick={initPageNav.bind(this, 1)}
+                    >
+                      <i></i>
+                      <i></i>
+                    </button>
+                  </div>
                 </div>
 
                 {/* 방 만들기 */}

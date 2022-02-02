@@ -50,7 +50,7 @@
 
 .game {
   /* margin: auto; */
-  margin: 30px 10px;
+  margin: 10px auto;
   width: 350px;
   background-color: #f3f1f5;
   border-radius: 3rem;

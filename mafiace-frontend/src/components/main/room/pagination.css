@@ -7,19 +7,18 @@
 
 .paginate {
   position: relative;
-  margin: 7px;
-  width: 50px;
+  /* margin: 7px; */
+  width: 15px;
   height: 50px;
   cursor: pointer;
   transform: translate3d(0, 0, 0);
   /* position: absolute; */
   top: 30%;
-  /* margin-top: -20px; */
+  margin-top: -20px;
   -webkit-filter: drop-shadow(0 2px 0px rgba(0, 0, 0, 0.2));
 }
 .paginate i {
   position: absolute;
-  left: 0;
   top: 10%;
   width: 1.5em;
   height: 5px;
@@ -30,7 +29,8 @@
   transition: all 0.15s ease;
 }
 .paginate.left {
-  right: 35%;
+  right: 30px;
+  top: 65px;
 }
 .paginate.left i {
   transform-origin: 0% 50%;
@@ -66,7 +66,8 @@
   transform: translate(-5px, 0) rotate(0deg);
 }
 .paginate.right {
-  left: 58%;
+  left: 88px;
+  top: -7px;
 }
 .paginate.right i {
   transform-origin: 100% 50%;
@@ -108,9 +109,10 @@
 
 .counter {
   text-align: center;
-  position: absolute;
+  position: relative;
   width: 100%;
-  bottom: 35%;
+  margin-top: 10%;
+  padding-right: 35%;
   font-size: 4em;
   font-family: Helvetica, sans-serif;
   text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.2);
