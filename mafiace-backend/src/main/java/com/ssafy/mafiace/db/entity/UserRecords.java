@@ -5,51 +5,64 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @Entity
+@Builder
 @Table(name = "user_records")
-@AttributeOverrides({
-    @AttributeOverride(name = "id",column = @Column(name = "user_records_id", unique = true)),
-})
-public class UserRecords extends BaseEntity{
+public class UserRecords{
 
+    @NotNull
+    @Id
+    @Column(name = "user_unique_id", unique = true)
+    String id;
+
+    @ColumnDefault("0")
     @Column(name = "win_count")
     int winCount;
+    @ColumnDefault("0")
     @Column(name = "lose_count")
     int loseCount;
+    @ColumnDefault("0")
     @Column(name = "mafia_count")
     int mafiaCount;
+    @ColumnDefault("0")
     @Column(name = "doctor_count")
     int doctorCount;
+    @ColumnDefault("0")
     @Column(name = "winner_streak")
     int winnerStreak;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Builder
+    private UserRecords (){
+        this.winCount = 0;
+        this.loseCount =0;
+        this.mafiaCount =0;
+        this.doctorCount =0;
+        this.winnerStreak =0;
+    }
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @MapsId
+    @JoinColumn(name = "user_user_unique_id")
     private User user;
 
-    @Builder
-    private UserRecords(int winCount, int loseCount, int mafiaCount, int doctorCount, int winnerStreak){
-        this.id = BaseEntity.shortUUID();
-        winCount = 0;
-        loseCount = 0;
-        mafiaCount = 0;
-        doctorCount = 0;
-        winnerStreak = 0;
-    }
 
 
 

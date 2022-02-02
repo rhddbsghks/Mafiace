@@ -78,8 +78,12 @@ public class User extends BaseEntity implements UserDetails {
     private DeleteAccount deleteAccount ;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn
     private UserRecords userRecords;
+
+    public void setUserRecords(UserRecords userRecords){
+        this.userRecords = userRecords;
+        userRecords.setUser(this);
+    }
 
     public void addUserGameLog(UserGameLog userGameLog){
         this.userGameLogs.add(userGameLog);

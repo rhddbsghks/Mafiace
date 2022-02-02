@@ -5,4 +5,5 @@ import com.ssafy.mafiace.db.entity.UserRecords;
 
 public interface UserRecordsService {
     UserRecords getUserRecords(String id);
+    UserRecords addUserRecords(User user);
 }
