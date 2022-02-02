@@ -56,8 +56,8 @@ public class User extends BaseEntity implements UserDetails {
 
     // delete
     public void deleteAccount(String userId) {
-        if (userId.equals(this.userId)) {
-            isDeleted = true;
+        if(userId.equals(this.userId)) {
+            this.isDeleted = true;
         }
     }
 

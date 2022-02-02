@@ -102,4 +102,9 @@ public class UserServiceImpl implements UserService {
                 user.getNickname()));
     }
 
+    @Override
+    public User deleteAccount(User user) {
+        user.deleteAccount(user.getUserId());
+        return userRepository.save(user);
+    }
 }
