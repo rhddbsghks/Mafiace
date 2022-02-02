@@ -1,6 +1,6 @@
-package com.ssafy.mafiace.db.role;
+package com.ssafy.mafiace.db.game.role;
 
-public class Role {
+public abstract class Role {
 
     private RoleName roleName;
 
@@ -8,6 +8,6 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public abstract void vote()
+    public abstract void vote();
 
 }
