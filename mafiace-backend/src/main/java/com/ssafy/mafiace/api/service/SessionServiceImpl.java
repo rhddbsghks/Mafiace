@@ -48,10 +48,10 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public String openSession(String ownerId, SessionOpenReq sessionOpenReq) throws Exception {
-        String gameId = BaseEntity.shortUUID();
+        String roomPk = BaseEntity.shortUUID();
 
         // New session
-        System.out.println("New session " + gameId);
+        System.out.println("New session " + roomPk);
 
         // Create a new OpenVidu Session
         Session session = this.openVidu.createSession();
@@ -63,10 +63,10 @@ public class SessionServiceImpl implements SessionService {
         String token = session.createConnection(connectionProperties).getToken();
 
         // Store the session and the token in our collections
-        this.mapSessions.put(gameId, session);
-        System.out.println(gameId);
+        this.mapSessions.put(roomPk, session);
+        System.out.println(roomPk);
         gameRepository.save(Game.builder()
-            .gameId(gameId)
+            .gameId(roomPk)
             .ownerId(ownerId)
             .roomNum((int) gameRepository.count() + 1)
             .gameTitle(sessionOpenReq.getGameTitle())
