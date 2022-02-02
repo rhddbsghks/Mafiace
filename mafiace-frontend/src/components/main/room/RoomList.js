@@ -89,24 +89,50 @@ const RoomList = ({ getIngame }) => {
         <div>
           {/* 방 하나도 없을 때 */}
           {list.length === 0 ? (
-            <div
-              style={{
-                height: "55vh",
-                textAlign: "center",
-              }}
-            >
-              <div className={styles["img-wrap"]}>
-                <img
-                  src={"./img/main.png"}
-                  style={{ height: "20em", marginTop: "9%" }}
-                  alt=""
-                />
+            <div>
+              <div
+                style={{
+                  height: "55vh",
+                  textAlign: "center",
+                }}
+              >
+                <div className={styles["img-wrap"]}>
+                  <img
+                    src={"./img/main.png"}
+                    style={{ height: "20em", marginTop: "5%" }}
+                    alt=""
+                  />
 
-                <div
-                  style={{ color: "#8157a8", fontSize: "5em", marginTop: "3%" }}
-                >
-                  진행중인 게임이 없어요.
+                  <div
+                    style={{
+                      color: "#8157a8",
+                      fontSize: "5em",
+                      marginTop: "3%",
+                    }}
+                  >
+                    진행중인 게임이 없어요.
+                  </div>
                 </div>
+              </div>
+
+              {/* 방 만들기 */}
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  flexDirection: "row-reverse",
+                  justifyContent: "space-between",
+                  height: "109px",
+                  marginTop: "-2px",
+                  width: "100%",
+                }}
+              >
+                <button
+                  className={`${styles.button} ${styles["btn-2"]}`}
+                  onClick={clickIngame}
+                >
+                  방 만들기
+                </button>
               </div>
             </div>
           ) : (
