@@ -32,13 +32,11 @@ public class GameController {
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 500, message = "Server Error"),
     })
-    public ResponseEntity<GameRoomRes> getGameList(int maxPlayer, int isPublic, int page) {
+    public ResponseEntity<GameRoomRes> getGameList(int maxPlayer, int isPublic) {
 
-        List<Game> list = gameService.getGameList();
-        int count = gameService.getGameCount();
+        List<Game> list = gameService.getGameList(maxPlayer, isPublic);
 
-        System.out.println(maxPlayer + " " + isPublic);
         return ResponseEntity.status(200)
-            .body(GameRoomRes.of(200, "Success", count, list));
+            .body(GameRoomRes.of(200, "Success",  list));
     }
 }

@@ -1,4 +1,4 @@
-package com.ssafy.mafiace.db.role;
+package com.ssafy.mafiace.db.game.role;
 
 public enum RoleName {
     Mafia, Citizen, Doctor, Police
