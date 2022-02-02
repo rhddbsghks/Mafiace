@@ -5,5 +5,6 @@ import java.util.List;
 
 public interface GameService {
 
-    List<Game> getGameList(int maxPlayer, int isPublic) ;
+    List<Game> getGameList() ;
+    int getGameCount();
 }

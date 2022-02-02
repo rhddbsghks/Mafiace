@@ -2,7 +2,6 @@ package com.ssafy.mafiace.api.service;
 
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.repository.GameRepository;
-import com.ssafy.mafiace.db.repository.GameRepositorySupport;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +10,17 @@ public class GameServiceImpl implements GameService {
 
     private GameRepository gameRepository;
 
-    private GameRepositorySupport gameRepositorySupport;
-
-    public GameServiceImpl(GameRepository gameRepository,GameRepositorySupport gameRepositorySupport) {
+    public GameServiceImpl(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
-        this.gameRepositorySupport = gameRepositorySupport;
     }
 
     @Override
-    public List<Game> getGameList(int maxPlayer,int isPublic) {
-        return gameRepositorySupport.findGameByOption(maxPlayer, isPublic);
+    public List<Game> getGameList() {
+        return gameRepository.findAll();
+    }
+
+    @Override
+    public int getGameCount() {
+        return (int) gameRepository.count();
     }
 }

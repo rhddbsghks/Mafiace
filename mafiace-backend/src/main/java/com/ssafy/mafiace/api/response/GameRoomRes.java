@@ -13,13 +13,15 @@ import lombok.Setter;
 @ApiModel("GameRoomGetRes")
 public class GameRoomRes extends BaseResponseBody{
 
+    int count;
     List<Game> list;
 
-    public static GameRoomRes of(int statusCode,String message, List<Game> list) {
+    public static GameRoomRes of(int statusCode,String message,int count, List<Game> list) {
         GameRoomRes res = new GameRoomRes();
         res.setStatus(statusCode);
         res.setMessage(message);
         res.setList(list);
+        res.setCount(count);
         return res;
     }
 }
