@@ -1,9 +1,9 @@
 import HeaderCompo from "../../components/main/header/HeaderCompo";
 
-const Header = ({ login, getLogin }) => {
+const Header = ({ getLogin }) => {
   return (
     <>
-      <HeaderCompo getLogin={getLogin} login={login} />
+      <HeaderCompo getLogin={getLogin} />
     </>
   );
 };

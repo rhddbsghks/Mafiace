@@ -3,8 +3,10 @@ package com.ssafy.mafiace.api.controller;
 import com.ssafy.mafiace.api.request.UserRegisterPostReq;
 import com.ssafy.mafiace.api.response.BaseResponseBody;
 import com.ssafy.mafiace.api.service.EmailService;
+import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.db.entity.User;
+import com.ssafy.mafiace.db.entity.UserRecords;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,6 +26,10 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserRecordsService userRecordsService;
+
     @Autowired
     private EmailService emailService;
 
@@ -32,26 +38,41 @@ public class UserController {
     @ApiResponses({
         @ApiResponse(code = 200, message = "회원가입이 완료되었습니다."),
         @ApiResponse(code = 409, message = "중복된 계정입니다."),
+        @ApiResponse(code = 410, message = "올바르지 않은 패스워드입니다.")
     })
-    public ResponseEntity<BaseResponseBody> register(
-        @RequestBody @ApiParam(value = "회원가입 요청 정보", required = true) UserRegisterPostReq registerReq) {
+    public ResponseEntity<BaseResponseBody> register(@RequestBody @ApiParam(value="회원가입 요청 정보", required = true) UserRegisterPostReq registerReq) {
         try {
-            userService.registerUser(registerReq);
-        } catch (Exception e) {
-            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 계정입니다."));
+            User user = userService.registerUser(registerReq);
+            UserRecords userRecords = userRecordsService.addUserRecords(user);
+                if(user != null ){
+                    return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입이 완료되었습니다."));
+                }else{
+                    return ResponseEntity.status(410).body(BaseResponseBody.of(410, "올바르지 않은 패스워드입니다."));
+                }
+            } catch (Exception e) {
+                return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 계정입니다."));
         }
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입이 완료되었습니다."));
     }
 
     @PatchMapping
     @ApiOperation(value = "회원정보 수정", notes = "마이페이지에서 회원정보를 수정한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "회원정보 수정 완료"),
+        @ApiResponse(code = 409, message = "중복된 계정입니다."),
+        @ApiResponse(code = 410, message = "회원 수정에 실패하였습니다.")
     })
     public ResponseEntity<BaseResponseBody> update(
         @RequestBody @ApiParam(value = "회원정보 수정 요청 정보", required = true) UserRegisterPostReq registerReq) {
-        userService.updateUser(registerReq);
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원정보 수정완료"));
+        try {
+            User user = userService.updateUser(registerReq);
+            if(user != null) {
+                return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원정보 수정완료"));
+            }else {
+                return ResponseEntity.status(410).body(BaseResponseBody.of(410, "올바르지 않은 패스워드입니다."));
+            }
+        }catch (Exception e) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "회원 수정에 실패하였습니다."));
+        }
     }
 
     @ApiOperation(value = "아이디 중복 체크", notes = "아이디를 전달받아서 중복 체크를 한다.")
@@ -106,7 +127,7 @@ public class UserController {
         @ApiResponse(code = 500, message = "예기치 못한 오류가 발생하였습니다."),
     })
     @PatchMapping("/password")
-    public ResponseEntity<BaseResponseBody> emailConfirm(
+    public ResponseEntity<BaseResponseBody> findPassword(
         @RequestBody UserRegisterPostReq registerReq) {
         User user = userService.getUserByUserIdAndEmail(registerReq.getUserId(),
             registerReq.getEmail());
