@@ -31,13 +31,18 @@ const Main = ({ getIngame }) => {
         <>
           <Router>
             <Header getLogin={getLogin} />
-            <Routes>
-              <Route path="/" element={<Room getIngame={getIngame} />} />
-              <Route path="/notice" element={<Notice />} />
-              <Route path="/rules" element={<Rules />} />
-              <Route path="/mypage" element={<Mypage />} />
-              <Route path="/ranking" element={<Ranking />} />
-            </Routes>
+            <div
+              style={{ marginTop: "7%", height: "75%", marginBottom: "0" }}
+              className="scrollbar"
+            >
+              <Routes>
+                <Route path="/" element={<Room getIngame={getIngame} />} />
+                <Route path="/notice" element={<Notice />} />
+                <Route path="/rules" element={<Rules />} />
+                <Route path="/mypage" element={<Mypage />} />
+                <Route path="/ranking" element={<Ranking />} />
+              </Routes>
+            </div>
           </Router>
         </>
       )}
