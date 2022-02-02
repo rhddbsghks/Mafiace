@@ -45,6 +45,11 @@ public class UserRecords{
     @ColumnDefault("0")
     @Column(name = "doctor_count")
     int doctorCount;
+
+    @ColumnDefault("0")
+    @Column(name = "police_count")
+    int policeCount;
+
     @ColumnDefault("0")
     @Column(name = "winner_streak")
     int winnerStreak;
@@ -55,12 +60,13 @@ public class UserRecords{
         this.loseCount =0;
         this.mafiaCount =0;
         this.doctorCount =0;
+        this.policeCount =0;
         this.winnerStreak =0;
     }
 
     @OneToOne(fetch = FetchType.EAGER)
     @MapsId
-    @JoinColumn(name = "user_user_unique_id")
+    @JoinColumn(name = "user_unique_id", referencedColumnName = "user_user_unique_name")
     private User user;
 
 

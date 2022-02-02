@@ -1,7 +1,7 @@
-//package com.ssafy.mafiace.db.manager;
-//
-//public class GameManager {
-//
-//    private
-//
-//}
+package com.ssafy.mafiace.db.manager;
+
+public class GameManager {
+
+
+
+}
