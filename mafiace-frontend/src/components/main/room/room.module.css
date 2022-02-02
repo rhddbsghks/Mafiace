@@ -49,8 +49,8 @@
 }
 
 .game {
-  margin: auto;
-  margin-top: 5%;
+  /* margin: auto; */
+  margin: 30px 10px;
   width: 350px;
   background-color: #f3f1f5;
   border-radius: 3rem;
@@ -85,6 +85,11 @@
   font-size: 2em;
   margin: 20%;
   font-weight: 700;
+}
+
+.select-box div,
+.select-box span {
+  font-size: 1.7em;
 }
 
 .img-wrap {

@@ -16,8 +16,6 @@ const RoomComp = ({ game }) => {
     setRandomNum((cir) => Math.floor(Math.random() * 10 + 1) % 5);
   }, []);
 
-  console.log(game);
-
   return (
     <div className={styles.game}>
       <img
@@ -38,14 +36,22 @@ const RoomComp = ({ game }) => {
       >
         <div className={styles["game-header"]}>
           <div style={{ margin: "5.5%" }}>
-            {game.roomNum} &nbsp;&nbsp;&nbsp;
-            {game.gameTitle}
+            <span style={{ fontSize: "0.8em" }}>
+              {game.roomNum}&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span style={{ fontSize: "1.1em" }}>{game.gameTitle}</span>
           </div>
         </div>
         <div className={styles["game-info"]}>
-          {game.public ? <Icon name="lock" /> : <Icon name="user" />}
+          {game.public ? <Icon name="user" /> : <Icon name="lock" />}
 
-          <div style={{ fontSize: "2em" }}>WAITING</div>
+          <div style={{ fontSize: "2em" }}>
+            {game.maxPlayer % 2 === 0 ? (
+              <span style={{ color: "#7f7c824d" }}>PLAYING</span>
+            ) : (
+              <span style={{ color: "#8157a8" }}>WAITING</span>
+            )}
+          </div>
           <div>0/{game.maxPlayer}</div>
         </div>
       </div>
