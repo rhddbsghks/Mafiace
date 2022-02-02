@@ -68,7 +68,6 @@ public class SessionServiceImpl implements SessionService {
         gameRepository.save(Game.builder()
             .gameId(gameId)
             .ownerId(ownerId)
-            .roomNum((int) gameRepository.count() + 1)
             .gameTitle(sessionOpenReq.getGameTitle())
             .discussionTime(sessionOpenReq.getDiscussionTime())
             .maxPlayer(sessionOpenReq.getMaxPlayer())
