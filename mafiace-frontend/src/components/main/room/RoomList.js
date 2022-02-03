@@ -15,16 +15,17 @@ const RoomList = ({ getIngame }) => {
 
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
+  const [minPlayer, setMinPlayer] = useState(5);
   const [maxPlayer, setMaxPlayer] = useState(8);
   const [isPublic, setIsPublic] = useState(0);
   const [page, setPage] = useState(0);
   const [totalRoom, setTotalRoom] = useState();
 
-  const maxPlayerOptions = [
-    { key: "8", value: 8, text: "8명 이하" },
-    { key: "7", value: 7, text: "7명 이하" },
-    { key: "6", value: 6, text: "6명 이하" },
-    { key: "5", value: 5, text: "5명 이하" },
+  const playerOptions = [
+    { key: "8", value: 8, text: "8명" },
+    { key: "7", value: 7, text: "7명" },
+    { key: "6", value: 6, text: "6명" },
+    { key: "5", value: 5, text: "5명" },
   ];
   const publicOptions = [
     { key: "0", value: 0, text: "전체" },
@@ -32,36 +33,33 @@ const RoomList = ({ getIngame }) => {
     { key: "2", value: 2, text: "비공개방" },
   ];
 
-  const getGameList = (maxPlayer, isPublic) => {
+  const getGameList = (minPlayer, maxPlayer, isPublic) => {
     axios
       .get(config.API_URL + "/game", {
-        params: { maxPlayer, isPublic },
+        params: { minPlayer, maxPlayer, isPublic },
       })
       .then(({ data }) => {
         setList(data.list);
         setTotalRoom(data.list.length);
         setLoading(false);
-        console.log("방 불러옴");
-        console.log(`max: ${maxPlayer}, public: ${isPublic}`);
-      })
-      .then(() => {
-        console.log(totalRoom);
-        console.log(counter.current);
-        console.log(pl.current);
 
-        if (list.length > 0) initPageNav(0);
+        console.log("방 불러옴");
+        console.log(`min: ${minPlayer},max: ${maxPlayer}, public: ${isPublic}`);
+
+        if (data.list.length !== 0) initPageNav(0);
       });
   };
 
   useEffect(() => {
-    getGameList(maxPlayer, isPublic);
-  }, [maxPlayer, isPublic, totalRoom]);
+    getGameList(minPlayer, maxPlayer, isPublic);
+  }, [minPlayer, maxPlayer, isPublic, totalRoom]);
 
   const counter = useRef();
   const pr = useRef();
   const pl = useRef();
 
   const initPageNav = (offset) => {
+    console.log(totalRoom + "이거다");
     setPage((prev) => {
       let next = Math.min(Math.max(page + offset, 0), totalRoom - 1);
 
@@ -88,18 +86,32 @@ const RoomList = ({ getIngame }) => {
         // 로딩 완료
         <div>
           {/* 방 하나도 없을 때 */}
-          {list.length === 0 ? (
-            <div>
+          {totalRoom === 0 ? (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {/* 방 목록들 */}
               <div
                 style={{
-                  height: "55vh",
-                  textAlign: "center",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  minHeight: "53vh",
+                  justifyContent: "center",
                 }}
               >
-                <div className={styles["img-wrap"]}>
+                <div
+                  className={styles["img-wrap"]}
+                  style={{ textAlign: "center" }}
+                >
                   <img
                     src={"./img/main.png"}
-                    style={{ height: "20em", marginTop: "5%" }}
+                    style={{
+                      height: "20em",
+                      marginTop: "17%",
+                    }}
                     alt=""
                   />
 
@@ -107,7 +119,7 @@ const RoomList = ({ getIngame }) => {
                     style={{
                       color: "#8157a8",
                       fontSize: "5em",
-                      marginTop: "3%",
+                      marginTop: "2%",
                     }}
                   >
                     진행중인 게임이 없어요.
@@ -115,18 +127,109 @@ const RoomList = ({ getIngame }) => {
                 </div>
               </div>
 
-              {/* 방 만들기 */}
+              {/* 하단 컨트롤러 */}
               <div
                 style={{
                   display: "flex",
                   flexWrap: "wrap",
-                  flexDirection: "row-reverse",
                   justifyContent: "space-between",
-                  height: "109px",
-                  marginTop: "-2px",
+                  marginTop: "3%",
+                  height: "100px",
                   width: "100%",
                 }}
               >
+                {/* 방 필터 */}
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    width: "30%",
+                  }}
+                >
+                  <div style={{ width: "170px", margin: "auto" }}>
+                    <Dropdown
+                      selection
+                      fluid
+                      className={styles["select-box"]}
+                      options={publicOptions}
+                      defaultValue={0}
+                      upward
+                      onChange={(e, { name, value }) => {
+                        setIsPublic(value);
+                      }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "center",
+                      margin: "auto",
+                      width: "200px",
+                    }}
+                  >
+                    <div style={{ width: "70px" }}>
+                      <Dropdown
+                        selection
+                        fluid
+                        className={styles["select-box"]}
+                        options={playerOptions}
+                        defaultValue={8}
+                        upward
+                        onChange={(e, { name, value }) => {
+                          setMinPlayer(value);
+                        }}
+                      />
+                    </div>
+                    <span style={{ fontSize: "2em", margin: "auto 10px" }}>
+                      ~
+                    </span>
+                    <div style={{ width: "70px" }}>
+                      <Dropdown
+                        selection
+                        fluid
+                        className={styles["select-box"]}
+                        options={playerOptions}
+                        defaultValue={8}
+                        upward
+                        onChange={(e, { name, value }) => {
+                          setMaxPlayer(value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 페이징 네비바 */}
+                <div
+                  style={{
+                    width: "150px",
+                    visibility: "hidden",
+                  }}
+                >
+                  <div>
+                    {" "}
+                    <button
+                      className={"paginate left pageBtn"}
+                      ref={pl}
+                      onClick={initPageNav.bind(this, -1)}
+                    >
+                      <i></i>
+                      <i></i>
+                    </button>
+                    <div className={"counter"} ref={counter}></div>
+                    <button
+                      className={"paginate right pageBtn"}
+                      ref={pr}
+                      onClick={initPageNav.bind(this, 1)}
+                    >
+                      <i></i>
+                      <i></i>
+                    </button>
+                  </div>
+                </div>
+
+                {/* 방 만들기 */}
                 <button
                   className={`${styles.button} ${styles["btn-2"]}`}
                   onClick={clickIngame}
@@ -148,7 +251,7 @@ const RoomList = ({ getIngame }) => {
                 style={{
                   display: "flex",
                   flexWrap: "wrap",
-                  minHeight: "50vh",
+                  minHeight: "53vh",
                 }}
               >
                 {list.slice(page * 6, page + 6).map((item) => (
@@ -163,7 +266,7 @@ const RoomList = ({ getIngame }) => {
                   flexWrap: "wrap",
                   justifyContent: "space-between",
                   marginTop: "3%",
-                  height: "10%",
+                  height: "100px",
                   width: "100%",
                 }}
               >
@@ -175,7 +278,7 @@ const RoomList = ({ getIngame }) => {
                     width: "30%",
                   }}
                 >
-                  <div style={{ width: "150px", margin: "auto" }}>
+                  <div style={{ width: "170px", margin: "auto" }}>
                     <Dropdown
                       selection
                       fluid
@@ -188,18 +291,44 @@ const RoomList = ({ getIngame }) => {
                       }}
                     />
                   </div>
-                  <div style={{ width: "150px", margin: "auto" }}>
-                    <Dropdown
-                      selection
-                      fluid
-                      className={styles["select-box"]}
-                      options={maxPlayerOptions}
-                      defaultValue={8}
-                      upward
-                      onChange={(e, { name, value }) => {
-                        setMaxPlayer(value);
-                      }}
-                    />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "center",
+                      margin: "auto",
+                      width: "200px",
+                    }}
+                  >
+                    <div style={{ width: "70px" }}>
+                      <Dropdown
+                        selection
+                        fluid
+                        className={styles["select-box"]}
+                        options={playerOptions}
+                        defaultValue={8}
+                        upward
+                        onChange={(e, { name, value }) => {
+                          setMinPlayer(value);
+                        }}
+                      />
+                    </div>
+                    <span style={{ fontSize: "2em", margin: "auto 10px" }}>
+                      ~
+                    </span>
+                    <div style={{ width: "70px" }}>
+                      <Dropdown
+                        selection
+                        fluid
+                        className={styles["select-box"]}
+                        options={playerOptions}
+                        defaultValue={8}
+                        upward
+                        onChange={(e, { name, value }) => {
+                          setMaxPlayer(value);
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
 
