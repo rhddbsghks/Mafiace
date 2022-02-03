@@ -61,7 +61,14 @@ public class User extends BaseEntity implements UserDetails {
         }
     }
 
-    public User modifyUser(String password, String email, String nickname) {
+    // restore
+    public void restoreAccount(String userId) {
+        if(userId.equals(this.userId)) {
+            this.isDeleted = false;
+        }
+    }
+
+    public User modifyUser(String password, String email, String nickname){
         this.password = password;
         this.email = email;
         this.nickname = nickname;
