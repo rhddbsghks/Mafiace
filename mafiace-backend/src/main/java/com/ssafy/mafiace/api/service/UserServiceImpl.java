@@ -1,12 +1,19 @@
 package com.ssafy.mafiace.api.service;
 
 import com.ssafy.mafiace.api.request.UserRegisterPostReq;
+import com.ssafy.mafiace.db.entity.DeleteAccount;
 import com.ssafy.mafiace.db.entity.User;
+<<<<<<< HEAD
 import com.ssafy.mafiace.db.entity.UserRecords;
 import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
 import com.ssafy.mafiace.db.repository.UserRepositorySupport;
+=======
+import com.ssafy.mafiace.db.repository.DeleteAccountRepository;
+import com.ssafy.mafiace.db.repository.UserRepository;
+import java.time.LocalDate;
+>>>>>>> 7b4687c ([S06P12A602-73] feat: 회원 탈퇴 유예)
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRecordsRepositorySupport userRecordsRepositorySupport;
+
+    @Autowired
+    DeleteAccountRepository deleteAccountRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -104,7 +114,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User deleteAccount(User user) {
+        DeleteAccount deleteAccount = DeleteAccount.builder()
+            .requestDate(LocalDate.now())
+            .finishDate(LocalDate.now().plusDays(30))
+            .build();
+
+        deleteAccount.setUser(user);
         user.deleteAccount(user.getUserId());
+        deleteAccountRepository.save(deleteAccount);
         return userRepository.save(user);
     }
 }

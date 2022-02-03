@@ -157,17 +157,22 @@ public class UserController {
     @ApiOperation(value = "회원 탈퇴", notes = "비밀번호를 확인한 뒤 회원 탈퇴 신청을 진행한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "회원 탈퇴 신청이 완료되었습니다."),
+        @ApiResponse(code = 400, message = "이미 탈퇴 신청된 계정입니다."),
         @ApiResponse(code = 401, message = "비밀번호가 틀렸습니다.")
     })
     public ResponseEntity<BaseResponseBody> deleteAccount
         (@RequestBody @ApiParam(value="회원 탈퇴 신청 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
         User user = userService.getUserByUserId((deleteAccountReq.getUserId()));
 
+        if (user.isDeleted()) {
+            return ResponseEntity.status(400).body(BaseResponseBody.of(400, "이미 탈퇴 신청된 계정입니다."));
+        }
+
         if (passwordEncoder.matches(deleteAccountReq.getPassword(), user.getPassword())) {
             userService.deleteAccount(user);
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원 탈퇴 신청이 완료되었습니다."));
         }
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(401, "비밀번호가 틀렸습니다."));
+        return ResponseEntity.status(401).body(BaseResponseBody.of(401, "비밀번호가 틀렸습니다."));
     }
 }
