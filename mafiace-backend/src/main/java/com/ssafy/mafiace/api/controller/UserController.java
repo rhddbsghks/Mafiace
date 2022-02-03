@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
@@ -178,7 +177,6 @@ public class UserController {
     }
 
     @PostMapping("/restoreaccount")
-    @Transactional
     @ApiOperation(value = "회원 탈퇴 취소", notes = "비밀번호를 확인한 뒤 회원 탈퇴 신청을 취소한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "회원 탈퇴 신청이 취소되었습니다."),

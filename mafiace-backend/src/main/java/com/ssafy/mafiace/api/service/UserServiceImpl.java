@@ -4,6 +4,7 @@ import com.ssafy.mafiace.api.request.UserRegisterPostReq;
 import com.ssafy.mafiace.db.entity.DeleteAccount;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.entity.UserRecords;
+import com.ssafy.mafiace.db.repository.DeleteAccountRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
@@ -26,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     DeleteAccountRepository deleteAccountRepository;
+
+    @Autowired
+    DeleteAccountRepositorySupport deleteAccountRepositorySupport;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -116,6 +120,7 @@ public class UserServiceImpl implements UserService {
             .build();
 
         deleteAccount.setUser(user);
+        user.setDeleteAccount(deleteAccount);
         user.deleteAccount(user.getUserId());
         deleteAccountRepository.save(deleteAccount);
         return userRepository.save(user);
@@ -123,7 +128,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User restoreAccount(User user) {
-        deleteAccountRepository.deleteByUser(user);
+        Optional<DeleteAccount> deleteAccount = deleteAccountRepositorySupport.findDeleteAccountByUser(user);
+
+        if (deleteAccount.isPresent()) {
+                deleteAccountRepository.deleteById(deleteAccount.get().getId());
+        }
+
+        user.restoreAccount(user.getUserId());  // 유저의 탈퇴 여부를 false로 변경
         return userRepository.save(user);
     }
 }

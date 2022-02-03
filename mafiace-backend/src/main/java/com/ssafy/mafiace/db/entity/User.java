@@ -42,6 +42,7 @@ public class User extends BaseEntity implements UserDetails {
     @NotNull
     @Column(name = "nickname", unique = true)
     String nickname;
+
     @Column(name = "is_deleted")
     boolean isDeleted;
 
@@ -82,8 +83,7 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserHonor> userHonors = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "delete_account_id")
+    @OneToOne(mappedBy = "user", orphanRemoval = true)
     private DeleteAccount deleteAccount;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -133,5 +133,9 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setDeleteAccount(DeleteAccount deleteAccount) {
+        this.deleteAccount = deleteAccount;
     }
 }

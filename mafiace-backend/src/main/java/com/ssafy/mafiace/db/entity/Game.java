@@ -42,8 +42,7 @@ public class Game extends BaseEntity{
     int maxPlayer;
     String password;
     @Column(name = "is_active")
-    @Enumerated
-    IsActive isActive;
+    boolean isActive;
 
     @Builder
     private Game(String gameId,int roomNum, String ownerId, String gameTitle, boolean isPublic, int discussionTime,

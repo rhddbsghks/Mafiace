@@ -21,5 +21,6 @@ public interface UserService {
     User changePassword(User user, String tmpPassword);
 
     User deleteAccount(User user);
+
     User restoreAccount(User user);
 }
