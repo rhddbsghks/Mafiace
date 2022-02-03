@@ -26,7 +26,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Builder
 @Table(name = "user_records")
-public class UserRecords{
+public class UserRecords {
 
     @NotNull
     @Id
@@ -50,22 +50,17 @@ public class UserRecords{
     int winnerStreak;
 
     @Builder
-    private UserRecords (){
+    private UserRecords() {
         this.winCount = 0;
-        this.loseCount =0;
-        this.mafiaCount =0;
-        this.doctorCount =0;
-        this.winnerStreak =0;
+        this.loseCount = 0;
+        this.mafiaCount = 0;
+        this.doctorCount = 0;
+        this.winnerStreak = 0;
     }
 
     @OneToOne(fetch = FetchType.EAGER)
     @MapsId
-    @JoinColumn(name = "user_user_unique_id")
+    @JoinColumn(name = "user_unique_id", referencedColumnName = "user_user_unique_name")
     private User user;
-
-
-
-
-
 
 }

@@ -11,15 +11,18 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepositorySupport {
+
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
     QUser qUser = QUser.user;
 
-    public Optional<UserRecords> findUserRecordsByUser(User user){
+    public Optional<UserRecords> findUserRecordsByUser(User user) {
         QUserRecords qUserRecords = QUserRecords.userRecords;
         UserRecords userRecords = jpaQueryFactory.select(qUserRecords).from(qUserRecords)
             .where(qUserRecords.id.eq(user.getId())).fetchOne();
-        if(user ==null) return Optional.empty();
+        if (user == null) {
+            return Optional.empty();
+        }
         return Optional.of(userRecords);
     }
 }

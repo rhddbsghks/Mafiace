@@ -25,7 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "user")
 @ToString
 @AttributeOverrides({
-    @AttributeOverride(name = "id",column = @Column(name = "user_unique_id", unique = true))
+    @AttributeOverride(name = "id", column = @Column(name = "user_unique_id", unique = true))
 })
 public class User extends BaseEntity implements UserDetails {
 
@@ -35,16 +35,18 @@ public class User extends BaseEntity implements UserDetails {
     String userId;
     @NotNull
     String password;
-    @NotNull @Column(name = "email", unique = true)
+    @NotNull
+    @Column(name = "email", unique = true)
     String email;
     @Pattern(regexp = "[a-zA-Z1-9가-힣\\s]{2,10}")
-    @NotNull @Column(name = "nickname", unique = true)
+    @NotNull
+    @Column(name = "nickname", unique = true)
     String nickname;
     @Column(name = "is_deleted")
     boolean isDeleted;
 
     @Builder
-    private User(String userId, String password, String email, String nickname){
+    private User(String userId, String password, String email, String nickname) {
         this.id = BaseEntity.shortUUID();
         this.userId = userId;
         this.password = password;
@@ -54,12 +56,12 @@ public class User extends BaseEntity implements UserDetails {
 
     // delete
     public void deleteAccount(String userId) {
-        if(userId.equals(this.userId)) {
+        if (userId.equals(this.userId)) {
             isDeleted = true;
         }
     }
 
-    public User modifyUser(String password, String email, String nickname){
+    public User modifyUser(String password, String email, String nickname) {
         this.password = password;
         this.email = email;
         this.nickname = nickname;
@@ -71,21 +73,21 @@ public class User extends BaseEntity implements UserDetails {
     private List<UserGameLog> userGameLogs = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private  List<UserHonor> userHonors = new ArrayList<>();
+    private List<UserHonor> userHonors = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "delete_account_id")
-    private DeleteAccount deleteAccount ;
+    private DeleteAccount deleteAccount;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private UserRecords userRecords;
 
-    public void setUserRecords(UserRecords userRecords){
+    public void setUserRecords(UserRecords userRecords) {
         this.userRecords = userRecords;
         userRecords.setUser(this);
     }
 
-    public void addUserGameLog(UserGameLog userGameLog){
+    public void addUserGameLog(UserGameLog userGameLog) {
         this.userGameLogs.add(userGameLog);
         userGameLog.setUser(this);
     }

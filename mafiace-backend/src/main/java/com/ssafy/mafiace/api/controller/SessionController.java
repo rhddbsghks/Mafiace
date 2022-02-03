@@ -41,7 +41,8 @@ public class SessionController {
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 500, message = "Server Error"),
     })
-    public ResponseEntity<SessionTokenPostRes> openSession(HttpServletRequest request, @RequestBody  SessionOpenReq sessionOpenReq) {
+    public ResponseEntity<SessionTokenPostRes> openSession(HttpServletRequest request,
+        @RequestBody SessionOpenReq sessionOpenReq) {
         String jwtToken = request.getHeader("Authorization").substring(7);
         String id = jwtTokenProvider.getUserPk(jwtToken);
 

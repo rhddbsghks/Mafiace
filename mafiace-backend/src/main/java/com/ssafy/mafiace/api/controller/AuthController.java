@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
     @Autowired
     UserService userService;
     @Autowired
@@ -36,7 +37,8 @@ public class AuthController {
         @ApiResponse(code = 401, message = "잘못된 비밀번호"),
         @ApiResponse(code = 404, message = "존재하지 않는 아이디"),
     })
-    public ResponseEntity<UserLoginPostRes> login(@ApiParam(value="로그인 요청 정보", required = true) @RequestBody UserLoginPostReq loginReq) {
+    public ResponseEntity<UserLoginPostRes> login(
+        @ApiParam(value = "로그인 요청 정보", required = true) @RequestBody UserLoginPostReq loginReq) {
         User user = userService.getUserByUserId(loginReq.getUserId());
 
         // 존재하지 않은 아이디인 경우, 404로 응답.

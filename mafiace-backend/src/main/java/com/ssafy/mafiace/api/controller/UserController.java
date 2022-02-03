@@ -40,17 +40,19 @@ public class UserController {
         @ApiResponse(code = 409, message = "중복된 계정입니다."),
         @ApiResponse(code = 410, message = "올바르지 않은 패스워드입니다.")
     })
-    public ResponseEntity<BaseResponseBody> register(@RequestBody @ApiParam(value="회원가입 요청 정보", required = true) UserRegisterPostReq registerReq) {
+    public ResponseEntity<BaseResponseBody> register(
+        @RequestBody @ApiParam(value = "회원가입 요청 정보", required = true) UserRegisterPostReq registerReq) {
         try {
             User user = userService.registerUser(registerReq);
             UserRecords userRecords = userRecordsService.addUserRecords(user);
-                if(user != null ){
-                    return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입이 완료되었습니다."));
-                }else{
-                    return ResponseEntity.status(410).body(BaseResponseBody.of(410, "올바르지 않은 패스워드입니다."));
-                }
-            } catch (Exception e) {
-                return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 계정입니다."));
+            if (user != null) {
+                return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입이 완료되었습니다."));
+            } else {
+                return ResponseEntity.status(410)
+                    .body(BaseResponseBody.of(410, "올바르지 않은 패스워드입니다."));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 계정입니다."));
         }
     }
 
@@ -65,12 +67,13 @@ public class UserController {
         @RequestBody @ApiParam(value = "회원정보 수정 요청 정보", required = true) UserRegisterPostReq registerReq) {
         try {
             User user = userService.updateUser(registerReq);
-            if(user != null) {
+            if (user != null) {
                 return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원정보 수정완료"));
-            }else {
-                return ResponseEntity.status(410).body(BaseResponseBody.of(410, "올바르지 않은 패스워드입니다."));
+            } else {
+                return ResponseEntity.status(410)
+                    .body(BaseResponseBody.of(410, "올바르지 않은 패스워드입니다."));
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "회원 수정에 실패하였습니다."));
         }
     }
@@ -133,9 +136,9 @@ public class UserController {
             registerReq.getEmail());
         if (user != null) {
             try {
-                String tmpPassword=emailService.createPassword();
-                emailService.sendPasswordToEmail(registerReq.getEmail(),tmpPassword);
-                userService.changePassword(user,tmpPassword);
+                String tmpPassword = emailService.createPassword();
+                emailService.sendPasswordToEmail(registerReq.getEmail(), tmpPassword);
+                userService.changePassword(user, tmpPassword);
                 return ResponseEntity.status(200).body(BaseResponseBody.of(200, "메일 전송이 완료되었습니다."));
             } catch (Exception e) {
                 return ResponseEntity.status(500)

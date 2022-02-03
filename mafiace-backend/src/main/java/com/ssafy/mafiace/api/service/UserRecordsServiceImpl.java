@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserRecordsServiceImpl implements UserRecordsService{
+public class UserRecordsServiceImpl implements UserRecordsService {
 
     @Autowired
     UserRepositorySupport userRepositorySupport;
@@ -28,7 +28,7 @@ public class UserRecordsServiceImpl implements UserRecordsService{
     @Override
     public UserRecords getUserRecords(String id) {
         Optional<User> user = userRepository.findByUserId(id);
-        if(user == null){
+        if (user == null) {
             return null;
         }
         Optional<UserRecords> userRecordsOpt =
@@ -40,11 +40,11 @@ public class UserRecordsServiceImpl implements UserRecordsService{
     public UserRecords addUserRecords(User user) {
 
         UserRecords userRecords = UserRecords.builder()
-                .build();
+            .build();
         user.setUserRecords(userRecords);
-        System.out.println("id : "+ userRecords.getId());
-        System.out.println("wincount : "+ userRecords.getWinCount());
-        System.out.println("userid : "+ userRecords.getUser().getUserId());
+        System.out.println("id : " + userRecords.getId());
+        System.out.println("wincount : " + userRecords.getWinCount());
+        System.out.println("userid : " + userRecords.getUser().getUserId());
         return userRecordsRepository.save(userRecords);
     }
 
