@@ -41,7 +41,8 @@ public class NoticeServiceImpl implements NoticeService {
     // 공지사항 수정 서비스
     @Override
     public Notice modifyNotice(NoticePatchReq registerReq, Notice notice) {
-        return noticeRepository.save(notice.modifyNotice(registerReq.getTitle(), registerReq.getContent()));
+        return noticeRepository.save(
+            notice.modifyNotice(registerReq.getTitle(), registerReq.getContent()));
 
     }
 

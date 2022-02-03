@@ -37,6 +37,6 @@ public class GameController {
         List<Game> list = gameService.getGameList(maxPlayer, isPublic);
 
         return ResponseEntity.status(200)
-            .body(GameRoomRes.of(200, "Success",  list));
+            .body(GameRoomRes.of(200, "Success", list));
     }
 }

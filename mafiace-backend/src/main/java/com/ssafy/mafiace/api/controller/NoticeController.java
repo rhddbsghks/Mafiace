@@ -76,7 +76,7 @@ public class NoticeController {
                 .body(NoticeRes.of(200, "공지사항을 성공적으로 조회하였습니다.", notice.get()));
         }
 
-        return ResponseEntity.status(404).body(NoticeRes.of(404, "존재하지 않는 공지사항입니다.",notice.get()));
+        return ResponseEntity.status(404).body(NoticeRes.of(404, "존재하지 않는 공지사항입니다.", notice.get()));
     }
 
     // 공지사항 수정
@@ -93,10 +93,12 @@ public class NoticeController {
         if (optionalNotice.isPresent()) {
             Notice notice = noticeService.modifyNotice(request, optionalNotice.get());
 
-            return ResponseEntity.status(201).body(NoticeRes.of(200, "공지사항을 수정하였습니다.", optionalNotice.get()));
+            return ResponseEntity.status(201)
+                .body(NoticeRes.of(200, "공지사항을 수정하였습니다.", optionalNotice.get()));
         }
 
-        return ResponseEntity.status(404).body(NoticeRes.of(404, "존재하지 않는 공지사항입니다.", optionalNotice.get()));
+        return ResponseEntity.status(404)
+            .body(NoticeRes.of(404, "존재하지 않는 공지사항입니다.", optionalNotice.get()));
     }
 
     // 공지사항 삭제
@@ -111,9 +113,11 @@ public class NoticeController {
 
         if (optionalNotice.isPresent()) {
             noticeService.deleteNotice(optionalNotice.get());
-            return ResponseEntity.status(204).body(NoticeRes.of(204, "공지사항을 삭제하였습니다.",optionalNotice.get()));
+            return ResponseEntity.status(204)
+                .body(NoticeRes.of(204, "공지사항을 삭제하였습니다.", optionalNotice.get()));
         }
 
-        return ResponseEntity.status(404).body(NoticeRes.of(404, "존재하지 않는 공지사항입니다.",optionalNotice.get()));
+        return ResponseEntity.status(404)
+            .body(NoticeRes.of(404, "존재하지 않는 공지사항입니다.", optionalNotice.get()));
     }
 }

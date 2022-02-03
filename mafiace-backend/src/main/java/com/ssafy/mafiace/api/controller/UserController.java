@@ -1,5 +1,6 @@
 package com.ssafy.mafiace.api.controller;
 
+import com.ssafy.mafiace.api.request.DeleteAccountReq;
 import com.ssafy.mafiace.api.request.UserRegisterPostReq;
 import com.ssafy.mafiace.api.response.BaseResponseBody;
 import com.ssafy.mafiace.api.service.EmailService;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
@@ -31,6 +33,8 @@ public class UserController {
     UserRecordsService userRecordsService;
 
     @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
     private EmailService emailService;
 
     @PostMapping
@@ -40,17 +44,19 @@ public class UserController {
         @ApiResponse(code = 409, message = "중복된 계정입니다."),
         @ApiResponse(code = 410, message = "올바르지 않은 패스워드입니다.")
     })
-    public ResponseEntity<BaseResponseBody> register(@RequestBody @ApiParam(value="회원가입 요청 정보", required = true) UserRegisterPostReq registerReq) {
+    public ResponseEntity<BaseResponseBody> register(
+        @RequestBody @ApiParam(value = "회원가입 요청 정보", required = true) UserRegisterPostReq registerReq) {
         try {
             User user = userService.registerUser(registerReq);
             UserRecords userRecords = userRecordsService.addUserRecords(user);
-                if(user != null ){
-                    return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입이 완료되었습니다."));
-                }else{
-                    return ResponseEntity.status(410).body(BaseResponseBody.of(410, "올바르지 않은 패스워드입니다."));
-                }
-            } catch (Exception e) {
-                return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 계정입니다."));
+            if (user != null) {
+                return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입이 완료되었습니다."));
+            } else {
+                return ResponseEntity.status(410)
+                    .body(BaseResponseBody.of(410, "올바르지 않은 패스워드입니다."));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 계정입니다."));
         }
     }
 
@@ -65,12 +71,13 @@ public class UserController {
         @RequestBody @ApiParam(value = "회원정보 수정 요청 정보", required = true) UserRegisterPostReq registerReq) {
         try {
             User user = userService.updateUser(registerReq);
-            if(user != null) {
+            if (user != null) {
                 return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원정보 수정완료"));
-            }else {
-                return ResponseEntity.status(410).body(BaseResponseBody.of(410, "올바르지 않은 패스워드입니다."));
+            } else {
+                return ResponseEntity.status(410)
+                    .body(BaseResponseBody.of(410, "올바르지 않은 패스워드입니다."));
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "회원 수정에 실패하였습니다."));
         }
     }
@@ -133,9 +140,9 @@ public class UserController {
             registerReq.getEmail());
         if (user != null) {
             try {
-                String tmpPassword=emailService.createPassword();
-                emailService.sendPasswordToEmail(registerReq.getEmail(),tmpPassword);
-                userService.changePassword(user,tmpPassword);
+                String tmpPassword = emailService.createPassword();
+                emailService.sendPasswordToEmail(registerReq.getEmail(), tmpPassword);
+                userService.changePassword(user, tmpPassword);
                 return ResponseEntity.status(200).body(BaseResponseBody.of(200, "메일 전송이 완료되었습니다."));
             } catch (Exception e) {
                 return ResponseEntity.status(500)
@@ -144,5 +151,51 @@ public class UserController {
         }
         return ResponseEntity.status(404)
             .body(BaseResponseBody.of(404, "해당 계정이 존재하지 않습니다."));
+    }
+
+    @PostMapping("/deleteaccount")
+    @ApiOperation(value = "회원 탈퇴", notes = "비밀번호를 확인한 뒤 회원 탈퇴 신청을 진행한다.")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "회원 탈퇴 신청이 완료되었습니다."),
+        @ApiResponse(code = 400, message = "이미 탈퇴 신청된 계정입니다."),
+        @ApiResponse(code = 401, message = "비밀번호가 틀렸습니다.")
+    })
+    public ResponseEntity<BaseResponseBody> deleteAccount
+        (@RequestBody @ApiParam(value="회원 탈퇴 신청 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
+        User user = userService.getUserByUserId((deleteAccountReq.getUserId()));
+
+        if (user.isDeleted()) {
+            return ResponseEntity.status(400).body(BaseResponseBody.of(400, "이미 탈퇴 신청된 계정입니다."));
+        }
+
+        if (passwordEncoder.matches(deleteAccountReq.getPassword(), user.getPassword())) {
+            userService.deleteAccount(user);
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원 탈퇴 신청이 완료되었습니다."));
+        }
+
+        return ResponseEntity.status(401).body(BaseResponseBody.of(401, "비밀번호가 틀렸습니다."));
+    }
+
+    @PostMapping("/restoreaccount")
+    @ApiOperation(value = "회원 탈퇴 취소", notes = "비밀번호를 확인한 뒤 회원 탈퇴 신청을 취소한다.")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "회원 탈퇴 신청이 취소되었습니다."),
+        @ApiResponse(code = 400, message = "탈퇴 신청된 계정이 아닙니다."),
+        @ApiResponse(code = 401, message = "비밀번호가 틀렸습니다.")
+    })
+    public ResponseEntity<BaseResponseBody> restoreAccount
+        (@RequestBody @ApiParam(value="회원 탈퇴 취소 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
+        User user = userService.getUserByUserId((deleteAccountReq.getUserId()));
+
+        if (!user.isDeleted()) {
+            return ResponseEntity.status(400).body(BaseResponseBody.of(400, "탈퇴 신청된 계정이 아닙니다."));
+        }
+
+        if (passwordEncoder.matches(deleteAccountReq.getPassword(), user.getPassword())) {
+            userService.restoreAccount(user);
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원 탈퇴 신청이 취소되었습니다."));
+        }
+
+        return ResponseEntity.status(401).body(BaseResponseBody.of(401, "비밀번호가 틀렸습니다."));
     }
 }

@@ -83,7 +83,7 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserHonor> userHonors = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "user", orphanRemoval = true)
     private DeleteAccount deleteAccount;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

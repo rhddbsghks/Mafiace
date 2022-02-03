@@ -3,13 +3,7 @@ package com.ssafy.mafiace.db.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.QGame;
-import com.ssafy.mafiace.db.entity.QUser;
-import com.ssafy.mafiace.db.entity.QUserRecords;
-import com.ssafy.mafiace.db.entity.User;
-import com.ssafy.mafiace.db.entity.UserRecords;
 import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -25,13 +19,14 @@ public class GameRepositorySupport {
     public List<Game> findGameByOption(int maxPlayer, int isPublic) {
         QGame qGame = QGame.game;
 
-        List<Game> list;
-
         if (isPublic == 0) {
-            return jpaQueryFactory.selectFrom(qGame).where(qGame.maxPlayer.loe(maxPlayer)).orderBy(qGame.roomNum.desc()).fetch();
+            return jpaQueryFactory.selectFrom(qGame)
+                .where(qGame.maxPlayer.loe(maxPlayer))
+                .orderBy(qGame.roomNum.desc()).fetch();
         }
 
         return jpaQueryFactory.selectFrom(qGame)
-            .where(qGame.maxPlayer.loe(maxPlayer), qGame.isPublic.eq(isPublic == 1)).orderBy(qGame.roomNum.desc()).fetch();
+            .where(qGame.maxPlayer.loe(maxPlayer),
+                qGame.isPublic.eq(isPublic == 1)).orderBy(qGame.roomNum.desc()).fetch();
     }
 }
