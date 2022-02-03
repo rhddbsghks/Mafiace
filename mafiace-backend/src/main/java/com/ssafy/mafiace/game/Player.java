@@ -9,6 +9,7 @@ public class Player {
     private Role role;
     private boolean isAlive;
 
+
     public Player(User user){
         this.user = user;
     }
@@ -36,5 +37,7 @@ public class Player {
     public boolean isAlive(){
         return this.isAlive;
     }
+
+
 
 }

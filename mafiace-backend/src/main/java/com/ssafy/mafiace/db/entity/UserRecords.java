@@ -66,7 +66,7 @@ public class UserRecords{
 
     @OneToOne(fetch = FetchType.EAGER)
     @MapsId
-    @JoinColumn(name = "user_unique_id", referencedColumnName = "user_user_unique_name")
+    @JoinColumn(name = "user_unique_id", referencedColumnName = "user_user_unique_id")
     private User user;
 
 
