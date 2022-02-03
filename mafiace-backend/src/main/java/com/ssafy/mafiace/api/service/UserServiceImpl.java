@@ -1,12 +1,16 @@
 package com.ssafy.mafiace.api.service;
 
 import com.ssafy.mafiace.api.request.UserRegisterPostReq;
+import com.ssafy.mafiace.db.entity.DeleteAccount;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.entity.UserRecords;
+import com.ssafy.mafiace.db.repository.DeleteAccountRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
 import com.ssafy.mafiace.db.repository.UserRepositorySupport;
+import com.ssafy.mafiace.db.repository.DeleteAccountRepository;
+import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +24,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRecordsRepositorySupport userRecordsRepositorySupport;
+
+    @Autowired
+    DeleteAccountRepository deleteAccountRepository;
+
+    @Autowired
+    DeleteAccountRepositorySupport deleteAccountRepositorySupport;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -102,4 +112,29 @@ public class UserServiceImpl implements UserService {
                 user.getNickname()));
     }
 
+    @Override
+    public User deleteAccount(User user) {
+        DeleteAccount deleteAccount = DeleteAccount.builder()
+            .requestDate(LocalDate.now())
+            .finishDate(LocalDate.now().plusDays(30))
+            .build();
+
+        deleteAccount.setUser(user);
+        user.setDeleteAccount(deleteAccount);
+        user.deleteAccount(user.getUserId());
+        deleteAccountRepository.save(deleteAccount);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User restoreAccount(User user) {
+        Optional<DeleteAccount> deleteAccount = deleteAccountRepositorySupport.findDeleteAccountByUser(user);
+
+        if (deleteAccount.isPresent()) {
+                deleteAccountRepository.deleteById(deleteAccount.get().getId());
+        }
+
+        user.restoreAccount(user.getUserId());  // 유저의 탈퇴 여부를 false로 변경
+        return userRepository.save(user);
+    }
 }

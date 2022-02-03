@@ -54,7 +54,6 @@ public class Game extends BaseEntity {
     boolean isActive;
     String password;
 
-
     @Builder
     private Game(String gameId, int roomNum, String ownerId, String gameTitle, boolean isPublic,
         int discussionTime,
