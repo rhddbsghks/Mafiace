@@ -1,0 +1,106 @@
+.button {
+  margin-right: 5%;
+  border: none;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.95);
+  cursor: pointer;
+  padding: 1rem 4rem;
+  text-align: center;
+  display: inline-block;
+  font-size: 3rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  position: relative;
+  will-change: transform;
+}
+
+.btn-2 {
+  letter-spacing: 0.1rem;
+  position: relative;
+  background: #8157a8;
+  color: #f3f1f5;
+  border-radius: 3rem;
+  position: relative;
+  transition: 0.3s all ease-in-out;
+}
+.btn-2:before {
+  display: block;
+  position: absolute;
+  background: transparent;
+  border: none;
+  border-radius: 0.3rem;
+  transform: translateY(5px) scale(0.9);
+  content: "";
+  height: 5px;
+  z-index: -1;
+  bottom: -1%;
+  left: 0;
+  right: 0;
+  transition: 0.2s all ease-in-out;
+  /* box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); */
+}
+.btn-2:hover:before {
+  transform: translateY(8px) scale(0.8);
+  opacity: 0.8;
+  /* box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22); */
+}
+.btn-2:hover {
+  transform: translateY(-5px);
+}
+
+.game {
+  /* margin: auto; */
+  margin: 10px auto;
+  width: 350px;
+  background-color: #f3f1f5;
+  border-radius: 3rem;
+  height: 20vh;
+  display: flex;
+  transition: 0.4s all ease-in-out;
+}
+
+.game:hover {
+  cursor: pointer;
+  transform: translateY(-8px);
+}
+
+.game-header {
+  background-color: #caafe4;
+  border-radius: 1rem;
+  font-size: 2.2em;
+  height: 1.5em;
+  color: #312f35;
+}
+
+.game-info {
+  display: flex;
+  justify-content: space-around;
+  border-radius: 1rem;
+  font-size: 1.5em;
+  height: 1.5em;
+  color: #312f35;
+}
+
+.roomNum {
+  font-size: 2em;
+  margin: 20%;
+  font-weight: 700;
+}
+
+.select-box div,
+.select-box span {
+  font-size: 1.7em;
+}
+
+.img-wrap {
+  animation: up-down 1.3s infinite ease-in-out alternate;
+}
+
+@keyframes up-down {
+  from {
+    transform: translatey(-10px);
+  }
+  to {
+    transform: translatey(-20px);
+  }
+}

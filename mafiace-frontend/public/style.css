@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Dongle&display=swap");
+
+#root {
+  height: 100vh;
+  background-image: linear-gradient(
+    to top,
+    #dad4ec 0%,
+    #dad4ec 1%,
+    #f3e7e9 100%
+  );
+
+  /* background-image: linear-gradient(
+    to top,
+    #f3e7e9 0%,
+    #e3eeff 99%,
+    #e3eeff 100%
+  ); */
+
+  /* background-image: linear-gradient(to top, #cd9cf2 0%, #f6f3ff 100%); */
+}
+
+body,
+h1,
+button,
+.counter {
+  font-family: "Dongle", sans-serif !important;
+}
+
+.container {
+  height: 100% !important;
+}
+
+.scrollbar {
+  overflow-y: scroll;
+  margin-bottom: 25px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
+  border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+
+  background-color: #f5f5f5;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.25, rgb(216, 166, 223)),
+    color-stop(0.5, rgba(223, 174, 230, 0.555)),
+    color-stop(0.75, rgba(170, 209, 233, 0.521)),
+    color-stop(1, rgb(150, 197, 228))
+  );
+}
+
+.scrollbar:hover::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.25, rgb(216, 166, 223)),
+    color-stop(0.5, rgba(223, 174, 230, 0.555)),
+    color-stop(0.75, rgba(170, 209, 233, 0.521)),
+    color-stop(1, rgb(150, 197, 228))
+  );
+}

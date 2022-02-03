@@ -1,5 +1,5 @@
 package com.ssafy.mafiace.game.role;
-
+import com.ssafy.mafiace.db.game.role.RoleName;
 import com.ssafy.mafiace.game.Player;
 
 public abstract class Role {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./Login";
 import Header from "./Header";
@@ -8,32 +8,41 @@ import Rules from "./Rules";
 import Mypage from "./Mypage";
 import Ranking from "./Ranking";
 
-const Main = ({ ingame, getIngame }) => {
+const Main = ({ getIngame }) => {
   const [login, setLogin] = useState(false);
 
-  const onClickIg = () => {
-    getIngame(!ingame);
+  const getLogin = (bool) => {
+    setLogin(bool);
   };
 
-  const getLogin = (login) => {
-    setLogin(login);
-  };
+  useEffect(() => {
+    if (localStorage.getItem("jwt") === null) {
+      setLogin(false);
+    } else {
+      setLogin(true);
+    }
+  }, []);
 
   return (
     <>
       {!login ? (
-        <Login login={login} getLogin={getLogin} />
+        <Login getLogin={getLogin} />
       ) : (
         <>
           <Router>
-            <Header login={login} getLogin={getLogin} />
-            <Routes>
-              <Route path="/" element={<Room onClickIg={onClickIg} />} />
-              <Route path="/notice" element={<Notice />} />
-              <Route path="/rules" element={<Rules />} />
-              <Route path="/mypage" element={<Mypage />} />
-              <Route path="/ranking" element={<Ranking />} />
-            </Routes>
+            <Header getLogin={getLogin} />
+            <div
+              style={{ marginTop: "7%", height: "75%", marginBottom: "0" }}
+              className="scrollbar"
+            >
+              <Routes>
+                <Route path="/" element={<Room getIngame={getIngame} />} />
+                <Route path="/notice" element={<Notice />} />
+                <Route path="/rules" element={<Rules />} />
+                <Route path="/mypage" element={<Mypage />} />
+                <Route path="/ranking" element={<Ranking />} />
+              </Routes>
+            </div>
           </Router>
         </>
       )}

@@ -127,7 +127,7 @@ public class UserController {
         @ApiResponse(code = 500, message = "예기치 못한 오류가 발생하였습니다."),
     })
     @PatchMapping("/password")
-    public ResponseEntity<BaseResponseBody> emailConfirm(
+    public ResponseEntity<BaseResponseBody> findPassword(
         @RequestBody UserRegisterPostReq registerReq) {
         User user = userService.getUserByUserIdAndEmail(registerReq.getUserId(),
             registerReq.getEmail());
