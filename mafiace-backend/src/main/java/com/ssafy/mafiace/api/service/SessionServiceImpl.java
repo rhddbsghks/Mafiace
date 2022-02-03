@@ -64,7 +64,7 @@ public class SessionServiceImpl implements SessionService {
 
         // Store the session and the token in our collections
         this.mapSessions.put(gameId, session);
-        System.out.println(gameId);
+
         gameRepository.save(Game.builder()
             .gameId(gameId)
             .ownerId(ownerId)
@@ -72,12 +72,9 @@ public class SessionServiceImpl implements SessionService {
             .discussionTime(sessionOpenReq.getDiscussionTime())
             .maxPlayer(sessionOpenReq.getMaxPlayer())
             .isPublic(sessionOpenReq.isPublic())
+//            .isActive(false)
             .password((sessionOpenReq.getPassword()))
             .build());
-
-        for (String id : mapSessions.keySet()) {
-            System.out.println(id);
-        }
 
         // Return the token
         return token;
