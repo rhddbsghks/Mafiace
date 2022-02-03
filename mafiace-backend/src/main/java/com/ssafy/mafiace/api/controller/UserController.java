@@ -3,8 +3,10 @@ package com.ssafy.mafiace.api.controller;
 import com.ssafy.mafiace.api.request.UserRegisterPostReq;
 import com.ssafy.mafiace.api.response.BaseResponseBody;
 import com.ssafy.mafiace.api.service.EmailService;
+import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.db.entity.User;
+import com.ssafy.mafiace.db.entity.UserRecords;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,6 +26,10 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserRecordsService userRecordsService;
+
     @Autowired
     private EmailService emailService;
 
@@ -37,7 +43,8 @@ public class UserController {
     public ResponseEntity<BaseResponseBody> register(@RequestBody @ApiParam(value="회원가입 요청 정보", required = true) UserRegisterPostReq registerReq) {
         try {
             User user = userService.registerUser(registerReq);
-                if(user != null){
+            UserRecords userRecords = userRecordsService.addUserRecords(user);
+                if(user != null ){
                     return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입이 완료되었습니다."));
                 }else{
                     return ResponseEntity.status(410).body(BaseResponseBody.of(410, "올바르지 않은 패스워드입니다."));
