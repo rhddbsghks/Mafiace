@@ -9,18 +9,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameServiceImpl implements GameService {
 
-    private GameRepository gameRepository;
-
     private GameRepositorySupport gameRepositorySupport;
 
-    public GameServiceImpl(GameRepository gameRepository,
-        GameRepositorySupport gameRepositorySupport) {
-        this.gameRepository = gameRepository;
+    public GameServiceImpl(GameRepositorySupport gameRepositorySupport) {
         this.gameRepositorySupport = gameRepositorySupport;
     }
 
     @Override
-    public List<Game> getGameList(int minPlayer, int maxPlayer, int isPublic) {
-        return gameRepositorySupport.findGameByOption(minPlayer, maxPlayer, isPublic);
+    public List<Game> getGameList(int maxPlayer, int isPublic) {
+        return gameRepositorySupport.findGameByOption(maxPlayer, isPublic);
     }
 }

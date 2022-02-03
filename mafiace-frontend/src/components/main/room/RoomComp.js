@@ -3,13 +3,7 @@ import styles from "./room.module.css";
 import { Icon } from "semantic-ui-react";
 
 const RoomComp = ({ game }) => {
-  const [randomImg, setRandomImg] = useState([
-    "angry",
-    "happy",
-    "sad",
-    "netural",
-    "panic",
-  ]);
+  const randomImg = useState(["angry", "happy", "sad", "netural", "panic"])[0];
   const [randomNum, setRandomNum] = useState();
 
   useEffect(() => {
