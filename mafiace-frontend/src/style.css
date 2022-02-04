@@ -30,6 +30,26 @@ button,
   height: 100% !important;
 }
 
+.MuiButton-root {
+  font-size: 1.5em !important;
+  margin: auto;
+}
+.MuiButtonBase-root.MuiButton-root {
+  color: #8157a8 !important;
+  border: 1px solid #8157a8 !important;
+}
+
+.MuiTab-textColorPrimary {
+  font-size: 2.2em !important;
+  font-weight: 500 !important;
+  margin: 0 3% !important;
+  padding: 0;
+}
+
+.MuiTab-root.Mui-selected {
+  color: #8157a8 !important;
+}
+
 .scrollbar {
   overflow-y: scroll;
   margin-bottom: 25px;

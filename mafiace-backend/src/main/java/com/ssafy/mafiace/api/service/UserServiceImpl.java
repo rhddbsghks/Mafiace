@@ -11,12 +11,16 @@ import com.ssafy.mafiace.db.repository.UserRepository;
 import com.ssafy.mafiace.db.repository.UserRepositorySupport;
 import com.ssafy.mafiace.db.repository.DeleteAccountRepository;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@EnableScheduling
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -136,5 +140,17 @@ public class UserServiceImpl implements UserService {
 
         user.restoreAccount(user.getUserId());  // 유저의 탈퇴 여부를 false로 변경
         return userRepository.save(user);
+    }
+
+    // 한국 시간 기준 매일 자정에 탈퇴 신청 후 30일 이상이 지난 회원 정보를 DB에서 삭제
+    @Scheduled(cron = "@midnight", zone = "GMT+9")
+    public void deleteAccountFromServer() {
+        List<DeleteAccount> deleteAccountList = deleteAccountRepository.findAll();
+
+        for (DeleteAccount acc : deleteAccountList) {
+            if (acc.getFinishDate().isBefore(LocalDate.now()) || acc.getFinishDate().equals(LocalDate.now())) {
+                userRepository.deleteById(acc.getId());
+            }
+        }
     }
 }
