@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const HeaderCompo = ({ getLogin }) => {
   const [value, setValue] = useState(2);
-  const menu = useState(["/notice", "/rules", "/", "/mypage", "/ranking"])[0];
+  const menu = useState(["/notice", "/rules", "/", "/mypage", "/ranking", "/chat"])[0];
   let navigate = useNavigate();
 
   const clickLogout = () => {
@@ -54,6 +54,7 @@ const HeaderCompo = ({ getLogin }) => {
         <Tab label="방 목록" />
         <Tab label="내 정보" />
         <Tab label="명예의 전당" />
+        <Tab label="채팅방" />
       </Tabs>
     </>
   );
