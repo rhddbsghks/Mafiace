@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
     public User deleteAccount(User user) {
         DeleteAccount deleteAccount = DeleteAccount.builder()
             .requestDate(LocalDate.now())
-            .finishDate(LocalDate.now())
+            .finishDate(LocalDate.now().plusDays(30))
             .build();
 
         deleteAccount.setUser(user);
