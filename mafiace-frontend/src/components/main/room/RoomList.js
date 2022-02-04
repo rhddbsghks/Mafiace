@@ -8,11 +8,7 @@ import Loader from "../../common/Loader";
 import RoomComp from "./RoomComp";
 import { Dropdown } from "semantic-ui-react";
 
-const RoomList = ({ getIngame }) => {
-  const clickIngame = () => {
-    getIngame(true);
-  };
-
+const RoomList = ({ setIngame, setGameId, ingame }) => {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
   const [maxPlayer, setMaxPlayer] = useState(8);
@@ -34,7 +30,8 @@ const RoomList = ({ getIngame }) => {
 
   const getGameList = (maxPlayer, isPublic) => {
     axios
-      .get(config.API_URL + "/game", {
+      .get("/api/game", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         params: { maxPlayer, isPublic },
       })
       .then(({ data }) => {
@@ -73,6 +70,10 @@ const RoomList = ({ getIngame }) => {
 
       return next;
     });
+  };
+
+  const handleClickRoom = (gameId) => {
+    console.log(gameId);
   };
 
   return (
@@ -206,10 +207,7 @@ const RoomList = ({ getIngame }) => {
                 </div>
 
                 {/* 방 만들기 */}
-                <button
-                  className={`${styles.button} ${styles["btn-2"]}`}
-                  onClick={clickIngame}
-                >
+                <button className={`${styles.button} ${styles["btn-2"]}`}>
                   방 만들기
                 </button>
               </div>
@@ -231,7 +229,13 @@ const RoomList = ({ getIngame }) => {
                 }}
               >
                 {list.slice(page * 6, page + 6).map((item) => (
-                  <RoomComp key={item.id} game={item} />
+                  <RoomComp
+                    key={item.id}
+                    game={item}
+                    setIngame={setIngame}
+                    ingame={ingame}
+                    setGameId={setGameId}
+                  />
                 ))}
               </div>
 
@@ -316,10 +320,7 @@ const RoomList = ({ getIngame }) => {
                 </div>
 
                 {/* 방 만들기 */}
-                <button
-                  className={`${styles.button} ${styles["btn-2"]}`}
-                  onClick={clickIngame}
-                >
+                <button className={`${styles.button} ${styles["btn-2"]}`}>
                   방 만들기
                 </button>
               </div>

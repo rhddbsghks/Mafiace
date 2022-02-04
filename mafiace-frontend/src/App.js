@@ -6,18 +6,15 @@ import "./style.css";
 import { Container } from "semantic-ui-react";
 function App() {
   const [ingame, setIngame] = useState(false);
-
-  const getIngame = (bool) => {
-    setIngame(bool);
-  };
+  const [gameId, setGameId] = useState("");
 
   return (
     <>
       <Container>
         {!ingame ? (
-          <Main getIngame={getIngame} />
+          <Main setIngame={setIngame} setGameId={setGameId} ingame={ingame} />
         ) : (
-          <Ingame getIngame={getIngame} />
+          <Ingame setIngame={setIngame} ingame={ingame} gameId={gameId} />
         )}
       </Container>
     </>
