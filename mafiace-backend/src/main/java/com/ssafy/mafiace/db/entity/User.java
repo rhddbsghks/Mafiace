@@ -4,7 +4,6 @@ import java.util.Collection;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,7 +55,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     // delete
-    public void deleteAccount(String userId) {
+    public void adddeleteAccount(String userId) {
         if(userId.equals(this.userId)) {
             this.isDeleted = true;
         }
@@ -104,6 +103,11 @@ public class User extends BaseEntity implements UserDetails {
         userHonor.setUser(this);
     }
 
+    public void setDeleteAccount(DeleteAccount deleteAccount) {
+        this.deleteAccount = deleteAccount;
+        deleteAccount.setUser(this);
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -135,7 +139,5 @@ public class User extends BaseEntity implements UserDetails {
         return true;
     }
 
-    public void setDeleteAccount(DeleteAccount deleteAccount) {
-        this.deleteAccount = deleteAccount;
-    }
+
 }

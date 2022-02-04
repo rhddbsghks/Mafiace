@@ -3,12 +3,9 @@ package com.ssafy.mafiace.api.service;
 import com.ssafy.mafiace.api.request.UserRegisterPostReq;
 import com.ssafy.mafiace.db.entity.DeleteAccount;
 import com.ssafy.mafiace.db.entity.User;
-import com.ssafy.mafiace.db.entity.UserRecords;
 import com.ssafy.mafiace.db.repository.DeleteAccountRepositorySupport;
-import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
-import com.ssafy.mafiace.db.repository.UserRepositorySupport;
 import com.ssafy.mafiace.db.repository.DeleteAccountRepository;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -119,9 +116,8 @@ public class UserServiceImpl implements UserService {
             .finishDate(LocalDate.now().plusDays(30))
             .build();
 
-        deleteAccount.setUser(user);
         user.setDeleteAccount(deleteAccount);
-        user.deleteAccount(user.getUserId());
+        user.adddeleteAccount(user.getUserId());
         deleteAccountRepository.save(deleteAccount);
         return userRepository.save(user);
     }
