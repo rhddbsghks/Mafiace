@@ -130,7 +130,7 @@ const RoomList = ({ getIngame }) => {
                   display: "flex",
                   flexWrap: "wrap",
                   justifyContent: "space-between",
-                  marginTop: "3%",
+                  marginTop: "2%",
                   height: "100px",
                   width: "100%",
                 }}
@@ -241,7 +241,7 @@ const RoomList = ({ getIngame }) => {
                   display: "flex",
                   flexWrap: "wrap",
                   justifyContent: "space-between",
-                  marginTop: "3%",
+                  marginTop: "2%",
                   height: "100px",
                   width: "100%",
                 }}

@@ -7,6 +7,7 @@ import Notice from "./Notice";
 import Rules from "./Rules";
 import Mypage from "./Mypage";
 import Ranking from "./Ranking";
+import NotFound from "../../components/common/NotFound";
 
 const Main = ({ getIngame }) => {
   const [login, setLogin] = useState(false);
@@ -25,14 +26,17 @@ const Main = ({ getIngame }) => {
 
   return (
     <>
-      {!login ? (
-        <Login getLogin={getLogin} />
-      ) : (
-        <>
-          <Router>
+      <Router>
+        {!login ? (
+          <Routes>
+            <Route path="/" element={<Login getLogin={getLogin} />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        ) : (
+          <>
             <Header getLogin={getLogin} />
             <div
-              style={{ marginTop: "7%", height: "75%", marginBottom: "0" }}
+              style={{ marginTop: "5.5%", height: "75%", marginBottom: "0" }}
               className="scrollbar"
             >
               <Routes>
@@ -41,11 +45,12 @@ const Main = ({ getIngame }) => {
                 <Route path="/rules" element={<Rules />} />
                 <Route path="/mypage" element={<Mypage />} />
                 <Route path="/ranking" element={<Ranking />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
-          </Router>
-        </>
-      )}
+          </>
+        )}
+      </Router>
     </>
   );
 };
