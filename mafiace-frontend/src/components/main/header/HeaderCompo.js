@@ -39,16 +39,28 @@ const HeaderCompo = ({ getLogin }) => {
 
   return (
     <>
-      <h1>Header</h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "90%",
+          height: "3.7em",
+          margin: "auto",
+          paddingTop: "2%",
+        }}
+      >
+        <h1>Logo</h1>
+        <Button variant="outlined" onClick={clickLogout}>
+          로그아웃
+        </Button>
+      </div>
+
       <Tabs value={value} onChange={handleChange} centered>
         <Tab label="공지사항" />
         <Tab label="게임방법" />
         <Tab label="방 목록" />
         <Tab label="내 정보" />
         <Tab label="명예의 전당" />
-        <Button variant="outlined" onClick={clickLogout}>
-          로그아웃
-        </Button>
       </Tabs>
     </>
   );
