@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Button from "@mui/material/Button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -11,10 +11,10 @@ const HeaderCompo = ({ getLogin }) => {
   const clickLogout = () => {
     localStorage.clear();
     getLogin(false);
+    navigate("/");
   };
 
   const handleChange = (e, newValue) => {
-    console.log(newValue);
     setValue(newValue);
     switch (newValue) {
       case 0:
@@ -40,20 +40,15 @@ const HeaderCompo = ({ getLogin }) => {
   return (
     <>
       <h1>Header</h1>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        aria-label="disabled tabs example"
-        centered
-      >
+      <Tabs value={value} onChange={handleChange} centered>
         <Tab label="공지사항" />
         <Tab label="게임방법" />
         <Tab label="방 목록" />
         <Tab label="내 정보" />
         <Tab label="명예의 전당" />
-        <Link to={"/"}>
-          <button onClick={clickLogout}>로그아웃</button>
-        </Link>
+        <Button variant="outlined" onClick={clickLogout}>
+          로그아웃
+        </Button>
       </Tabs>
     </>
   );
