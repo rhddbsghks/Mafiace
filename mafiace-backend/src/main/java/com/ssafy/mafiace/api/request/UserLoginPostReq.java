@@ -8,7 +8,33 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel("UserLoginPostRequest")
-public class UserLoginPostReq {
+public class
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+UserLoginPostReq {
     @ApiModelProperty(name="유저 아이디", example="ssafy")
     String userId;
     @ApiModelProperty(name="비밀번호", example="1234")
