@@ -48,6 +48,10 @@ public class Player {
 
     public boolean isBoss() { return this.isBoss; }
 
+    public User getUser(){
+        return this.user;
+    }
+
 
     public void kill() {
         if(!isBoss) return;

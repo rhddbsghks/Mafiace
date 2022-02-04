@@ -24,5 +24,4 @@ public interface UserService {
 
     User restoreAccount(User user);
 
-    User getUserById(String userId);
 }

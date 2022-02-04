@@ -49,15 +49,16 @@ public class GameManager {
         }
     }
 
-    
-    
-
     public UserRecordsRepositorySupport userRecordsRepositorySupport;
     public UserRecordsRepository userRecordsRepository;
 
     // 게임 종료
     public boolean saveRecord(){
-
+        for (User user : this.userList ){
+            Player p = playerList.get(user.getUserId());
+            Map<String, String> gameLogs = new HashMap<>();
+            p.saveGameLog(gameLogs);
+        }
 
 
         return true;
