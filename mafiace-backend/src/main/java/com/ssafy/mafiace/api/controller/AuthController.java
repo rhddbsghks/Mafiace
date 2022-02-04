@@ -1,10 +1,14 @@
 package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.request.UserLoginPostReq;
+import com.ssafy.mafiace.api.response.SessionTokenPostRes;
+import com.ssafy.mafiace.api.response.UserInfoRes;
 import com.ssafy.mafiace.api.response.UserLoginPostRes;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.auth.JwtTokenProvider;
 import com.ssafy.mafiace.db.entity.User;
+import io.openvidu.java.client.ConnectionProperties;
+import io.openvidu.java.client.ConnectionType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -65,4 +69,5 @@ public class AuthController {
                 .body(UserLoginPostRes.of(401, "비밀번호가 틀렸습니다.", null));
         }
     }
+
 }

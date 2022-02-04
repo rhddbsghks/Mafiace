@@ -7,6 +7,8 @@ import com.ssafy.mafiace.db.repository.DeleteAccountRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
 import com.ssafy.mafiace.db.repository.DeleteAccountRepository;
+import io.openvidu.java.client.ConnectionProperties;
+import io.openvidu.java.client.ConnectionType;
 import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,4 +135,13 @@ public class UserServiceImpl implements UserService {
         user.restoreAccount(user.getUserId());  // 유저의 탈퇴 여부를 false로 변경
         return userRepository.save(user);
     }
+
+    @Override
+    public User getUserById(String Id){
+        Optional<User> user = userRepository.findById(Id);
+        if(user.isPresent()) return user.get();
+        return null;
+
+    }
+
 }

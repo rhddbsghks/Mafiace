@@ -23,4 +23,6 @@ public interface UserService {
     User deleteAccount(User user);
 
     User restoreAccount(User user);
+
+    User getUserById(String userId);
 }

@@ -9,7 +9,19 @@ public abstract class Role {
         this.roleName = roleName;
     }
 
-    public abstract void vote(Player player);
+    protected Role() {
+    }
+
+    public String getRoleName() {
+        return roleName.name();
+    }
+
+    @Override
+    public String toString(){
+        return roleName.name();
+    }
+
+    public abstract void nightVote(Player player);
 
     public boolean isMafia(){
         return roleName.equals(RoleName.Mafia);

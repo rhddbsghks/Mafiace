@@ -1,13 +1,21 @@
 package com.ssafy.mafiace.game;
 
+import com.ssafy.mafiace.api.service.GameLogService;
+import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.db.entity.User;
+import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.game.role.Role;
+import java.util.List;
+import java.util.Map;
 
 public class Player {
 
     private User user;
     private Role role;
     private boolean isAlive;
+    private boolean isBoss;
+
+    private GameLogService gameLogService;
 
 
     public Player(User user){
@@ -38,6 +46,16 @@ public class Player {
         return this.isAlive;
     }
 
+    public boolean isBoss() { return this.isBoss; }
 
 
+    public void kill() {
+        if(!isBoss) return;
+        // 보스일때만 kill가능~
+        // kill 로직
+    }
+
+    public void saveGameLog(Map<String, String> gameLogs){
+        gameLogService.addGameLog(gameLogs);
+    }
 }
