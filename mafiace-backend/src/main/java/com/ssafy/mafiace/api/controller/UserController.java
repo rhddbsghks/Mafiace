@@ -216,9 +216,7 @@ public class UserController {
     public ResponseEntity<UserInfoRes> getUserInfo(HttpServletRequest request) {
         String jwtToken = request.getHeader("Authorization").substring(7);
         String userId = jwtTokenProvider.getUserPk(jwtToken);
-        System.err.println(userId);
         User user = userService.getUserByUserId(userId);
-        System.err.println(user.getUsername());
         if (user != null) {
             return ResponseEntity.status(200).body(UserInfoRes.of(200, "성공", user));
         }
