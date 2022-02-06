@@ -1,6 +1,7 @@
 package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.request.SessionOpenReq;
+import com.ssafy.mafiace.common.model.NewSessionInfo;
 import com.ssafy.mafiace.api.response.SessionTokenPostRes;
 import com.ssafy.mafiace.api.service.SessionService;
 import com.ssafy.mafiace.common.auth.JwtTokenProvider;
@@ -47,10 +48,10 @@ public class SessionController {
         String id = jwtTokenProvider.getUserPk(jwtToken);
 
         try {
-            String token = sessionService.openSession(id, sessionOpenReq);
+            NewSessionInfo info = sessionService.openSession(id, sessionOpenReq);
             // Return the response to the client
             return ResponseEntity.status(201)
-                .body(SessionTokenPostRes.of(201, "Success", token));
+                .body(SessionTokenPostRes.of(201, "Success", info));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500)
@@ -80,7 +81,8 @@ public class SessionController {
 
             // Return the response to the client
             return ResponseEntity.status(201)
-                .body(SessionTokenPostRes.of(201, "Success", token));
+                .body(
+                    SessionTokenPostRes.of(201, "Success", NewSessionInfo.of(token, sessionName)));
         } catch (Exception e) {
 
             return ResponseEntity.status(404)

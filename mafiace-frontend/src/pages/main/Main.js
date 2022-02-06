@@ -9,7 +9,7 @@ import Mypage from "./Mypage";
 import Ranking from "./Ranking";
 import NotFound from "../../components/common/NotFound";
 
-const Main = ({ getIngame }) => {
+const Main = ({ setIngame, setGameId, ingame }) => {
   const [login, setLogin] = useState(false);
 
   const getLogin = (bool) => {
@@ -40,7 +40,16 @@ const Main = ({ getIngame }) => {
               className="scrollbar"
             >
               <Routes>
-                <Route path="/" element={<Room getIngame={getIngame} />} />
+                <Route
+                  path="/"
+                  element={
+                    <Room
+                      setIngame={setIngame}
+                      setGameId={setGameId}
+                      ingame={ingame}
+                    />
+                  }
+                />
                 <Route path="/notice" element={<Notice />} />
                 <Route path="/rules" element={<Rules />} />
                 <Route path="/mypage" element={<Mypage />} />

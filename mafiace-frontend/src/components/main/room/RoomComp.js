@@ -2,18 +2,23 @@ import React, { useEffect, useState } from "react";
 import styles from "./room.module.css";
 import { Icon } from "semantic-ui-react";
 
-const RoomComp = ({ game }) => {
+const RoomComp = ({ game, setIngame, ingame, setGameId }) => {
   const randomImg = useState(["angry", "happy", "sad", "netural", "panic"])[0];
   const [randomNum, setRandomNum] = useState();
 
   useEffect(() => {
-    setRandomNum((cir) => Math.floor(Math.random() * 10 + 1) % 5);
+    setRandomNum((cur) => Math.floor(Math.random() * 10 + 1) % 5);
   }, []);
 
+  const handleClickRoom = () => {
+    setIngame(!ingame);
+    setGameId(game.id);
+  };
+
   return (
-    <div className={styles.game}>
+    <div className={styles.game} onClick={handleClickRoom}>
       <img
-        src={`./img/${randomImg[randomNum]}.png`}
+        src={`/img/${randomImg[randomNum]}.png`}
         alt=""
         style={{ height: "60%", margin: "auto" }}
       />

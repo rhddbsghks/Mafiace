@@ -1,24 +1,18 @@
 package com.ssafy.mafiace.api.service;
 
 import com.ssafy.mafiace.api.request.SessionOpenReq;
+import com.ssafy.mafiace.common.model.NewSessionInfo;
 import com.ssafy.mafiace.db.entity.BaseEntity;
 import com.ssafy.mafiace.db.entity.Game;
-import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.repository.GameRepository;
-import com.ssafy.mafiace.db.repository.UserRepository;
 import io.openvidu.java.client.ConnectionProperties;
 import io.openvidu.java.client.ConnectionProperties.Builder;
 import io.openvidu.java.client.ConnectionType;
 import io.openvidu.java.client.OpenVidu;
-import io.openvidu.java.client.OpenViduHttpException;
-import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.Session;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,7 +41,8 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public String openSession(String ownerId, SessionOpenReq sessionOpenReq) throws Exception {
+    public NewSessionInfo openSession(String ownerId, SessionOpenReq sessionOpenReq)
+        throws Exception {
         String gameId = BaseEntity.shortUUID();
 
         // New session
@@ -77,7 +72,7 @@ public class SessionServiceImpl implements SessionService {
             .build());
 
         // Return the token
-        return token;
+        return NewSessionInfo.of(token, gameId);
     }
 
     @Override
