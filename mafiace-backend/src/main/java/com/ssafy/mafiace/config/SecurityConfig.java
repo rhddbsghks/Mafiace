@@ -48,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests() // 요청에 대한 사용권한 체크
             .antMatchers(HttpMethod.PATCH, "/api/user").authenticated()
-            .antMatchers("/api/session/*").authenticated()
-            .antMatchers("/api/game/*").authenticated()
+            .antMatchers("/api/session/**").authenticated()
+            .antMatchers("/api/game/**").authenticated()
             .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
             .and()
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
