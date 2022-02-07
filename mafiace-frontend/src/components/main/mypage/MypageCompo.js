@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Divider,
   Header,
@@ -7,15 +7,28 @@ import {
   Statistic,
   Image,
 } from "semantic-ui-react";
-// import axios from "axios";
+import axios from "axios";
+// import jwt from "jwt-decode";
 
 const MypageCompo = () => {
-  // const [user, setUser] = useState({
-  //   user_id: "",
-  //   email: "",
-  //   name: "",
-  //   nickname: "",
-  // });
+  const [form, setForm] = useState([]);
+
+  useEffect(() => {
+    axios
+      .post(
+        "/api/user/userinfo",
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+        }
+      )
+      .then((res) => {
+        // console.log(res.data);
+        setForm(res.data);
+      })
+      .catch((err) => console.log(err.response));
+    // console.log(form);
+  }, []);
 
   return (
     <>
@@ -27,39 +40,25 @@ const MypageCompo = () => {
       </Divider>
       <br></br>
       <Image src="" size="small" />
-      <Table definition sty>
+      <Table definition sty style={{ width: "70%", marginLeft: "15%" }}>
         <Table.Body>
           <Table.Row>
-            <Table.Cell width={2}>Name</Table.Cell>
-            <Table.Cell></Table.Cell>
+            <Table.Cell style={{ fontSize: "150%", width: "30%" }}>
+              ID
+            </Table.Cell>
+            <Table.Cell style={{ fontSize: "150%" }}>{form.userId}</Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell>Nick Name</Table.Cell>
-            <Table.Cell></Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>E-mail</Table.Cell>
-            <Table.Cell></Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Password</Table.Cell>
-            <Table.Cell>
-              <button
-                className="bg-purple-300 hover:bg-purple-500 py-1 text-center px-1 md:px-1 md:py-1 text-white rounded text-xl md:text-base mt-4"
-                style={{}}
-              >
-                Change
-              </button>
+            <Table.Cell style={{ fontSize: "150%" }}>Nick Name</Table.Cell>
+            <Table.Cell style={{ fontSize: "150%" }}>
+              {form.nickname}
             </Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell>Odor</Table.Cell>
-            <Table.Cell>Not Much Usually</Table.Cell>
+            <Table.Cell style={{ fontSize: "150%" }}>E-mail</Table.Cell>
+            <Table.Cell style={{ fontSize: "150%" }}>{form.email}</Table.Cell>
           </Table.Row>
-          <Table.Row>
-            <Table.Cell>Odor</Table.Cell>
-            <Table.Cell>Not Much Usually</Table.Cell>
-          </Table.Row>
+          <Table.Row></Table.Row>
         </Table.Body>
       </Table>
       <br></br>
