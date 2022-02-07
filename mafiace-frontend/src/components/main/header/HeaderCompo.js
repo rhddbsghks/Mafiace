@@ -1,11 +1,13 @@
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const HeaderCompo = ({ getLogin }) => {
-  const [value, setValue] = useState(2);
+  const menu = ["/notice", "/rules", "/", "/mypage", "/ranking"];
+  const [value, setValue] = useState();
+
   let navigate = useNavigate();
 
   const clickLogout = () => {
@@ -14,28 +16,20 @@ const HeaderCompo = ({ getLogin }) => {
     navigate("/");
   };
 
-  const handleChange = (e, newValue) => {
-    setValue(newValue);
-    switch (newValue) {
-      case 0:
-        navigate("/notice");
-        break;
-      case 1:
-        navigate("/rules");
-        break;
-      case 2:
-        navigate("/");
-        break;
-      case 3:
-        navigate("/mypage");
-        break;
-      case 4:
-        navigate("/ranking");
-        break;
-      default:
-        break;
-    }
+  const switchChange = (idx) => {
+    navigate(menu[idx]);
   };
+
+  const handleChange = (e, idx) => {
+    setValue(idx);
+    switchChange(idx);
+  };
+
+  useEffect(() => {
+    let newV = window.location.pathname;
+    navigate(newV);
+    setValue(menu.indexOf(newV));
+  }, []);
 
   return (
     <>

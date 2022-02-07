@@ -1,9 +1,9 @@
 import RoomList from "../../components/main/room/RoomList";
 
-const Room = ({ getIngame }) => {
+const Room = ({ setIngame, setGameId, ingame }) => {
   return (
     <>
-      <RoomList getIngame={getIngame} />
+      <RoomList setIngame={setIngame} setGameId={setGameId} ingame={ingame} />
     </>
   );
 };

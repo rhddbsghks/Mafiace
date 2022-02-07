@@ -52,7 +52,7 @@ public class AuthController {
             // 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
             return ResponseEntity.ok(
                 UserLoginPostRes.of(200, "Success",
-                    jwtTokenProvider.createToken(user.getUserId())));
+                    jwtTokenProvider.createToken(user.getUserId(),user.getNickname())));
         }
         // 잘못된 비밀번호인 경우, 401로 응답
         else {

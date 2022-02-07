@@ -1,6 +1,6 @@
-const Waiting = ({ getIngame }) => {
+const Waiting = ({ setIngame }) => {
   const clickMain = () => {
-    getIngame(false);
+    setIngame(false);
   };
   return (
     <>
