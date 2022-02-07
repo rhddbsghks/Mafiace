@@ -4,7 +4,6 @@ import Tr from "./Tr";
 import Post from "./Post";
 import Modal from "./Modal";
 import Detail from "./Detail";
-import "./notice.css";
 import { Table } from "@mui/material";
 import jwt from "jwt-decode";
 
@@ -12,27 +11,25 @@ const NoticeCompo = () => {
   // const [form, setForm] = useState({ title: "", content: "", postNum: "" });
   const [list, setList] = useState([]);
   const [refreshed, setRefreshed] = useState(true);
-  const [selected, setSelected] = useState("");
-  const [admin, setAdmin] = useState();
+  const [selected, setSelected] = useState();
+  const [admin, setAdmin] = useState("");
 
   const [modalOn, setModalOn] = useState(false);
   const [postOn, setPostOn] = useState(false);
   const [detailOn, setDetailOn] = useState(false);
 
-  const NOTICE_API_URL = "http://localhost:8080/api/notice/";
-
   const nextId = useRef(1);
 
   //더미 데이터 호출
   useEffect(() => {
-    const admin = jwt(localStorage.getItem("jwt"));
-    console.log(admin.sub);
-    setAdmin(admin.sub);
+    const admin_storage = jwt(localStorage.getItem("jwt"));
+    setAdmin(admin_storage.sub);
+    // console.log(admin);
     axios
-      .get(NOTICE_API_URL)
+      .get("/api/notice/")
       .then((res) => {
-        console.log("get data");
-        console.log(res.data);
+        // console.log("get data");
+        // console.log(res.data);
         setList(res.data);
       })
       .catch((err) => console.log(err));
@@ -46,7 +43,7 @@ const NoticeCompo = () => {
       content: item.content,
       postTime: item.postTime,
     };
-    console.log(selectedData);
+    // console.log(selectedData);
     setSelected(selectedData);
   };
 
@@ -78,7 +75,7 @@ const NoticeCompo = () => {
   };
 
   const handleRemove = (postNum) => {
-    axios.delete(NOTICE_API_URL + postNum).then(() => {
+    axios.delete("/api/notice/" + postNum).then(() => {
       alert("게시물이 삭제되었습니다!");
       setRefreshed(!refreshed);
     });
@@ -119,18 +116,23 @@ const NoticeCompo = () => {
   };
 
   return (
-    <>
+    <div>
       {admin === "sixman" ? (
         <div className="ml-20" style={{ marginTop: "5%" }}>
+          <button
+            onClick={handleCreate}
+            className="bg-purple-300 hover:bg-purple-500 px-3 py-1 rounded text-white"
+          >
+            생성
+          </button>
           <Table>
             <thead>
               <tr>
-                <th>No.</th>
-                <th>Title</th>
-                <th>Time</th>
-
-                <th>Edit</th>
-                <th>Delete</th>
+                <th style={{ fontSize: "2rem" }}>No.</th>
+                <th style={{ fontSize: "2rem" }}>Title</th>
+                <th style={{ fontSize: "2rem" }}>Time</th>
+                <th style={{ fontSize: "2rem" }}>Edit</th>
+                <th style={{ fontSize: "2rem" }}>Delete</th>
               </tr>
             </thead>
             <Tr
@@ -141,12 +143,7 @@ const NoticeCompo = () => {
             />
           </Table>
           <br></br>
-          <button
-            onClick={handleCreate}
-            className="bg-purple-300 hover:bg-purple-500 px-3 py-1 rounded text-white"
-          >
-            생성
-          </button>
+
           {postOn && (
             <Post handleSave={handleSave} handleCancel2={handleCancel2} />
           )}
@@ -163,34 +160,29 @@ const NoticeCompo = () => {
               handleEditSubmit={handleEditSubmit}
             />
           )}
-          {/* ) : (
-          <Table>
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Title</th>
-                <th>Time</th>
-              </tr>
-            </thead>
-            <Tr list={list} handleDetail={handleDetail} />
-          </Table>
-          ) */}
         </div>
       ) : (
         <div className="ml-50" style={{ marginTop: "5%" }}>
           <Table>
             <thead>
               <tr>
-                <th>No.</th>
-                <th>Title</th>
-                <th>Time</th>
+                <th style={{ fontSize: "2rem" }}>No.</th>
+                <th style={{ fontSize: "2rem" }}>Title</th>
+                <th style={{ fontSize: "2rem" }}>Time</th>
               </tr>
             </thead>
             <Tr list={list} handleDetail={handleDetail} />
           </Table>
+
+          {detailOn && (
+            <Detail
+              selectedData={selected}
+              handleCancel3={handleCancel3}
+            ></Detail>
+          )}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

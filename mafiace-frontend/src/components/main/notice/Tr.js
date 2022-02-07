@@ -1,12 +1,13 @@
 import React from "react";
 import Td from "./Td";
 
-const Tr = ({ list, handleRemove, handleEdit, handleDetail }) => {
+const Tr = ({ admin, list, handleRemove, handleEdit, handleDetail }) => {
   return (
     <tbody>
       {list.map((item) => {
         return (
           <Td
+            admin={admin}
             key={item.postNum}
             item={item}
             handleRemove={handleRemove}

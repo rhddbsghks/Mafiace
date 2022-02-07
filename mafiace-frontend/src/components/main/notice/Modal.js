@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./notice.css";
 import { Form, Input, TextArea } from "semantic-ui-react";
 
 const Modal = ({ selectedData, handleCancel, handleEditSubmit }) => {
@@ -24,7 +23,12 @@ const Modal = ({ selectedData, handleCancel, handleEditSubmit }) => {
   return (
     <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
       <div className="bg-white rouded shadow-lg w-10 md:w-2/5">
-        <div className="text-xl font-bold  text-center">Update</div>
+        <div
+          className="text-xl font-bold  text-center"
+          style={{ marginTop: "3%" }}
+        >
+          Update
+        </div>
         <div className="border-b px-4 py-5 flex justify-center items-center"></div>
         {/* <form>
           <div class="p-3">

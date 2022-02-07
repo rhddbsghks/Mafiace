@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./notice.css";
 import { Form, Input, TextArea } from "semantic-ui-react";
 
 const Post = ({ handleSave, handleCancel2 }) => {
@@ -43,7 +42,7 @@ const Post = ({ handleSave, handleCancel2 }) => {
       <div className="bg-white rouded shadow-lg w-10 md:w-2/5">
         <div
           className="text-xl font-bold  text-center"
-          style={{ marginBottom: "5%" }}
+          style={{ margin: "5%" }}
         >
           Create
         </div>
