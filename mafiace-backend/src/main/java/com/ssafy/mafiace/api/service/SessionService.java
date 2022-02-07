@@ -9,5 +9,6 @@ public interface SessionService {
 
     String getToken(String sessionName) throws Exception;
 
+
     void closeSession(String sessionName) throws Exception;
 }

@@ -6,6 +6,7 @@ import com.ssafy.mafiace.common.model.NewSessionInfo;
 import com.ssafy.mafiace.api.response.SessionTokenPostRes;
 import com.ssafy.mafiace.api.service.SessionService;
 import com.ssafy.mafiace.common.auth.JwtTokenProvider;
+import com.ssafy.mafiace.db.manager.MafiaceManager;
 import io.openvidu.java.client.ConnectionProperties;
 import io.openvidu.java.client.ConnectionType;
 import io.swagger.annotations.Api;
@@ -13,8 +14,15 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +39,11 @@ public class SessionController {
 
     private SessionService sessionService;
     private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private GameController gameController;
+
+
 
     public SessionController(SessionService sessionService, JwtTokenProvider jwtTokenProvider) {
         this.sessionService = sessionService;
@@ -98,7 +111,6 @@ public class SessionController {
         @ApiResponse(code = 204, message = "성공"),
     })
     public ResponseEntity<BaseResponseBody> deleteSession(String sessionName) {
-
         try {
             sessionService.closeSession(sessionName);
             return ResponseEntity.status(204)

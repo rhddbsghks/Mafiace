@@ -84,8 +84,14 @@ public class GamePlayerRes {
             buf.put("userId", player.getUser().getUserId());
             buf.put("Role",player.getRole().getRoleName().name());
 //          추가 해야할 것 : 이긴 팀
-//          추가로 추가하면 좋을 것 : 의사 or 경찰이 능력사용에 성공한 횟수, 마피아가 시민을 죽인 횟수 등
-
+//            buf.put("winTeam",player.)
+            if(player.getRole().getRoleName().name().equals("Mafia")){
+                buf.put("killCount",String.valueOf(player.getKillCount()));
+            }else if(player.getRole().getRoleName().name().equals("Doctor")){
+                buf.put("saveCount",String.valueOf(player.getSaveCount()));
+            }else if(player.getRole().getRoleName().name().equals("Police")){
+                buf.put("investigateCount",String.valueOf(player.getInvestigateCount()));
+            }
             GameLogs.add(buf);
         }
         return GameLogs;

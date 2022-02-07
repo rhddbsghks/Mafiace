@@ -34,6 +34,7 @@ public class SessionServiceImpl implements SessionService {
     // Collection to pair session names and OpenVidu Session objects
     private Map<String, Session> mapSessions = new ConcurrentHashMap<>();
     private int roomNum = 1;
+    private boolean[] availableRoomNum = new boolean[100];
 
     public SessionServiceImpl(@Value("${openvidu.secret}") String secret,
         @Value("${openvidu.url}") String openviduUrl, GameRepository gameRepository,
@@ -65,9 +66,16 @@ public class SessionServiceImpl implements SessionService {
         // Store the session and the token in our collections
         this.mapSessions.put(gameId, session);
 
+        for(int i=1; i<100; i++){
+            if(!availableRoomNum[i]){
+                roomNum = i;
+                break;
+            }
+        }
+
         gameRepository.save(Game.builder()
             .gameId(gameId)
-            .roomNum(roomNum++)
+            .roomNum(roomNum)
             .ownerId(ownerId)
             .gameTitle(sessionOpenReq.getGameTitle())
             .discussionTime(sessionOpenReq.getDiscussionTime())
@@ -76,7 +84,7 @@ public class SessionServiceImpl implements SessionService {
 //            .isActive(false)
             .password((sessionOpenReq.getPassword()))
             .build());
-
+        availableRoomNum[roomNum] = true;
         // Return the token
         return NewSessionInfo.of(token, gameId);
     }
@@ -85,7 +93,10 @@ public class SessionServiceImpl implements SessionService {
     public String getToken(String sessionName) throws Exception {
         // Session already exists
         System.out.println("Existing session " + sessionName);
-
+        int maxPlayer = gameRepository.findGameById(sessionName).getMaxPlayer();
+        if(this.mapSessions.get(sessionName).getConnections().size() >= maxPlayer){
+            return null;
+        }
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
             ConnectionType.WEBRTC).build();
 
@@ -98,8 +109,9 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void closeSession(String sessionName) throws Exception {
-
+        Game deleteRoom = gameRepositorySupport.findById(sessionName);
+        availableRoomNum[deleteRoom.getRoomNum()] = false;
         mapSessions.remove(sessionName);
-        gameRepository.delete(gameRepositorySupport.findById(sessionName));
+        gameRepository.delete(deleteRoom);
     }
 }

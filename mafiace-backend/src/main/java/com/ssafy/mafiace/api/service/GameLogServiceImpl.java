@@ -22,15 +22,11 @@ public class GameLogServiceImpl implements GameLogService {
     private UserRepository userRepository;
 
 //    @Override
-    public GameLog addGameLog(Map<String, String> gameLogResult) {
-//        GameLog gameLog = GameLog.builder()
-//            .playTime(gameLogResult의 끝난시간 - 시작시간)
+    public GameLog addGameLog(Map<String, String> gameLogMap) {
+        GameLog gameLog = GameLog.builder()
+            .playTime(Integer.parseInt(gameLogMap.get("playTime")))
 //            .winTeam(gameLogResult.이긴 팀)
-//            .build();
-//        UserRecords userRecords = userRecordsRepositorySupport.updateUserRecords(gameLogResult);
-//
-//        return gameLogRepository.save(gameLog);
-//
-        return null;
+            .build();
+        return gameLogRepository.save(gameLog);
     }
 }
