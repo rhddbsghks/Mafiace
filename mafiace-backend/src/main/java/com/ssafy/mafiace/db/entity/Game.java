@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.GeneratorType;
 
 @Getter
 @ToString
@@ -32,7 +33,6 @@ public class Game extends BaseEntity {
 
     @NotNull
     @Column(name = "room_num")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     int roomNum;
     @NotNull
     @Column(name = "owner_id")
@@ -66,12 +66,17 @@ public class Game extends BaseEntity {
         this.discussionTime = discussionTime;
         this.maxPlayer = maxPlayer;
         this.password = password;
+        this.isActive = false;
     }
-//    @Transient
-//    List<User> user_List = new ArrayList<>();
-//
-//    private void addUserList(User user){
-//        this.user_List.add(user);
-//    }
+    @Transient
+    List<User> user_List = new ArrayList<>();
 
+    private void addUserList(User user){
+        this.user_List.add(user);
+    }
+
+
+    public void setRoomStatus(boolean active) {
+        isActive = active;
+    }
 }

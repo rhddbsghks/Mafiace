@@ -5,15 +5,23 @@ import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.game.role.Role;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Player {
 
     private User user;
     private Role role;
     private boolean isAlive;
     private boolean isBoss;
+    private int saveCount ;
+    private int killCount;
+    private int investigateCount;
 
     private GameLogService gameLogService;
 
@@ -57,9 +65,26 @@ public class Player {
         if(!isBoss) return;
         // 보스일때만 kill가능~
         // kill 로직
+        // 성공 시 kill_count +=1;
     }
 
-    public void saveGameLog(Map<String, String> gameLogs){
+    public void Sergery() {
+        // 수술해서 살리기
+        // 성공 시 saveCount +=1;
+    }
+
+    public void investigate() {
+        // 한명 조사하기
+        // 성공 시 invertigateCount +=1;
+    }
+
+    public void saveGameLog(){
+        Map<String, String> gameLogs = new HashMap<>();
+
         gameLogService.addGameLog(gameLogs);
     }
+
+
+
+
 }

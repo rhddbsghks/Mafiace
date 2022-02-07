@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.checkerframework.common.reflection.qual.ClassBound;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
@@ -45,11 +46,18 @@ public class UserRecords {
     @ColumnDefault("0")
     @Column(name = "doctor_count")
     int doctorCount;
-
     @ColumnDefault("0")
     @Column(name = "police_count")
     int policeCount;
-
+    @ColumnDefault("0")
+    @Column(name = "save_count")
+    int saveCount;
+    @ColumnDefault("0")
+    @Column(name = "investigate_count")
+    int investigateCount;
+    @ColumnDefault("0")
+    @Column(name = "kill_count")
+    int killCount;
     @ColumnDefault("0")
     @Column(name = "winner_streak")
     int winnerStreak;
@@ -62,6 +70,9 @@ public class UserRecords {
         this.doctorCount =0;
         this.policeCount =0;
         this.winnerStreak =0;
+        this.investigateCount =0;
+        this.killCount =0;
+        this.saveCount =0;
     }
 
     @OneToOne(fetch = FetchType.EAGER)

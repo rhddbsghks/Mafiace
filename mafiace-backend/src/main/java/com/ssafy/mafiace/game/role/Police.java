@@ -2,18 +2,16 @@ package com.ssafy.mafiace.game.role;
 
 import com.ssafy.mafiace.game.Player;
 
-public class Mafia extends Role{
+public class Police extends Role{
 
     private RoleName roleName;
 
-    public Mafia(RoleName roleName) {
+    public Police(RoleName roleName){
         this.roleName = roleName;
     }
 
-
-    public void nightVote(Player player) {
-        player.kill();
+    public void investigate(Player player){
+        player.investigate();
     }
-
 
 }

@@ -12,16 +12,14 @@ public abstract class Role {
     protected Role() {
     }
 
-    public String getRoleName() {
-        return roleName.name();
+    public RoleName getRoleName() {
+        return roleName;
     }
 
     @Override
     public String toString(){
         return roleName.name();
     }
-
-    public abstract void nightVote(Player player);
 
     public boolean isMafia(){
         return roleName.equals(RoleName.Mafia);
