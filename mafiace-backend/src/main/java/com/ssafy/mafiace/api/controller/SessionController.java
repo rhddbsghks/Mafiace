@@ -1,6 +1,7 @@
 package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.request.SessionOpenReq;
+import com.ssafy.mafiace.api.response.BaseResponseBody;
 import com.ssafy.mafiace.common.model.NewSessionInfo;
 import com.ssafy.mafiace.api.response.SessionTokenPostRes;
 import com.ssafy.mafiace.api.service.SessionService;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiResponses;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -87,6 +89,23 @@ public class SessionController {
 
             return ResponseEntity.status(404)
                 .body(SessionTokenPostRes.of(404, "해당하는 세션방 없음", null));
+        }
+    }
+
+    @DeleteMapping("")
+    @ApiOperation(value = "세션방 삭제", notes = "해당하는 방 번호 삭제")
+    @ApiResponses({
+        @ApiResponse(code = 204, message = "성공"),
+    })
+    public ResponseEntity<BaseResponseBody> deleteSession(String sessionName) {
+
+        try {
+            sessionService.closeSession(sessionName);
+            return ResponseEntity.status(204)
+                .body(BaseResponseBody.of(204, "Success"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500)
+                .body(BaseResponseBody.of(500, "Server Error"));
         }
     }
 }

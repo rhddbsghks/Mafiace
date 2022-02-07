@@ -5,6 +5,7 @@ import com.ssafy.mafiace.common.model.NewSessionInfo;
 import com.ssafy.mafiace.db.entity.BaseEntity;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.repository.GameRepository;
+import com.ssafy.mafiace.db.repository.GameRepositorySupport;
 import io.openvidu.java.client.ConnectionProperties;
 import io.openvidu.java.client.ConnectionProperties.Builder;
 import io.openvidu.java.client.ConnectionType;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class SessionServiceImpl implements SessionService {
 
     private GameRepository gameRepository;
+    private GameRepositorySupport gameRepositorySupport;
 
     // OpenVidu object as entrypoint of the SDK
     private OpenVidu openVidu;
@@ -31,13 +33,16 @@ public class SessionServiceImpl implements SessionService {
 
     // Collection to pair session names and OpenVidu Session objects
     private Map<String, Session> mapSessions = new ConcurrentHashMap<>();
+    private int roomNum = 1;
 
     public SessionServiceImpl(@Value("${openvidu.secret}") String secret,
-        @Value("${openvidu.url}") String openviduUrl, GameRepository gameRepository) {
+        @Value("${openvidu.url}") String openviduUrl, GameRepository gameRepository,
+        GameRepositorySupport gameRepositorySupport) {
         this.SECRET = secret;
         this.OPENVIDU_URL = openviduUrl;
         this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
         this.gameRepository = gameRepository;
+        this.gameRepositorySupport = gameRepositorySupport;
     }
 
     @Override
@@ -62,6 +67,7 @@ public class SessionServiceImpl implements SessionService {
 
         gameRepository.save(Game.builder()
             .gameId(gameId)
+            .roomNum(roomNum++)
             .ownerId(ownerId)
             .gameTitle(sessionOpenReq.getGameTitle())
             .discussionTime(sessionOpenReq.getDiscussionTime())
@@ -88,5 +94,12 @@ public class SessionServiceImpl implements SessionService {
             .getToken();
 
         return token;
+    }
+
+    @Override
+    public void closeSession(String sessionName) throws Exception {
+
+        mapSessions.remove(sessionName);
+        gameRepository.delete(gameRepositorySupport.findById(sessionName));
     }
 }

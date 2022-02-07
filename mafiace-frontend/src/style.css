@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Dongle&display=swap");
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 #root {
   height: 100vh;
@@ -50,6 +53,10 @@ button,
 .MuiTab-root.Mui-selected {
   color: #8157a8 !important;
   background-color: #f3f1f5;
+}
+
+.css-1aquho2-MuiTabs-indicator {
+  height: 0px !important;
 }
 
 .css-jpln7h-MuiTabs-scroller {

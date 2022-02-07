@@ -39,7 +39,7 @@ const LoginForm = ({ getLogin }) => {
   // 로그인 클릭
   const onClickLogin = () => {
     axios
-      .post("http://localhost:8080/api/auth/login", values, {
+      .post("/api/auth/login", values, {
         headers: { "Content-Type": `application/json` },
       })
       .then((res) => {
