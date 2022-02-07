@@ -20,9 +20,11 @@ public class UserInfoRes extends BaseResponseBody {
         UserInfoRes res = new UserInfoRes();
         res.setStatus(statusCode);
         res.setMessage(message);
-        res.setUserId(user.getUserId());
-        res.setEmail(user.getEmail());
-        res.setNickname(user.getNickname());
+        if (user != null) {
+            res.setUserId(user.getUserId());
+            res.setEmail(user.getEmail());
+            res.setNickname(user.getNickname());
+        }
         return res;
     }
 }
