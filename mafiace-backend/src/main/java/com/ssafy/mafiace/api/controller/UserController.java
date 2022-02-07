@@ -111,7 +111,7 @@ public class UserController {
     })
     @GetMapping("/emailcheck")
     public ResponseEntity<BaseResponseBody> checkEmail(
-        @ApiParam(value = "유저 이메일", required = true) String email) {
+        @ApiParam(value = "유저 이메일 중복 체크", required = true) String email) {
         User user = userService.getUserByEmail(email);
         if (user != null) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 이메일입니다."));
@@ -126,7 +126,7 @@ public class UserController {
     })
     @GetMapping("/nicknamecheck")
     public ResponseEntity<BaseResponseBody> checkNickname(
-        @ApiParam(value = "유저 닉네임", required = true) String nickname) {
+        @ApiParam(value = "유저 닉네임 중복 체크", required = true) String nickname) {
         User user = userService.getUserByNickname(nickname);
         if (user != null) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
