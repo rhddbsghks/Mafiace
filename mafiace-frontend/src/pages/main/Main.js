@@ -9,7 +9,7 @@ import Mypage from "./Mypage";
 import Ranking from "./Ranking";
 import NotFound from "../../components/common/NotFound";
 
-const Main = ({ setIngame, setGameId, ingame }) => {
+const Main = ({ setIngame, ingame, setGameInfo, setToken }) => {
   const [login, setLogin] = useState(false);
 
   const getLogin = (bool) => {
@@ -45,7 +45,8 @@ const Main = ({ setIngame, setGameId, ingame }) => {
                   element={
                     <Room
                       setIngame={setIngame}
-                      setGameId={setGameId}
+                      setGameInfo={setGameInfo}
+                      setToken={setToken}
                       ingame={ingame}
                     />
                   }

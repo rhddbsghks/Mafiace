@@ -19,17 +19,21 @@ import lombok.ToString;
 @NoArgsConstructor
 @Table(name = "notice")
 @AttributeOverrides({
-    @AttributeOverride(name = "id",column = @Column(name = "notice_id", unique = true))
+    @AttributeOverride(name = "id", column = @Column(name = "notice_id", unique = true))
 })
-public class Notice extends BaseEntity{
-    @NotNull @Column(name = "title")
+public class Notice extends BaseEntity {
+
+    @NotNull
+    @Column(name = "title")
     String title;
-    @NotNull @Column(name = "content")
+    @NotNull
+    @Column(name = "content")
     @Lob
     String content;
     @Column(name = "post_time")
     LocalDateTime postTime;
-    @NotNull @Column(name = "post_num")
+    @NotNull
+    @Column(name = "post_num")
     int postNum;
 
     @Builder
@@ -40,12 +44,10 @@ public class Notice extends BaseEntity{
         this.postNum = postNum;
     }
 
-    public Notice modifyNotice(String title, String content){
+    public Notice modifyNotice(String title, String content) {
         this.title = title;
         this.content = content;
 
         return this;
     }
-
-
 }

@@ -1,14 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 // import RoomComp from "./RoomComp";
-import * as config from "../../../config";
 import styles from "./room.module.css";
 import "./pagination.css";
 import Loader from "../../common/Loader";
 import RoomComp from "./RoomComp";
+import RoomMakeBtn from "./RoomMakeBtn";
 import { Dropdown } from "semantic-ui-react";
 
-const RoomList = ({ setIngame, setGameId, ingame }) => {
+const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
   const [maxPlayer, setMaxPlayer] = useState(8);
@@ -48,6 +48,7 @@ const RoomList = ({ setIngame, setGameId, ingame }) => {
 
   useEffect(() => {
     getGameList(maxPlayer, isPublic);
+    setPage(0);
   }, [maxPlayer, isPublic, totalRoom]);
 
   const counter = useRef();
@@ -70,10 +71,6 @@ const RoomList = ({ setIngame, setGameId, ingame }) => {
 
       return next;
     });
-  };
-
-  const handleClickRoom = (gameId) => {
-    console.log(gameId);
   };
 
   return (
@@ -183,33 +180,15 @@ const RoomList = ({ setIngame, setGameId, ingame }) => {
                     width: "150px",
                     visibility: "hidden",
                   }}
-                >
-                  <div>
-                    {" "}
-                    <button
-                      className={"paginate left pageBtn"}
-                      ref={pl}
-                      onClick={initPageNav.bind(this, -1)}
-                    >
-                      <i></i>
-                      <i></i>
-                    </button>
-                    <div className={"counter"} ref={counter}></div>
-                    <button
-                      className={"paginate right pageBtn"}
-                      ref={pr}
-                      onClick={initPageNav.bind(this, 1)}
-                    >
-                      <i></i>
-                      <i></i>
-                    </button>
-                  </div>
-                </div>
+                ></div>
 
                 {/* 방 만들기 */}
-                <button className={`${styles.button} ${styles["btn-2"]}`}>
-                  방 만들기
-                </button>
+                <RoomMakeBtn
+                  setGameInfo={setGameInfo}
+                  setToken={setToken}
+                  ingame={ingame}
+                  setIngame={setIngame}
+                ></RoomMakeBtn>
               </div>
             </div>
           ) : (
@@ -228,13 +207,14 @@ const RoomList = ({ setIngame, setGameId, ingame }) => {
                   minHeight: "53vh",
                 }}
               >
-                {list.slice(page * 6, page + 6).map((item) => (
+                {list.slice(page * 6, page * 6 + 6).map((item) => (
                   <RoomComp
                     key={item.id}
                     game={item}
                     setIngame={setIngame}
+                    setToken={setToken}
                     ingame={ingame}
-                    setGameId={setGameId}
+                    setGameInfo={setGameInfo}
                   />
                 ))}
               </div>
@@ -320,9 +300,12 @@ const RoomList = ({ setIngame, setGameId, ingame }) => {
                 </div>
 
                 {/* 방 만들기 */}
-                <button className={`${styles.button} ${styles["btn-2"]}`}>
-                  방 만들기
-                </button>
+                <RoomMakeBtn
+                  setGameInfo={setGameInfo}
+                  setToken={setToken}
+                  ingame={ingame}
+                  setIngame={setIngame}
+                ></RoomMakeBtn>
               </div>
             </div>
           )}
