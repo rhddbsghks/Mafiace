@@ -1,18 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 // import RoomComp from "./RoomComp";
-import * as config from "../../../config";
 import styles from "./room.module.css";
 import "./pagination.css";
 import Loader from "../../common/Loader";
 import RoomComp from "./RoomComp";
+import RoomMakeBtn from "./RoomMakeBtn";
 import { Dropdown } from "semantic-ui-react";
 
-const RoomList = ({ getIngame }) => {
-  const clickIngame = () => {
-    getIngame(true);
-  };
-
+const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
   const [maxPlayer, setMaxPlayer] = useState(8);
@@ -34,7 +30,8 @@ const RoomList = ({ getIngame }) => {
 
   const getGameList = (maxPlayer, isPublic) => {
     axios
-      .get(config.API_URL + "/game", {
+      .get("/api/game", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         params: { maxPlayer, isPublic },
       })
       .then(({ data }) => {
@@ -51,6 +48,7 @@ const RoomList = ({ getIngame }) => {
 
   useEffect(() => {
     getGameList(maxPlayer, isPublic);
+    setPage(0);
   }, [maxPlayer, isPublic, totalRoom]);
 
   const counter = useRef();
@@ -182,36 +180,15 @@ const RoomList = ({ getIngame }) => {
                     width: "150px",
                     visibility: "hidden",
                   }}
-                >
-                  <div>
-                    {" "}
-                    <button
-                      className={"paginate left pageBtn"}
-                      ref={pl}
-                      onClick={initPageNav.bind(this, -1)}
-                    >
-                      <i></i>
-                      <i></i>
-                    </button>
-                    <div className={"counter"} ref={counter}></div>
-                    <button
-                      className={"paginate right pageBtn"}
-                      ref={pr}
-                      onClick={initPageNav.bind(this, 1)}
-                    >
-                      <i></i>
-                      <i></i>
-                    </button>
-                  </div>
-                </div>
+                ></div>
 
                 {/* 방 만들기 */}
-                <button
-                  className={`${styles.button} ${styles["btn-2"]}`}
-                  onClick={clickIngame}
-                >
-                  방 만들기
-                </button>
+                <RoomMakeBtn
+                  setGameInfo={setGameInfo}
+                  setToken={setToken}
+                  ingame={ingame}
+                  setIngame={setIngame}
+                ></RoomMakeBtn>
               </div>
             </div>
           ) : (
@@ -230,8 +207,15 @@ const RoomList = ({ getIngame }) => {
                   minHeight: "53vh",
                 }}
               >
-                {list.slice(page * 6, page + 6).map((item) => (
-                  <RoomComp key={item.id} game={item} />
+                {list.slice(page * 6, page * 6 + 6).map((item) => (
+                  <RoomComp
+                    key={item.id}
+                    game={item}
+                    setIngame={setIngame}
+                    setToken={setToken}
+                    ingame={ingame}
+                    setGameInfo={setGameInfo}
+                  />
                 ))}
               </div>
 
@@ -316,12 +300,12 @@ const RoomList = ({ getIngame }) => {
                 </div>
 
                 {/* 방 만들기 */}
-                <button
-                  className={`${styles.button} ${styles["btn-2"]}`}
-                  onClick={clickIngame}
-                >
-                  방 만들기
-                </button>
+                <RoomMakeBtn
+                  setGameInfo={setGameInfo}
+                  setToken={setToken}
+                  ingame={ingame}
+                  setIngame={setIngame}
+                ></RoomMakeBtn>
               </div>
             </div>
           )}

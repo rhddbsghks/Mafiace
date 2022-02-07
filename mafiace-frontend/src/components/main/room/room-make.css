@@ -1,0 +1,97 @@
+.ui.inverted.dimmer {
+  background-color: rgba(209, 202, 202, 0.699) !important;
+}
+
+.make-body {
+  background-image: linear-gradient(
+    to top,
+    #dad4ec 0%,
+    #dad4ec 1%,
+    #f3e7e9 100%
+  ) !important;
+
+  border-radius: 3rem !important;
+  padding: 30px;
+}
+
+.select-box div,
+.select-box span {
+  font-size: 1.7em;
+}
+
+.public-check {
+  margin: auto !important;
+}
+
+.room-make-box label {
+  font-size: 2em !important;
+  font-weight: 300 !important;
+}
+
+.checkbox label {
+  padding-left: 20px !important;
+}
+
+.create-room-btn {
+  width: 40%;
+  margin: 0 7%;
+  border: none;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.95);
+  cursor: pointer;
+  padding: 0 2rem;
+  text-align: center;
+  display: inline-block;
+  font-size: 3rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  position: relative;
+  will-change: transform;
+
+  letter-spacing: 0.1rem;
+  position: relative;
+  /* background: #8157a8; */
+  /* color: #f3f1f5; */
+  border-radius: 3rem;
+  position: relative;
+  transition: 0.3s all ease-in-out;
+}
+
+.create-room-btn:before {
+  display: block;
+  position: absolute;
+  background: transparent;
+  border: none;
+  border-radius: 0.3rem;
+  transform: translateY(5px) scale(0.9);
+  content: "";
+  height: 5px;
+  z-index: -1;
+  bottom: -1%;
+  left: 0;
+  right: 0;
+  transition: 0.2s all ease-in-out;
+}
+.create-room-btn:hover:before {
+  transform: translateY(8px) scale(0.8);
+  opacity: 0.8;
+}
+.create-room-btn:hover {
+  transform: scale(1.08);
+}
+
+.create-room-btn.make {
+  background: #8157a8;
+}
+
+.create-room-btn.cancel {
+  background: #7f7c8293 !important;
+}
+
+.room-make-box-title {
+  height: 70px;
+  font-size: 5em;
+  margin-bottom: 5%;
+  text-shadow: -1px 0 #8157a8, 0 2px #8157a8, 1px 0px #8157a8, 0 -2px #8157a8;
+  color: #f3eff7;
+}
