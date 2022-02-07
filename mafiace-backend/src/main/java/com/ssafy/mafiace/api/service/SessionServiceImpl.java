@@ -1,30 +1,26 @@
 package com.ssafy.mafiace.api.service;
 
 import com.ssafy.mafiace.api.request.SessionOpenReq;
+import com.ssafy.mafiace.common.model.NewSessionInfo;
 import com.ssafy.mafiace.db.entity.BaseEntity;
 import com.ssafy.mafiace.db.entity.Game;
-import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.repository.GameRepository;
-import com.ssafy.mafiace.db.repository.UserRepository;
+import com.ssafy.mafiace.db.repository.GameRepositorySupport;
 import io.openvidu.java.client.ConnectionProperties;
 import io.openvidu.java.client.ConnectionProperties.Builder;
 import io.openvidu.java.client.ConnectionType;
 import io.openvidu.java.client.OpenVidu;
-import io.openvidu.java.client.OpenViduHttpException;
-import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.Session;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SessionServiceImpl implements SessionService {
 
     private GameRepository gameRepository;
+    private GameRepositorySupport gameRepositorySupport;
 
     // OpenVidu object as entrypoint of the SDK
     private OpenVidu openVidu;
@@ -37,17 +33,21 @@ public class SessionServiceImpl implements SessionService {
 
     // Collection to pair session names and OpenVidu Session objects
     private Map<String, Session> mapSessions = new ConcurrentHashMap<>();
+    private int roomNum = 1;
 
     public SessionServiceImpl(@Value("${openvidu.secret}") String secret,
-        @Value("${openvidu.url}") String openviduUrl, GameRepository gameRepository) {
+        @Value("${openvidu.url}") String openviduUrl, GameRepository gameRepository,
+        GameRepositorySupport gameRepositorySupport) {
         this.SECRET = secret;
         this.OPENVIDU_URL = openviduUrl;
         this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
         this.gameRepository = gameRepository;
+        this.gameRepositorySupport = gameRepositorySupport;
     }
 
     @Override
-    public String openSession(String ownerId, SessionOpenReq sessionOpenReq) throws Exception {
+    public NewSessionInfo openSession(String ownerId, SessionOpenReq sessionOpenReq)
+        throws Exception {
         String gameId = BaseEntity.shortUUID();
 
         // New session
@@ -67,6 +67,7 @@ public class SessionServiceImpl implements SessionService {
 
         gameRepository.save(Game.builder()
             .gameId(gameId)
+            .roomNum(roomNum++)
             .ownerId(ownerId)
             .gameTitle(sessionOpenReq.getGameTitle())
             .discussionTime(sessionOpenReq.getDiscussionTime())
@@ -77,7 +78,7 @@ public class SessionServiceImpl implements SessionService {
             .build());
 
         // Return the token
-        return token;
+        return NewSessionInfo.of(token, gameId);
     }
 
     @Override
@@ -93,5 +94,12 @@ public class SessionServiceImpl implements SessionService {
             .getToken();
 
         return token;
+    }
+
+    @Override
+    public void closeSession(String sessionName) throws Exception {
+
+        mapSessions.remove(sessionName);
+        gameRepository.delete(gameRepositorySupport.findById(sessionName));
     }
 }

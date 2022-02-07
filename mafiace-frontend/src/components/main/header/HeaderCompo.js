@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const HeaderCompo = ({ getLogin }) => {
-  const [value, setValue] = useState(2);
-  const menu = useState(["/notice", "/rules", "/", "/mypage", "/ranking"])[0];
+  const menu = ["/notice", "/rules", "/", "/mypage", "/ranking"];
+  const [value, setValue] = useState();
+
   let navigate = useNavigate();
 
   const clickLogout = () => {

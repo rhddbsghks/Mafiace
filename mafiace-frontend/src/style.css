@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Dongle&display=swap");
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 #root {
   height: 100vh;
@@ -29,14 +32,15 @@ button,
 .container {
   height: 100% !important;
 }
-
+.MuiTab-root {
+  border-radius: 20px !important;
+}
 .MuiButton-root {
   font-size: 1.5em !important;
   margin: auto;
 }
 .MuiButtonBase-root.MuiButton-root {
   color: #8157a8 !important;
-  border: 1px solid #8157a8 !important;
 }
 
 .MuiTab-textColorPrimary {
@@ -48,6 +52,19 @@ button,
 
 .MuiTab-root.Mui-selected {
   color: #8157a8 !important;
+  background-color: #f3f1f5;
+}
+
+.css-1aquho2-MuiTabs-indicator {
+  height: 0px !important;
+}
+
+.css-jpln7h-MuiTabs-scroller {
+  position: unset !important;
+}
+
+span {
+  border: none !important;
 }
 
 .scrollbar {
