@@ -4,14 +4,17 @@ import com.ssafy.mafiace.api.request.SessionOpenReq;
 import com.ssafy.mafiace.common.model.NewSessionInfo;
 import com.ssafy.mafiace.db.entity.BaseEntity;
 import com.ssafy.mafiace.db.entity.Game;
+import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.repository.GameRepository;
 import com.ssafy.mafiace.db.repository.GameRepositorySupport;
+import com.ssafy.mafiace.db.repository.UserRepository;
 import io.openvidu.java.client.ConnectionProperties;
 import io.openvidu.java.client.ConnectionProperties.Builder;
 import io.openvidu.java.client.ConnectionType;
 import io.openvidu.java.client.OpenVidu;
 import io.openvidu.java.client.Session;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,7 @@ public class SessionServiceImpl implements SessionService {
 
     private GameRepository gameRepository;
     private GameRepositorySupport gameRepositorySupport;
+    private UserRepository userRepository;
 
     // OpenVidu object as entrypoint of the SDK
     private OpenVidu openVidu;
@@ -90,12 +94,17 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public String getToken(String sessionName) throws Exception {
+    public String getToken(String sessionName, String userId) throws Exception {
         // Session already exists
         System.out.println("Existing session " + sessionName);
-        int maxPlayer = gameRepository.findGameById(sessionName).getMaxPlayer();
+        Game game = gameRepository.findGameById(sessionName);
+        int maxPlayer = game.getMaxPlayer();
         if(this.mapSessions.get(sessionName).getConnections().size() >= maxPlayer){
-            return null;
+            return "Session is already full";
+        }else {
+            Optional<User> user = userRepository.findByUserId(userId);
+            if(user == null ) return "Valid User";
+            game.addUserList(user.get());
         }
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
             ConnectionType.WEBRTC).build();
@@ -114,4 +123,6 @@ public class SessionServiceImpl implements SessionService {
         mapSessions.remove(sessionName);
         gameRepository.delete(deleteRoom);
     }
+
+    // 세션방 나가는 로직 필요
 }

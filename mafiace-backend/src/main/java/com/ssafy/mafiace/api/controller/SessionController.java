@@ -81,7 +81,7 @@ public class SessionController {
         @ApiResponse(code = 404, message = "존재하지 않는 방"),
     })
     public ResponseEntity<SessionTokenPostRes> getToken(
-        @ApiParam(value = "세션방 정보(방 번호)", required = true) String sessionName) {
+        @ApiParam(value = "세션방 ID", required = true) String sessionName, HttpServletRequest request) {
 
         // Build connectionProperties object with the serverData and the role
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
@@ -91,7 +91,10 @@ public class SessionController {
         System.out.println("Existing session " + sessionName);
         try {
             // Generate a new Connection with the recently created connectionProperties
-            String token = sessionService.getToken(sessionName);
+            String jwtToken = request.getHeader("Authorization").substring(7);
+            String userId = jwtTokenProvider.getUserPk(jwtToken);
+
+            String token = sessionService.getToken(sessionName, userId);
             //this.mapSessions.get(sessionName).createConnection(connectionProperties).getToken();
 
             // Return the response to the client
@@ -120,4 +123,6 @@ public class SessionController {
                 .body(BaseResponseBody.of(500, "Server Error"));
         }
     }
+
+    // 세션 떠나기 기능 필요
 }

@@ -58,11 +58,6 @@ public class MafiaceManager {
 //      룰 분배, votemanager 생성필요
     }
 
-    public boolean addMember(User user){
-        if(userList.size() >= max) return false;
-        this.userList.add(user);
-        return true;
-    }
 
     public UserRecordsRepositorySupport userRecordsRepositorySupport;
     public UserRecordsRepository userRecordsRepository;

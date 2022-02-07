@@ -2,6 +2,7 @@ package com.ssafy.mafiace.db.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -54,6 +55,11 @@ public class Game extends BaseEntity {
     boolean isActive;
     String password;
 
+    @PostConstruct
+    public void init(){
+        this.user_List = new ArrayList<>();
+    }
+
     @Builder
     private Game(String gameId, int roomNum, String ownerId, String gameTitle, boolean isPublic,
         int discussionTime,
@@ -69,9 +75,9 @@ public class Game extends BaseEntity {
         this.isActive = false;
     }
     @Transient
-    List<User> user_List = new ArrayList<>();
+    List<User> user_List;
 
-    private void addUserList(User user){
+    public void addUserList(User user){
         this.user_List.add(user);
     }
 
