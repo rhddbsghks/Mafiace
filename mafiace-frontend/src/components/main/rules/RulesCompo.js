@@ -1,5 +1,3 @@
-import "./style.css";
-
 const RulesCompo = () => {
   return <>{/* <h1>Rules__Compo</h1> */}</>;
 };
