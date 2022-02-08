@@ -126,16 +126,41 @@ public class SessionController {
     }
 
     // 세션 떠나기 요청 필요
-    @PutMapping("")
+    @DeleteMapping("/user")
     @ApiOperation(value = "세션방 나가기", notes = "해당하는 방에서 나가기")
     @ApiResponses({
         @ApiResponse(code = 204, message = "성공"),
     })
     public ResponseEntity<BaseResponseBody> leaveSession(String sessionName, HttpServletRequest request) {
         try {
+            // sessionName이 Game 고유 id 인지? 아니면 openvidu에서 제공하는 고유 id인지?
+            // 만약 openvidu에서 제공하는 id라면,,, PK 교체 또는 unqiue컬림으로 추가해서 매핑할 때 사용
             String jwtToken = request.getHeader("Authorization").substring(7);
             String userId = jwtTokenProvider.getUserPk(jwtToken);
             sessionService.leaveSession(sessionName, userId);
+            return ResponseEntity.status(204)
+                .body(BaseResponseBody.of(204, "Success"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500)
+                .body(BaseResponseBody.of(500, "Server Error"));
+        }
+    }
+
+    // 게임 방 Ready
+    @GetMapping("/Ready")
+    @ApiOperation(value = "게임 방 레디", notes = "준비 완료하기")
+    @ApiResponses({
+        @ApiResponse(code = 204, message = "성공"),
+        @ApiResponse(code = 501, message = "Logic Error"),
+
+    })
+    public ResponseEntity<BaseResponseBody> toggleReady(String sessionName, HttpServletRequest request){
+        try {
+            String jwtToken = request.getHeader("Authorization").substring(7);
+            String userId = jwtTokenProvider.getUserPk(jwtToken);
+            if(!sessionService.toggleReady(sessionName, userId))
+                return ResponseEntity.status(501)
+                .body(BaseResponseBody.of(501, "Logic Error"));
             return ResponseEntity.status(204)
                 .body(BaseResponseBody.of(204, "Success"));
         } catch (Exception e) {

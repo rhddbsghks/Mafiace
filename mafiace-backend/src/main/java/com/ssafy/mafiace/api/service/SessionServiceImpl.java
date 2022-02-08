@@ -132,4 +132,16 @@ public class SessionServiceImpl implements SessionService {
         if(user == null ) return;
         game.getUser_List().remove(user);
     }
+
+    @Override
+    public boolean toggleReady(String sessionName, String userId) {
+        Game game = gameRepositorySupport.findById(sessionName);
+        for(User user : game.getUser_List()){
+            if(user.getUserId().equals(userId)){
+                user.setReady(!user.isReady());
+                return true;
+            }
+        }
+        return false;
+    }
 }

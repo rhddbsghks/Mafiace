@@ -41,9 +41,18 @@ public class User extends BaseEntity implements UserDetails {
     @NotNull
     @Column(name = "nickname", unique = true)
     String nickname;
-
     @Column(name = "is_deleted")
     boolean isDeleted;
+    @Transient
+    boolean isReady;
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
+    }
 
     @Builder
     private User(String userId, String password, String email, String nickname) {
