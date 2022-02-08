@@ -148,7 +148,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const deleteRoom = () => {
     console.log(gameInfo);
 
-    axios.delete("/api/session", {
+    axios.delete("/mafiace/api/session", {
       headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
       params: { sessionName: gameInfo.id },
     });
