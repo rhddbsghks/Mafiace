@@ -55,11 +55,6 @@ public class Game extends BaseEntity {
     boolean isActive;
     String password;
 
-    @PostConstruct
-    public void init(){
-        this.user_List = new ArrayList<>();
-    }
-
     @Builder
     private Game(String gameId, int roomNum, String ownerId, String gameTitle, boolean isPublic,
         int discussionTime,
@@ -73,9 +68,14 @@ public class Game extends BaseEntity {
         this.maxPlayer = maxPlayer;
         this.password = password;
         this.isActive = false;
+        this.user_List = new ArrayList<>();
     }
     @Transient
     List<User> user_List;
+
+    public void initUserList(){
+        this.user_List = new ArrayList<>();
+    }
 
     public void addUserList(User user){
         this.user_List.add(user);

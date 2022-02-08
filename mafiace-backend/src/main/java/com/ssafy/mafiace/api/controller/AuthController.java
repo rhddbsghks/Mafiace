@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "인증 API", tags = {"AuthController"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -45,6 +45,8 @@ public class AuthController {
     public ResponseEntity<UserLoginPostRes> login(
         @ApiParam(value = "로그인 요청 정보", required = true) @RequestBody UserLoginPostReq loginReq) {
         User user = userService.getUserByUserId(loginReq.getUserId());
+        System.err.println("Userid : "+loginReq.getUserId());
+        System.err.println("password"+loginReq.getPassword());
 
         // 존재하지 않은 아이디인 경우, 404로 응답.
         if (user == null) {

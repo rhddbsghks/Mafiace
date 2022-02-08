@@ -62,8 +62,8 @@ public class SessionController {
         @RequestBody SessionOpenReq sessionOpenReq) {
         String jwtToken = request.getHeader("Authorization").substring(7);
         String id = jwtTokenProvider.getUserPk(jwtToken);
-
         try {
+            System.out.println(id);
             NewSessionInfo info = sessionService.openSession(id, sessionOpenReq);
             // Return the response to the client
             return ResponseEntity.status(201)
@@ -97,7 +97,7 @@ public class SessionController {
             System.out.println(userId);
             String token = sessionService.getToken(sessionName, userId);
             //this.mapSessions.get(sessionName).createConnection(connectionProperties).getToken();
-
+            System.err.println(token);
             // Return the response to the client
             return ResponseEntity.status(201)
                 .body(

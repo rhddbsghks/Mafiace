@@ -13,18 +13,26 @@ import io.openvidu.java.client.ConnectionProperties.Builder;
 import io.openvidu.java.client.ConnectionType;
 import io.openvidu.java.client.OpenVidu;
 import io.openvidu.java.client.Session;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SessionServiceImpl implements SessionService {
 
+    @Autowired
     private GameRepository gameRepository;
+    @Autowired
     private GameRepositorySupport gameRepositorySupport;
+    @Autowired
     private UserRepository userRepository;
+
+    private Map<String, List<User>> userList = new ConcurrentHashMap<>();
 
     // OpenVidu object as entrypoint of the SDK
     private OpenVidu openVidu;
@@ -42,12 +50,13 @@ public class SessionServiceImpl implements SessionService {
 
     public SessionServiceImpl(@Value("${openvidu.secret}") String secret,
         @Value("${openvidu.url}") String openviduUrl, GameRepository gameRepository,
-        GameRepositorySupport gameRepositorySupport) {
+        GameRepositorySupport gameRepositorySupport, UserRepository userRepository) {
         this.SECRET = secret;
         this.OPENVIDU_URL = openviduUrl;
         this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
         this.gameRepository = gameRepository;
         this.gameRepositorySupport = gameRepositorySupport;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -69,14 +78,13 @@ public class SessionServiceImpl implements SessionService {
 
         // Store the session and the token in our collections
         this.mapSessions.put(gameId, session);
-
         for(int i=1; i<100; i++){
             if(!availableRoomNum[i]){
                 roomNum = i;
                 break;
             }
         }
-
+        Game game =
         gameRepository.save(Game.builder()
             .gameId(gameId)
             .roomNum(roomNum)
@@ -89,6 +97,11 @@ public class SessionServiceImpl implements SessionService {
             .password((sessionOpenReq.getPassword()))
             .build());
         availableRoomNum[roomNum] = true;
+
+        Optional<User> user = userRepository.findByUserId(ownerId);
+        userList.put(gameId, new ArrayList<>());
+        userList.get(gameId).add(user.get());
+        System.err.println("Room available : "+userList.get(gameId).size() + " / " + sessionOpenReq.getMaxPlayer());
         // Return the token
         return NewSessionInfo.of(token, gameId);
     }
@@ -97,14 +110,19 @@ public class SessionServiceImpl implements SessionService {
     public String getToken(String sessionName, String userId) throws Exception {
         // Session already exists
         System.out.println("Existing session " + sessionName);
-        Game game = gameRepository.findGameById(sessionName);
-        int maxPlayer = game.getMaxPlayer();
+        Optional<Game> game = gameRepository.findById(sessionName);
+        if(game.get() == null) return "Not Found";
+        int maxPlayer = game.get().getMaxPlayer();
+        System.err.println(game.get().toString());
+        System.err.println(userList.get(sessionName).size());
         if(this.mapSessions.get(sessionName).getConnections().size() >= maxPlayer){
             return "Session is already full";
         }else {
             Optional<User> user = userRepository.findByUserId(userId);
             if(user == null ) return "Valid User";
-            game.addUserList(user.get());
+            userList.get(game.get().getId()).add(user.get());
+            System.err.println(userList.get(game.get().getId()).size());
+
         }
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
             ConnectionType.WEBRTC).build();
@@ -130,13 +148,13 @@ public class SessionServiceImpl implements SessionService {
         Game game = gameRepositorySupport.findById(sessionName);
         Optional<User> user = userRepository.findByUserId(userId);
         if(user == null ) return;
-        game.getUser_List().remove(user);
+        userList.get(sessionName).remove(user);
     }
 
     @Override
     public boolean toggleReady(String sessionName, String userId) {
         Game game = gameRepositorySupport.findById(sessionName);
-        for(User user : game.getUser_List()){
+        for(User user : userList.get(sessionName)){
             if(user.getUserId().equals(userId)){
                 user.setReady(!user.isReady());
                 return true;
