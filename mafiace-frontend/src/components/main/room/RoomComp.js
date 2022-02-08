@@ -29,8 +29,12 @@ const RoomComp = ({ game, setIngame, ingame, setGameInfo, setToken }) => {
       .catch(({ response }) => {
         if (response.status === 404) {
           alert("존재하지 않는 방입니다.");
-          window.location.reload();
+        } else if (response.status === 403) {
+          localStorage.removeItem("jwt");
+          alert("요청 권한이 없습니다");
         }
+
+        window.location.reload();
       });
   };
 
