@@ -97,7 +97,7 @@ const ChatCompo = () => {
         </div>
       </div>
       <SockJsClient
-        url="http://localhost:8080/chat/"
+        url="http://localhost:8080/mafiace/chat/"
         topics={topics}
         onConnect={() => {
           console.log("Connected");
