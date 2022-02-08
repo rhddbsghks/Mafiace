@@ -8,12 +8,11 @@ const Post = ({ handleSave, handleCancel2 }) => {
     content: "",
     postNum: "",
   });
-  const NOTICE_API_URL = "http://localhost:8080/api/notice";
 
   const onClickPost = () => {
     axios
       .post(
-        NOTICE_API_URL,
+        "/mafiace/api/notice",
         { title: form.title, content: form.content },
         {
           headers: { "Content-Type": `application/json` },

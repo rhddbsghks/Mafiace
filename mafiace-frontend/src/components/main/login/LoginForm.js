@@ -39,8 +39,8 @@ const LoginForm = ({ getLogin }) => {
   // 로그인 클릭
   const onClickLogin = () => {
     axios
-      .post("/api/auth/login", values, {
-        headers: { "Content-Type": `application/json` },
+      .post("/mafiace/auth/login", values, {
+        headers: { "Conte/mafiace/apint-Type": `application/json` },
       })
       .then((res) => {
         // console.log(res.data);

@@ -21,7 +21,7 @@ const FindPw = ({ clickFindPw }) => {
 
   const axiosPatch = () => {
     axios
-      .patch("http://localhost:8080/api/user/password", values)
+      .patch("/mafiace/api/user/password", values)
       .then((res) => {
         console.log(res);
         window.alert(
