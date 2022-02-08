@@ -7,14 +7,16 @@ import UserVideoComponent from "../../components/ingame/ingame/UserVideoComponen
 
 import * as React from "react";
 import axios from "axios";
+import jwt from "jwt-decode";
 
 const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   window.onbeforeunload = () => {
     leaveSession();
   };
 
-  const nickName = "hello";
   let OV = new OpenVidu();
+
+  const [nickName, setNickName] = useState("he");
   const [session, setSession] = useState();
   const [mainStreamManager, setMainStreamManager] = useState();
   const [publisher, setPublisher] = useState();
@@ -22,7 +24,9 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [loading, setLoding] = useState(true);
 
   useEffect(() => {
-    console.log(token);
+    const nickName = jwt(localStorage.getItem("jwt")).nickname;
+    setNickName(nickName);
+
     // --- 2) Init a session ---
     let mySession = OV.initSession();
     setSession(mySession);
@@ -185,7 +189,11 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   className="stream-container col-md-6 col-xs-6"
                   onClick={() => handleMainVideoStream(sub)}
                 >
-                  <UserVideoComponent streamManager={sub} />
+                  <div>
+                    <UserVideoComponent streamManager={sub} />
+
+                    <div>{sub.stream.connection.data}</div>
+                  </div>
                 </div>
               ))}
             </div>

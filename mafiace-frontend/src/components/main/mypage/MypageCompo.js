@@ -16,7 +16,7 @@ const MypageCompo = () => {
   useEffect(() => {
     axios
       .post(
-        "/api/user/userinfo",
+        "/mafiace/api/user/userinfo",
         {},
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
@@ -40,7 +40,7 @@ const MypageCompo = () => {
       </Divider>
       <br></br>
       <Image src="" size="small" />
-      <Table definition sty style={{ width: "70%", marginLeft: "15%" }}>
+      <Table definition style={{ width: "70%", marginLeft: "15%" }}>
         <Table.Body>
           <Table.Row>
             <Table.Cell style={{ fontSize: "150%", width: "30%" }}>
