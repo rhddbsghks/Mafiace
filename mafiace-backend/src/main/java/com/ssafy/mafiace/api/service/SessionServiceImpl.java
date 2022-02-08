@@ -116,6 +116,7 @@ public class SessionServiceImpl implements SessionService {
         return token;
     }
 
+
     @Override
     public void closeSession(String sessionName) throws Exception {
         Game deleteRoom = gameRepositorySupport.findById(sessionName);
@@ -124,5 +125,11 @@ public class SessionServiceImpl implements SessionService {
         gameRepository.delete(deleteRoom);
     }
 
-    // 세션방 나가는 로직 필요
+    @Override
+    public void leaveSession(String sessionName, String userId) {
+        Game game = gameRepositorySupport.findById(sessionName);
+        Optional<User> user = userRepository.findByUserId(userId);
+        if(user == null ) return;
+        game.getUser_List().remove(user);
+    }
 }

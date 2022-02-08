@@ -11,4 +11,6 @@ public interface SessionService {
 
 
     void closeSession(String sessionName) throws Exception;
+
+    void leaveSession(String sessionName, String request);
 }

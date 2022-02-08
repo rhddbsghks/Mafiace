@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -93,7 +94,7 @@ public class SessionController {
             // Generate a new Connection with the recently created connectionProperties
             String jwtToken = request.getHeader("Authorization").substring(7);
             String userId = jwtTokenProvider.getUserPk(jwtToken);
-
+            System.out.println(userId);
             String token = sessionService.getToken(sessionName, userId);
             //this.mapSessions.get(sessionName).createConnection(connectionProperties).getToken();
 
@@ -124,5 +125,22 @@ public class SessionController {
         }
     }
 
-    // 세션 떠나기 기능 필요
+    // 세션 떠나기 요청 필요
+    @PutMapping("")
+    @ApiOperation(value = "세션방 나가기", notes = "해당하는 방에서 나가기")
+    @ApiResponses({
+        @ApiResponse(code = 204, message = "성공"),
+    })
+    public ResponseEntity<BaseResponseBody> leaveSession(String sessionName, HttpServletRequest request) {
+        try {
+            String jwtToken = request.getHeader("Authorization").substring(7);
+            String userId = jwtTokenProvider.getUserPk(jwtToken);
+            sessionService.leaveSession(sessionName, userId);
+            return ResponseEntity.status(204)
+                .body(BaseResponseBody.of(204, "Success"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500)
+                .body(BaseResponseBody.of(500, "Server Error"));
+        }
+    }
 }
