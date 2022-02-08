@@ -40,7 +40,7 @@ const LoginForm = ({ getLogin }) => {
   const onClickLogin = () => {
     axios
       .post("/mafiace/auth/login", values, {
-        headers: { "Conte/mafiace/apint-Type": `application/json` },
+        headers: { "Content-Type": `application/json` },
       })
       .then((res) => {
         // console.log(res.data);
