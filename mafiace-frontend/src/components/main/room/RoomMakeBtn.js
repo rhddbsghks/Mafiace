@@ -49,7 +49,7 @@ const RoomMakeBtn = ({ setGameInfo, setToken, setIngame, ingame }) => {
     };
 
     axios
-      .post("/api/session/token", body, {
+      .post("/mafiace/api/session/token", body, {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
       })
       .then((res) => {

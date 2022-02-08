@@ -14,7 +14,7 @@ const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
   const [maxPlayer, setMaxPlayer] = useState(8);
   const [isPublic, setIsPublic] = useState(0);
   const [page, setPage] = useState(0);
-  const [totalRoom, setTotalRoom] = useState();
+  const [totalRoom, setTotalRoom] = useState(1);
 
   const maxPlayerOptions = [
     { key: "8", value: 8, text: "8명 이하" },
@@ -30,7 +30,7 @@ const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
 
   const getGameList = (maxPlayer, isPublic) => {
     axios
-      .get("/api/game", {
+      .get("/mafiace/api/game", {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         params: { maxPlayer, isPublic },
       })

@@ -16,7 +16,7 @@ const MypageCompo = () => {
   useEffect(() => {
     axios
       .post(
-        "/api/user/userinfo",
+        "/mafiace/api/user/userinfo",
         {},
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },

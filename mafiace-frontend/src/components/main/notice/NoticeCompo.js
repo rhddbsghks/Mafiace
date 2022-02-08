@@ -26,7 +26,7 @@ const NoticeCompo = () => {
     setAdmin(admin_storage.sub);
     // console.log(admin);
     axios
-      .get("/api/notice/")
+      .get("/mafiace/api/notice/")
       .then((res) => {
         // console.log("get data");
         // console.log(res.data);
@@ -75,7 +75,7 @@ const NoticeCompo = () => {
   };
 
   const handleRemove = (postNum) => {
-    axios.delete("/api/notice/" + postNum).then(() => {
+    axios.delete("/mafiace/api/notice/" + postNum).then(() => {
       alert("게시물이 삭제되었습니다!");
       setRefreshed(!refreshed);
     });

@@ -17,7 +17,7 @@ const RoomComp = ({ game, setIngame, ingame, setGameInfo, setToken }) => {
 
   const enterRoom = () => {
     axios
-      .get("/api/session/token", {
+      .get("/mafiace/api/session/token", {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         params: { sessionName: game.id },
       })
@@ -57,7 +57,7 @@ const RoomComp = ({ game, setIngame, ingame, setGameInfo, setToken }) => {
             <span style={{ fontSize: "0.8em" }}>
               {game.roomNum}&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
-            <span style={{ fontSize: "33px" }}>{game.gameTitle}</span>
+            <span style={{ fontSize: "34px" }}>{game.gameTitle}</span>
           </div>
         </div>
         <div className={styles["game-info"]}>

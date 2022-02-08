@@ -71,7 +71,7 @@ const Signup = ({ clickSignup }) => {
   const onClickSignup = () => {
     console.log(values);
     axios
-      .post("http://localhost:8080/api/user", values, {
+      .post("/mafiace/api/user", values, {
         headers: { "Content-Type": `application/json` },
       })
       .then((res) => {
@@ -89,7 +89,7 @@ const Signup = ({ clickSignup }) => {
     setColor("red");
     if (nickVal(values.nickname)) {
       axios
-        .get("http://localhost:8080/api/user/nicknamecheck", {
+        .get("/mafiace/api/user/nicknamecheck", {
           params: { nickname: values.nickname },
         })
         .then((res) => {
@@ -111,7 +111,7 @@ const Signup = ({ clickSignup }) => {
     setColor("red");
     if (mailVal(values.email)) {
       axios
-        .get("http://localhost:8080/api/user/emailcheck", {
+        .get("/mafiace/api/user/emailcheck", {
           params: { email: values.email },
         })
         .then((res) => {
@@ -144,7 +144,7 @@ const Signup = ({ clickSignup }) => {
     setColor("red");
     if (idVal(values.userId)) {
       axios
-        .get("http://localhost:8080/api/user/idcheck", {
+        .get("/mafiace/api/user/idcheck", {
           params: { userId: values.userId },
         })
         .then((res) => {
