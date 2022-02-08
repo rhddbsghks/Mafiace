@@ -6,8 +6,8 @@ public class Citizen extends Role{
 
     private RoleName roleName;
 
-    public Citizen(RoleName roleName){
-        this.roleName = roleName;
+    public Citizen(){
+        super(RoleName.Citizen);
     }
 
 }

@@ -60,19 +60,45 @@ public class GamePlayerRes {
         // 죽은 플레이어 없애기
     }
 
+    public GameResultType confirmGameStatus(){
+        int mafiaCount = this.aliveMafiaCount();
+        int citizenCount = this.aliveCitizenCount();
+        if(mafiaCount == 0) return GameResultType.CitizenWin;
+        else if(mafiaCount >= citizenCount) return GameResultType.MafiaWin;
+        else return GameResultType.InGame;
+    }
+
+    public int aliveMafiaCount(){
+        int cnt =0;
+        for(Player player : players){
+            if(player.isMafia() && player.isAlive()){
+                cnt +=1;
+            }
+        }
+        return cnt;
+    }
+
+    public int aliveCitizenCount(){
+        int cnt =0;
+        for(Player player : players){
+            if(!player.isMafia() && player.isAlive()){
+                cnt +=1;
+            }
+        }
+        return cnt;
+    }
+
 
     // 반환하는 String[]
     // "홍길동 Mafia"
     // "강감찬 Citizen"
     // "전우치 Police"
     // "김선달 Doctor"
-    public String[] getRoleString(){
-        String[] stringArr = new String[players.size()];
+    public String[][] getRoleString(){
+        String[][] stringArr = new String[players.size()][2];
         for(int i=0; i<stringArr.length; i++){
-            StringBuilder sb = new StringBuilder();
-            sb.append(this.players.get(i).getUser().getNickname()+" ");
-            sb.append(this.players.get(i).getRole());
-            stringArr[i] = sb.toString();
+            stringArr[i][0] = this.players.get(i).getUser().getNickname();
+            stringArr[i][1] = this.players.get(i).getRole().getRoleName().name();
         }
         return stringArr;
     }

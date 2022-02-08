@@ -6,8 +6,8 @@ public class Doctor extends Role{
 
     private RoleName roleName;
 
-    public Doctor(RoleName roleName){
-        this.roleName = roleName;
+    public Doctor(){
+        super(RoleName.Doctor);
     }
 
     public void sugery(Player player){

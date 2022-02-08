@@ -51,34 +51,39 @@ public class MafiaceManager {
         this.gameId = gameId;
         this.room = gameRepository.findGameById(gameId);
         this.sessionService = sessionService;
-        this.userList = gameService.getUserListById(gameId);
-        players = new GamePlayerRes(userList);
-        room.setRoomStatus(true);
+        this.userList = gameService.getUserListById(gameId); // roomId == gameId ?
+        this.players = new GamePlayerRes(userList);
+        this.room.setRoomStatus(true);
 
-//      룰 분배, votemanager 생성필요
+//      votemanager 생성필요
+    }
+
+    public void gamSet(){
+        room.setRoomStatus(false);
     }
 
 
     public UserRecordsRepositorySupport userRecordsRepositorySupport;
     public UserRecordsRepository userRecordsRepository;
     public GameLogService gameLogService;
-    // 게임 종료
+    // 게임 종료 후 Log 저장
     public boolean saveRecord(){
         endTime = LocalDateTime.now();
-        Duration duration = Duration.between(startTime, endTime);
-        List<Map<String, String>> GameLogs = players.makeGameLog();
+        Duration duration = Duration.between(this.startTime, this.endTime);
+        System.err.println(duration);
+        List<Map<String, String>> GameLogs = this.players.makeGameLog();
         for(Map<String, String> gameLog : GameLogs){
             // GameLog로 저장할 것과 userRecords로 저장할것 나눠서 저장
             // Update or Save .
-            gameLog.put("winTeam",winTeam);
-            gameLog.put("playTime",String.valueOf(duration));
+            gameLog.put("winTeam",this.winTeam);
+            gameLog.put("playTime",String.valueOf(duration.toMinutes()));
             Optional<User> user = userRepository.findByUserId(gameLog.get("userId"));
             if(user == null) return false;
             gameLogService.addGameLog(gameLog);
             userRecordsRepositorySupport.updateUserRecords(gameLog);
         }
 
-        gameRepository.deleteById(room.getId());
+        gameRepository.deleteById(this.room.getId());
         return true;
     }
 

@@ -16,6 +16,7 @@ import lombok.Setter;
 public class Player {
 
     private User user;
+    private String nickname;
     private Role role;
     private boolean isAlive;
     private boolean isBoss;
@@ -28,6 +29,7 @@ public class Player {
 
     public Player(User user){
         this.user = user;
+        this.nickname = user.getNickname();
     }
 
     public void Alive(){

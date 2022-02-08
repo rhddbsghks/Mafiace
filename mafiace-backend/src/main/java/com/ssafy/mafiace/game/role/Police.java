@@ -6,8 +6,8 @@ public class Police extends Role{
 
     private RoleName roleName;
 
-    public Police(RoleName roleName){
-        this.roleName = roleName;
+    public Police( ){
+        super(RoleName.Police);
     }
 
     public void investigate(Player player){

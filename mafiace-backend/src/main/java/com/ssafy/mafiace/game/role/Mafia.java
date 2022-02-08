@@ -6,8 +6,8 @@ public class Mafia extends Role{
 
     private RoleName roleName;
 
-    public Mafia(RoleName roleName) {
-        this.roleName = roleName;
+    public Mafia() {
+        super(RoleName.Mafia);
     }
 
 
