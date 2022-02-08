@@ -32,7 +32,14 @@ const NoticeCompo = () => {
         // console.log(res.data);
         setList(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch(({ response }) => {
+        console.log(response);
+        if (response.status === 403) {
+          localStorage.removeItem("jwt");
+          window.location.reload();
+          alert("요청 권한이 없습니다");
+        }
+      });
   }, [refreshed]);
 
   //디테일 열기
