@@ -70,7 +70,6 @@ const NoticeCompo = () => {
           postNum: nextId.current,
         })
       );
-      nextId.current += 1;
     }
   };
 
@@ -122,9 +121,16 @@ const NoticeCompo = () => {
           <button
             onClick={handleCreate}
             className="bg-purple-300 hover:bg-purple-500 px-3 py-1 rounded text-white"
+            style={{
+              border: "none",
+              float: "right",
+              margin: "5%",
+              marginTop: "0",
+            }}
           >
             생성
           </button>
+
           <Table>
             <thead>
               <tr>
@@ -135,6 +141,7 @@ const NoticeCompo = () => {
                 <th style={{ fontSize: "2rem" }}>Delete</th>
               </tr>
             </thead>
+            <br></br>
             <Tr
               list={list}
               handleRemove={handleRemove}

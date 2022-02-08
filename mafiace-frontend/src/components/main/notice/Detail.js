@@ -13,7 +13,7 @@ const Detail = ({ selectedData, handleCancel3 }) => {
           <button
             onClick={onCancel}
             className="bg-purple-300 hover:bg-purple-500 px-2 rounded text-white "
-            style={{ margin: "1%" }}
+            style={{ margin: "1%", border: "none" }}
           >
             X
           </button>

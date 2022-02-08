@@ -3,7 +3,7 @@ import RulesCompo from "../../components/main/rules/RulesCompo";
 const Rules = () => {
   return (
     <>
-      <h1>Rules__Page</h1>
+      <h1 style={{ textAlign: "center", fontSize: "300%" }}>Rules</h1>
       <RulesCompo />
     </>
   );
