@@ -44,7 +44,7 @@ public class AuthController {
         // 존재하지 않은 아이디인 경우, 404로 응답.
         if (user == null) {
             return ResponseEntity.status(404)
-                .body(UserLoginPostRes.of(404, "존재하지 않는 계정입니다.", null));
+                .body(UserLoginPostRes.of(404, "존재하지 않는 ID입니다.", null));
         }
 
         // 입력된 비밀번호와 디비에 저장된 유저의 암호화된 비밀번호가 같은지 확인
