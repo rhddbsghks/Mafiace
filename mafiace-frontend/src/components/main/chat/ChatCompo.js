@@ -32,6 +32,7 @@ const ChatCompo = () => {
         to: "user",
       })
     );
+    setTypedMessage("");
   };
 
   return (
@@ -49,39 +50,43 @@ const ChatCompo = () => {
         <br />
         <br />
         <table>
-          <tr>
-            <td>
-              <TextField
-                id="outlined-basic"
-                label="메세지를 입력해주세요."
-                variant="outlined"
-                onChange={(event) => {
-                  setTypedMessage(event.target.value);
-                }}
-              />
-            </td>
-            <td>
-              <Button variant="contained" color="inherit" onClick={sendMsg}>
-                Send
-              </Button>
-            </td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>
+                <TextField
+                  id="outlined-basic"
+                  label="메세지를 입력해주세요."
+                  variant="outlined"
+                  value={typedMessage}
+                  onChange={(event) => {
+                    setTypedMessage(event.target.value);
+                  }}
+                />
+              </td>
+
+              <td>
+                <Button variant="contained" color="inherit" onClick={sendMsg}>
+                  Send
+                </Button>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
       <br />
       <br />
       <div className="align-center scrollbar" ref={messageBoxRef}>
         <div className="chatbox">
-          {messages.map((msg) => {
+          {messages.map((msg, index) => {
             return (
-              <div>
+              <div key={index}>
                 {name === msg.name ? (
-                  <div className="chat">
+                  <div className="chat" key={msg.name}>
                     <span className="title1">{msg.name} : </span>
                     <span className="message">{msg.message}</span>
                   </div>
                 ) : (
-                  <div className="chat">
+                  <div className="chat" key={msg.name}>
                     <span className="title2">{msg.name} : </span>
                     <span className="message">{msg.message}</span>
                   </div>

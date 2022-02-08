@@ -1,12 +1,13 @@
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Button from "@mui/material/Button";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const HeaderCompo = ({ getLogin }) => {
   const menu = ["/notice", "/rules", "/", "/mypage", "/ranking", "/chat"];
-  const [value, setValue] = useState();
+  const newV = useRef(window.location.pathname).current;
+  const [value, setValue] = useState(menu.indexOf(newV));
 
   let navigate = useNavigate();
 
@@ -24,12 +25,6 @@ const HeaderCompo = ({ getLogin }) => {
     setValue(idx);
     switchChange(idx);
   };
-
-  useEffect(() => {
-    let newV = window.location.pathname;
-    navigate(newV);
-    setValue(menu.indexOf(newV));
-  }, []);
 
   return (
     <>
