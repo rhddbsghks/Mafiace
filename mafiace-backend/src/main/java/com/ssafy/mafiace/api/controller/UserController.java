@@ -111,7 +111,7 @@ public class UserController {
     })
     @GetMapping("/emailcheck")
     public ResponseEntity<BaseResponseBody> checkEmail(
-        @ApiParam(value = "유저 이메일", required = true) String email) {
+        @ApiParam(value = "유저 이메일 중복 체크", required = true) String email) {
         User user = userService.getUserByEmail(email);
         if (user != null) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 이메일입니다."));
@@ -126,12 +126,28 @@ public class UserController {
     })
     @GetMapping("/nicknamecheck")
     public ResponseEntity<BaseResponseBody> checkNickname(
-        @ApiParam(value = "유저 닉네임", required = true) String nickname) {
+        @ApiParam(value = "유저 닉네임 중복 체크", required = true) String nickname) {
         User user = userService.getUserByNickname(nickname);
         if (user != null) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사용 가능한 닉네임입니다."));
+    }
+
+    @ApiOperation(value = "아이디 찾기", notes = "이메일을 입력받아 아이디의 일부를 알려준다.")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "아이디 찾기가 완료되었습니다."),
+        @ApiResponse(code = 404, message = "해당 계정이 존재하지 않습니다."),
+    })
+    @GetMapping("/id")
+    public ResponseEntity<UserInfoRes> findId(
+        @RequestBody UserRegisterPostReq registerReq) {
+        User user = userService.getUserByEmail(registerReq.getEmail());
+        if (user != null) {
+                return ResponseEntity.status(200).body(UserInfoRes.of(200, "아이디 찾기가 완료되었습니다.",user));
+        }
+        return ResponseEntity.status(404)
+            .body(UserInfoRes.of(404, "해당 계정이 존재하지 않습니다.", null));
     }
 
     @ApiOperation(value = "비밀번호 찾기", notes = "아이디와 이메일을 입력받아서 임시 비밀번호를 해당 이메일로 전송한다.")
