@@ -40,6 +40,7 @@ public class GameController {
 
     private Map<String, MafiaceManager> gameManagerMap;
 
+    @Autowired
     private SessionService sessionService;
 
     @PostConstruct
@@ -83,6 +84,8 @@ public class GameController {
     public void gameEndBroadcasting(@DestinationVariable String roomId) throws Exception{
         gameManagerMap.remove(roomId);
     }
+
+
 
 
 

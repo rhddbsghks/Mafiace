@@ -13,10 +13,10 @@ public class RoleManager {
     private static Map<Integer, RoleMaker> roleMapper = new ConcurrentHashMap<>();
 
     static {
-        roleMapper.put(5, new RoleMaker(5, 2, 2, 1, 1));
-        roleMapper.put(6, new RoleMaker(6, 2, 3, 1, 1));
-        roleMapper.put(7, new RoleMaker(7, 3, 3, 1, 1));
-        roleMapper.put(8, new RoleMaker(8, 3, 4, 1, 1));
+        roleMapper.put(5, new RoleMaker(5, 1, 2, 1, 1));
+        roleMapper.put(6, new RoleMaker(6, 2, 2, 1, 1));
+        roleMapper.put(7, new RoleMaker(7, 2, 3, 1, 1));
+        roleMapper.put(8, new RoleMaker(8, 3, 3, 1, 1));
     }
 
     public static List<Role> allocateRole(GamePlayerRes players){

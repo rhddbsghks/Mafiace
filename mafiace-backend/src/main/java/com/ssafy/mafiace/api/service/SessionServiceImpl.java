@@ -32,6 +32,7 @@ public class SessionServiceImpl implements SessionService {
     @Autowired
     private UserRepository userRepository;
 
+    // gameId -> userList
     private Map<String, List<User>> userList = new ConcurrentHashMap<>();
 
     // OpenVidu object as entrypoint of the SDK
@@ -45,6 +46,7 @@ public class SessionServiceImpl implements SessionService {
 
     // Collection to pair session names and OpenVidu Session objects
     private Map<String, Session> mapSessions = new ConcurrentHashMap<>();
+
     private int roomNum = 1;
     private boolean[] availableRoomNum = new boolean[100];
 
@@ -60,7 +62,7 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public NewSessionInfo openSession(String ownerId, SessionOpenReq sessionOpenReq)
+    public NewSessionInfo openSession(String ownerNickname, SessionOpenReq sessionOpenReq)
         throws Exception {
         String gameId = BaseEntity.shortUUID();
 
@@ -69,13 +71,11 @@ public class SessionServiceImpl implements SessionService {
 
         // Create a new OpenVidu Session
         Session session = this.openVidu.createSession();
-
         // Generate a new Connection with the recently created connectionProperties
         ConnectionProperties connectionProperties = new Builder().type(
             ConnectionType.WEBRTC).build();
 
         String token = session.createConnection(connectionProperties).getToken();
-
         // Store the session and the token in our collections
         this.mapSessions.put(gameId, session);
         for(int i=1; i<100; i++){
@@ -88,7 +88,7 @@ public class SessionServiceImpl implements SessionService {
         gameRepository.save(Game.builder()
             .gameId(gameId)
             .roomNum(roomNum)
-            .ownerId(ownerId)
+            .ownerId(ownerNickname)
             .gameTitle(sessionOpenReq.getGameTitle())
             .discussionTime(sessionOpenReq.getDiscussionTime())
             .maxPlayer(sessionOpenReq.getMaxPlayer())
@@ -98,7 +98,7 @@ public class SessionServiceImpl implements SessionService {
             .build());
         availableRoomNum[roomNum] = true;
 
-        Optional<User> user = userRepository.findByUserId(ownerId);
+        Optional<User> user = userRepository.findByNickname(ownerNickname);
         userList.put(gameId, new ArrayList<>());
         userList.get(gameId).add(user.get());
         System.err.println("Room available : "+userList.get(gameId).size() + " / " + sessionOpenReq.getMaxPlayer());
@@ -107,22 +107,20 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public String getToken(String sessionName, String userId) throws Exception {
+    public String getToken(String sessionName, String nickname) throws Exception {
         // Session already exists
         System.out.println("Existing session " + sessionName);
         Optional<Game> game = gameRepository.findById(sessionName);
         if(game.get() == null) return "Not Found";
         int maxPlayer = game.get().getMaxPlayer();
         System.err.println(game.get().toString());
-        System.err.println(userList.get(sessionName).size());
         if(this.mapSessions.get(sessionName).getConnections().size() >= maxPlayer){
             return "Session is already full";
         }else {
-            Optional<User> user = userRepository.findByUserId(userId);
+            Optional<User> user = userRepository.findByNickname(nickname);
             if(user == null ) return "Valid User";
             userList.get(game.get().getId()).add(user.get());
-            System.err.println(userList.get(game.get().getId()).size());
-
+            System.err.println("Room available : "+userList.get(sessionName).size() + " / 8" );
         }
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
             ConnectionType.WEBRTC).build();
@@ -144,18 +142,25 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public void leaveSession(String sessionName, String userId) {
+    public void leaveSession(String sessionName, String nickname) {
         Game game = gameRepositorySupport.findById(sessionName);
-        Optional<User> user = userRepository.findByUserId(userId);
+        Optional<User> user = userRepository.findByNickname(nickname);
+        System.err.println("before leave : " + userList.get(sessionName).size());
         if(user == null ) return;
-        userList.get(sessionName).remove(user);
+        for(User leaveUser : userList.get(sessionName) ){
+            if(leaveUser.getNickname().equals(user.get().getNickname())){
+                userList.get(sessionName).remove(leaveUser);
+                break;
+            }
+        }
+        System.err.println("afeter leave : " + userList.get(sessionName).size());
     }
 
     @Override
-    public boolean toggleReady(String sessionName, String userId) {
+    public boolean toggleReady(String sessionName, String nickname) {
         Game game = gameRepositorySupport.findById(sessionName);
         for(User user : userList.get(sessionName)){
-            if(user.getUserId().equals(userId)){
+            if(user.getNickname().equals(nickname)){
                 user.setReady(!user.isReady());
                 return true;
             }

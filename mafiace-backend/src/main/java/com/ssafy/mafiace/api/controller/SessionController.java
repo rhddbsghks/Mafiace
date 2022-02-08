@@ -45,7 +45,6 @@ public class SessionController {
     private GameController gameController;
 
 
-
     public SessionController(SessionService sessionService, JwtTokenProvider jwtTokenProvider) {
         this.sessionService = sessionService;
         this.jwtTokenProvider = jwtTokenProvider;
@@ -61,10 +60,9 @@ public class SessionController {
     public ResponseEntity<SessionTokenPostRes> openSession(HttpServletRequest request,
         @RequestBody SessionOpenReq sessionOpenReq) {
         String jwtToken = request.getHeader("Authorization").substring(7);
-        String id = jwtTokenProvider.getUserPk(jwtToken);
+        String nickname = jwtTokenProvider.getUserNickname(jwtToken);
         try {
-            System.out.println(id);
-            NewSessionInfo info = sessionService.openSession(id, sessionOpenReq);
+            NewSessionInfo info = sessionService.openSession(nickname, sessionOpenReq);
             // Return the response to the client
             return ResponseEntity.status(201)
                 .body(SessionTokenPostRes.of(201, "Success", info));
@@ -93,9 +91,8 @@ public class SessionController {
         try {
             // Generate a new Connection with the recently created connectionProperties
             String jwtToken = request.getHeader("Authorization").substring(7);
-            String userId = jwtTokenProvider.getUserPk(jwtToken);
-            System.out.println(userId);
-            String token = sessionService.getToken(sessionName, userId);
+            String nickname = jwtTokenProvider.getUserNickname(jwtToken);
+            String token = sessionService.getToken(sessionName, nickname);
             //this.mapSessions.get(sessionName).createConnection(connectionProperties).getToken();
             System.err.println(token);
             // Return the response to the client
@@ -129,17 +126,15 @@ public class SessionController {
     @DeleteMapping("/user")
     @ApiOperation(value = "세션방 나가기", notes = "해당하는 방에서 나가기")
     @ApiResponses({
-        @ApiResponse(code = 204, message = "성공"),
+        @ApiResponse(code = 200, message = "성공"),
     })
     public ResponseEntity<BaseResponseBody> leaveSession(String sessionName, HttpServletRequest request) {
         try {
-            // sessionName이 Game 고유 id 인지? 아니면 openvidu에서 제공하는 고유 id인지?
-            // 만약 openvidu에서 제공하는 id라면,,, PK 교체 또는 unqiue컬림으로 추가해서 매핑할 때 사용
-            String jwtToken = request.getHeader("Authorization").substring(7);
-            String userId = jwtTokenProvider.getUserPk(jwtToken);
-            sessionService.leaveSession(sessionName, userId);
-            return ResponseEntity.status(204)
-                .body(BaseResponseBody.of(204, "Success"));
+            String jwtToken = request.getHeader("Authorization").substring(7); // Id -> 닉네임으로 변경
+            String nickname = jwtTokenProvider.getUserNickname(jwtToken);
+            sessionService.leaveSession(sessionName, nickname);
+            return ResponseEntity.status(200)
+                .body(BaseResponseBody.of(200, "Success"));
         } catch (Exception e) {
             return ResponseEntity.status(500)
                 .body(BaseResponseBody.of(500, "Server Error"));
@@ -157,8 +152,8 @@ public class SessionController {
     public ResponseEntity<BaseResponseBody> toggleReady(String sessionName, HttpServletRequest request){
         try {
             String jwtToken = request.getHeader("Authorization").substring(7);
-            String userId = jwtTokenProvider.getUserPk(jwtToken);
-            if(!sessionService.toggleReady(sessionName, userId))
+            String nickname = jwtTokenProvider.getUserNickname(jwtToken);
+            if(!sessionService.toggleReady(sessionName, nickname))
                 return ResponseEntity.status(501)
                 .body(BaseResponseBody.of(501, "Logic Error"));
             return ResponseEntity.status(204)

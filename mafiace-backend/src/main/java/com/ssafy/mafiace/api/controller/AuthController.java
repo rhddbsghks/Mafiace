@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "인증 API", tags = {"AuthController"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
