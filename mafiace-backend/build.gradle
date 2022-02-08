@@ -56,3 +56,9 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar {
+	archiveBaseName = '-'
+	archiveFileName = 'mafiace-backend.jar'
+	archiveVersion = '0.0.0'
+}
