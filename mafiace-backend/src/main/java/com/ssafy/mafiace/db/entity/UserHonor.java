@@ -1,9 +1,12 @@
 package com.ssafy.mafiace.db.entity;
 
+import com.ssafy.mafiace.game.honor.HonorName;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,8 +28,9 @@ import lombok.ToString;
 public class UserHonor extends BaseEntity{
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "honor_no")
-    int honorNo;
+    HonorName honorNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_unique_id")

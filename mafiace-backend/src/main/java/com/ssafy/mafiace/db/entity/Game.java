@@ -2,6 +2,7 @@ package com.ssafy.mafiace.db.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.GeneratorType;
 
 @Getter
 @ToString
@@ -32,7 +34,6 @@ public class Game extends BaseEntity {
 
     @NotNull
     @Column(name = "room_num")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     int roomNum;
     @NotNull
     @Column(name = "owner_id")
@@ -66,12 +67,22 @@ public class Game extends BaseEntity {
         this.discussionTime = discussionTime;
         this.maxPlayer = maxPlayer;
         this.password = password;
+        this.isActive = false;
+        this.user_List = new ArrayList<>();
     }
-//    @Transient
-//    List<User> user_List = new ArrayList<>();
-//
-//    private void addUserList(User user){
-//        this.user_List.add(user);
-//    }
+    @Transient
+    List<User> user_List;
 
+    public void initUserList(){
+        this.user_List = new ArrayList<>();
+    }
+
+    public void addUserList(User user){
+        this.user_List.add(user);
+    }
+
+
+    public void setRoomStatus(boolean active) {
+        isActive = active;
+    }
 }

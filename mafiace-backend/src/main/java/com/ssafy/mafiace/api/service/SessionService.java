@@ -7,7 +7,12 @@ public interface SessionService {
 
     NewSessionInfo openSession(String ownerId, SessionOpenReq sessionOpenReq) throws Exception;
 
-    String getToken(String sessionName) throws Exception;
+    String getToken(String sessionName, String userId) throws Exception;
+
 
     void closeSession(String sessionName) throws Exception;
+
+    void leaveSession(String sessionName, String request);
+
+    boolean toggleReady(String sessionName, String userId);
 }

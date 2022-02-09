@@ -1,5 +1,6 @@
 package com.ssafy.mafiace.db.entity;
 
+import com.ssafy.mafiace.game.role.RoleName;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -23,11 +24,14 @@ import lombok.ToString;
 public class UserGameLog extends BaseEntity{
 
     @NotNull @Column(name = "job")
-    int job;
+    RoleName roleName;
+
+    @NotNull @Column(name = "is_win")
+    boolean isWin;
 
     @Builder
-    private UserGameLog(int job){
-        this.job = job;
+    private UserGameLog(RoleName roleName){
+        this.roleName = roleName;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

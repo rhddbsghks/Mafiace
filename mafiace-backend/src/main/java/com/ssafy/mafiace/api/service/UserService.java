@@ -23,4 +23,5 @@ public interface UserService {
     User deleteAccount(User user);
 
     User restoreAccount(User user);
+
 }

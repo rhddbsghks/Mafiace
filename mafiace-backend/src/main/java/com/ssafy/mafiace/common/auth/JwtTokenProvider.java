@@ -60,6 +60,12 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
+    // 토큰에서 닉네임 정보 추출
+    public String getUserNickname(String token) {
+        return (String) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("nickname");
+    }
+
+
     // Request의 Header에서 token 값을 가져옴. "Authorization" : "TOKEN값'
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

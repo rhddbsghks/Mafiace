@@ -2,13 +2,26 @@ package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.response.GameRoomRes;
 import com.ssafy.mafiace.api.service.GameService;
+import com.ssafy.mafiace.api.service.SessionService;
 import com.ssafy.mafiace.db.entity.Game;
+import com.ssafy.mafiace.db.manager.MafiaceManager;
+import com.ssafy.mafiace.game.role.Mafia;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import javax.annotation.PostConstruct;
+import javax.mail.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +34,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class GameController {
 
     private GameService gameService;
+
+    @Autowired
+    private SimpMessagingTemplate template;
+
+    private Map<String, MafiaceManager> gameManagerMap;
+
+    @Autowired
+    private SessionService sessionService;
+
+    @PostConstruct
+    public void init() {
+        gameManagerMap = new ConcurrentHashMap<>();
+    }
 
     public GameController(GameService gameService) {
         this.gameService = gameService;
@@ -39,4 +65,32 @@ public class GameController {
         return ResponseEntity.status(200)
             .body(GameRoomRes.of(200, "Success", list));
     }
+
+    // 모든 사람이 레디했을 때 요청 ( game start 버튼 활성화 )
+    public void allReadyBroadcasting(String roomId){
+        template.convertAndSend("/from/mafiace/allReady/"+roomId,true);
+    }
+
+    // 게임 시작
+    @MessageMapping("/mafiace/start/{roomId}") // 발행경로
+    @SendTo("/topic/mafiace/start/{roomId}") // 구독경로
+    public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception{
+        gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService));
+    }
+
+    //게임 종료
+    @MessageMapping("/mafiace/end/{roomId}")
+    @SendTo("/topic/mafiace/end/{roomId}")
+    public void gameEndBroadcasting(@DestinationVariable String roomId) throws Exception{
+        gameManagerMap.remove(roomId);
+    }
+
+
+
+
+
+
+
+
+
 }

@@ -1,10 +1,14 @@
 package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.request.UserLoginPostReq;
+import com.ssafy.mafiace.api.response.SessionTokenPostRes;
+import com.ssafy.mafiace.api.response.UserInfoRes;
 import com.ssafy.mafiace.api.response.UserLoginPostRes;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.auth.JwtTokenProvider;
 import com.ssafy.mafiace.db.entity.User;
+import io.openvidu.java.client.ConnectionProperties;
+import io.openvidu.java.client.ConnectionType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -36,15 +40,22 @@ public class AuthController {
         @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
         @ApiResponse(code = 401, message = "잘못된 비밀번호"),
         @ApiResponse(code = 404, message = "존재하지 않는 아이디"),
+        @ApiResponse(code = 214, message = "탈퇴 신청 중인 계정")
     })
     public ResponseEntity<UserLoginPostRes> login(
         @ApiParam(value = "로그인 요청 정보", required = true) @RequestBody UserLoginPostReq loginReq) {
         User user = userService.getUserByUserId(loginReq.getUserId());
+        System.err.println("Userid : "+loginReq.getUserId());
+        System.err.println("password"+loginReq.getPassword());
 
         // 존재하지 않은 아이디인 경우, 404로 응답.
         if (user == null) {
             return ResponseEntity.status(404)
-                .body(UserLoginPostRes.of(404, "존재하지 않는 ID입니다.", null));
+                .body(UserLoginPostRes.of(404, "존재하지 않는 계정입니다.", null));
+        }else if(user.isDeleted()){
+            System.err.println(" 2 0 4 Error : 탈퇴신청중인계정입니다.");
+            return ResponseEntity.status(214)
+                .body(UserLoginPostRes.of(214, "탈퇴 신청중인 계정입니다.", null));
         }
 
         // 입력된 비밀번호와 디비에 저장된 유저의 암호화된 비밀번호가 같은지 확인
@@ -60,4 +71,5 @@ public class AuthController {
                 .body(UserLoginPostRes.of(401, "비밀번호가 틀렸습니다.", null));
         }
     }
+
 }

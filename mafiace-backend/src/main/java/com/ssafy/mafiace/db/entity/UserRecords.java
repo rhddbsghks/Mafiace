@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.checkerframework.common.reflection.qual.ClassBound;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
@@ -46,21 +47,37 @@ public class UserRecords {
     @Column(name = "doctor_count")
     int doctorCount;
     @ColumnDefault("0")
+    @Column(name = "police_count")
+    int policeCount;
+    @ColumnDefault("0")
+    @Column(name = "save_count")
+    int saveCount;
+    @ColumnDefault("0")
+    @Column(name = "investigate_count")
+    int investigateCount;
+    @ColumnDefault("0")
+    @Column(name = "kill_count")
+    int killCount;
+    @ColumnDefault("0")
     @Column(name = "winner_streak")
     int winnerStreak;
 
     @Builder
     private UserRecords() {
         this.winCount = 0;
-        this.loseCount = 0;
-        this.mafiaCount = 0;
-        this.doctorCount = 0;
-        this.winnerStreak = 0;
+        this.loseCount =0;
+        this.mafiaCount =0;
+        this.doctorCount =0;
+        this.policeCount =0;
+        this.winnerStreak =0;
+        this.investigateCount =0;
+        this.killCount =0;
+        this.saveCount =0;
     }
 
     @OneToOne(fetch = FetchType.EAGER)
     @MapsId
-    @JoinColumn(name = "user_unique_id", referencedColumnName = "user_user_unique_name")
+    @JoinColumn(name = "user_unique_id", referencedColumnName = "user_user_unique_id")
     private User user;
 
 }
