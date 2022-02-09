@@ -32,4 +32,14 @@ public class GameServiceImpl implements GameService {
         }
         return null;
     }
+
+    @Override
+    public boolean checkPassword(String sessionName, String password) {
+        Game game = gameRepositorySupport.findById(sessionName);
+
+        if(game.getPassword().equals(password))
+            return true;
+
+        return false;
+    }
 }
