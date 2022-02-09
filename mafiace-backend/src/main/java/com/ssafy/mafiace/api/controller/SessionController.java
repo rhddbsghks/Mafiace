@@ -82,6 +82,10 @@ public class SessionController {
     public ResponseEntity<SessionTokenPostRes> getToken(
         @ApiParam(value = "세션방 ID", required = true) String sessionName, HttpServletRequest request) {
 
+        if(sessionService.isFull(sessionName))
+            return ResponseEntity.status(409)
+                .body(SessionTokenPostRes.of(409, "인원 가득 찼음", null));
+
         // Build connectionProperties object with the serverData and the role
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
             ConnectionType.WEBRTC).build();

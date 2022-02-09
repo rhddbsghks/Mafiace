@@ -9,10 +9,13 @@ public interface SessionService {
 
     String getToken(String sessionName, String userId) throws Exception;
 
-
     void closeSession(String sessionName) throws Exception;
 
     void leaveSession(String sessionName, String request);
 
     boolean toggleReady(String sessionName, String userId);
+
+    int getParticipantCount(String sessionName);
+
+    boolean isFull(String sessionName);
 }

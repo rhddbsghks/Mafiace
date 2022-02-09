@@ -3,6 +3,7 @@ package com.ssafy.mafiace.api.controller;
 import com.ssafy.mafiace.api.response.GameRoomRes;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
+import com.ssafy.mafiace.common.model.GameInfo;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.manager.MafiaceManager;
 import com.ssafy.mafiace.game.role.Mafia;
@@ -10,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -59,38 +61,35 @@ public class GameController {
         @ApiResponse(code = 500, message = "Server Error"),
     })
     public ResponseEntity<GameRoomRes> getGameList(int maxPlayer, int isPublic) {
+        List<GameInfo> gameInfoList = new ArrayList<>();
 
         List<Game> list = gameService.getGameList(maxPlayer, isPublic);
+        for (Game game : list) {
+            gameInfoList.add(GameInfo.of(game, sessionService.getParticipantCount(game.getId())));
+        }
 
         return ResponseEntity.status(200)
-            .body(GameRoomRes.of(200, "Success", list));
+            .body(GameRoomRes.of(200, "Success", gameInfoList));
     }
 
     // 모든 사람이 레디했을 때 요청 ( game start 버튼 활성화 )
-    public void allReadyBroadcasting(String roomId){
-        template.convertAndSend("/from/mafiace/allReady/"+roomId,true);
+    public void allReadyBroadcasting(String roomId) {
+        template.convertAndSend("/from/mafiace/allReady/" + roomId, true);
     }
 
     // 게임 시작
     @MessageMapping("/mafiace/start/{roomId}") // 발행경로
     @SendTo("/topic/mafiace/start/{roomId}") // 구독경로
-    public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception{
+    public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception {
         gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService));
     }
 
     //게임 종료
     @MessageMapping("/mafiace/end/{roomId}")
     @SendTo("/topic/mafiace/end/{roomId}")
-    public void gameEndBroadcasting(@DestinationVariable String roomId) throws Exception{
+    public void gameEndBroadcasting(@DestinationVariable String roomId) throws Exception {
         gameManagerMap.remove(roomId);
     }
-
-
-
-
-
-
-
 
 
 }
