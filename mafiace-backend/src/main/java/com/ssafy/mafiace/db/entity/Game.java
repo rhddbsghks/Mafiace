@@ -22,6 +22,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GeneratorType;
 
 @Getter
+@Setter
 @ToString
 @Entity
 @Table(name = "game")
