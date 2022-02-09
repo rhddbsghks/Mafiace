@@ -117,14 +117,12 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     if (publisher && subscribers.length === 0) {
       console.log("방 삭제");
       deleteRoom();
-    }else{
+    } else {
       axios.delete("/mafiace/api/session/user", {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         params: { sessionName: gameInfo.id },
       });
     }
-
-
 
     if (session) {
       session.disconnect();

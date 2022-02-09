@@ -78,30 +78,31 @@ public class SessionServiceImpl implements SessionService {
         String token = session.createConnection(connectionProperties).getToken();
         // Store the session and the token in our collections
         this.mapSessions.put(gameId, session);
-        for(int i=1; i<100; i++){
-            if(!availableRoomNum[i]){
+        for (int i = 1; i < 100; i++) {
+            if (!availableRoomNum[i]) {
                 roomNum = i;
                 break;
             }
         }
         Game game =
-        gameRepository.save(Game.builder()
-            .gameId(gameId)
-            .roomNum(roomNum)
-            .ownerId(ownerNickname)
-            .gameTitle(sessionOpenReq.getGameTitle())
-            .discussionTime(sessionOpenReq.getDiscussionTime())
-            .maxPlayer(sessionOpenReq.getMaxPlayer())
-            .isPublic(sessionOpenReq.isPublic())
+            gameRepository.save(Game.builder()
+                .gameId(gameId)
+                .roomNum(roomNum)
+                .ownerId(ownerNickname)
+                .gameTitle(sessionOpenReq.getGameTitle())
+                .discussionTime(sessionOpenReq.getDiscussionTime())
+                .maxPlayer(sessionOpenReq.getMaxPlayer())
+                .isPublic(sessionOpenReq.isPublic())
 //            .isActive(false)
-            .password((sessionOpenReq.getPassword()))
-            .build());
+                .password((sessionOpenReq.getPassword()))
+                .build());
         availableRoomNum[roomNum] = true;
 
         Optional<User> user = userRepository.findByNickname(ownerNickname);
         userList.put(gameId, new ArrayList<>());
         userList.get(gameId).add(user.get());
-        System.err.println("Room available : "+userList.get(gameId).size() + " / " + sessionOpenReq.getMaxPlayer());
+        System.err.println("Room available : " + userList.get(gameId).size() + " / "
+            + sessionOpenReq.getMaxPlayer());
         // Return the token
         return NewSessionInfo.of(token, gameId);
     }
@@ -110,18 +111,7 @@ public class SessionServiceImpl implements SessionService {
     public String getToken(String sessionName, String nickname) throws Exception {
         // Session already exists
         System.out.println("Existing session " + sessionName);
-        Optional<Game> game = gameRepository.findById(sessionName);
-        if(game.get() == null) return "Not Found";
-        int maxPlayer = game.get().getMaxPlayer();
-        System.err.println(game.get().toString());
-        if(this.mapSessions.get(sessionName).getConnections().size() >= maxPlayer){
-            return "Session is already full";
-        }else {
-            Optional<User> user = userRepository.findByNickname(nickname);
-            if(user == null ) return "Valid User";
-            userList.get(game.get().getId()).add(user.get());
-            System.err.println("Room available : "+userList.get(sessionName).size() + " / 8" );
-        }
+
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
             ConnectionType.WEBRTC).build();
 
@@ -129,9 +119,11 @@ public class SessionServiceImpl implements SessionService {
         String token = this.mapSessions.get(sessionName).createConnection(connectionProperties)
             .getToken();
 
+        Optional<User> user = userRepository.findByNickname(nickname);
+        userList.get(sessionName).add(user.get());
+
         return token;
     }
-
 
     @Override
     public void closeSession(String sessionName) throws Exception {
@@ -146,9 +138,11 @@ public class SessionServiceImpl implements SessionService {
         Game game = gameRepositorySupport.findById(sessionName);
         Optional<User> user = userRepository.findByNickname(nickname);
         System.err.println("before leave : " + userList.get(sessionName).size());
-        if(user == null ) return;
-        for(User leaveUser : userList.get(sessionName) ){
-            if(leaveUser.getNickname().equals(user.get().getNickname())){
+        if (user == null) {
+            return;
+        }
+        for (User leaveUser : userList.get(sessionName)) {
+            if (leaveUser.getNickname().equals(user.get().getNickname())) {
                 userList.get(sessionName).remove(leaveUser);
                 break;
             }
@@ -159,12 +153,33 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public boolean toggleReady(String sessionName, String nickname) {
         Game game = gameRepositorySupport.findById(sessionName);
-        for(User user : userList.get(sessionName)){
-            if(user.getNickname().equals(nickname)){
+        for (User user : userList.get(sessionName)) {
+            if (user.getNickname().equals(nickname)) {
                 user.setReady(!user.isReady());
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public int getParticipantCount(String sessionName) {
+        return userList.get(sessionName) == null ? 0 : userList.get(sessionName).size();
+    }
+
+    @Override
+    public boolean isFull(String sessionName) {
+        return gameRepositorySupport.findMaxPlayerById(sessionName) == userList.get(
+            sessionName).size();
+    }
+
+    @Override
+    public boolean isExist(String sessionName) {
+
+        if (mapSessions.get(sessionName) == null) {
+            gameRepository.delete(gameRepositorySupport.findById(sessionName));
+            return false;
+        }
+        return true;
     }
 }

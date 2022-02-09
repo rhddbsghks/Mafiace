@@ -30,9 +30,14 @@ public class GameRepositorySupport {
                 qGame.isPublic.eq(isPublic == 1)).orderBy(qGame.roomNum.desc()).fetch();
     }
 
-    public Game findById(String gameId){
+    public Game findById(String gameId) {
         QGame qGame = QGame.game;
 
         return jpaQueryFactory.selectFrom(qGame).where(qGame.id.eq(gameId)).fetchOne();
+    }
+
+    public int findMaxPlayerById(String gameId) {
+        QGame qGame = QGame.game;
+        return jpaQueryFactory.select(qGame.maxPlayer).from(qGame).where(qGame.id.eq(gameId)).fetchOne();
     }
 }
