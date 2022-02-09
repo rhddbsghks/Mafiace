@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -78,18 +79,17 @@ public class GameController {
     }
 
     // 게임 시작
-    @MessageMapping("/mafiace/start/{roomId}") // 발행경로
-    @SendTo("/topic/mafiace/start/{roomId}") // 구독경로
+    @MessageMapping("/start/{roomId}") // 발행경로
+    @SendTo("/topic/{roomId}") // 구독경로
     public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception {
+        System.out.println(roomId+"가 시작하자고 한다");
         gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService));
     }
 
     //게임 종료
-    @MessageMapping("/mafiace/end/{roomId}")
-    @SendTo("/topic/mafiace/end/{roomId}")
+    @MessageMapping("/end/{roomId}")
+    @SendTo("/topic/{roomId}")
     public void gameEndBroadcasting(@DestinationVariable String roomId) throws Exception {
         gameManagerMap.remove(roomId);
     }
-
-
 }
