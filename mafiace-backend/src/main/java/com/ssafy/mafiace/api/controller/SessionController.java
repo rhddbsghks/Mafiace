@@ -44,7 +44,6 @@ public class SessionController {
     @Autowired
     private GameController gameController;
 
-
     public SessionController(SessionService sessionService, JwtTokenProvider jwtTokenProvider) {
         this.sessionService = sessionService;
         this.jwtTokenProvider = jwtTokenProvider;
@@ -82,6 +81,10 @@ public class SessionController {
     public ResponseEntity<SessionTokenPostRes> getToken(
         @ApiParam(value = "세션방 ID", required = true) String sessionName, HttpServletRequest request) {
 
+        if(!sessionService.isExist(sessionName))
+            return ResponseEntity.status(404)
+                .body(SessionTokenPostRes.of(404, "해당하는 세션방 없음", null));
+
         if(sessionService.isFull(sessionName))
             return ResponseEntity.status(409)
                 .body(SessionTokenPostRes.of(409, "인원 가득 찼음", null));
@@ -105,8 +108,10 @@ public class SessionController {
                     SessionTokenPostRes.of(201, "Success", NewSessionInfo.of(token, sessionName)));
         } catch (Exception e) {
 
+            sessionService.isExist(sessionName);
+
             return ResponseEntity.status(404)
-                .body(SessionTokenPostRes.of(404, "해당하는 세션방 없음", null));
+                .body(SessionTokenPostRes.of(404, "서버에러 방없음", null));
         }
     }
 

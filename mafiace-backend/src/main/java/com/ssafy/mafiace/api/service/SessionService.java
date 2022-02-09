@@ -18,4 +18,6 @@ public interface SessionService {
     int getParticipantCount(String sessionName);
 
     boolean isFull(String sessionName);
+
+    boolean isExist(String sessionName);
 }

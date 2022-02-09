@@ -3,7 +3,14 @@ import axios from "axios";
 import styles from "./room.module.css";
 import { Icon } from "semantic-ui-react";
 
-const RoomComp = ({ game, setIngame, ingame, setGameInfo, setToken }) => {
+const RoomComp = ({
+  game,
+  participantCount,
+  setIngame,
+  ingame,
+  setGameInfo,
+  setToken,
+}) => {
   const randomImg = useState(["angry", "happy", "sad", "netural", "panic"])[0];
   const [randomNum, setRandomNum] = useState();
 
@@ -12,6 +19,11 @@ const RoomComp = ({ game, setIngame, ingame, setGameInfo, setToken }) => {
   }, []);
 
   const handleClickRoom = () => {
+    if (participantCount === game.maxPlayer) {
+      alert("자리가 없어요ㅠㅠ");
+      window.location.reload();
+      return;
+    }
     enterRoom();
   };
 
@@ -32,6 +44,10 @@ const RoomComp = ({ game, setIngame, ingame, setGameInfo, setToken }) => {
         } else if (response.status === 403) {
           localStorage.removeItem("jwt");
           alert("요청 권한이 없습니다");
+        } else if (response.status === 409) {
+          alert("자리가 없어요 ㅠㅠ");
+        } else if (response.status === 500) {
+          alert("존재하지 않는 방입니다.");
         }
 
         window.location.reload();
@@ -74,7 +90,9 @@ const RoomComp = ({ game, setIngame, ingame, setGameInfo, setToken }) => {
               <span style={{ color: "#8157a8" }}>WAITING</span>
             )}
           </div>
-          <div>0/{game.maxPlayer}</div>
+          <div>
+            {participantCount}/{game.maxPlayer}
+          </div>
         </div>
       </div>
     </div>

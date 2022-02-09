@@ -111,22 +111,7 @@ public class SessionServiceImpl implements SessionService {
     public String getToken(String sessionName, String nickname) throws Exception {
         // Session already exists
         System.out.println("Existing session " + sessionName);
-        Optional<Game> game = gameRepository.findById(sessionName);
-        if (game.get() == null) {
-            return "Not Found";
-        }
-        int maxPlayer = game.get().getMaxPlayer();
-        System.err.println(game.get().toString());
-        if (this.mapSessions.get(sessionName).getConnections().size() >= maxPlayer) {
-            return "Session is already full";
-        } else {
-            Optional<User> user = userRepository.findByNickname(nickname);
-            if (user == null) {
-                return "Valid User";
-            }
-            userList.get(game.get().getId()).add(user.get());
-            System.err.println("Room available : " + userList.get(sessionName).size() + " / 8");
-        }
+
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
             ConnectionType.WEBRTC).build();
 
@@ -134,9 +119,11 @@ public class SessionServiceImpl implements SessionService {
         String token = this.mapSessions.get(sessionName).createConnection(connectionProperties)
             .getToken();
 
+        Optional<User> user = userRepository.findByNickname(nickname);
+        userList.get(sessionName).add(user.get());
+
         return token;
     }
-
 
     @Override
     public void closeSession(String sessionName) throws Exception {
@@ -177,12 +164,22 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public int getParticipantCount(String sessionName) {
-        return userList.get(sessionName).size();
+        return userList.get(sessionName) == null ? 0 : userList.get(sessionName).size();
     }
 
     @Override
     public boolean isFull(String sessionName) {
-        return gameRepositorySupport.findById(sessionName).getMaxPlayer() == userList.get(
+        return gameRepositorySupport.findMaxPlayerById(sessionName) == userList.get(
             sessionName).size();
+    }
+
+    @Override
+    public boolean isExist(String sessionName) {
+
+        if (mapSessions.get(sessionName) == null) {
+            gameRepository.delete(gameRepositorySupport.findById(sessionName));
+            return false;
+        }
+        return true;
     }
 }

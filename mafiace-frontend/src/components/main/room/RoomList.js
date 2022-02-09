@@ -217,8 +217,9 @@ const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
               >
                 {list.slice(page * 6, page * 6 + 6).map((item) => (
                   <RoomComp
-                    key={item.id}
-                    game={item}
+                    key={item.game.id}
+                    game={item.game}
+                    participantCount={item.participantCount}
                     setIngame={setIngame}
                     setToken={setToken}
                     ingame={ingame}
