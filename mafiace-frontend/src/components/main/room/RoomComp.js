@@ -58,7 +58,7 @@ const RoomComp = ({ game, setIngame, ingame, setGameInfo, setToken }) => {
       >
         <div className={styles["game-header"]}>
           <div style={{ margin: "5.5%" }}>
-            <span style={{ fontSize: "0.8em" }}>
+            <span style={{ fontSize: "0.7em" }}>
               {game.roomNum}&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
             <span style={{ fontSize: "34px" }}>{game.gameTitle}</span>
