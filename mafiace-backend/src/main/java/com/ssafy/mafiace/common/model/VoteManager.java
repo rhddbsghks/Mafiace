@@ -1,4 +1,4 @@
-package com.ssafy.mafiace.db.manager;
+package com.ssafy.mafiace.common.model;
 
 import com.ssafy.mafiace.game.Player;
 import com.ssafy.mafiace.api.response.GamePlayerRes;

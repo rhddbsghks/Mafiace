@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Dropdown, Form, Modal } from "semantic-ui-react";
-import axios from "axios";
+
 import styles from "./room.module.css";
 import "./room-make.css";
 import jwt from "jwt-decode";
+import CheckCam from "./CheckCam";
 
 const RoomMakeBtn = ({ setGameInfo, setToken, setIngame, ingame }) => {
   const defaultGameTitle = [
@@ -34,6 +35,8 @@ const RoomMakeBtn = ({ setGameInfo, setToken, setIngame, ingame }) => {
   const [isPublic, setIsPublic] = useState(true);
   const [discussionTime, setDiscussionTime] = useState(60);
   const [maxPlayer, setMaxPlayer] = useState(8);
+  const [checkCam, setCheckCam] = useState(false);
+  const [body, setBody] = useState({});
 
   const inputTitle = useRef();
   const inputPassword = useRef();
@@ -41,7 +44,8 @@ const RoomMakeBtn = ({ setGameInfo, setToken, setIngame, ingame }) => {
   const makeRoom = () => {
     if (inputTitle.current.value === "") return;
     if (!isPublic && inputPassword.current.value === "") return;
-    let body = {
+
+    setBody({
       ownerId: jwt(localStorage.getItem("jwt")).sub,
       gameTitle: inputTitle.current.value,
       ownerId: jwt(localStorage.getItem("jwt")).sub,
@@ -49,27 +53,10 @@ const RoomMakeBtn = ({ setGameInfo, setToken, setIngame, ingame }) => {
       discussionTime,
       maxPlayer,
       password: inputPassword.current.value,
-    };
+    });
 
-    axios
-      .post("/mafiace/api/session/token", body, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
-      })
-      .then((res) => {
-        body.id = res.data.newSessionInfo.gameId;
-        body.password = "";
-        setGameInfo(body);
-        setToken(res.data.newSessionInfo.token);
-        setIngame(!ingame);
-      })
-      .catch(({ response }) => {
-        console.log(response);
-        if (response.status === 403) {
-          localStorage.removeItem("jwt");
-          window.location.reload();
-          alert("요청 권한이 없습니다");
-        }
-      });
+    setOpenRoomMake(false);
+    setCheckCam(true);
   };
 
   useEffect(() => {
@@ -89,6 +76,16 @@ const RoomMakeBtn = ({ setGameInfo, setToken, setIngame, ingame }) => {
 
   return (
     <>
+      <CheckCam
+        checkCam={checkCam}
+        setCheckCam={setCheckCam}
+        setIngame={setIngame}
+        ingame={ingame}
+        isOwner={true}
+        body={body}
+        setToken={setToken}
+        setGameInfo={setGameInfo}
+      ></CheckCam>
       <Modal
         dimmer="inverted"
         size="tiny"

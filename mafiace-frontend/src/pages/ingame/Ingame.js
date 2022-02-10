@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { OpenVidu } from "openvidu-browser";
 import SockJsClient from "react-stomp";
-import HeaderIngameCompo from "../../components/ingame/headerIngame/HeaderIngameCompo";
 import Loader from "../../components/common/Loader";
 import UserVideoComponent from "../../components/ingame/ingame/UserVideoComponent";
 import Day from "../../components/ingame/ingame/Day";
@@ -20,7 +19,6 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   const [day, setDay] = useState(false);
   const [night, setNight] = useState(false);
-  const [nickName, setNickName] = useState("he");
   const [session, setSession] = useState();
   const [mainStreamManager, setMainStreamManager] = useState();
   const [publisher, setPublisher] = useState();
@@ -28,13 +26,18 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [loading, setLoding] = useState(true);
   const [topics, setTopics] = useState();
   const [start, setStart] = useState(false);
+  const [toggle, setToggle] = useState(false);
 
+  const [time, setTime] = useState(5);
+  const [timer, setTimer] = useState();
+  const [count, setCount] = useState(1);
+  const [head, setHead] = useState(gameInfo.gameTitle);
   const $websocket = useRef(null);
 
+  const userId = jwt(localStorage.getItem("jwt")).sub;
   useEffect(() => {
     // 초기 세팅
     const nickName = jwt(localStorage.getItem("jwt")).nickname;
-    setNickName(nickName);
     setTopics([`/topic/${gameInfo.id}`, `/topic/${nickName}`]);
     // --- 2) Init a session ---
     let mySession = OV.initSession();
@@ -109,6 +112,37 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     };
   }, []);
 
+  useEffect(() => {
+    clearInterval(timer);
+    if (start) {
+      setTimer(
+        setInterval(() => {
+          setTime((prev) => prev - 1);
+        }, 1000)
+      );
+    }
+  }, [toggle]);
+
+  useEffect(() => {
+    if (time <= 0) {
+      clearInterval(timer);
+      if (gameInfo.ownerId === userId) {
+        if (day) {
+          // 낮->밤
+          toNight();
+        } else if (night) {
+          toDay();
+        }
+      }
+    }
+  }, [time]);
+
+  const toDay = () => {
+    $websocket.current.sendMessage(`/app/day/${gameInfo.id}`);
+  };
+  const toNight = () => {
+    $websocket.current.sendMessage(`/app/night/${gameInfo.id}`);
+  };
   const deleteSubscriber = (streamManager) => {
     setSubscribers((subs) => {
       let index = subs.indexOf(streamManager, 0);
@@ -153,7 +187,6 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   };
 
   const handleClick = () => {
-    console.log("클릭");
     console.log(publisher);
     console.log(subscribers);
     console.log(mainStreamManager);
@@ -200,7 +233,22 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
             onMessage={(msg) => {
               if (msg === "start") {
                 setStart(true);
-                console.log(msg);
+                setDay(true);
+                setToggle(!toggle);
+                setHead("낮이 왔습니다.");
+              } else if (msg === "day") {
+                setNight(false);
+                setDay(true);
+                setToggle(!toggle);
+                setTime(5);
+                setCount((prev) => prev + 1);
+                setHead("낮이 왔습니다.");
+              } else if (msg === "night") {
+                setDay(false);
+                setNight(true);
+                setToggle(!toggle);
+                setTime(5);
+                setHead("밤이 왔습니다.");
               }
             }}
             ref={$websocket}
@@ -208,8 +256,6 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
           {day ? <Day></Day> : null}
           {night ? <Night></Night> : null}
-
-          <HeaderIngameCompo gameInfo={gameInfo} start={start} />
 
           <div
             id="session"
@@ -223,21 +269,72 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               width: "100%",
             }}
           >
-            <div id="session-header">
-              <h1 id="session-title">{nickName}</h1>
-              <input
-                className="btn btn-large btn-danger"
-                type="button"
-                id="buttonLeaveSession"
-                onClick={leaveSession}
-                value="Leave session"
-              />
-              <button onClick={handleClick}>버튼</button>
-              <button onClick={handleStart}>START</button>
-              <button onClick={handleDay}>낮 배경 켜기/끄기</button>
-              <button onClick={handleNight}>밤 배경 켜기/끄기</button>
+            {/* 인게임 헤더 */}
+            <div
+              id="session-header"
+              style={{
+                display: "flex",
+                width: "95%",
+                height: "15%",
+                margin: "auto",
+                justifyContent: "space-between",
+              }}
+            >
+              {/* 로고 */}
+              <div
+                style={{
+                  width: "20%",
+                }}
+              >
+                <h1 style={{ margin: 0, zIndex: "0" }}>Mafiace</h1>
+              </div>
+
+              {/* 메세지 영역 */}
+              <div
+                style={{
+                  width: "50%",
+                  backgroundColor: "red",
+                  justifyContent: "space-between",
+                }}
+              >
+                <span
+                  style={{
+                    justifyContent: "space-between",
+                    fontSize: "3em",
+                    margin: "auto",
+                    position: "relative",
+                    top: "40%",
+                  }}
+                >
+                  {start ? <span>Day {count}</span> : null} {head}
+                </span>
+              </div>
+
+              {/* 버튼 타이머 영역 */}
+              <div
+                style={{
+                  width: "20%",
+                }}
+              >
+                {" "}
+                <button onClick={handleClick}>버튼</button>
+                {gameInfo.ownerId === userId && !start ? (
+                  <button onClick={handleStart}>START</button>
+                ) : null}
+                {/* <button onClick={handleDay}>낮 배경 켜기/끄기</button>
+                <button onClick={handleNight}>밤 배경 켜기/끄기</button> */}
+                <input
+                  className="btn btn-large btn-danger"
+                  type="button"
+                  id="buttonLeaveSession"
+                  onClick={leaveSession}
+                  value="Leave session"
+                />
+                {day || night ? <h2>남은 시간 : {time}</h2> : null}
+              </div>
             </div>
 
+            {/* 비디오 영역 */}
             <div
               id="video-container"
               className="col-md-6"
