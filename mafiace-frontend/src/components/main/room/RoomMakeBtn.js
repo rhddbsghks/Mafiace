@@ -3,6 +3,7 @@ import { Dropdown, Form, Modal } from "semantic-ui-react";
 import axios from "axios";
 import styles from "./room.module.css";
 import "./room-make.css";
+import jwt from "jwt-decode";
 
 const RoomMakeBtn = ({ setGameInfo, setToken, setIngame, ingame }) => {
   const defaultGameTitle = [
@@ -42,6 +43,7 @@ const RoomMakeBtn = ({ setGameInfo, setToken, setIngame, ingame }) => {
     if (!isPublic && inputPassword.current.value === "") return;
     let body = {
       gameTitle: inputTitle.current.value,
+      ownerId: jwt(localStorage.getItem("jwt")).sub,
       public: isPublic,
       discussionTime,
       maxPlayer,

@@ -165,7 +165,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
         <Loader />
       ) : (
         <>
-          <HeaderIngame />
+          <HeaderIngame gameInfo={gameInfo} />
           <div id="session">
             <div id="session-header">
               <h1 id="session-title">{nickName}</h1>
