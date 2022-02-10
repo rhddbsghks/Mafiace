@@ -45,7 +45,8 @@ const CheckCam = ({
       return;
     }
 
-    setIngame(!ingame);
+    if (isOwner) handleCamOff();
+    else setIngame(!ingame);
     clearInterval(faceRecog);
   };
 
@@ -103,7 +104,7 @@ const CheckCam = ({
           let faces = detections[0].expressions;
           faces.neutral = faces.neutral * 0.5;
           faces.happy = faces.happy * 0.8;
-          faces.angry = faces.angry * 15;
+          faces.angry = faces.angry * 5;
           faces.surprised = faces.surprised + faces.fearful;
           faces.sad = faces.sad + faces.disgusted;
           faces.sad = faces.sad * 5;
