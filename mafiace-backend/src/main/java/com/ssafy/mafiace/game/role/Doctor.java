@@ -10,8 +10,8 @@ public class Doctor extends Role{
         super(RoleName.Doctor);
     }
 
-    public void sugery(Player player){
-        player.Sergery();
+    public void surgery(Player player){
+        player.surgery();
     }
 
 }
