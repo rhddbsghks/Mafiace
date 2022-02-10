@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { OpenVidu } from "openvidu-browser";
-
+import SockJsClient from "react-stomp";
 import HeaderIngame from "./HeaderIngame";
 import Loader from "../../components/common/Loader";
 import UserVideoComponent from "../../components/ingame/ingame/UserVideoComponent";
@@ -22,10 +22,15 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [publisher, setPublisher] = useState();
   const [subscribers, setSubscribers] = useState([]);
   const [loading, setLoding] = useState(true);
+  const [topics, setTopics] = useState();
+
+  const $websocket = useRef(null);
 
   useEffect(() => {
+    // 초기 세팅
     const nickName = jwt(localStorage.getItem("jwt")).nickname;
     setNickName(nickName);
+    setTopics([`/topic/${gameInfo.id}`, `/topic/${nickName}`]);
 
     // --- 2) Init a session ---
     let mySession = OV.initSession();
@@ -150,6 +155,11 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     console.log(mainStreamManager);
   };
 
+  const handleStart = () => {
+    console.log("====================START======================");
+    $websocket.current.sendMessage(`/app/start/${gameInfo.id}`);
+  };
+
   const deleteRoom = () => {
     console.log(gameInfo);
 
@@ -165,6 +175,21 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
         <Loader />
       ) : (
         <>
+          <SockJsClient
+            url="http://localhost:8080/mafiace/ws"
+            topics={topics}
+            onConnect={() => {
+              console.log("게임방 소켓 연결");
+            }}
+            onDisconnect={() => {
+              console.log("게임방 소켓 종료");
+            }}
+            onMessage={(msg) => {
+              // 내가 메세지를 보낼 때 do Something
+            }}
+            ref={$websocket}
+          />
+
           <HeaderIngame />
           <div id="session">
             <div id="session-header">
@@ -177,9 +202,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 value="Leave session"
               />
               <button onClick={handleClick}>버튼</button>
+              <button onClick={handleStart}>START</button>
             </div>
 
-            <div id="video-container" className="col-md-6 scrollbar">
+            <div id="video-container" className="col-md-6">
               {publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
