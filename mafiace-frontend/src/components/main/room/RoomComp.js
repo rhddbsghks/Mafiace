@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./room.module.css";
 import { Icon, Modal, Form } from "semantic-ui-react";
+import CheckCam from "./CheckCam";
 
 const RoomComp = ({
   game,
@@ -11,13 +12,20 @@ const RoomComp = ({
   setGameInfo,
   setToken,
 }) => {
-  const randomImg = useState(["angry", "happy", "sad", "netural", "panic"])[0];
+  const randomImg = useState([
+    "angry",
+    "happy",
+    "sad",
+    "neutral",
+    "surprised",
+  ])[0];
   const [randomNum, setRandomNum] = useState();
   const [openPasswordModal, setOpenPasswordModal] = useState(false);
   const [password, setPassword] = useState("");
+  const [checkCam, setCheckCam] = useState(false);
 
   useEffect(() => {
-    setRandomNum((cur) => Math.floor(Math.random() * 10 + 1) % 5);
+    setRandomNum((cur) => Math.floor(Math.random() * 5));
   }, []);
 
   const handleClickRoom = () => {
@@ -55,7 +63,7 @@ const RoomComp = ({
       .then(({ data }) => {
         setToken(data.newSessionInfo.token);
         setGameInfo(game);
-        setIngame(!ingame);
+        setCheckCam(true);
       })
       .catch(({ response }) => {
         if (response.status === 404) {
@@ -75,6 +83,12 @@ const RoomComp = ({
 
   return (
     <>
+      <CheckCam
+        checkCam={checkCam}
+        setCheckCam={setCheckCam}
+        setIngame={setIngame}
+        ingame={ingame}
+      ></CheckCam>
       <Modal
         dimmer="inverted"
         size="tiny"
