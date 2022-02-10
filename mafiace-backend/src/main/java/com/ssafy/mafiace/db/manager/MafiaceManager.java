@@ -21,16 +21,29 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.tomcat.jni.Local;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Getter
 @Setter
 public class MafiaceManager {
 
+    @Autowired
     private GameRepository gameRepository;
 
+    @Autowired
     private GameService gameService;
 
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserRecordsRepositorySupport userRecordsRepositorySupport;
+
+    @Autowired
+    private UserRecordsRepository userRecordsRepository;
+
+    @Autowired
+    private GameLogService gameLogService;
 
     // 게임 내에 사용되는 내부 로직
 
@@ -51,9 +64,10 @@ public class MafiaceManager {
         this.gameId = gameId;
         this.room = gameRepository.findGameById(gameId);
         this.sessionService = sessionService;
-        this.userList = gameService.getUserListById(gameId); // roomId == gameId ?
+        this.userList = sessionService.getUserList(gameId); // roomId == gameId
         this.players = new GamePlayerRes(userList);
         this.room.setRoomStatus(true);
+        this.startTime = LocalDateTime.now();
 
 //      votemanager 생성필요
     }
@@ -63,14 +77,11 @@ public class MafiaceManager {
     }
 
 
-    public UserRecordsRepositorySupport userRecordsRepositorySupport;
-    public UserRecordsRepository userRecordsRepository;
-    public GameLogService gameLogService;
     // 게임 종료 후 Log 저장
     public boolean saveRecord(){
         endTime = LocalDateTime.now();
         Duration duration = Duration.between(this.startTime, this.endTime);
-        System.err.println(duration);
+        System.err.println("PlayTime : " + duration);
         List<Map<String, String>> GameLogs = this.players.makeGameLog();
         for(Map<String, String> gameLog : GameLogs){
             // GameLog로 저장할 것과 userRecords로 저장할것 나눠서 저장
@@ -86,6 +97,4 @@ public class MafiaceManager {
         gameRepository.deleteById(this.room.getId());
         return true;
     }
-
-
 }

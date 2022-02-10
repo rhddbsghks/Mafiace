@@ -182,4 +182,8 @@ public class SessionServiceImpl implements SessionService {
         }
         return true;
     }
+    public List<User> getUserList(String sessionName) {
+        return userList.get(sessionName);
+    }
+
 }
