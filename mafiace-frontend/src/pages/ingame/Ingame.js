@@ -254,7 +254,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   width: "20%",
                 }}
               >
-                <h1 style={{ margin: 0, zIndex: "0" }}>HeaderIngame__Compo</h1>
+                <h1 style={{ margin: 0, zIndex: "0" }}>Mafiace</h1>
               </div>
 
               {/* 메세지 영역 */}
