@@ -39,10 +39,8 @@ const OpenViduVideoComponen = ({ streamManager }) => {
       if (!detections[0]) {
         setChk(false);
       } else {
-        setFaceExpressions(detections[0].expressions);
-        setArrExpressions(Object.entries(faceExpressions));
-        // console.log(detections[0].expressions);
         setChk(true);
+        setFaceExpressions(detections[0].expressions);
       }
     }, 1000);
   };
@@ -63,17 +61,28 @@ const OpenViduVideoComponen = ({ streamManager }) => {
   }, []);
 
   const clickBtn = () => {
-    // console.log(faceExpressions);
     if (chk) {
-      console.log(arrExpressions);
-      // const valSort = arrExpressions.sort(([, a], [, b]) => b - a);
+      // setArrExpressions(Object.entries(faceExpressions));
+      // const valSort = Object.entries(faceExpressions).sort(
+      //   ([, a], [, b]) => b - a
+      // );
       // setTopEmotion(valSort[0][0]);
-      // console.log(valSort);
-      // console.log(topEmotion);
+      console.log(arrExpressions);
+      console.log(topEmotion);
     } else {
       console.log("face is not detectied");
     }
   };
+
+  useEffect(() => {
+    setArrExpressions(Object.entries(faceExpressions));
+  }, [faceExpressions]);
+  useEffect(() => {
+    const valSort = Object.entries(faceExpressions).sort(
+      ([, a], [, b]) => b - a
+    );
+    setTopEmotion(valSort[0][0]);
+  }, [arrExpressions]);
 
   return (
     <>
