@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { OpenVidu } from "openvidu-browser";
 import SockJsClient from "react-stomp";
-import HeaderIngameCompo from "../../components/ingame/headerIngame/HeaderIngameCompo";
 import Loader from "../../components/common/Loader";
 import UserVideoComponent from "../../components/ingame/ingame/UserVideoComponent";
 import Day from "../../components/ingame/ingame/Day";
@@ -20,7 +19,6 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   const [day, setDay] = useState(false);
   const [night, setNight] = useState(false);
-  const [nickName, setNickName] = useState("he");
   const [session, setSession] = useState();
   const [mainStreamManager, setMainStreamManager] = useState();
   const [publisher, setPublisher] = useState();
@@ -29,12 +27,14 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [topics, setTopics] = useState();
   const [start, setStart] = useState(false);
 
+  const [time, setTime] = useState(10);
+  const [timer, setTimer] = useState();
+
   const $websocket = useRef(null);
 
   useEffect(() => {
     // 초기 세팅
     const nickName = jwt(localStorage.getItem("jwt")).nickname;
-    setNickName(nickName);
     setTopics([`/topic/${gameInfo.id}`, `/topic/${nickName}`]);
     // --- 2) Init a session ---
     let mySession = OV.initSession();
@@ -108,6 +108,22 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
       window.onbeforeunload();
     };
   }, []);
+
+  useEffect(() => {
+    if (start) {
+      setTimer(
+        setInterval(() => {
+          setTime((prev) => prev - 1);
+        }, 1000)
+      );
+    }
+  }, [start]);
+
+  useEffect(() => {
+    if (time <= 0) {
+      clearInterval(timer);
+    }
+  }, [time]);
 
   const deleteSubscriber = (streamManager) => {
     setSubscribers((subs) => {
@@ -209,8 +225,6 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
           {day ? <Day></Day> : null}
           {night ? <Night></Night> : null}
 
-          <HeaderIngameCompo gameInfo={gameInfo} start={start} />
-
           <div
             id="session"
             style={{
@@ -223,21 +237,70 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               width: "100%",
             }}
           >
-            <div id="session-header">
-              <h1 id="session-title">{nickName}</h1>
-              <input
-                className="btn btn-large btn-danger"
-                type="button"
-                id="buttonLeaveSession"
-                onClick={leaveSession}
-                value="Leave session"
-              />
-              <button onClick={handleClick}>버튼</button>
-              <button onClick={handleStart}>START</button>
-              <button onClick={handleDay}>낮 배경 켜기/끄기</button>
-              <button onClick={handleNight}>밤 배경 켜기/끄기</button>
+            {/* 인게임 헤더 */}
+            <div
+              id="session-header"
+              style={{
+                display: "flex",
+                width: "95%",
+                height: "15%",
+                margin: "auto",
+                justifyContent: "space-between",
+              }}
+            >
+              {/* 로고 */}
+              <div
+                style={{
+                  width: "20%",
+                }}
+              >
+                <h1 style={{ margin: 0, zIndex: "0" }}>HeaderIngame__Compo</h1>
+              </div>
+
+              {/* 메세지 영역 */}
+              <div
+                style={{
+                  width: "50%",
+                  backgroundColor: "red",
+                  justifyContent: "space-between",
+                }}
+              >
+                <span
+                  style={{
+                    justifyContent: "space-between",
+                    fontSize: "3em",
+                    margin: "auto",
+                    position: "relative",
+                    top: "40%",
+                  }}
+                >
+                  뭐든 메세지
+                </span>
+              </div>
+
+              {/* 버튼 타이머 영역 */}
+              <div
+                style={{
+                  width: "20%",
+                }}
+              >
+                {" "}
+                <button onClick={handleClick}>버튼</button>
+                <button onClick={handleStart}>START</button>
+                <button onClick={handleDay}>낮 배경 켜기/끄기</button>
+                <button onClick={handleNight}>밤 배경 켜기/끄기</button>
+                <input
+                  className="btn btn-large btn-danger"
+                  type="button"
+                  id="buttonLeaveSession"
+                  onClick={leaveSession}
+                  value="Leave session"
+                />
+                <h2>{time}</h2>
+              </div>
             </div>
 
+            {/* 비디오 영역 */}
             <div
               id="video-container"
               className="col-md-6"
