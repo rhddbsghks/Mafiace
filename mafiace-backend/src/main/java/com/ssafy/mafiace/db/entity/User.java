@@ -37,7 +37,7 @@ public class User extends BaseEntity implements UserDetails {
     @NotNull
     @Column(name = "email", unique = true)
     String email;
-    @Pattern(regexp = "[a-zA-Z1-9가-힣\\s]{2,10}")
+    @Pattern(regexp = "[a-zA-Z1-9가-힣\\s]{2,8}")
     @NotNull
     @Column(name = "nickname", unique = true)
     String nickname;

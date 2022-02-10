@@ -3,15 +3,23 @@ import OpenViduVideoComponent from "./OvVideo";
 import "./UserVideo.css";
 
 const UserVideoComponent = ({ streamManager }) => {
-  const nickNameTag = streamManager.stream.connection.data;
+  const nickNameTag = JSON.parse(streamManager.stream.connection.data).nickName;
 
   return (
     <div>
       {streamManager !== undefined ? (
         <div className="streamcomponent">
           <OpenViduVideoComponent streamManager={streamManager} />
-          <div>
-            <p>{nickNameTag}</p>
+          <div style={{ width: "11%", height: "5.5%", display: "flex" }}>
+            <span
+              style={{
+                margin: "auto",
+                fontSize: "2em",
+                letterSpacing: "0.2em",
+              }}
+            >
+              {nickNameTag}
+            </span>
           </div>
         </div>
       ) : null}

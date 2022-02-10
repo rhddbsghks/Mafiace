@@ -4,6 +4,8 @@ import SockJsClient from "react-stomp";
 import HeaderIngameCompo from "../../components/ingame/headerIngame/HeaderIngameCompo";
 import Loader from "../../components/common/Loader";
 import UserVideoComponent from "../../components/ingame/ingame/UserVideoComponent";
+import Day from "../../components/ingame/ingame/Day";
+import Night from "../../components/ingame/ingame/Night";
 
 import * as React from "react";
 import axios from "axios";
@@ -16,6 +18,8 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   let OV = new OpenVidu();
 
+  const [day, setDay] = useState(false);
+  const [night, setNight] = useState(false);
   const [nickName, setNickName] = useState("he");
   const [session, setSession] = useState();
   const [mainStreamManager, setMainStreamManager] = useState();
@@ -161,6 +165,14 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     $websocket.current.sendMessage(`/app/start/${gameInfo.id}`);
   };
 
+  const handleDay = () => {
+    setDay((prev) => !prev);
+  };
+
+  const handleNight = () => {
+    setNight((prev) => !prev);
+  };
+
   const deleteRoom = () => {
     console.log(gameInfo);
 
@@ -194,8 +206,23 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
             ref={$websocket}
           />
 
+          {day ? <Day></Day> : null}
+          {night ? <Night></Night> : null}
+
           <HeaderIngameCompo gameInfo={gameInfo} start={start} />
-          <div id="session">
+
+          <div
+            id="session"
+            style={{
+              position: "absolute",
+              zIndex: "10",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              height: "100%",
+              width: "100%",
+            }}
+          >
             <div id="session-header">
               <h1 id="session-title">{nickName}</h1>
               <input
@@ -207,12 +234,25 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               />
               <button onClick={handleClick}>버튼</button>
               <button onClick={handleStart}>START</button>
+              <button onClick={handleDay}>낮 배경 켜기/끄기</button>
+              <button onClick={handleNight}>밤 배경 켜기/끄기</button>
             </div>
 
-            <div id="video-container" className="col-md-6">
+            <div
+              id="video-container"
+              className="col-md-6"
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-around",
+                width: "100%",
+                height: "80%",
+              }}
+            >
               {publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
+                  style={{ margin: "1% 1.5%", width: "22%", height: "40%" }}
                   onClick={() => handleMainVideoStream(publisher)}
                 >
                   <UserVideoComponent streamManager={publisher} />
@@ -222,12 +262,11 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 <div
                   key={i}
                   className="stream-container col-md-6 col-xs-6"
+                  style={{ margin: "1% 1.5%", width: "22%", height: "40%" }}
                   onClick={() => handleMainVideoStream(sub)}
                 >
                   <div>
                     <UserVideoComponent streamManager={sub} />
-
-                    <div>{sub.stream.connection.data}</div>
                   </div>
                 </div>
               ))}
