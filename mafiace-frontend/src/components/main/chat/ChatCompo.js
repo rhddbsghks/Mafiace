@@ -32,7 +32,7 @@ const ChatCompo = () => {
         to: "user",
       })
     );
-    setTypedMessage("");
+    setTypedMessage((prev) => "");
   };
 
   return (
@@ -97,7 +97,7 @@ const ChatCompo = () => {
         </div>
       </div>
       <SockJsClient
-        url="http://localhost:8080/mafiace/chat/"
+        url="http://localhost:8080/mafiace/ws"
         topics={topics}
         onConnect={() => {
           console.log("Connected");

@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, "/mafiace/api/user/userinfo").authenticated()
             .antMatchers("/mafiace/api/session/**").authenticated()
             .antMatchers("/mafiace/api/game/**").authenticated()
+            .antMatchers("/mafiace/api/notice/**").authenticated()
             .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
             .and()
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
