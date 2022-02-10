@@ -110,6 +110,6 @@ public class GameController {
     //타이머 테스트
     @MessageMapping("/timer/{roomId}")
     public void sendToMessage(@DestinationVariable String roomId) {
-        simpMessagingTemplate.convertAndSend("/topic/"+roomId, true);
+        simpMessagingTemplate.convertAndSend("/topic/"+roomId, "start");
     }
 }
