@@ -32,7 +32,7 @@ const ChatCompo = () => {
         to: "user",
       })
     );
-    setTypedMessage("");
+    setTypedMessage((prev) => "");
   };
 
   return (

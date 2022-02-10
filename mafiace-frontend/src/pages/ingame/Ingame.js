@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { OpenVidu } from "openvidu-browser";
 import SockJsClient from "react-stomp";
-import HeaderIngame from "./HeaderIngame";
+import HeaderIngameCompo from "../../components/ingame/headerIngame/HeaderIngameCompo";
 import Loader from "../../components/common/Loader";
 import UserVideoComponent from "../../components/ingame/ingame/UserVideoComponent";
 import Day from "../../components/ingame/ingame/Day";
@@ -27,6 +27,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [subscribers, setSubscribers] = useState([]);
   const [loading, setLoding] = useState(true);
   const [topics, setTopics] = useState();
+  const [start, setStart] = useState(false);
 
   const $websocket = useRef(null);
 
@@ -35,7 +36,6 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     const nickName = jwt(localStorage.getItem("jwt")).nickname;
     setNickName(nickName);
     setTopics([`/topic/${gameInfo.id}`, `/topic/${nickName}`]);
-
     // --- 2) Init a session ---
     let mySession = OV.initSession();
     setSession(mySession);
@@ -161,6 +161,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   const handleStart = () => {
     console.log("====================START======================");
+    $websocket.current.sendMessage(`/app/timer/${gameInfo.id}`);
     $websocket.current.sendMessage(`/app/start/${gameInfo.id}`);
   };
 
@@ -196,8 +197,11 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
             onDisconnect={() => {
               console.log("게임방 소켓 종료");
             }}
-            onMessage={(msg, topic) => {
-              // 메세지가 오면 do Something
+            onMessage={(msg) => {
+              if (msg === "start") {
+                setStart(true);
+                console.log(msg);
+              }
             }}
             ref={$websocket}
           />
@@ -205,7 +209,8 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
           {day ? <Day></Day> : null}
           {night ? <Night></Night> : null}
 
-          <HeaderIngame />
+          <HeaderIngameCompo gameInfo={gameInfo} start={start} />
+
           <div
             id="session"
             style={{

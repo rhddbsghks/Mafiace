@@ -5,6 +5,7 @@ import com.ssafy.mafiace.api.response.GameRoomRes;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
 import com.ssafy.mafiace.common.model.GameInfo;
+import com.ssafy.mafiace.common.model.Message;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.manager.MafiaceManager;
 import io.swagger.annotations.Api;
@@ -37,7 +38,7 @@ public class GameController {
     private GameService gameService;
 
     @Autowired
-    private SimpMessagingTemplate template;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     private Map<String, MafiaceManager> gameManagerMap;
 
@@ -87,7 +88,7 @@ public class GameController {
 
     // 모든 사람이 레디했을 때 요청 ( game start 버튼 활성화 )
     public void allReadyBroadcasting(String roomId) {
-        template.convertAndSend("/from/mafiace/allReady/" + roomId, true);
+        simpMessagingTemplate.convertAndSend("/from/mafiace/allReady/" + roomId, true);
     }
 
     // 게임 시작
@@ -103,5 +104,12 @@ public class GameController {
     @SendTo("/topic/{roomId}")
     public void gameEndBroadcasting(@DestinationVariable String roomId) throws Exception {
         gameManagerMap.remove(roomId);
+    }
+
+
+    //타이머 테스트
+    @MessageMapping("/timer/{roomId}")
+    public void sendToMessage(@DestinationVariable String roomId) {
+        simpMessagingTemplate.convertAndSend("/topic/"+roomId, "start");
     }
 }

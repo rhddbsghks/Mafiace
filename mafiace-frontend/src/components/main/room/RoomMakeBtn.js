@@ -44,6 +44,7 @@ const RoomMakeBtn = ({ setGameInfo, setToken, setIngame, ingame }) => {
     let body = {
       ownerId: jwt(localStorage.getItem("jwt")).sub,
       gameTitle: inputTitle.current.value,
+      ownerId: jwt(localStorage.getItem("jwt")).sub,
       public: isPublic,
       discussionTime,
       maxPlayer,
