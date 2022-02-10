@@ -42,6 +42,7 @@ const RoomMakeBtn = ({ setGameInfo, setToken, setIngame, ingame }) => {
     if (inputTitle.current.value === "") return;
     if (!isPublic && inputPassword.current.value === "") return;
     let body = {
+      ownerId: jwt(localStorage.getItem("jwt")).sub,
       gameTitle: inputTitle.current.value,
       ownerId: jwt(localStorage.getItem("jwt")).sub,
       public: isPublic,
@@ -56,6 +57,7 @@ const RoomMakeBtn = ({ setGameInfo, setToken, setIngame, ingame }) => {
       })
       .then((res) => {
         body.id = res.data.newSessionInfo.gameId;
+        body.password = "";
         setGameInfo(body);
         setToken(res.data.newSessionInfo.token);
         setIngame(!ingame);
