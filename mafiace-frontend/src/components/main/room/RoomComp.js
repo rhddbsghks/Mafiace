@@ -54,8 +54,8 @@ const RoomComp = ({
       })
       .then(({ data }) => {
         setToken(data.newSessionInfo.token);
-        setIngame(!ingame);
         setGameInfo(game);
+        setIngame(!ingame);
       })
       .catch(({ response }) => {
         if (response.status === 404) {

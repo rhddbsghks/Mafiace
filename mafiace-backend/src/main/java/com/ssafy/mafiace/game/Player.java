@@ -70,7 +70,7 @@ public class Player {
         // 성공 시 kill_count +=1;
     }
 
-    public void Sergery() {
+    public void surgery() {
         // 수술해서 살리기
         // 성공 시 saveCount +=1;
     }

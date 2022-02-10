@@ -1,5 +1,5 @@
 video {
-  width: 320px;
+  width: 100%;
   height: auto;
   float: left;
   cursor: pointer;
@@ -12,7 +12,4 @@ video {
   color: #777777;
   font-weight: bold;
   border-bottom-right-radius: 4px;
-}
-p {
-  margin: 0;
 }

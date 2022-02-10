@@ -53,7 +53,7 @@ const Signup = ({ clickSignup }) => {
     }
   };
   const nickVal = (item) => {
-    let regExp = /^.{2,12}$/; // 2자 이상 10자 이하
+    let regExp = /^.{2,8}$/; // 2자 이상 8자 이하
     if (item.match(regExp) != null) {
       return true;
     } else {
