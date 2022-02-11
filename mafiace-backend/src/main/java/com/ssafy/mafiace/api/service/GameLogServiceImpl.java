@@ -9,16 +9,23 @@ import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
 import java.util.Map;
 import java.util.Optional;
+import org.checkerframework.checker.signature.qual.IdentifierOrArray;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GameLogServiceImpl implements GameLogService {
 
+    @Autowired
     private GameLogRepository gameLogRepository;
 
+    @Autowired
     private UserRecordsRepository userRecordsRepository;
+
+    @Autowired
     private UserRecordsRepositorySupport userRecordsRepositorySupport;
 
+    @Autowired
     private UserRepository userRepository;
 
 //    @Override
