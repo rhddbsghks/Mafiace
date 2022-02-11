@@ -41,6 +41,8 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   useEffect(() => {
     // 초기 세팅
     const nickName = jwt(localStorage.getItem("jwt")).nickname;
+    const id = jwt(localStorage.getItem("jwt")).sub;
+
     setTopics([`/topic/${gameInfo.id}`, `/topic/${nickName}`]);
     // --- 2) Init a session ---
     let mySession = OV.initSession();
@@ -75,7 +77,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
     // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
     mySession
-      .connect(token, { nickName })
+      .connect(token, { nickName, id })
       .then(() => {
         // --- 5) Get your own camera stream ---
 
@@ -371,17 +373,20 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               {publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
-                  style={{ margin: "1% 1.5%", width: "22%", height: "40%" }}
+                  style={{ margin: "0% 1%", width: "22%", height: "40%" }}
                   onClick={() => handleMainVideoStream(publisher)}
                 >
-                  <UserVideoComponent streamManager={publisher} />
+                  <UserVideoComponent
+                    streamManager={publisher}
+                    ownerId={gameInfo.ownerId}
+                  />
                 </div>
               ) : null}
               {subscribers.map((sub, i) => (
                 <div
                   key={i}
                   className="stream-container col-md-6 col-xs-6"
-                  style={{ margin: "1% 1.5%", width: "22%", height: "40%" }}
+                  style={{ margin: "0 1%", width: "22%", height: "40%" }}
                   onClick={() => handleMainVideoStream(sub)}
                 >
                   <div>
@@ -393,6 +398,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                       setIsVoted={setIsVoted}
                       night={night}
                       kill={kill}
+                      ownerId={gameInfo.ownerId}
                     />
                   </div>
                 </div>
