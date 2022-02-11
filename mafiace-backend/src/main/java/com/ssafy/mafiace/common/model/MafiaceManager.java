@@ -5,10 +5,10 @@ import com.ssafy.mafiace.api.response.VoteRes;
 import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
+import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.repository.UserRecordsRepository;
-import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -27,15 +27,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class MafiaceManager {
 
     @Autowired
-    private GameService gameService;
-
-    private SessionService sessionService;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    public UserRecordsRepositorySupport userRecordsRepositorySupport;
+    private UserRecordsService userRecordsService;
 
     @Autowired
     public UserRecordsRepository userRecordsRepository;
@@ -52,6 +47,9 @@ public class MafiaceManager {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String winTeam;
+
+    private SessionService sessionService;
+    private GameService gameService;
 
     private List<String> aliveList=new ArrayList<>();
     private List<String> dieList=new ArrayList<>();
@@ -87,10 +85,10 @@ public class MafiaceManager {
             // Update or Save .
             gameLog.put("winTeam",this.winTeam);
             gameLog.put("playTime",String.valueOf(duration.toMinutes()));
-            Optional<User> user = userRepository.findByUserId(gameLog.get("userId"));
+            Optional<User> user = userRepository.findByNickname(gameLog.get("nickname"));
             if(user == null) return false;
             gameLogService.addGameLog(gameLog);
-            userRecordsRepositorySupport.updateUserRecords(gameLog);
+            userRecordsService.userUpdateUserRecords(gameLog);
         }
         gameService.deleteById(this.room.getId());
         return true;

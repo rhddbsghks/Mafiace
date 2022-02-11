@@ -73,8 +73,4 @@ public class Player {
 
         gameLogService.addGameLog(gameLogs);
     }
-
-
-
-
 }
