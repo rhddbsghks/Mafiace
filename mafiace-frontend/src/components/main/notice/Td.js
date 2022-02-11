@@ -15,6 +15,7 @@ const Td = ({ item, handleRemove, handleEdit, handleDetail }) => {
   const onDetail = () => {
     handleDetail(item);
   };
+
   useEffect(() => {
     const admin_storage = jwt(localStorage.getItem("jwt"));
     setAdmin(admin_storage.sub);
@@ -25,7 +26,7 @@ const Td = ({ item, handleRemove, handleEdit, handleDetail }) => {
     <>
       <tr
         className="bg-white border-2 border-gray-200"
-        style={{ textAlign: "center" }}
+        style={{ textAlign: "center", borderBottom: "1px dotted gray" }}
       >
         <td className="px-4 py-3">
           <p
