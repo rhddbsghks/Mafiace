@@ -2,8 +2,6 @@ package com.ssafy.mafiace.api.response;
 
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.game.Player;
-import com.ssafy.mafiace.game.role.Role;
-import com.ssafy.mafiace.game.role.RoleName;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
