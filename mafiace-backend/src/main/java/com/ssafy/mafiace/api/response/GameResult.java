@@ -18,6 +18,7 @@ public class GameResult {
         switch (type){
             case MafiaWin: this.winTeam = "MAFIA"; break;
             case CitizenWin: this.winTeam = "CITIZEN"; break;
+            case InGame: this.winTeam = "";
         }
     }
 
@@ -27,6 +28,10 @@ public class GameResult {
 
     public static GameResult returnCitizenWin(){
         return new GameResult(GameResultType.CitizenWin);
+    }
+
+    public static GameResult returnInGame(){
+        return new GameResult(GameResultType.InGame);
     }
 
 }
