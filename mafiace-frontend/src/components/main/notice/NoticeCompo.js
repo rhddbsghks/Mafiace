@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Tr from "./Tr";
 import Post from "./Post";
@@ -18,7 +18,7 @@ const NoticeCompo = () => {
   const [postOn, setPostOn] = useState(false);
   const [detailOn, setDetailOn] = useState(false);
 
-  const nextId = useRef(1);
+  const nextId = useState(1);
 
   //더미 데이터 호출
   useEffect(() => {
@@ -29,7 +29,7 @@ const NoticeCompo = () => {
       .get("/mafiace/api/notice/")
       .then((res) => {
         // console.log("get data");
-        // console.log(res.data);
+        console.log(res.data);
         setList(res.data);
       })
       .catch(({ response }) => {
@@ -100,7 +100,7 @@ const NoticeCompo = () => {
       title: item.title,
       content: item.content,
     };
-    console.log(selectedData);
+    // console.log(selectedData);
     setSelected(selectedData);
   };
 
@@ -117,7 +117,7 @@ const NoticeCompo = () => {
   };
 
   const handleEditSubmit = (item) => {
-    console.log(item);
+    // console.log(item);
     handleSave(item);
     setModalOn(false);
   };
@@ -125,10 +125,11 @@ const NoticeCompo = () => {
   return (
     <div>
       {admin === "sixman" ? (
-        <div className="ml-20" style={{ marginTop: "5%" }}>
+        <div className="ml-20" style={{}}>
           <button
             onClick={handleCreate}
             className="bg-purple-300 hover:bg-purple-500 px-3 py-1 rounded text-white"
+            style={{ border: "none", margin: "3%", float: "right" }}
           >
             생성
           </button>
@@ -142,6 +143,7 @@ const NoticeCompo = () => {
                 <th style={{ fontSize: "2rem" }}>Delete</th>
               </tr>
             </thead>
+            <br></br>
             <Tr
               list={list}
               handleRemove={handleRemove}
