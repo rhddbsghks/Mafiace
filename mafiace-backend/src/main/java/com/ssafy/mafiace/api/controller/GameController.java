@@ -35,20 +35,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/game")
 public class GameController {
 
+    @Autowired
     private GameService gameService;
+
+    @Autowired
+    private SessionService sessionService;
+
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
     private Map<String, MafiaceManager> gameManagerMap;
 
-    @Autowired
-    private SessionService sessionService;
 
     @PostConstruct
     public void init() { gameManagerMap = new ConcurrentHashMap<>();}
-
-    public GameController(GameService gameService) {this.gameService = gameService;}
 
     @GetMapping("")
     @ApiOperation(value = "게임방 목록 조회")
@@ -93,7 +94,6 @@ public class GameController {
     public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception {
         System.err.println(roomId+"  is clicked the start btn");
         gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService, gameService));
-
     }
 
     //게임 종료

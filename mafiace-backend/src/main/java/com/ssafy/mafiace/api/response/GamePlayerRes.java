@@ -16,7 +16,6 @@ import lombok.Setter;
 public class GamePlayerRes {
 
     private List<Player> players;
-    private String roleName;
 
     public GamePlayerRes(List<User> users){
         this.players = new ArrayList<>();
@@ -131,7 +130,7 @@ public class GamePlayerRes {
         List<Map<String, String>> GameLogs = new ArrayList<>();
         for(Player player : this.players){
             Map<String, String> buf = new HashMap<>();
-            buf.put("userId", player.getUser().getUserId());
+            buf.put("nickname", player.getUser().getNickname());
             buf.put("Role",player.getRole());
 //          추가 해야할 것 : 이긴 팀
 //            buf.put("winTeam",player.)

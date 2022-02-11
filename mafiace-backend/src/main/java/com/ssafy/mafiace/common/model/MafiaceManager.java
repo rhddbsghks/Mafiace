@@ -5,6 +5,7 @@ import com.ssafy.mafiace.api.response.GamePlayerRes;
 import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
+import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.repository.GameRepository;
@@ -28,14 +29,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Setter
 public class MafiaceManager {
 
-    @Autowired
-    private GameService gameService;
+
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    public UserRecordsRepositorySupport userRecordsRepositorySupport;
+    private UserRecordsService userRecordsService;
 
     @Autowired
     public UserRecordsRepository userRecordsRepository;
@@ -55,6 +55,7 @@ public class MafiaceManager {
     private LocalDateTime endTime;
     private String winTeam;
     private SessionService sessionService;
+    private GameService gameService;
     public MafiaceManager() {}
 
 
@@ -70,7 +71,7 @@ public class MafiaceManager {
         players.setRole();
     }
 
-    public void gamSet(){
+    public void gameSet(){
         room.setRoomStatus(false);
     }
 
@@ -87,10 +88,10 @@ public class MafiaceManager {
             // Update or Save .
             gameLog.put("winTeam",this.winTeam);
             gameLog.put("playTime",String.valueOf(duration.toMinutes()));
-            Optional<User> user = userRepository.findByUserId(gameLog.get("userId"));
+            Optional<User> user = userRepository.findByNickname(gameLog.get("nickname"));
             if(user == null) return false;
             gameLogService.addGameLog(gameLog);
-            userRecordsRepositorySupport.updateUserRecords(gameLog);
+            userRecordsService.userUpdateUserRecords(gameLog);
         }
 
         gameService.deleteById(this.room.getId());
