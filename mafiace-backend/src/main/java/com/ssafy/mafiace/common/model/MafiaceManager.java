@@ -8,6 +8,7 @@ import com.ssafy.mafiace.api.service.SessionService;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.repository.GameRepository;
+import com.ssafy.mafiace.db.repository.GameRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
@@ -21,16 +22,26 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.tomcat.jni.Local;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Getter
 @Setter
 public class MafiaceManager {
 
-    private GameRepository gameRepository;
-
+    @Autowired
     private GameService gameService;
 
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public UserRecordsRepositorySupport userRecordsRepositorySupport;
+
+    @Autowired
+    public UserRecordsRepository userRecordsRepository;
+
+    @Autowired
+    public GameLogService gameLogService;
 
     // 게임 내에 사용되는 내부 로직
 
@@ -46,15 +57,17 @@ public class MafiaceManager {
     private SessionService sessionService;
     public MafiaceManager() {}
 
+
+
     // 게임 시작할때 생성자 호출
-    public MafiaceManager(String gameId, SessionService sessionService){ // GameService 추가해야함
+    public MafiaceManager(String gameId, SessionService sessionService, GameService gameService){
         this.gameId = gameId;
-        this.room = gameRepository.findGameById(gameId);
         this.sessionService = sessionService;
-        this.userList = gameService.getUserListById(gameId); // roomId == gameId ?
+        this.gameService = gameService;
+        this.room = gameService.getGameById(gameId);
+        this.userList = sessionService.getParticipantList(gameId); // roomId == gameId
         this.players = new GamePlayerRes(userList);
         this.room.setRoomStatus(true);
-
 //      votemanager 생성필요
     }
 
@@ -63,9 +76,7 @@ public class MafiaceManager {
     }
 
 
-    public UserRecordsRepositorySupport userRecordsRepositorySupport;
-    public UserRecordsRepository userRecordsRepository;
-    public GameLogService gameLogService;
+
     // 게임 종료 후 Log 저장
     public boolean saveRecord(){
         endTime = LocalDateTime.now();
@@ -83,7 +94,7 @@ public class MafiaceManager {
             userRecordsRepositorySupport.updateUserRecords(gameLog);
         }
 
-        gameRepository.deleteById(this.room.getId());
+        gameService.deleteById(this.room.getId());
         return true;
     }
 

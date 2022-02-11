@@ -182,4 +182,9 @@ public class SessionServiceImpl implements SessionService {
         }
         return true;
     }
+
+    @Override
+    public List<User> getParticipantList(String sessionName) {
+        return userList.get(sessionName);
+    }
 }

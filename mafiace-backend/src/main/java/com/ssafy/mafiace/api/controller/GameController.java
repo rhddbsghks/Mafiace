@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -44,13 +46,9 @@ public class GameController {
     private SessionService sessionService;
 
     @PostConstruct
-    public void init() {
-        gameManagerMap = new ConcurrentHashMap<>();
-    }
+    public void init() { gameManagerMap = new ConcurrentHashMap<>();}
 
-    public GameController(GameService gameService) {
-        this.gameService = gameService;
-    }
+    public GameController(GameService gameService) {this.gameService = gameService;}
 
     @GetMapping("")
     @ApiOperation(value = "게임방 목록 조회")
@@ -93,8 +91,9 @@ public class GameController {
     @MessageMapping("/start/{roomId}") // 발행경로
     @SendTo("/topic/{roomId}") // 구독경로
     public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception {
-        System.out.println(roomId+"가 시작하자고 한다");
-        gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService));
+        System.err.println(roomId+"  is clicked the start btn");
+        gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService, gameService));
+
     }
 
     //게임 종료
@@ -121,5 +120,17 @@ public class GameController {
     @MessageMapping("/day/{roomId}")
     public void toDay(@DestinationVariable String roomId) {
         simpMessagingTemplate.convertAndSend("/topic/"+roomId, "day");
+    }
+
+    //역할 확인
+    @MessageMapping("/role/{roomId}/{userNickname}")
+    public void roleConfirm(@DestinationVariable String roomId, @DestinationVariable String userNickname)
+        throws JSONException {
+        System.err.println("role socket recieved!");
+        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(userNickname).name();
+        System.err.println("nickname's role : " + role);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("role",role);
+        simpMessagingTemplate.convertAndSend("/role/"+ roomId + "/" + userNickname, jsonObject.toString());
     }
 }
