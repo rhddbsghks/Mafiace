@@ -180,6 +180,16 @@ const Signup = ({ clickSignup }) => {
                   value={values.userId}
                   onChange={handleChange}
                   error={!validId}
+                  onKeyUp={
+                    (e, v) => {
+                      e.target.value = e.target.value.replace(
+                        /[^a-zA-Z-_0-9]/g,
+                        ""
+                      );
+                    }
+
+                    // (this.value = this.value.replace(/[^a-zA-Z-_0-9]/g, ""))
+                  }
                 />
                 <Form.Input
                   icon="lock"
