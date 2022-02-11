@@ -16,7 +16,6 @@ import lombok.Setter;
 public class GamePlayerRes {
 
     private List<Player> players;
-    private String roleName;
 
     public GamePlayerRes(List<User> users){
         this.players = new ArrayList<>();

@@ -4,7 +4,6 @@ import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.repository.UserRecordsRepository;
-import com.ssafy.mafiace.game.role.Role;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

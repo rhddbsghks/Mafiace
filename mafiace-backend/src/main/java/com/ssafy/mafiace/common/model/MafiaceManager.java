@@ -28,8 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Setter
 public class MafiaceManager {
 
-    @Autowired
-    private GameService gameService;
+
 
     @Autowired
     private UserRepository userRepository;
@@ -55,6 +54,7 @@ public class MafiaceManager {
     private LocalDateTime endTime;
     private String winTeam;
     private SessionService sessionService;
+    private GameService gameService;
     public MafiaceManager() {}
 
 
@@ -70,7 +70,7 @@ public class MafiaceManager {
         players.setRole();
     }
 
-    public void gamSet(){
+    public void gameSet(){
         room.setRoomStatus(false);
     }
 
