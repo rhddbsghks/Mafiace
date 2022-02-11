@@ -2,9 +2,8 @@ package com.ssafy.mafiace.api.response;
 
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.game.Player;
-import com.ssafy.mafiace.game.role.Role;
-import com.ssafy.mafiace.game.role.RoleName;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,7 @@ import lombok.Setter;
 public class GamePlayerRes {
 
     private List<Player> players;
-    private RoleName roleName;
+    private String roleName;
 
     public GamePlayerRes(List<User> users){
         this.players = new ArrayList<>();
@@ -30,21 +29,46 @@ public class GamePlayerRes {
         return this.players.size();
     }
 
-    public void setRole(List<Role> roles){
-        for(int i=0; i<getPlayersNumber(); i++){
-            this.players.get(i).setRole(roles.get(i));
+    public void setRole(){
+        int playerNum = getPlayersNumber();
+        int mafiaNum=0, citizenNum;
+        if(playerNum < 5){
+            System.err.println("인원이 적습니다.");
+        }else
+            if(playerNum < 6 ){
+            mafiaNum = 1;
+        }else if(playerNum < 8) {
+            mafiaNum = 2;
+        }else if(playerNum == 8){
+            mafiaNum = 3;
+        }else{
+            System.err.println("인원이 너무 많습니다? 에러");
         }
+        Collections.shuffle(this.players);
+        citizenNum = playerNum - mafiaNum -2;
+        for(int i=0; i<playerNum; i++){
+            if(i ==0){
+                this.players.get(i).setRole("Doctor");
+            }else if(i == 1){
+                this.players.get(i).setRole("Police");
+            }else if(i < mafiaNum+2){
+                this.players.get(i).setRole("Mafia");
+            }else if(i < mafiaNum + citizenNum +2){
+                this.players.get(i).setRole("Citizen");
+            }
+        }
+
     }
 
-    public RoleName findRoleName(String nickname){
-        RoleName myRoleName = null;
+    public String findRoleName(String nickname){
+        String myRoleName = null;
         for(Player player : this.players){
-            if(player.getUser().getNickname().equals(nickname)){
-                myRoleName = player.getRole().getRoleName();
+            if(player.getNickname().equals(nickname)){
+                myRoleName = player.getRole();
             }
-            return  myRoleName;
         }
-        return null;
+        System.err.println(nickname + " : " + myRoleName);
+        return  myRoleName;
     }
 
     public Player getPlayer(String nickname){
@@ -71,7 +95,7 @@ public class GamePlayerRes {
     public int aliveMafiaCount(){
         int cnt =0;
         for(Player player : players){
-            if(player.isMafia() && player.isAlive()){
+            if(player.getRole().equals("Mafia") && player.isAlive()){
                 cnt +=1;
             }
         }
@@ -81,7 +105,7 @@ public class GamePlayerRes {
     public int aliveCitizenCount(){
         int cnt =0;
         for(Player player : players){
-            if(!player.isMafia() && player.isAlive()){
+            if(!player.getRole().equals("Mafia") && player.isAlive()){
                 cnt +=1;
             }
         }
@@ -98,7 +122,7 @@ public class GamePlayerRes {
         String[][] stringArr = new String[players.size()][2];
         for(int i=0; i<stringArr.length; i++){
             stringArr[i][0] = this.players.get(i).getUser().getNickname();
-            stringArr[i][1] = this.players.get(i).getRole().getRoleName().name();
+            stringArr[i][1] = this.players.get(i).getRole();
         }
         return stringArr;
     }
@@ -108,20 +132,21 @@ public class GamePlayerRes {
         for(Player player : this.players){
             Map<String, String> buf = new HashMap<>();
             buf.put("userId", player.getUser().getUserId());
-            buf.put("Role",player.getRole().getRoleName().name());
+            buf.put("Role",player.getRole());
 //          추가 해야할 것 : 이긴 팀
 //            buf.put("winTeam",player.)
-            if(player.getRole().getRoleName().name().equals("Mafia")){
+            if(player.getRole().equals("Mafia")){
                 buf.put("killCount",String.valueOf(player.getKillCount()));
-            }else if(player.getRole().getRoleName().name().equals("Doctor")){
+            }else if(player.getRole().equals("Doctor")){
                 buf.put("saveCount",String.valueOf(player.getSaveCount()));
-            }else if(player.getRole().getRoleName().name().equals("Police")){
+            }else if(player.getRole().equals("Police")){
                 buf.put("investigateCount",String.valueOf(player.getInvestigateCount()));
             }
             GameLogs.add(buf);
         }
         return GameLogs;
     }
+
 
 
 

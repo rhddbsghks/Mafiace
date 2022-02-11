@@ -1,6 +1,5 @@
 package com.ssafy.mafiace.common.model;
 
-
 import com.ssafy.mafiace.api.response.GamePlayerRes;
 import com.ssafy.mafiace.api.response.VoteRes;
 import com.ssafy.mafiace.api.service.GameLogService;
@@ -8,7 +7,6 @@ import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.User;
-import com.ssafy.mafiace.db.repository.GameRepository;
 import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
@@ -21,19 +19,29 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 @Getter
 @Setter
 public class MafiaceManager {
 
-    private GameRepository gameRepository;
-
+    @Autowired
     private GameService gameService;
 
+    @Autowired
     private UserRepository userRepository;
 
-    // 게임 내에 사용되는 내부 로직
+    @Autowired
+    public UserRecordsRepositorySupport userRecordsRepositorySupport;
 
+    @Autowired
+    public UserRecordsRepository userRecordsRepository;
+
+    @Autowired
+    public GameLogService gameLogService;
+
+    // 게임 내에 사용되는 내부 로직
     private String roomId;
     private Game room;
     private int max;
@@ -52,24 +60,21 @@ public class MafiaceManager {
     public MafiaceManager() {}
 
     // 게임 시작할때 생성자 호출
-    public MafiaceManager(String roomId, SessionService sessionService){ // GameService 추가해야함
+    public MafiaceManager(String roomId, SessionService sessionService, GameService gameService){
         this.roomId = roomId;
-        this.room = gameRepository.findGameById(roomId);
         this.sessionService = sessionService;
-        this.userList = gameService.getUserListById(roomId);
+        this.gameService = gameService;
+        this.room = gameService.getGameById(roomId);
+        this.userList = sessionService.getParticipantList(roomId);
         this.players = new GamePlayerRes(userList);
         this.room.setRoomStatus(true);
-
+        players.setRole();
     }
 
     public void gamSet(){
         room.setRoomStatus(false);
     }
 
-
-    public UserRecordsRepositorySupport userRecordsRepositorySupport;
-    public UserRecordsRepository userRecordsRepository;
-    public GameLogService gameLogService;
     // 게임 종료 후 Log 저장
     public boolean saveRecord(){
         endTime = LocalDateTime.now();
@@ -86,8 +91,7 @@ public class MafiaceManager {
             gameLogService.addGameLog(gameLog);
             userRecordsRepositorySupport.updateUserRecords(gameLog);
         }
-
-        gameRepository.deleteById(this.room.getId());
+        gameService.deleteById(this.room.getId());
         return true;
     }
 
