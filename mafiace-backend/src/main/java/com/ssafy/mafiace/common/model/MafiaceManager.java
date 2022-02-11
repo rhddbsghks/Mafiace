@@ -19,8 +19,6 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.tomcat.jni.Local;
-import org.hibernate.annotations.CreationTimestamp;
 
 @Getter
 @Setter
@@ -34,8 +32,7 @@ public class MafiaceManager {
 
     // 게임 내에 사용되는 내부 로직
 
-    private String gameId;
-    private String roomNum;
+    private String roomId;
     private Game room;
     private int max;
     private List<User> userList = new ArrayList<>();
@@ -47,11 +44,11 @@ public class MafiaceManager {
     public MafiaceManager() {}
 
     // 게임 시작할때 생성자 호출
-    public MafiaceManager(String gameId, SessionService sessionService){ // GameService 추가해야함
-        this.gameId = gameId;
-        this.room = gameRepository.findGameById(gameId);
+    public MafiaceManager(String roomId, SessionService sessionService){ // GameService 추가해야함
+        this.roomId = roomId;
+        this.room = gameRepository.findGameById(roomId);
         this.sessionService = sessionService;
-        this.userList = gameService.getUserListById(gameId); // roomId == gameId ?
+        this.userList = gameService.getUserListById(roomId);
         this.players = new GamePlayerRes(userList);
         this.room.setRoomStatus(true);
 

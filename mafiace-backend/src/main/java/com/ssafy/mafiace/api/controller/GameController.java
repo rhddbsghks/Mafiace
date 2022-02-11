@@ -122,4 +122,5 @@ public class GameController {
     public void toDay(@DestinationVariable String roomId) {
         simpMessagingTemplate.convertAndSend("/topic/"+roomId, "day");
     }
+
 }

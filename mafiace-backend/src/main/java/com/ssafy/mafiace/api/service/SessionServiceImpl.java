@@ -26,11 +26,11 @@ import org.springframework.stereotype.Service;
 public class SessionServiceImpl implements SessionService {
 
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private GameRepository gameRepository;
     @Autowired
     private GameRepositorySupport gameRepositorySupport;
-    @Autowired
-    private UserRepository userRepository;
 
     // gameId -> userList
     private Map<String, List<User>> userList = new ConcurrentHashMap<>();

@@ -28,10 +28,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [start, setStart] = useState(false);
   const [toggle, setToggle] = useState(false);
 
-  const [time, setTime] = useState(5);
-  const [timer, setTimer] = useState();
-  const [count, setCount] = useState(1);
-  const [head, setHead] = useState(gameInfo.gameTitle);
+  const [time, setTime] = useState(5); // 타이머
+  const [timer, setTimer] = useState(); // 타이머
+  const [count, setCount] = useState(1); // 날짜
+  const [head, setHead] = useState(gameInfo.gameTitle); // 헤더 상태메세지
+  const [myRole, setMyRole] = useState(); // 내 직업
+  const [isVoted, setIsVoted] = useState(false); // 투표완료 유무
+  const [myVote, setMyVote] = useState(); // 내가 투표한 사람의 닉네임
   const $websocket = useRef(null);
 
   const userId = jwt(localStorage.getItem("jwt")).sub;
@@ -140,9 +143,15 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const toDay = () => {
     $websocket.current.sendMessage(`/app/day/${gameInfo.id}`);
   };
+
   const toNight = () => {
     $websocket.current.sendMessage(`/app/night/${gameInfo.id}`);
   };
+
+  const kill = () => {
+    console.log("죽이기 투표");
+  };
+
   const deleteSubscriber = (streamManager) => {
     setSubscribers((subs) => {
       let index = subs.indexOf(streamManager, 0);
@@ -192,6 +201,18 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     console.log(mainStreamManager);
   };
 
+  const selMafia = () => {
+    setMyRole("mafia");
+  };
+
+  const selDoctor = () => {
+    setMyRole("doctor");
+  };
+
+  const selPolice = () => {
+    setMyRole("police");
+  };
+
   const handleStart = () => {
     console.log("====================START======================");
     $websocket.current.sendMessage(`/app/timer/${gameInfo.id}`);
@@ -235,14 +256,14 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 setStart(true);
                 setDay(true);
                 setToggle(!toggle);
-                setHead("낮이 왔습니다.");
+                setHead("낮이 왔습니다. 마피아를 찾아주세요.");
               } else if (msg === "day") {
                 setNight(false);
                 setDay(true);
                 setToggle(!toggle);
                 setTime(5);
                 setCount((prev) => prev + 1);
-                setHead("낮이 왔습니다.");
+                setHead("낮이 왔습니다. 마피아를 찾아주세요.");
               } else if (msg === "night") {
                 setDay(false);
                 setNight(true);
@@ -318,11 +339,12 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               >
                 {" "}
                 <button onClick={handleClick}>버튼</button>
+                <button onClick={selMafia}>마피아 선택</button>
+                <button onClick={selDoctor}>의사 선택</button>
+                <button onClick={selPolice}>경찰 선택</button>
                 {gameInfo.ownerId === userId && !start ? (
                   <button onClick={handleStart}>START</button>
                 ) : null}
-                {/* <button onClick={handleDay}>낮 배경 켜기/끄기</button>
-                <button onClick={handleNight}>밤 배경 켜기/끄기</button> */}
                 <input
                   className="btn btn-large btn-danger"
                   type="button"
@@ -363,7 +385,15 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   onClick={() => handleMainVideoStream(sub)}
                 >
                   <div>
-                    <UserVideoComponent streamManager={sub} />
+                    <UserVideoComponent
+                      streamManager={sub}
+                      myRole={myRole}
+                      setMyVote={setMyVote}
+                      isVoted={isVoted}
+                      setIsVoted={setIsVoted}
+                      night={night}
+                      kill={kill}
+                    />
                   </div>
                 </div>
               ))}
