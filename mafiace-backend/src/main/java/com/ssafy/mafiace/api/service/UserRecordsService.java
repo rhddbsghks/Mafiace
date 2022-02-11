@@ -7,7 +7,6 @@ import java.util.Map;
 public interface UserRecordsService {
 
     UserRecords getUserRecords(String id);
-
     UserRecords addUserRecords(User user);
 
     void userUpdateUserRecords(Map<String, String> gameLog);

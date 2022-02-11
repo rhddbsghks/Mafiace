@@ -8,14 +8,14 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
+@NoArgsConstructor
 @Entity(name = "user_game_log")
 @AttributeOverrides({
     @AttributeOverride(name = "id",column = @Column(name = "user_game_log_id", unique = true))

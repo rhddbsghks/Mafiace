@@ -2,6 +2,7 @@ package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.response.BaseResponseBody;
 import com.ssafy.mafiace.api.response.GameRoomRes;
+import com.ssafy.mafiace.api.response.VoteRes;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
 import com.ssafy.mafiace.common.model.GameInfo;
@@ -41,12 +42,10 @@ public class GameController {
     @Autowired
     private SessionService sessionService;
 
-
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
     private Map<String, MafiaceManager> gameManagerMap;
-
 
     @PostConstruct
     public void init() { gameManagerMap = new ConcurrentHashMap<>();}
@@ -72,20 +71,15 @@ public class GameController {
 
 
     @GetMapping("/checkpw")
-
     public ResponseEntity<BaseResponseBody> checkPassword(String sessionName, String password) {
 
-        if(gameService.checkPassword(sessionName,password))
+        if (gameService.checkPassword(sessionName, password)) {
             return ResponseEntity.status(200)
                 .body(BaseResponseBody.of(200, "입장하라"));
+        }
 
         return ResponseEntity.status(401)
             .body(BaseResponseBody.of(401, "비밀번호 불일치"));
-   }
-
-    // 모든 사람이 레디했을 때 요청 ( game start 버튼 활성화 )
-    public void allReadyBroadcasting(String roomId) {
-        simpMessagingTemplate.convertAndSend("/from/mafiace/allReady/" + roomId, true);
     }
 
     // 게임 시작
@@ -104,33 +98,57 @@ public class GameController {
     }
 
 
-    //타이머 테스트
+    //타이머
     @MessageMapping("/timer/{roomId}")
     public void sendToMessage(@DestinationVariable String roomId) {
-        simpMessagingTemplate.convertAndSend("/topic/"+roomId, "start");
+        simpMessagingTemplate.convertAndSend("/topic/" + roomId, "start");
     }
 
     // 낮->밤
     @MessageMapping("/night/{roomId}")
     public void toNight(@DestinationVariable String roomId) {
-        simpMessagingTemplate.convertAndSend("/topic/"+roomId, "night");
+        simpMessagingTemplate.convertAndSend("/topic/" + roomId, "night");
     }
 
     // 밤->낮
     @MessageMapping("/day/{roomId}")
     public void toDay(@DestinationVariable String roomId) {
-        simpMessagingTemplate.convertAndSend("/topic/"+roomId, "day");
+        simpMessagingTemplate.convertAndSend("/topic/" + roomId, "day");
+    }
+
+    @MessageMapping("/kill/{roomId}")
+    public void killByMafia(@DestinationVariable String roomId, String voted) {
+        MafiaceManager manager = gameManagerMap.get(roomId);
+        manager.addVoteList(voted);
+        System.out.println("죽는닷죽는닷죽는닷죽는닷" + voted);
+    }
+
+    @MessageMapping("/heal/{roomId}")
+    public void healByDoctor(@DestinationVariable String roomId, String voted) {
+        MafiaceManager manager = gameManagerMap.get(roomId);
+        manager.setHealTarget(voted);
+        System.out.println("힐힐힐힐힐힐힐힐힐힐힐" + voted);
+    }
+
+    // 투표 결과를 얻어옴
+    @MessageMapping("/vote/{roomId}")
+    public void voteResult(@DestinationVariable String roomId) {
+        MafiaceManager manager = gameManagerMap.get(roomId);
+        VoteRes voteRes=manager.getVoteResult();
+        manager.reset();
+        simpMessagingTemplate.convertAndSend("/topic/"+roomId, voteRes);
     }
 
     //역할 확인
-    @MessageMapping("/role/{roomId}/{userNickname}")
-    public void roleConfirm(@DestinationVariable String roomId, @DestinationVariable String userNickname)
+    @MessageMapping("/role/{roomId}/{nickname}")
+    public void roleConfirm(@DestinationVariable String roomId, @DestinationVariable String nickname)
         throws JSONException {
         System.err.println("role socket recieved!");
-        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(userNickname);
+        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(nickname);
         System.err.println("nickname's role : " + role);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("role",role);
-        simpMessagingTemplate.convertAndSend("/role/"+ roomId + "/" + userNickname, jsonObject.toString());
+        jsonObject.put("check","role");
+        simpMessagingTemplate.convertAndSend("/topic/"+ nickname, jsonObject.toString());
     }
 }
