@@ -34,14 +34,14 @@ public class GamePlayerRes {
     public void setRole(){
         int playerNum = getPlayersNumber();
         int mafiaNum=0, citizenNum;
-//        if(playerNum < 5){
-//            System.err.println("인원이 적습니다.");
-//        }else
+        if(playerNum < 5){
+            System.err.println("인원이 적습니다.");
+        }else
             if(playerNum < 6 ){
             mafiaNum = 1;
         }else if(playerNum < 8) {
             mafiaNum = 2;
-        }else if(playerNum == 9){
+        }else if(playerNum == 8){
             mafiaNum = 3;
         }else{
             System.err.println("인원이 너무 많습니다? 에러");
