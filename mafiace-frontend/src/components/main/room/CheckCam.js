@@ -46,37 +46,9 @@ const CheckCam = ({
       return;
     }
 
-<<<<<<< Updated upstream
     if (isOwner) handleCamOff();
     else setIngame(!ingame);
-=======
-    if (isOwner) {
-      axios
-        .post("/mafiace/api/session/token", body, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
-        })
-        .then((res) => {
-          console.log(res);
-          let newBody = body;
-          newBody.id = res.data.newSessionInfo.gameId;
-          newBody.password = "";
-          setGameInfo(newBody);
-          setToken(res.data.newSessionInfo.token);
-          setIngame(!ingame);
-        })
-        .catch(({ response }) => {
-          console.log(response);
-          if (response.status === 403) {
-            localStorage.removeItem("jwt");
-            window.location.reload();
-            alert("요청 권한이 없습니다");
-          }
-        });
-    } else {
-      setIngame(!ingame);
-    }
 
->>>>>>> Stashed changes
     clearInterval(faceRecog);
   };
 
