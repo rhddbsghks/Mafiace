@@ -40,12 +40,12 @@ public class GameController {
     private GameService gameService;
 
     @Autowired
+    private SessionService sessionService;
+
+    @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
     private Map<String, MafiaceManager> gameManagerMap;
-
-    @Autowired
-    private SessionService sessionService;
 
     @PostConstruct
     public void init() { gameManagerMap = new ConcurrentHashMap<>();}
@@ -100,7 +100,7 @@ public class GameController {
     }
 
 
-    //타이머 테스트
+    //타이머
     @MessageMapping("/timer/{roomId}")
     public void sendToMessage(@DestinationVariable String roomId) {
         simpMessagingTemplate.convertAndSend("/topic/" + roomId, "start");

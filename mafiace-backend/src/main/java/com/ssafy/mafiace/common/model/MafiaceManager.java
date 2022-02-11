@@ -29,6 +29,8 @@ public class MafiaceManager {
     @Autowired
     private GameService gameService;
 
+    private SessionService sessionService;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -50,7 +52,6 @@ public class MafiaceManager {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String winTeam;
-    private SessionService sessionService;
 
     private List<String> aliveList=new ArrayList<>();
     private List<String> dieList=new ArrayList<>();
@@ -71,7 +72,7 @@ public class MafiaceManager {
         players.setRole();
     }
 
-    public void gamSet(){
+    public void gameSet(){
         room.setRoomStatus(false);
     }
 

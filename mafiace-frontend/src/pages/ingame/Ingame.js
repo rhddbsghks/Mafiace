@@ -219,18 +219,18 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   };
 
   const selMafia = () => {
-    setMyRole("mafia");
+    setMyRole("Mafia");
   };
 
   const selDoctor = () => {
-    setMyRole("doctor");
+    setMyRole("Doctor");
   };
 
   const selPolice = () => {
-    setMyRole("police");
+    setMyRole("Police");
   };
 
-  const handleStart = () => {
+  const gameStart = () => {
     console.log("====================START======================");
     $websocket.current.sendMessage(`/app/timer/${gameInfo.id}`);
     $websocket.current.sendMessage(`/app/start/${gameInfo.id}`);
@@ -361,7 +361,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 <button onClick={selDoctor}>의사 선택</button>
                 <button onClick={selPolice}>경찰 선택</button>
                 {gameInfo.ownerId === userId && !start ? (
-                  <button onClick={handleStart}>START</button>
+                  <button onClick={gameStart}>START</button>
                 ) : null}
                 <input
                   className="btn btn-large btn-danger"

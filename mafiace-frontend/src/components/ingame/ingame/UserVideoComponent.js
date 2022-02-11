@@ -12,7 +12,7 @@ const UserVideoComponent = ({
   night,
   kill,
   heal,
-  Investigate,
+  investigate,
 }) => {
   const nickNameTag = JSON.parse(streamManager.stream.connection.data).nickName;
   const id = JSON.parse(streamManager.stream.connection.data).id;
@@ -72,13 +72,13 @@ const UserVideoComponent = ({
             </span>
           </div>
           <div>
-            {myRole === "mafia" && !isVoted && night ? (
+            {myRole === "Mafia" && !isVoted && night ? (
               <button onClick={clickKill}>KILL</button>
             ) : null}
-            {myRole === "doctor" && !isVoted && night ? (
+            {myRole === "Doctor" && !isVoted && night ? (
               <button onClick={clickHeal}>HEAL</button>
             ) : null}
-            {myRole === "police" && !isVoted && night ? (
+            {myRole === "Police" && !isVoted && night ? (
               <button onClick={clickInvestigate}>조사</button>
             ) : null}
           </div>
