@@ -5,6 +5,7 @@ import com.ssafy.mafiace.api.response.GamePlayerRes;
 import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
+import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.repository.GameRepository;
@@ -34,7 +35,7 @@ public class MafiaceManager {
     private UserRepository userRepository;
 
     @Autowired
-    public UserRecordsRepositorySupport userRecordsRepositorySupport;
+    private UserRecordsService userRecordsService;
 
     @Autowired
     public UserRecordsRepository userRecordsRepository;
@@ -87,10 +88,10 @@ public class MafiaceManager {
             // Update or Save .
             gameLog.put("winTeam",this.winTeam);
             gameLog.put("playTime",String.valueOf(duration.toMinutes()));
-            Optional<User> user = userRepository.findByUserId(gameLog.get("userId"));
+            Optional<User> user = userRepository.findByNickname(gameLog.get("nickname"));
             if(user == null) return false;
             gameLogService.addGameLog(gameLog);
-            userRecordsRepositorySupport.updateUserRecords(gameLog);
+            userRecordsService.userUpdateUserRecords(gameLog);
         }
 
         gameService.deleteById(this.room.getId());
