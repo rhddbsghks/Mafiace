@@ -38,7 +38,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const $websocket = useRef(null);
 
   const userId = jwt(localStorage.getItem("jwt")).sub;
-  const nickname = jwt(localStorage.getItem("jwt")).nickname;
+  const userNickname = jwt(localStorage.getItem("jwt")).nickname;
   useEffect(() => {
     // 초기 세팅
     const nickName = jwt(localStorage.getItem("jwt")).nickname;
@@ -217,6 +217,8 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     console.log(subscribers);
     console.log(mainStreamManager);
     console.log("당신의 직업 : " + myRole);
+    console.log("====================START======================");
+    $websocket.current.sendMessage(`/app/role/${gameInfo.id}/${userNickname}`);
   };
 
   const gameStart = () => {
@@ -260,7 +262,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 console.log("게임스타트!!!");
                 setTimeout(() => {
                   $websocket.current.sendMessage(
-                    `/app/role/${gameInfo.id}/${nickname}`
+                    `/app/role/${gameInfo.id}/${userNickname}`
                   );
                 }, 1000);
               } else if (msg === "day") {

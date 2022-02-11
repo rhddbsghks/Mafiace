@@ -28,15 +28,6 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<User> getUserListById(String id) {
-        Optional<Game> game = gameRepository.findById(id);
-        if(game.isPresent()){
-            return game.get().getUser_List();
-        }
-        return null;
-    }
-
-    @Override
     public boolean checkPassword(String sessionName, String password) {
         Game game = gameRepositorySupport.findById(sessionName);
 

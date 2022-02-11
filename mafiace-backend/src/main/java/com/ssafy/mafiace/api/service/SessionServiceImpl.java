@@ -98,7 +98,7 @@ public class SessionServiceImpl implements SessionService {
                 .password((sessionOpenReq.getPassword()))
                 .build());
         availableRoomNum[roomNum] = true;
-        userList.put(gameId, new ArrayList<>());
+        userList.put(gameId, new ArrayList<>()); // us
         userList.get(gameId).add(user.get());
         System.err.println("Room available : " + userList.get(gameId).size() + " / "
             + sessionOpenReq.getMaxPlayer());
@@ -135,17 +135,20 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public void leaveSession(String sessionName, String nickname) {
         Game game = gameRepositorySupport.findById(sessionName);
-        Optional<User> user = userRepository.findByNickname(nickname);
+        User leaveUser = userRepository.findByNickname(nickname).get();
+        List<User> curUserList = userList.get(sessionName);
         System.err.println("before leave : " + userList.get(sessionName).size());
-        if (user == null) {
-            return;
-        }
-        for (User leaveUser : userList.get(sessionName)) {
-            if (leaveUser.getNickname().equals(user.get().getNickname())) {
-                userList.get(sessionName).remove(leaveUser);
+        for(int i=0; i<curUserList.size(); i++){
+            User searchUser = curUserList.get(i);
+            if(searchUser.getNickname().equals(leaveUser.getNickname())){
+                userList.get(sessionName).remove(searchUser);
+                if(searchUser.getUserId().equals(game.getOwnerId())){
+                    gameRepositorySupport.updateOwnerId(sessionName, curUserList.get(0).getNickname());
+                }
                 break;
             }
         }
+
         System.err.println("afeter leave : " + userList.get(sessionName).size());
     }
 

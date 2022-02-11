@@ -8,6 +8,7 @@ import com.ssafy.mafiace.api.service.SessionService;
 import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.User;
+import com.ssafy.mafiace.db.entity.UserRecords;
 import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRepository;
 import java.time.Duration;
@@ -76,9 +77,14 @@ public class MafiaceManager {
 
     // 게임 종료 후 Log 저장
     public boolean saveRecord(){
+        // 사용자 정보, 플레이시간, 이긴 팀, 본인 직업 , 죽인 횟수, 살린횟수, 탐지횟수
         endTime = LocalDateTime.now();
         Duration duration = Duration.between(this.startTime, this.endTime);
         System.err.println(duration);
+        // list 회원별로
+        // map < column값, value >
+        // list 0 : 회원 1에 대한 로그 <column, value>
+        // list 1 : 회원 2에 대한 로그
         List<Map<String, String>> GameLogs = this.players.makeGameLog();
         for(Map<String, String> gameLog : GameLogs){
             // GameLog로 저장할 것과 userRecords로 저장할것 나눠서 저장
@@ -93,6 +99,7 @@ public class MafiaceManager {
         gameService.deleteById(this.room.getId());
         return true;
     }
+
 
     public void addVoteList(String voted){
         if(voteMap.containsKey(voted)){

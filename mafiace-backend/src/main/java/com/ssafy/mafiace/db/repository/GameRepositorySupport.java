@@ -4,12 +4,16 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.QGame;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class GameRepositorySupport {
 
     private JPAQueryFactory jpaQueryFactory;
+
+    @Autowired
+    private GameRepository gameRepository;
 
     public GameRepositorySupport(
         JPAQueryFactory jpaQueryFactory) {
@@ -39,5 +43,11 @@ public class GameRepositorySupport {
     public int findMaxPlayerById(String gameId) {
         QGame qGame = QGame.game;
         return jpaQueryFactory.select(qGame.maxPlayer).from(qGame).where(qGame.id.eq(gameId)).fetchOne();
+    }
+
+    public void updateOwnerId(String gameId ,String userId){
+        Game game = gameRepository.findGameById(gameId);
+        game.updateOwnerId(userId);
+        gameRepository.save(game);
     }
 }

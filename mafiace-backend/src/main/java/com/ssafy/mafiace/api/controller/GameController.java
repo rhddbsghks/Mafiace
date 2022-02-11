@@ -145,10 +145,13 @@ public class GameController {
         throws JSONException {
         System.err.println("role socket recieved!");
         String role = gameManagerMap.get(roomId).getPlayers().findRoleName(nickname);
-        System.err.println("nickname's role : " + role);
+        System.err.println(nickname + "'s role : " + role);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("role",role);
         jsonObject.put("check","role");
         simpMessagingTemplate.convertAndSend("/topic/"+ nickname, jsonObject.toString());
     }
+
+//    /gameset/{roomId}
+//    // manager.saveGameLog();
 }
