@@ -58,7 +58,6 @@ public class MafiaceManager {
     public MafiaceManager() {}
 
 
-
     // 게임 시작할때 생성자 호출
     public MafiaceManager(String gameId, SessionService sessionService, GameService gameService){
         this.gameId = gameId;
@@ -68,7 +67,7 @@ public class MafiaceManager {
         this.userList = sessionService.getParticipantList(gameId); // roomId == gameId
         this.players = new GamePlayerRes(userList);
         this.room.setRoomStatus(true);
-//      votemanager 생성필요
+        players.setRole();
     }
 
     public void gamSet(){

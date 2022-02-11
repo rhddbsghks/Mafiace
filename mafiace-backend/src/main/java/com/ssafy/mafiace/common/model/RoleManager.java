@@ -24,7 +24,6 @@ public class RoleManager {
         List<Role> roles = roleMaker.makeRole();
 
         Collections.shuffle(roles);
-        players.setRole(roles);
         return roles;
     }
 

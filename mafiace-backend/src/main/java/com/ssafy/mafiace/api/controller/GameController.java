@@ -127,7 +127,7 @@ public class GameController {
     public void roleConfirm(@DestinationVariable String roomId, @DestinationVariable String userNickname)
         throws JSONException {
         System.err.println("role socket recieved!");
-        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(userNickname).name();
+        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(userNickname);
         System.err.println("nickname's role : " + role);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("role",role);
