@@ -140,14 +140,15 @@ public class GameController {
     }
 
     //역할 확인
-    @MessageMapping("/role/{roomId}/{userNickname}")
-    public void roleConfirm(@DestinationVariable String roomId, @DestinationVariable String userNickname)
+    @MessageMapping("/role/{roomId}/{nickname}")
+    public void roleConfirm(@DestinationVariable String roomId, @DestinationVariable String nickname)
         throws JSONException {
         System.err.println("role socket recieved!");
-        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(userNickname);
+        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(nickname);
         System.err.println("nickname's role : " + role);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("role",role);
-        simpMessagingTemplate.convertAndSend("/role/"+ roomId + "/" + userNickname, jsonObject.toString());
+        jsonObject.put("check","role");
+        simpMessagingTemplate.convertAndSend("/topic/"+ nickname, jsonObject.toString());
     }
 }

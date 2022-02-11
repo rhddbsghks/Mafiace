@@ -38,6 +38,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const $websocket = useRef(null);
 
   const userId = jwt(localStorage.getItem("jwt")).sub;
+  const nickname = jwt(localStorage.getItem("jwt")).nickname;
   useEffect(() => {
     // 초기 세팅
     const nickName = jwt(localStorage.getItem("jwt")).nickname;
@@ -215,33 +216,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     console.log(publisher);
     console.log(subscribers);
     console.log(mainStreamManager);
-    getVoteResult();
-  };
-
-  const selMafia = () => {
-    setMyRole("Mafia");
-  };
-
-  const selDoctor = () => {
-    setMyRole("Doctor");
-  };
-
-  const selPolice = () => {
-    setMyRole("Police");
+    console.log("당신의 직업 : " + myRole);
   };
 
   const gameStart = () => {
     console.log("====================START======================");
     $websocket.current.sendMessage(`/app/timer/${gameInfo.id}`);
     $websocket.current.sendMessage(`/app/start/${gameInfo.id}`);
-  };
-
-  const handleDay = () => {
-    setDay((prev) => !prev);
-  };
-
-  const handleNight = () => {
-    setNight((prev) => !prev);
   };
 
   const deleteRoom = () => {
@@ -269,12 +250,19 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               console.log("게임방 소켓 종료");
             }}
             onMessage={(msg) => {
-              console.log(msg);
+              console.log("직업 수신 " + msg.check);
               if (msg === "start") {
                 setStart(true);
                 setDay(true);
                 setToggle(!toggle);
                 setHead("낮이 왔습니다. 마피아를 찾아주세요.");
+                // 역할 확인
+                console.log("게임스타트!!!");
+                setTimeout(() => {
+                  $websocket.current.sendMessage(
+                    `/app/role/${gameInfo.id}/${nickname}`
+                  );
+                }, 1000);
               } else if (msg === "day") {
                 setNight(false);
                 setDay(true);
@@ -288,6 +276,8 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 setToggle(!toggle);
                 setTime(5);
                 setHead("밤이 왔습니다.");
+              } else if (msg.check === "role") {
+                setMyRole(msg.role);
               }
             }}
             ref={$websocket}
@@ -357,9 +347,6 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               >
                 {" "}
                 <button onClick={handleClick}>버튼</button>
-                <button onClick={selMafia}>마피아 선택</button>
-                <button onClick={selDoctor}>의사 선택</button>
-                <button onClick={selPolice}>경찰 선택</button>
                 {gameInfo.ownerId === userId && !start ? (
                   <button onClick={gameStart}>START</button>
                 ) : null}
