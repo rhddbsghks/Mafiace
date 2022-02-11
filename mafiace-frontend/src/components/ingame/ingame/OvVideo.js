@@ -1,10 +1,12 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import * as faceapi from "face-api.js";
-import { useState } from "react";
+
+import Chart from "chart.js";
 
 const OpenViduVideoComponen = ({ streamManager }) => {
   const videoRef = useRef();
+  const canvasDom = useRef();
   const [faceExpressions, setFaceExpressions] = useState({
     neutral: 0,
     happy: 0,
@@ -62,11 +64,6 @@ const OpenViduVideoComponen = ({ streamManager }) => {
 
   const clickBtn = () => {
     if (chk) {
-      // setArrExpressions(Object.entries(faceExpressions));
-      // const valSort = Object.entries(faceExpressions).sort(
-      //   ([, a], [, b]) => b - a
-      // );
-      // setTopEmotion(valSort[0][0]);
       console.log(arrExpressions);
       console.log(topEmotion);
     } else {
@@ -82,12 +79,34 @@ const OpenViduVideoComponen = ({ streamManager }) => {
       ([, a], [, b]) => b - a
     );
     setTopEmotion(valSort[0][0]);
+
+    const valArr = arrExpressions.map((val) => {
+      return val[1];
+    });
+    const ctx = canvasDom.current.getContext("2d");
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: [
+          "neutral",
+          "happy",
+          "sad",
+          "angry",
+          "fearful",
+          "disgusted",
+          "surprised",
+        ],
+        datasets: [{ label: "감정 그래프", data: valArr }],
+      },
+    });
   }, [arrExpressions]);
 
   return (
     <>
       <video autoPlay={true} ref={videoRef} onPlaying={onPlay} />
       <button onClick={clickBtn}>button</button>
+      <canvas ref={canvasDom}></canvas>
+      {/* <canvas ref={canvasDom} style={{ display: "none" }}></canvas> */}
     </>
   );
 };
