@@ -243,7 +243,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
       ) : (
         <>
           <SockJsClient
-            url="http://localhost:8080/mafiace/ws"
+            url="/mafiace/ws"
             topics={topics}
             onConnect={() => {
               console.log("게임방 소켓 연결");
