@@ -34,7 +34,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [head, setHead] = useState(gameInfo.gameTitle); // 헤더 상태메세지
   const [myRole, setMyRole] = useState(); // 내 직업
   const [isVoted, setIsVoted] = useState(false); // 투표완료 유무
-  const [myVote, setMyVote] = useState(); // 내가 투표한 사람의 닉네임
+  const [myVote, setMyVote] = useState("default"); // 내가 투표한 사람의 닉네임
   const $websocket = useRef(null);
 
   const userId = jwt(localStorage.getItem("jwt")).sub;
@@ -134,9 +134,11 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
       if (gameInfo.ownerId === userId) {
         if (day) {
           // 낮->밤
-          toNight();
+          setIsVoted(false);
+          setTimeout(toNight(), 1000);
         } else if (night) {
-          toDay();
+          setIsVoted(false);
+          setTimeout(toDay(), 1000);
         }
       }
     }
@@ -150,8 +152,20 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     $websocket.current.sendMessage(`/app/night/${gameInfo.id}`);
   };
 
+  const getVoteResult = () => {
+    $websocket.current.sendMessage(`/app/vote/${gameInfo.id}`);
+  };
+
   const kill = () => {
-    console.log("죽이기 투표");
+    $websocket.current.sendMessage(`/app/kill/${gameInfo.id}`, myVote);
+  };
+
+  const heal = () => {
+    $websocket.current.sendMessage(`/app/heal/${gameInfo.id}`, myVote);
+  };
+
+  const investigate = () => {
+    $websocket.current.sendMessage(`/app/investigate/${gameInfo.id}`, myVote);
   };
 
   const deleteSubscriber = (streamManager) => {
@@ -201,6 +215,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     console.log(publisher);
     console.log(subscribers);
     console.log(mainStreamManager);
+    getVoteResult();
   };
 
   const selMafia = () => {
@@ -254,6 +269,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               console.log("게임방 소켓 종료");
             }}
             onMessage={(msg) => {
+              console.log(msg);
               if (msg === "start") {
                 setStart(true);
                 setDay(true);
@@ -392,13 +408,15 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   <div>
                     <UserVideoComponent
                       streamManager={sub}
+                      ownerId={gameInfo.ownerId}
                       myRole={myRole}
                       setMyVote={setMyVote}
                       isVoted={isVoted}
                       setIsVoted={setIsVoted}
                       night={night}
                       kill={kill}
-                      ownerId={gameInfo.ownerId}
+                      heal={heal}
+                      investigate={investigate}
                     />
                   </div>
                 </div>

@@ -2,6 +2,7 @@ package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.response.BaseResponseBody;
 import com.ssafy.mafiace.api.response.GameRoomRes;
+import com.ssafy.mafiace.api.response.VoteRes;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
 import com.ssafy.mafiace.common.model.GameInfo;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -73,27 +75,22 @@ public class GameController {
 
 
     @GetMapping("/checkpw")
-
     public ResponseEntity<BaseResponseBody> checkPassword(String sessionName, String password) {
 
-        if(gameService.checkPassword(sessionName,password))
+        if (gameService.checkPassword(sessionName, password)) {
             return ResponseEntity.status(200)
                 .body(BaseResponseBody.of(200, "입장하라"));
+        }
 
         return ResponseEntity.status(401)
             .body(BaseResponseBody.of(401, "비밀번호 불일치"));
-   }
-
-    // 모든 사람이 레디했을 때 요청 ( game start 버튼 활성화 )
-    public void allReadyBroadcasting(String roomId) {
-        simpMessagingTemplate.convertAndSend("/from/mafiace/allReady/" + roomId, true);
     }
 
     // 게임 시작
     @MessageMapping("/start/{roomId}") // 발행경로
     @SendTo("/topic/{roomId}") // 구독경로
     public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception {
-        System.out.println(roomId+"가 시작하자고 한다");
+        System.out.println(roomId + "가 시작하자고 한다");
         gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService));
     }
 
@@ -108,19 +105,41 @@ public class GameController {
     //타이머 테스트
     @MessageMapping("/timer/{roomId}")
     public void sendToMessage(@DestinationVariable String roomId) {
-        simpMessagingTemplate.convertAndSend("/topic/"+roomId, "start");
+        simpMessagingTemplate.convertAndSend("/topic/" + roomId, "start");
     }
 
     // 낮->밤
     @MessageMapping("/night/{roomId}")
     public void toNight(@DestinationVariable String roomId) {
-        simpMessagingTemplate.convertAndSend("/topic/"+roomId, "night");
+        simpMessagingTemplate.convertAndSend("/topic/" + roomId, "night");
     }
 
     // 밤->낮
     @MessageMapping("/day/{roomId}")
     public void toDay(@DestinationVariable String roomId) {
-        simpMessagingTemplate.convertAndSend("/topic/"+roomId, "day");
+        simpMessagingTemplate.convertAndSend("/topic/" + roomId, "day");
     }
 
+    @MessageMapping("/kill/{roomId}")
+    public void killByMafia(@DestinationVariable String roomId, String voted) {
+        MafiaceManager manager = gameManagerMap.get(roomId);
+        manager.addVoteList(voted);
+        System.out.println("죽는닷죽는닷죽는닷죽는닷" + voted);
+    }
+
+    @MessageMapping("/heal/{roomId}")
+    public void healByDoctor(@DestinationVariable String roomId, String voted) {
+        MafiaceManager manager = gameManagerMap.get(roomId);
+        manager.setHealTarget(voted);
+        System.out.println("힐힐힐힐힐힐힐힐힐힐힐" + voted);
+    }
+
+    // 투표 결과를 얻어옴
+    @MessageMapping("/vote/{roomId}")
+    public void voteResult(@DestinationVariable String roomId) {
+        MafiaceManager manager = gameManagerMap.get(roomId);
+        VoteRes voteRes=manager.getVoteResult();
+        manager.reset();
+        simpMessagingTemplate.convertAndSend("/topic/"+roomId, voteRes);
+    }
 }

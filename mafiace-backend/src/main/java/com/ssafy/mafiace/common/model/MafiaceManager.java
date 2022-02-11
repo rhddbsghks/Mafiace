@@ -2,6 +2,7 @@ package com.ssafy.mafiace.common.model;
 
 
 import com.ssafy.mafiace.api.response.GamePlayerRes;
+import com.ssafy.mafiace.api.response.VoteRes;
 import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,6 +43,12 @@ public class MafiaceManager {
     private LocalDateTime endTime;
     private String winTeam;
     private SessionService sessionService;
+
+    private List<String> aliveList=new ArrayList<>();
+    private List<String> dieList=new ArrayList<>();
+    private Map<String,Integer> voteMap=new ConcurrentHashMap<>();  // 닉네임이 저장됨
+    private String healTarget;
+
     public MafiaceManager() {}
 
     // 게임 시작할때 생성자 호출
@@ -52,7 +60,6 @@ public class MafiaceManager {
         this.players = new GamePlayerRes(userList);
         this.room.setRoomStatus(true);
 
-//      votemanager 생성필요
     }
 
     public void gamSet(){
@@ -84,5 +91,38 @@ public class MafiaceManager {
         return true;
     }
 
+    public void addVoteList(String voted){
+        if(voteMap.containsKey(voted)){
+            int n=voteMap.get(voted);
+            voteMap.put(voted,n+1);
+        }else{
+            voteMap.put(voted,1);
+        }
+    }
 
+    public VoteRes getVoteResult(){
+        int MAX=-1;
+        VoteRes result=new VoteRes();
+        if(voteMap.size()==0){  // 아무도 투표한 사람이 없는 경우
+            result.setCheck("nobody");
+            result.setNickname("x");
+            return result;
+        }
+        for(String key: voteMap.keySet()){
+            if(voteMap.get(key)>MAX) {
+                result.setNickname(key);
+            }else if(voteMap.get(key)==MAX){
+                result.setCheck("nobody");
+                result.setNickname("x");
+                return result;
+            }
+        }
+        result.setCheck("selected");
+        return result;
+    }
+
+    public void reset(){
+        voteMap.clear();
+        healTarget="";
+    }
 }

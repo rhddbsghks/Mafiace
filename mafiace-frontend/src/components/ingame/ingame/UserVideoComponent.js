@@ -1,45 +1,35 @@
-<<<<<<< HEAD
 import React, { useEffect } from "react";
 import OpenViduVideoComponent from "./OvVideo";
 import "./UserVideo.css";
 
 const UserVideoComponent = ({
   streamManager,
+  ownerId,
   myRole,
   setMyVote,
   isVoted,
   setIsVoted,
   night,
   kill,
+  heal,
+  Investigate,
 }) => {
-=======
-import React from "react";
-import { useEffect } from "react";
-import OpenViduVideoComponent from "./OvVideo";
-import "./UserVideo.css";
-
-const UserVideoComponent = ({ streamManager, ownerId }) => {
->>>>>>> 76179ed394909af9cd31c25bb4afbb277a200570
   const nickNameTag = JSON.parse(streamManager.stream.connection.data).nickName;
   const id = JSON.parse(streamManager.stream.connection.data).id;
 
   const clickKill = () => {
     setIsVoted(true);
     setMyVote(nickNameTag);
-    console.log(streamManager.stream.connection.data);
     kill();
   };
 
   const clickHeal = () => {
     setIsVoted(true);
     setMyVote(nickNameTag);
-    console.log(streamManager.stream.connection.data);
   };
-
   const clickInvestigate = () => {
     setIsVoted(true);
     setMyVote(nickNameTag);
-    console.log(streamManager.stream.connection.data);
   };
   return (
     <div>
@@ -70,7 +60,6 @@ const UserVideoComponent = ({ streamManager, ownerId }) => {
             />
           )}
           <OpenViduVideoComponent streamManager={streamManager} />
-
           <div style={{ width: "11%", height: "5.5%", display: "flex" }}>
             <span
               style={{
