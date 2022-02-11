@@ -31,7 +31,7 @@ const OpenViduVideoComponen = ({ streamManager }) => {
         console.log(detections[0].expressions);
         setFaceExpressions(detections[0].expressions);
       }
-    }, 1000);
+    }, 100000);
   };
 
   useEffect(() => {
