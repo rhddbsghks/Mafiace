@@ -28,13 +28,15 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [start, setStart] = useState(false);
   const [toggle, setToggle] = useState(false);
 
-  const [time, setTime] = useState(5); // 타이머
+  const [time, setTime] = useState(10); // 타이머
   const [timer, setTimer] = useState(); // 타이머
   const [count, setCount] = useState(1); // 날짜
-  const [head, setHead] = useState(gameInfo.gameTitle); // 헤더 상태메세지
+  const [stateMessage, setStateMessage] = useState(gameInfo.gameTitle); // 헤더 상태메세지
   const [myRole, setMyRole] = useState(); // 내 직업
   const [isVoted, setIsVoted] = useState(false); // 투표완료 유무
   const [myVote, setMyVote] = useState("default"); // 내가 투표한 사람의 닉네임
+  const [deathList, setDeathList] = useState([]); // 죽은 사람들 닉네임
+  const [isAlive, setIsAlive] = useState("alive"); // 나의 상태
   const $websocket = useRef(null);
 
   const userId = jwt(localStorage.getItem("jwt")).sub;
@@ -135,11 +137,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
       if (gameInfo.ownerId === userId) {
         if (day) {
           // 낮->밤
-          setIsVoted(false);
-          setTimeout(toNight(), 1000);
+          getVoteResult();
+          toNight();
         } else if (night) {
-          setIsVoted(false);
-          setTimeout(toDay(), 1000);
+          getVoteResult();
+          setTimeout(() => {
+            checkGameEnd();
+          }, 1000);
         }
       }
     }
@@ -154,19 +158,22 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   };
 
   const getVoteResult = () => {
-    $websocket.current.sendMessage(`/app/vote/${gameInfo.id}`);
+    $websocket.current.sendMessage(`/app/result/${gameInfo.id}`);
   };
 
-  const kill = () => {
-    $websocket.current.sendMessage(`/app/kill/${gameInfo.id}`, myVote);
+  const vote = (voted) => {
+    $websocket.current.sendMessage(`/app/vote/${gameInfo.id}`, voted);
   };
 
-  const heal = () => {
-    $websocket.current.sendMessage(`/app/heal/${gameInfo.id}`, myVote);
+  const heal = (voted) => {
+    $websocket.current.sendMessage(`/app/heal/${gameInfo.id}`, voted);
   };
 
-  const investigate = () => {
-    $websocket.current.sendMessage(`/app/investigate/${gameInfo.id}`, myVote);
+  const investigate = (voted) => {
+    $websocket.current.sendMessage(
+      `/app/investigate/${gameInfo.id}/${nickname}`,
+      voted
+    );
   };
 
   const deleteSubscriber = (streamManager) => {
@@ -216,13 +223,35 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     console.log(publisher);
     console.log(subscribers);
     console.log(mainStreamManager);
-    console.log("당신의 직업 : " + myRole);
   };
 
-  const gameStart = () => {
+  const clickStart = () => {
     console.log("====================START======================");
     $websocket.current.sendMessage(`/app/timer/${gameInfo.id}`);
     $websocket.current.sendMessage(`/app/start/${gameInfo.id}`);
+  };
+
+  const startGame = () => {
+    setStart(true);
+    setDay(true);
+    setToggle(!toggle);
+    setStateMessage("낮이 왔습니다. 마피아를 찾아주세요.");
+  };
+
+  const checkGameEnd = () => {
+    $websocket.current.sendMessage(`/app/end/${gameInfo.id}`);
+  };
+
+  const endGame = () => {
+    setStart(false);
+    setDay(false);
+    setNight(false);
+    setIsVoted(false);
+    setMyRole();
+    setStateMessage(gameInfo.gameTitle);
+    setTime(10);
+    setCount(1);
+    publisher.publishAudio(true);
   };
 
   const deleteRoom = () => {
@@ -250,34 +279,84 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               console.log("게임방 소켓 종료");
             }}
             onMessage={(msg) => {
-              console.log("직업 수신 " + msg.check);
               if (msg === "start") {
-                setStart(true);
-                setDay(true);
-                setToggle(!toggle);
-                setHead("낮이 왔습니다. 마피아를 찾아주세요.");
+                alert("3초후 게임이 시작됩니다!");
+                setTimeout(startGame, 3000);
                 // 역할 확인
-                console.log("게임스타트!!!");
                 setTimeout(() => {
                   $websocket.current.sendMessage(
                     `/app/role/${gameInfo.id}/${nickname}`
                   );
-                }, 1000);
+                }, 3100);
               } else if (msg === "day") {
-                setNight(false);
-                setDay(true);
-                setToggle(!toggle);
-                setTime(5);
-                setCount((prev) => prev + 1);
-                setHead("낮이 왔습니다. 마피아를 찾아주세요.");
+                setTimeout(() => {
+                  setNight(false);
+                  setDay(true);
+                  setIsVoted(false);
+                  setToggle(!toggle);
+                  setTime(10);
+                  setCount((prev) => prev + 1);
+                  setStateMessage("낮이 왔습니다. 마피아를 찾아주세요.");
+                }, 3000);
               } else if (msg === "night") {
-                setDay(false);
-                setNight(true);
-                setToggle(!toggle);
-                setTime(5);
-                setHead("밤이 왔습니다.");
+                setTimeout(() => {
+                  setDay(false);
+                  setNight(true);
+                  setIsVoted(false);
+                  setToggle(!toggle);
+                  setTime(15);
+                  if (myRole === "Mafia") {
+                    setStateMessage("밤이 왔습니다. 죽일 사람을 투표해주세요.");
+                  } else if (myRole === "Police") {
+                    setStateMessage(
+                      "밤이 왔습니다. 조사할 사람을 선택해주세요."
+                    );
+                  } else if (myRole === "Doctor") {
+                    setStateMessage("밤이 왔습니다. 살릴 사람을 선택해주세요.");
+                  } else {
+                    setStateMessage("밤이 왔습니다. 죽지 않길 기도하세요.");
+                  }
+                }, 3000);
               } else if (msg.check === "role") {
                 setMyRole(msg.role);
+              } else if (msg.check === "investigate") {
+                if (msg.role === "Mafia") {
+                  alert(myVote + "님은 마피아입니다.");
+                } else {
+                  alert(myVote + "님은 시민입니다.");
+                }
+              }
+              //getVoteResult
+              else if (msg.check === "selected") {
+                if (day) {
+                  setStateMessage(msg.nickname + "님이 추방당했습니다.");
+                  setDeathList((prev) => [...prev, msg.nickname]);
+                  if (msg.nickname === nickname) {
+                    setIsAlive("false"); // 사망
+                    publisher.publishAudio(false);
+                  }
+                } else {
+                  setStateMessage(
+                    msg.nickname + "님이 마피아에게 살해당했습니다."
+                  );
+                  setDeathList((prev) => [...prev, msg.nickname]);
+                  if (msg.nickname === nickname) {
+                    setIsAlive("false"); // 사망
+                  }
+                }
+              } else if (msg.check === "save") {
+                setStateMessage("밤에 아무도 죽지 않았습니다.");
+              } else if (msg.check === "nobody") {
+                setStateMessage("아무 일도 일어나지 않았습니다.");
+              } else if (msg.end) {
+                if (msg.winTeam === "Mafia") {
+                  alert("마피아팀 승리!!!");
+                } else {
+                  alert("시민팀 승리!!!");
+                }
+                endGame();
+              } else if (!msg.end) {
+                toDay();
               }
             }}
             ref={$websocket}
@@ -335,7 +414,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                     top: "40%",
                   }}
                 >
-                  {start ? <span>Day {count}</span> : null} {head}
+                  {start ? <span>Day {count}</span> : null} {stateMessage}
                 </span>
               </div>
 
@@ -348,7 +427,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 {" "}
                 <button onClick={handleClick}>버튼</button>
                 {gameInfo.ownerId === userId && !start ? (
-                  <button onClick={gameStart}>START</button>
+                  <button onClick={clickStart}>START</button>
                 ) : null}
                 <input
                   className="btn btn-large btn-danger"
@@ -358,6 +437,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   value="Leave session"
                 />
                 {day || night ? <h2>남은 시간 : {time}</h2> : null}
+                {myRole === "Mafia" ? <h2>당신의 직업 : 마피아</h2> : null}
+                {myRole === "Police" ? <h2>당신의 직업 : 경찰</h2> : null}
+                {myRole === "Doctor" ? <h2>당신의 직업 : 의사</h2> : null}
+                {myRole === "Citizen" ? <h2>당신의 직업 : 시민</h2> : null}
               </div>
             </div>
 
@@ -397,11 +480,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                       streamManager={sub}
                       ownerId={gameInfo.ownerId}
                       myRole={myRole}
+                      deathList={deathList}
                       setMyVote={setMyVote}
                       isVoted={isVoted}
                       setIsVoted={setIsVoted}
+                      day={day}
                       night={night}
-                      kill={kill}
+                      vote={vote}
                       heal={heal}
                       investigate={investigate}
                     />
