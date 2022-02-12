@@ -110,6 +110,13 @@ public class SessionServiceImpl implements SessionService {
     public String getToken(String sessionName, String nickname) throws Exception {
         // Session already exists
         System.out.println("Existing session " + sessionName);
+        for(User inRoomUser : userList.get(sessionName)){
+            if(inRoomUser.getNickname().equals(nickname)){
+                System.err.println("====== already exist Member!!! ===== ");
+                return "Unauthorized";
+            }
+        }
+
 
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
             ConnectionType.WEBRTC).build();
@@ -120,6 +127,7 @@ public class SessionServiceImpl implements SessionService {
 
         Optional<User> user = userRepository.findByNickname(nickname);
         userList.get(sessionName).add(user.get());
+        System.err.println(nickname + " : is entered room");
 
         return token;
     }
@@ -133,7 +141,7 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public void leaveSession(String sessionName, String nickname) {
+    public boolean leaveSession(String sessionName, String nickname) {
         Game game = gameRepositorySupport.findById(sessionName);
         User leaveUser = userRepository.findByNickname(nickname).get();
         List<User> curUserList = userList.get(sessionName);
@@ -144,12 +152,16 @@ public class SessionServiceImpl implements SessionService {
                 userList.get(sessionName).remove(searchUser);
                 if(searchUser.getUserId().equals(game.getOwnerId())){
                     gameRepositorySupport.updateOwnerId(sessionName, curUserList.get(0).getNickname());
+                    System.err.println(curUserList.get(0).getNickname() + " is owner now ");
+                    System.err.println("afeter leave : " + userList.get(sessionName).size());
+                    return true;
                 }
                 break;
             }
         }
 
         System.err.println("afeter leave : " + userList.get(sessionName).size());
+        return false;
     }
 
     @Override
