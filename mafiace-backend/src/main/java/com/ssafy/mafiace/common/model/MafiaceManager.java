@@ -5,9 +5,11 @@ import com.ssafy.mafiace.api.response.VoteRes;
 import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
+import com.ssafy.mafiace.api.service.UserHonorService;
 import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.User;
+import com.ssafy.mafiace.db.entity.UserRecords;
 import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRepository;
 import java.time.Duration;
@@ -50,6 +52,7 @@ public class MafiaceManager {
 
     private SessionService sessionService;
     private GameService gameService;
+    private UserHonorService userHonorService;
 
     private List<String> aliveList=new ArrayList<>();
     private List<String> dieList=new ArrayList<>();
@@ -89,6 +92,9 @@ public class MafiaceManager {
             if(user == null) return false;
             gameLogService.addGameLog(gameLog);
             userRecordsService.userUpdateUserRecords(gameLog);
+            // 업데이트된 UserRecords에 따라 업적 갱신 및 저장
+            UserRecords userRecords = userRecordsRepository.findById(user.get().getId()).get();
+            userHonorService.saveHonor(userRecords);
         }
         gameService.deleteById(this.room.getId());
         return true;
