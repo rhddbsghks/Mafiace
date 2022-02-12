@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import OpenViduVideoComponent from "./OvVideo";
 import "./UserVideo.css";
 
@@ -6,31 +6,48 @@ const UserVideoComponent = ({
   streamManager,
   ownerId,
   myRole,
+  deathList,
   setMyVote,
   isVoted,
   setIsVoted,
+  day,
   night,
-  kill,
+  vote,
   heal,
   investigate,
 }) => {
   const nickNameTag = JSON.parse(streamManager.stream.connection.data).nickName;
   const id = JSON.parse(streamManager.stream.connection.data).id;
 
-  const clickKill = () => {
+  const isAlive = () => {
+    for (var name in deathList) {
+      if (name === nickNameTag) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const clickVote = () => {
     setIsVoted(true);
     setMyVote(nickNameTag);
-    kill();
+    alert(nickNameTag + "님을 선택하였습니다.");
+    vote(nickNameTag);
   };
 
   const clickHeal = () => {
     setIsVoted(true);
     setMyVote(nickNameTag);
+    alert(nickNameTag + "님을 선택하였습니다.");
+    heal(nickNameTag);
   };
   const clickInvestigate = () => {
     setIsVoted(true);
     setMyVote(nickNameTag);
+    alert(nickNameTag + "님을 선택하였습니다.");
+    investigate(nickNameTag);
   };
+
   return (
     <div>
       {streamManager !== undefined ? (
@@ -72,14 +89,18 @@ const UserVideoComponent = ({
             </span>
           </div>
           <div>
-            {myRole === "Mafia" && !isVoted && night ? (
-              <button onClick={clickKill}>KILL</button>
+            {!isAlive ? <span>사망</span> : null}
+            {isAlive && !isVoted && day ? (
+              <button onClick={clickVote}>Vote</button>
             ) : null}
-            {myRole === "Doctor" && !isVoted && night ? (
-              <button onClick={clickHeal}>HEAL</button>
+            {isAlive && myRole === "Mafia" && !isVoted && night ? (
+              <button onClick={clickVote}>KILL</button>
             ) : null}
-            {myRole === "Police" && !isVoted && night ? (
-              <button onClick={clickInvestigate}>조사</button>
+            {isAlive && myRole === "Doctor" && !isVoted && night ? (
+              <button onClick={clickHeal}>SAVE</button>
+            ) : null}
+            {isAlive && myRole === "Police" && !isVoted && night ? (
+              <button onClick={clickInvestigate}>DETECT</button>
             ) : null}
           </div>
         </div>
