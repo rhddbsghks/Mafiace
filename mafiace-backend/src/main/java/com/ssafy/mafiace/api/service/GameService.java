@@ -11,4 +11,8 @@ public interface GameService {
     List<User> getUserListById(String roomNum);
 
     boolean checkPassword(String SessionName, String password);
+
+    Game getGameById(String gameId);
+
+    void deleteById(String id);
 }

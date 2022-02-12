@@ -1,6 +1,7 @@
 package com.ssafy.mafiace.db.entity;
 
 
+import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.AttributeOverride;
@@ -33,6 +34,7 @@ public class GameLog extends BaseEntity{
 
     @Builder
     private GameLog(String winTeam, int playTime){
+        this.id = BaseEntity.shortUUID();
         this.winTeam = winTeam;
         this.playTime = playTime;
     }

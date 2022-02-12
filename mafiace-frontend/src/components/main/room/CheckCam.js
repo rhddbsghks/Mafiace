@@ -12,6 +12,7 @@ const CheckCam = ({
   body,
   setToken,
   setGameInfo,
+  gameId,
 }) => {
   const videoRef = useRef();
   const [detected, setDetected] = useState(false);
@@ -40,13 +41,14 @@ const CheckCam = ({
   };
 
   const enterIngame = () => {
-    if (!detected) {
-      alert("얼굴이 감지되지 않습니다!");
-      return;
-    }
+    // if (!detected) {
+    //   alert("얼굴이 감지되지 않습니다!");
+    //   return;
+    // }
 
     if (isOwner) handleCamOff();
     else setIngame(!ingame);
+
     clearInterval(faceRecog);
   };
 
@@ -75,6 +77,11 @@ const CheckCam = ({
             alert("요청 권한이 없습니다");
           }
         });
+    } else {
+      axios.delete("/mafiace/api/session/user", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+        params: { sessionName: gameId },
+      });
     }
   };
 

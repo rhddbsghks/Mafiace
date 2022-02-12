@@ -1,12 +1,8 @@
 package com.ssafy.mafiace.game;
 
 import com.ssafy.mafiace.api.service.GameLogService;
-import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.db.entity.User;
-import com.ssafy.mafiace.db.repository.UserRecordsRepository;
-import com.ssafy.mafiace.game.role.Role;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +13,7 @@ public class Player {
 
     private User user;
     private String nickname;
-    private Role role;
+    private String role;
     private boolean isAlive;
     private boolean isBoss;
     private int saveCount ;
@@ -30,6 +26,10 @@ public class Player {
     public Player(User user){
         this.user = user;
         this.nickname = user.getNickname();
+        this.isAlive = true;
+        this.saveCount = 0;
+        this.killCount = 0;
+        this.investigateCount = 0;
     }
 
     public void Alive(){
@@ -38,18 +38,6 @@ public class Player {
 
     public void Dead(){
         this.isAlive = false;
-    }
-
-    public boolean isMafia(){
-        return this.role.isMafia();
-    }
-
-    public boolean isPolice(){
-        return this.role.isPolice();
-    }
-
-    public boolean isDoctor(){
-        return this.role.isDoctor();
     }
 
     public boolean isAlive(){
@@ -85,8 +73,4 @@ public class Player {
 
         gameLogService.addGameLog(gameLogs);
     }
-
-
-
-
 }

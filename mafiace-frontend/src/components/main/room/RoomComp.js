@@ -88,6 +88,7 @@ const RoomComp = ({
         setCheckCam={setCheckCam}
         setIngame={setIngame}
         ingame={ingame}
+        gameId={game.id}
       ></CheckCam>
       <Modal
         dimmer="inverted"

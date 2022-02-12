@@ -26,11 +26,11 @@ import org.springframework.stereotype.Service;
 public class SessionServiceImpl implements SessionService {
 
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private GameRepository gameRepository;
     @Autowired
     private GameRepositorySupport gameRepositorySupport;
-    @Autowired
-    private UserRepository userRepository;
 
     // gameId -> userList
     private Map<String, List<User>> userList = new ConcurrentHashMap<>();
@@ -65,6 +65,7 @@ public class SessionServiceImpl implements SessionService {
     public NewSessionInfo openSession(String ownerNickname, SessionOpenReq sessionOpenReq)
         throws Exception {
         String gameId = BaseEntity.shortUUID();
+        Optional<User> user = userRepository.findByNickname(ownerNickname);
 
         // New session
         System.out.println("New session " + gameId);
@@ -88,7 +89,7 @@ public class SessionServiceImpl implements SessionService {
             gameRepository.save(Game.builder()
                 .gameId(gameId)
                 .roomNum(roomNum)
-                .ownerId(ownerNickname)
+                .ownerId(user.get().getUserId())
                 .gameTitle(sessionOpenReq.getGameTitle())
                 .discussionTime(sessionOpenReq.getDiscussionTime())
                 .maxPlayer(sessionOpenReq.getMaxPlayer())
@@ -97,8 +98,6 @@ public class SessionServiceImpl implements SessionService {
                 .password((sessionOpenReq.getPassword()))
                 .build());
         availableRoomNum[roomNum] = true;
-
-        Optional<User> user = userRepository.findByNickname(ownerNickname);
         userList.put(gameId, new ArrayList<>());
         userList.get(gameId).add(user.get());
         System.err.println("Room available : " + userList.get(gameId).size() + " / "
@@ -182,8 +181,9 @@ public class SessionServiceImpl implements SessionService {
         }
         return true;
     }
-    public List<User> getUserList(String sessionName) {
+
+    @Override
+    public List<User> getParticipantList(String sessionName) {
         return userList.get(sessionName);
     }
-
 }
