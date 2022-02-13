@@ -37,6 +37,7 @@ public class MafiaceManager {
     @Autowired
     public GameLogService gameLogService;
 
+
     // 게임 내에 사용되는 내부 로직
     private String roomId;
     private Game room;
@@ -66,6 +67,7 @@ public class MafiaceManager {
         this.userList = sessionService.getParticipantList(roomId);
         this.players = new PlayersManager(userList);
         this.room.setRoomStatus(true);
+        this.gameService.setGameStatus(this.room);
         players.setRole();
     }
 

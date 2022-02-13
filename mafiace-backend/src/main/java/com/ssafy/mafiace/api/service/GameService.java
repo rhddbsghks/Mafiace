@@ -12,4 +12,6 @@ public interface GameService {
     Game getGameById(String roomId);
 
     void deleteById(String id);
+
+    void setGameStatus(Game game);
 }
