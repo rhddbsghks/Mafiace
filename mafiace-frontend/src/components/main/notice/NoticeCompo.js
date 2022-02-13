@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import Detail from "./Detail";
 import { Table } from "@mui/material";
 import jwt from "jwt-decode";
+import Loader from "../../common/Loader";
 
 const NoticeCompo = () => {
   // const [form, setForm] = useState({ title: "", content: "", postNum: "" });
@@ -17,7 +18,7 @@ const NoticeCompo = () => {
   const [modalOn, setModalOn] = useState(false);
   const [postOn, setPostOn] = useState(false);
   const [detailOn, setDetailOn] = useState(false);
-
+  const [loading, setLoading] = useState(true);
   const nextId = useState(1);
 
   //더미 데이터 호출
@@ -30,6 +31,7 @@ const NoticeCompo = () => {
       .then((res) => {
         // console.log("get data");
         console.log(res.data);
+        setLoading(false);
         setList(res.data);
       })
       .catch(({ response }) => {
@@ -123,75 +125,81 @@ const NoticeCompo = () => {
   };
 
   return (
-    <div>
-      {admin === "sixman" ? (
-        <div className="ml-20" style={{}}>
-          <button
-            onClick={handleCreate}
-            className="bg-purple-300 hover:bg-purple-500 px-3 py-1 rounded text-white"
-            style={{ border: "none", margin: "3%", float: "right" }}
-          >
-            생성
-          </button>
-          <Table>
-            <thead>
-              <tr>
-                <th style={{ fontSize: "2rem" }}>No.</th>
-                <th style={{ fontSize: "2rem" }}>Title</th>
-                <th style={{ fontSize: "2rem" }}>Time</th>
-                <th style={{ fontSize: "2rem" }}>Edit</th>
-                <th style={{ fontSize: "2rem" }}>Delete</th>
-              </tr>
-            </thead>
-            <br></br>
-            <Tr
-              list={list}
-              handleRemove={handleRemove}
-              handleEdit={handleEdit}
-              handleDetail={handleDetail}
-            />
-          </Table>
-          <br></br>
-
-          {postOn && (
-            <Post handleSave={handleSave} handleCancel2={handleCancel2} />
-          )}
-          {detailOn && (
-            <Detail
-              selectedData={selected}
-              handleCancel3={handleCancel3}
-            ></Detail>
-          )}
-          {modalOn && (
-            <Modal
-              selectedData={selected}
-              handleCancel={handleCancel}
-              handleEditSubmit={handleEditSubmit}
-            />
-          )}
-        </div>
+    <>
+      {loading ? (
+        <Loader msg="로딩 중..." />
       ) : (
-        <div className="ml-50" style={{ marginTop: "5%" }}>
-          <Table>
-            <thead>
-              <tr>
-                <th style={{ fontSize: "2rem" }}>No.</th>
-                <th style={{ fontSize: "2rem" }}>Title</th>
-                <th style={{ fontSize: "2rem" }}>Time</th>
-              </tr>
-            </thead>
-            <Tr list={list} handleDetail={handleDetail} />
-          </Table>
+        <div>
+          {admin === "sixman" ? (
+            <div className="ml-20" style={{}}>
+              <button
+                onClick={handleCreate}
+                className="bg-purple-300 hover:bg-purple-500 px-3 py-1 rounded text-white"
+                style={{ border: "none", margin: "3%", float: "right" }}
+              >
+                생성
+              </button>
+              <Table>
+                <thead>
+                  <tr>
+                    <th style={{ fontSize: "2rem" }}>No.</th>
+                    <th style={{ fontSize: "2rem" }}>Title</th>
+                    <th style={{ fontSize: "2rem" }}>Time</th>
+                    <th style={{ fontSize: "2rem" }}>Edit</th>
+                    <th style={{ fontSize: "2rem" }}>Delete</th>
+                  </tr>
+                </thead>
+                <br></br>
+                <Tr
+                  list={list}
+                  handleRemove={handleRemove}
+                  handleEdit={handleEdit}
+                  handleDetail={handleDetail}
+                />
+              </Table>
+              <br></br>
 
-          {detailOn && (
-            <Detail
-              selectedData={selected}
-              handleCancel3={handleCancel3}
-            ></Detail>
+              {postOn && (
+                <Post handleSave={handleSave} handleCancel2={handleCancel2} />
+              )}
+              {detailOn && (
+                <Detail
+                  selectedData={selected}
+                  handleCancel3={handleCancel3}
+                ></Detail>
+              )}
+              {modalOn && (
+                <Modal
+                  selectedData={selected}
+                  handleCancel={handleCancel}
+                  handleEditSubmit={handleEditSubmit}
+                />
+              )}
+            </div>
+          ) : (
+            <div className="ml-50" style={{ marginTop: "5%" }}>
+              <Table>
+                <thead>
+                  <tr>
+                    <th style={{ fontSize: "2rem" }}>No.</th>
+                    <th style={{ fontSize: "2rem" }}>Title</th>
+                    <th style={{ fontSize: "2rem" }}>Time</th>
+                  </tr>
+                </thead>
+                <Tr list={list} handleDetail={handleDetail} />
+              </Table>
+
+              {detailOn && (
+                <Detail
+                  selectedData={selected}
+                  handleCancel3={handleCancel3}
+                ></Detail>
+              )}
+            </div>
           )}
         </div>
       )}
-    </div>
+    </>
   );
 };
 
