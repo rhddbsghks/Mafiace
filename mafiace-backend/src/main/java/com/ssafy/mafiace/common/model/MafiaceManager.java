@@ -118,6 +118,7 @@ public class MafiaceManager {
             if (voteMap.get(key) > MAX) {
                 result.setCheck("selected");
                 result.setNickname(key);
+                MAX=voteMap.get(key);
             } else if (voteMap.get(key) == MAX) {
                 result.setCheck("nobody");
                 result.setNickname("x");

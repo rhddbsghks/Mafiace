@@ -89,7 +89,7 @@ const UserVideoComponent = ({
             </span>
           </div>
           <div>
-            {!isAlive ? <span>사망</span> : null}
+            {!isAlive ? <span>사망자</span> : null}
             {isAlive && !isVoted && day ? (
               <button onClick={clickVote}>Vote</button>
             ) : null}
