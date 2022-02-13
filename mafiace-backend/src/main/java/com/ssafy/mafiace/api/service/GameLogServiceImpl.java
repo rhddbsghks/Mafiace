@@ -30,6 +30,7 @@ public class GameLogServiceImpl implements GameLogService {
 
 //    @Override
     public GameLog addGameLog(Map<String, String> gameLogMap) {
+        // gameLog (playtime, winTeam, user_unique_id, game_log_id)
         GameLog gameLog = GameLog.builder()
             .playTime(Integer.parseInt(gameLogMap.get("playTime")))
 //            .winTeam(gameLogResult.이긴 팀)

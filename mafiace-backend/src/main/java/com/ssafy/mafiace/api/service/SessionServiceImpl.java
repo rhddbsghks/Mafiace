@@ -98,7 +98,7 @@ public class SessionServiceImpl implements SessionService {
                 .password((sessionOpenReq.getPassword()))
                 .build());
         availableRoomNum[roomNum] = true;
-        userList.put(gameId, new ArrayList<>());
+        userList.put(gameId, new ArrayList<>()); // us
         userList.get(gameId).add(user.get());
         System.err.println("Room available : " + userList.get(gameId).size() + " / "
             + sessionOpenReq.getMaxPlayer());
@@ -110,6 +110,14 @@ public class SessionServiceImpl implements SessionService {
     public String getToken(String roomId, String nickname) throws Exception {
         // Session already exists
         System.out.println("Existing session " + roomId);
+        for(User inRoomUser : userList.get(roomId)){
+            if(inRoomUser.getNickname().equals(nickname)){
+                System.err.println("====== already exist Member!!! ===== ");
+                return "Unauthorized";
+            }
+        }
+
+        System.out.println("Existing session " + roomId);
 
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
             ConnectionType.WEBRTC).build();
@@ -120,6 +128,7 @@ public class SessionServiceImpl implements SessionService {
 
         Optional<User> user = userRepository.findByNickname(nickname);
         userList.get(roomId).add(user.get());
+        System.err.println(nickname + " : is entered room");
 
         return token;
     }
@@ -133,20 +142,28 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public void leaveSession(String roomId, String nickname) {
+    public boolean leaveSession(String roomId, String nickname) {
         Game game = gameRepositorySupport.findById(roomId);
-        Optional<User> user = userRepository.findByNickname(nickname);
+        User leaveUser = userRepository.findByNickname(nickname).get();
+        List<User> curUserList = userList.get(roomId);
         System.err.println("before leave : " + userList.get(roomId).size());
-        if (user == null) {
-            return;
-        }
-        for (User leaveUser : userList.get(roomId)) {
-            if (leaveUser.getNickname().equals(user.get().getNickname())) {
-                userList.get(roomId).remove(leaveUser);
+        for (int i = 0; i < curUserList.size(); i++) {
+            User searchUser = curUserList.get(i);
+            if (searchUser.getNickname().equals(leaveUser.getNickname())) {
+                userList.get(roomId).remove(searchUser);
+                if (searchUser.getUserId().equals(game.getOwnerId())) {
+                    gameRepositorySupport.updateOwnerId(roomId,
+                        curUserList.get(0).getNickname());
+                    System.err.println(curUserList.get(0).getNickname() + " is owner now ");
+                    System.err.println("afeter leave : " + userList.get(roomId).size());
+                    return true;
+                }
                 break;
             }
         }
+
         System.err.println("afeter leave : " + userList.get(roomId).size());
+        return false;
     }
 
     @Override

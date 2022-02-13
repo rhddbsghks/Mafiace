@@ -215,6 +215,12 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
       axios.delete("/mafiace/api/session/user", {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         params: { sessionName: gameInfo.id },
+      })
+      .then((res) => {
+        if(res.data.status === 201){
+          console.log(res.data.message);
+          // 방장 바꾸기
+        }
       });
     }
 

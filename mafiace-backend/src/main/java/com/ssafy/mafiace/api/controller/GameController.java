@@ -179,4 +179,7 @@ public class GameController {
         manager.getPlayers().getPlayer(nickname).setDead();
         simpMessagingTemplate.convertAndSend("/topic/"+roomId, new VoteRes(nickname,"exit"));
     }
+
+//    /gameset/{roomId}
+//    // manager.saveGameLog();
 }
