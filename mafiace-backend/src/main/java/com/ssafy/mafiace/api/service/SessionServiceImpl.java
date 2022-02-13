@@ -107,36 +107,37 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public String getToken(String sessionName, String nickname) throws Exception {
+    public String getToken(String roomId, String nickname) throws Exception {
         // Session already exists
-        System.out.println("Existing session " + sessionName);
-        for(User inRoomUser : userList.get(sessionName)){
+        System.out.println("Existing session " + roomId);
+        for(User inRoomUser : userList.get(roomId)){
             if(inRoomUser.getNickname().equals(nickname)){
                 System.err.println("====== already exist Member!!! ===== ");
                 return "Unauthorized";
             }
         }
 
+        System.out.println("Existing session " + roomId);
 
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
             ConnectionType.WEBRTC).build();
 
         // Generate a new Connection with the recently created connectionProperties
-        String token = this.mapSessions.get(sessionName).createConnection(connectionProperties)
+        String token = this.mapSessions.get(roomId).createConnection(connectionProperties)
             .getToken();
 
         Optional<User> user = userRepository.findByNickname(nickname);
-        userList.get(sessionName).add(user.get());
+        userList.get(roomId).add(user.get());
         System.err.println(nickname + " : is entered room");
 
         return token;
     }
 
     @Override
-    public void closeSession(String sessionName) throws Exception {
-        Game deleteRoom = gameRepositorySupport.findById(sessionName);
+    public void closeSession(String roomId) throws Exception {
+        Game deleteRoom = gameRepositorySupport.findById(roomId);
         availableRoomNum[deleteRoom.getRoomNum()] = false;
-        mapSessions.remove(sessionName);
+        mapSessions.remove(roomId);
         gameRepository.delete(deleteRoom);
     }
 
@@ -146,12 +147,13 @@ public class SessionServiceImpl implements SessionService {
         User leaveUser = userRepository.findByNickname(nickname).get();
         List<User> curUserList = userList.get(sessionName);
         System.err.println("before leave : " + userList.get(sessionName).size());
-        for(int i=0; i<curUserList.size(); i++){
+        for (int i = 0; i < curUserList.size(); i++) {
             User searchUser = curUserList.get(i);
-            if(searchUser.getNickname().equals(leaveUser.getNickname())){
+            if (searchUser.getNickname().equals(leaveUser.getNickname())) {
                 userList.get(sessionName).remove(searchUser);
-                if(searchUser.getUserId().equals(game.getOwnerId())){
-                    gameRepositorySupport.updateOwnerId(sessionName, curUserList.get(0).getNickname());
+                if (searchUser.getUserId().equals(game.getOwnerId())) {
+                    gameRepositorySupport.updateOwnerId(sessionName,
+                        curUserList.get(0).getNickname());
                     System.err.println(curUserList.get(0).getNickname() + " is owner now ");
                     System.err.println("afeter leave : " + userList.get(sessionName).size());
                     return true;
@@ -165,9 +167,9 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public boolean toggleReady(String sessionName, String nickname) {
-        Game game = gameRepositorySupport.findById(sessionName);
-        for (User user : userList.get(sessionName)) {
+    public boolean toggleReady(String roomId, String nickname) {
+        Game game = gameRepositorySupport.findById(roomId);
+        for (User user : userList.get(roomId)) {
             if (user.getNickname().equals(nickname)) {
                 user.setReady(!user.isReady());
                 return true;
@@ -177,28 +179,28 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public int getParticipantCount(String sessionName) {
-        return userList.get(sessionName) == null ? 0 : userList.get(sessionName).size();
+    public int getParticipantCount(String roomId) {
+        return userList.get(roomId) == null ? 0 : userList.get(roomId).size();
     }
 
     @Override
-    public boolean isFull(String sessionName) {
-        return gameRepositorySupport.findMaxPlayerById(sessionName) == userList.get(
-            sessionName).size();
+    public boolean isFull(String roomId) {
+        return gameRepositorySupport.findMaxPlayerById(roomId) == userList.get(
+            roomId).size();
     }
 
     @Override
-    public boolean isExist(String sessionName) {
+    public boolean isExist(String roomId) {
 
-        if (mapSessions.get(sessionName) == null) {
-            gameRepository.delete(gameRepositorySupport.findById(sessionName));
+        if (mapSessions.get(roomId) == null) {
+            gameRepository.delete(gameRepositorySupport.findById(roomId));
             return false;
         }
         return true;
     }
 
     @Override
-    public List<User> getParticipantList(String sessionName) {
-        return userList.get(sessionName);
+    public List<User> getParticipantList(String roomId) {
+        return userList.get(roomId);
     }
 }

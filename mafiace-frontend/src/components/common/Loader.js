@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./loader.module.css";
 
-const Loader = () => {
+const Loader = ({ msg }) => {
   return (
     <div className={styles.loader}>
       <div className={styles.Loader__overlay}></div>
@@ -16,7 +16,7 @@ const Loader = () => {
             strokeWidth="10"
           ></circle>
         </svg>
-        <div className={styles.Loader__messege}>Loading...</div>
+        <div className={styles.Loader__messege}>{msg}</div>
       </div>
     </div>
   );

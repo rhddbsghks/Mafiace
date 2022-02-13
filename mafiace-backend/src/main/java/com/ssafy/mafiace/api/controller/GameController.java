@@ -1,6 +1,7 @@
 package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.response.BaseResponseBody;
+import com.ssafy.mafiace.api.response.GameEndRes;
 import com.ssafy.mafiace.api.response.GameRoomRes;
 import com.ssafy.mafiace.api.response.VoteRes;
 import com.ssafy.mafiace.api.service.GameService;
@@ -90,11 +91,15 @@ public class GameController {
         gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService, gameService));
     }
 
-    //게임 종료
+    // 게임이 끝났는지 체크하고 승리팀 판단
     @MessageMapping("/end/{roomId}")
-    @SendTo("/topic/{roomId}")
-    public void gameEndBroadcasting(@DestinationVariable String roomId) throws Exception {
-        gameManagerMap.remove(roomId);
+    public void gameEndBroadcasting(@DestinationVariable String roomId) throws Exception{
+        MafiaceManager manager = gameManagerMap.get(roomId);
+        GameEndRes gameEndRes=manager.checkGameEnd();
+        if(gameEndRes.isEnd()){
+            gameManagerMap.remove(roomId);
+        }
+        simpMessagingTemplate.convertAndSend("/topic/"+roomId, gameEndRes);
     }
 
 
@@ -116,40 +121,62 @@ public class GameController {
         simpMessagingTemplate.convertAndSend("/topic/" + roomId, "day");
     }
 
-    @MessageMapping("/kill/{roomId}")
-    public void killByMafia(@DestinationVariable String roomId, String voted) {
+    @MessageMapping("/vote/{roomId}")
+    public void vote(@DestinationVariable String roomId, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
         manager.addVoteList(voted);
-        System.out.println("죽는닷죽는닷죽는닷죽는닷" + voted);
     }
 
     @MessageMapping("/heal/{roomId}")
     public void healByDoctor(@DestinationVariable String roomId, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
         manager.setHealTarget(voted);
-        System.out.println("힐힐힐힐힐힐힐힐힐힐힐" + voted);
+    }
+
+    @MessageMapping("/investigate/{roomId}/{nickname}")
+    public void investigate(@DestinationVariable String roomId, @DestinationVariable String nickname, String voted) {
+        MafiaceManager manager = gameManagerMap.get(roomId);
+        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(voted);
+        JSONObject data = new JSONObject();
+        data.put("role",role);
+        data.put("check","investigate");
+        simpMessagingTemplate.convertAndSend("/topic/"+ nickname, data.toString());
+
     }
 
     // 투표 결과를 얻어옴
-    @MessageMapping("/vote/{roomId}")
+    @MessageMapping("/result/{roomId}")
     public void voteResult(@DestinationVariable String roomId) {
         MafiaceManager manager = gameManagerMap.get(roomId);
         VoteRes voteRes=manager.getVoteResult();
         manager.reset();
+        if(voteRes.getCheck().equals("selected")){
+            manager.addDeathPlayer(voteRes.getNickname());
+            manager.getPlayers().getPlayer(voteRes.getNickname()).setDead();
+        }
         simpMessagingTemplate.convertAndSend("/topic/"+roomId, voteRes);
     }
 
-    //역할 확인
+    // 역할 확인
     @MessageMapping("/role/{roomId}/{nickname}")
     public void roleConfirm(@DestinationVariable String roomId, @DestinationVariable String nickname)
         throws JSONException {
         System.err.println("role socket recieved!");
         String role = gameManagerMap.get(roomId).getPlayers().findRoleName(nickname);
-        System.err.println(nickname + "'s role : " + role);
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("role",role);
-        jsonObject.put("check","role");
-        simpMessagingTemplate.convertAndSend("/topic/"+ nickname, jsonObject.toString());
+        System.err.println("nickname's role : " + role);
+        JSONObject data = new JSONObject();
+        data.put("role",role);
+        data.put("check","role");
+        simpMessagingTemplate.convertAndSend("/topic/"+ nickname, data.toString());
+    }
+
+    // 게임하다 나가면 사망처리
+    @MessageMapping("/exit/{roomId}/{nickname}")
+    public void exit(@DestinationVariable String roomId, @DestinationVariable String nickname) {
+        MafiaceManager manager = gameManagerMap.get(roomId);
+        manager.addDeathPlayer(nickname);
+        manager.getPlayers().getPlayer(nickname).setDead();
+        simpMessagingTemplate.convertAndSend("/topic/"+roomId, new VoteRes(nickname,"exit"));
     }
 
 //    /gameset/{roomId}

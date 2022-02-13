@@ -1,16 +1,15 @@
 package com.ssafy.mafiace.api.service;
 
 import com.ssafy.mafiace.db.entity.Game;
-import com.ssafy.mafiace.db.entity.User;
 import java.util.List;
 
 public interface GameService {
 
     List<Game> getGameList(int maxPlayer, int isPublic);
 
-    boolean checkPassword(String SessionName, String password);
+    boolean checkPassword(String roomId, String password);
 
-    Game getGameById(String gameId);
+    Game getGameById(String roomId);
 
     void deleteById(String id);
 }

@@ -80,42 +80,35 @@ public class GamePlayerRes {
         return null;
     }
 
-    public void removeDeadPlayer(Player player) {
-        // 죽은 플레이어 없애기
-    }
-
-    public GameResultType confirmGameStatus() {
-        int mafiaCount = this.aliveMafiaCount();
-        int citizenCount = this.aliveCitizenCount();
-        if (mafiaCount == 0) {
-            return GameResultType.CitizenWin;
-        } else if (mafiaCount >= citizenCount) {
-            return GameResultType.MafiaWin;
-        } else {
-            return GameResultType.InGame;
-        }
-    }
-
-    public int aliveMafiaCount() {
+    public int countAliveMafia() {
         int cnt = 0;
         for (Player player : players) {
             if (player.getRole().equals("Mafia") && player.isAlive()) {
-                cnt += 1;
+                cnt++;
             }
         }
         return cnt;
     }
 
-    public int aliveCitizenCount() {
+    public int countAliveCitizen() {
         int cnt = 0;
         for (Player player : players) {
             if (!player.getRole().equals("Mafia") && player.isAlive()) {
-                cnt += 1;
+                cnt++;
             }
         }
         return cnt;
     }
 
+    public List<String> getMafia(){
+        List<String> mafia=new ArrayList<>();
+        for (Player player : players) {
+            if (player.getRole().equals("Mafia")) {
+                mafia.add(player.getNickname());
+            }
+        }
+        return mafia;
+    }
 
     // 반환하는 String[]
     // "홍길동 Mafia"
