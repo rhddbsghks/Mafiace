@@ -21,7 +21,7 @@ public class PlayersManager {
     private List<Integer> mafia;
 
     public PlayersManager(List<User> users) {
-        mafia = new ArrayList<>();
+        this.mafia = new ArrayList<>();
         this.players = new ArrayList<>();
         for (User user : users) {
             this.players.add(new Player(user));
