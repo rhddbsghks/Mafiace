@@ -153,11 +153,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
         if (day) {
           // 낮->밤
           getVoteResult();
-          toNight();
+          setTimeout(() => {
+            checkGameEnd("toNight");
+          }, 1000);
         } else if (night) {
           getVoteResult();
           setTimeout(() => {
-            checkGameEnd();
+            checkGameEnd("toDay");
           }, 1000);
         }
       }
@@ -260,8 +262,8 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     setStateMessage("마피아를 찾아주세요!");
   };
 
-  const checkGameEnd = () => {
-    $websocket.current.sendMessage(`/app/end/${gameInfo.id}`);
+  const checkGameEnd = (next) => {
+    $websocket.current.sendMessage(`/app/end/${gameInfo.id}`, next);
   };
 
   const endGame = () => {
@@ -391,18 +393,24 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   }
                 }
               } else if (msg.check === "save") {
-                setStateMessage("밤에 아무도 죽지 않았습니다.");
+                setStateMessage("의사가 마피아로부터 시민을 살렸습니다.");
               } else if (msg.check === "nobody") {
                 setStateMessage("아무 일도 일어나지 않았습니다.");
-              } else if (msg.end) {
+              } else if (msg.end === "end") {
                 if (msg.winTeam === "Mafia") {
                   alert("마피아팀 승리!!! 마피아는 " + msg.mafia + "였습니다!");
                 } else {
                   alert("시민팀 승리!!! 마피아는 " + msg.mafia + "였습니다!");
                 }
                 endGame();
-              } else if (!msg.end) {
-                toDay();
+              } else if (msg.end === "toDay") {
+                if (gameInfo.ownerId === userId) {
+                  toDay();
+                }
+              } else if (msg.end === "toNight") {
+                if (gameInfo.ownerId === userId) {
+                  toNight();
+                }
               } else if (msg.check === "exit") {
                 setDeathList((prev) => [...prev, msg.nickname]);
               }

@@ -93,12 +93,13 @@ public class GameController {
 
     // 게임이 끝났는지 체크하고 승리팀 판단
     @MessageMapping("/end/{roomId}")
-    public void gameEndBroadcasting(@DestinationVariable String roomId) throws Exception{
+    public void gameEndBroadcasting(@DestinationVariable String roomId, String next) throws Exception{
         MafiaceManager manager = gameManagerMap.get(roomId);
-        GameEndRes gameEndRes=manager.checkGameEnd();
-        if(gameEndRes.isEnd()){
+        GameEndRes gameEndRes=manager.checkGameEnd(next);
+        if(gameEndRes.getEnd().equals("end")){
             gameManagerMap.remove(roomId);
         }
+
         simpMessagingTemplate.convertAndSend("/topic/"+roomId, gameEndRes);
     }
 
