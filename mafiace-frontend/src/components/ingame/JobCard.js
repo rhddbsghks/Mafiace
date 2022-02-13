@@ -36,7 +36,7 @@ const JobCard = ({ openJobCard, setopenJobCard, myRole }) => {
     >
       <Card className={styles["job-card"]}>
         <img
-          src={`./img/${myRole.toLowerCase()}.png`}
+          src={`./img/${myRole}.png`}
           alt=""
           className={styles["job-card-image"]}
         />
