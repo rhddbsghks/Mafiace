@@ -86,7 +86,6 @@ const NoticeCompo = () => {
       alert("게시물이 삭제되었습니다!");
       setRefreshed(!refreshed);
     });
-    nextId.current -= 1;
   };
 
   const handleCreate = () => {
