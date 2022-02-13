@@ -6,6 +6,7 @@ import UserVideoComponent from "../../components/ingame/UserVideoComponent";
 import Day from "../../components/ingame/Day";
 import Night from "../../components/ingame/Night";
 import Count321 from "../../components/ingame/Count321";
+import JobCard from "../../components/ingame/JobCard";
 
 import * as React from "react";
 import axios from "axios";
@@ -31,6 +32,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [startButton, setStartButton] = useState(false);
   const [start, setStart] = useState(false);
   const [count321, setCount321] = useState(false);
+  const [openJobCard, setopenJobCard] = useState(false);
 
   // 웹 소켓
   const $websocket = useRef(null);
@@ -41,7 +43,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [timer, setTimer] = useState(); // 타이머
   const [count, setCount] = useState(1); // 날짜
   const [stateMessage, setStateMessage] = useState(gameInfo.gameTitle); // 헤더 상태메세지
-  const [myRole, setMyRole] = useState(); // 내 직업
+  const [myRole, setMyRole] = useState(""); // 내 직업
   const [isVoted, setIsVoted] = useState(false); // 투표완료 유무
   const [myVote, setMyVote] = useState("default"); // 내가 투표한 사람의 닉네임
   const [deathList, setDeathList] = useState([]); // 죽은 사람들 닉네임
@@ -238,6 +240,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     console.log(mainStreamManager);
   };
 
+  const clickJob = () => {
+    setopenJobCard(true);
+  };
+
   const clickStart = () => {
     console.log("====================START======================");
     if (subscribers.length < 3) {
@@ -251,6 +257,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   const startGame = () => {
     setCount321(false);
+    setopenJobCard(true);
     console.log("====================시작!============================");
     setStart(true);
     setDay(true);
@@ -292,6 +299,11 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   return (
     <div>
+      <JobCard
+        openJobCard={openJobCard}
+        setopenJobCard={setopenJobCard}
+        myRole={myRole}
+      />
       {loading ? (
         <Loader msg="입장 중..." />
       ) : (
@@ -356,6 +368,8 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   }
                 }, 3000);
               } else if (msg.check === "role") {
+                console.log("==================");
+                console.log(msg.role);
                 setMyRole(msg.role);
               } else if (msg.check === "investigate") {
                 console.log("경찰이 조사한 대상의 직업" + msg.role);
@@ -470,6 +484,9 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 <button onClick={handleClick}>버튼</button>
                 {gameInfo.ownerId === userId && startButton ? (
                   <button onClick={clickStart}>START</button>
+                ) : null}
+                {start ? (
+                  <button onClick={clickJob}> 직업카드 열기</button>
                 ) : null}
                 <input
                   className="btn btn-large btn-danger"
