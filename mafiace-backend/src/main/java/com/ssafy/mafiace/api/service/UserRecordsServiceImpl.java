@@ -6,6 +6,7 @@ import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
 import com.ssafy.mafiace.db.repository.UserRepositorySupport;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,8 @@ public class UserRecordsServiceImpl implements UserRecordsService {
     UserRecordsRepository userRecordsRepository;
 
     @Override
-    public UserRecords getUserRecords(String id) {
-        Optional<User> user = userRepository.findByUserId(id);
+    public UserRecords getUserRecords(String nickname) {
+        Optional<User> user = userRepository.findByNickname(nickname);
         if (user == null) {
             return null;
         }
@@ -44,8 +45,13 @@ public class UserRecordsServiceImpl implements UserRecordsService {
         user.setUserRecords(userRecords);
         System.out.println("id : " + userRecords.getId());
         System.out.println("wincount : " + userRecords.getWinCount());
-        System.out.println("userid : " + userRecords.getUser().getUserId());
+        System.out.println("nickname : " + userRecords.getUser().getNickname());
         return userRecordsRepository.save(userRecords);
+    }
+
+    @Override
+    public void userUpdateUserRecords(Map<String, String> gameLog) {
+        userRecordsRepositorySupport.updateUserRecords(gameLog);
     }
 
 
