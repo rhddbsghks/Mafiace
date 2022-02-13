@@ -37,6 +37,7 @@ public class MafiaceManager {
     @Autowired
     public GameLogService gameLogService;
 
+
     // 게임 내에 사용되는 내부 로직
     private String roomId;
     private Game room;
@@ -66,6 +67,7 @@ public class MafiaceManager {
         this.userList = sessionService.getParticipantList(roomId);
         this.players = new PlayersManager(userList);
         this.room.setRoomStatus(true);
+        this.gameService.setGameStatus(this.room);
         players.setRole();
     }
 
@@ -94,7 +96,8 @@ public class MafiaceManager {
             userGameLogService.saveUserGameLog(savedGameLog, user, gameLog.get("role"), gameLog.get("winTeam")); // 유저, 역할, 이긴 팀 저장
             userRecordsService.userUpdateUserRecords(gameLog); // 유저, 승,패, 직업별 기능 사용 횟수 저장
         }
-        gameService.deleteById(this.room.getId());
+        this.room.setRoomStatus(false);
+        gameService.setGameStatus(this.room);
         return true;
     }
 

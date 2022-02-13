@@ -45,4 +45,9 @@ public class GameServiceImpl implements GameService {
     public void deleteById(String id) {
         gameRepository.deleteById(id);
     }
+
+    @Override
+    public void setGameStatus(Game game) {
+        gameRepository.save(game);
+    }
 }

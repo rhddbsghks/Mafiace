@@ -97,9 +97,9 @@ public class GameController {
         MafiaceManager manager = gameManagerMap.get(roomId);
         GameEndRes gameEndRes=manager.checkGameEnd(next);
         if(gameEndRes.getEnd().equals("end")){
+            manager.saveRecord();
             gameManagerMap.remove(roomId);
         }
-
         simpMessagingTemplate.convertAndSend("/topic/"+roomId, gameEndRes);
     }
 
