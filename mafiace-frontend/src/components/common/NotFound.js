@@ -148,11 +148,9 @@ const NotFound = () => {
             </div>
             <div className={styles["number"]}>4</div>
           </div>
-          <div className={styles["subtitle"]}>
-            Oops. Looks like you took a wrong turn.
-          </div>
+          <div className={styles["subtitle"]}>잘못된 접근입니다.</div>
           <button className={styles["btn-404"]} onClick={routeHome}>
-            Go back
+            돌아가기
           </button>
         </div>
       </div>

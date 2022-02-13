@@ -84,7 +84,7 @@ const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
   return (
     <>
       {loading ? (
-        <Loader />
+        <Loader msg="로딩 중..." />
       ) : (
         // 로딩 완료
         <div>

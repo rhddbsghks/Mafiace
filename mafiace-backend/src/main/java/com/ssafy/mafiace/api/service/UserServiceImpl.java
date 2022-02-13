@@ -7,8 +7,6 @@ import com.ssafy.mafiace.db.repository.DeleteAccountRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
 import com.ssafy.mafiace.db.repository.DeleteAccountRepository;
-import io.openvidu.java.client.ConnectionProperties;
-import io.openvidu.java.client.ConnectionType;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -123,7 +121,7 @@ public class UserServiceImpl implements UserService {
             .build();
 
         user.setDeleteAccount(deleteAccount);
-        user.adddeleteAccount(user.getUserId());
+        user.addDeleteAccount(user.getUserId());
         deleteAccountRepository.save(deleteAccount);
         return userRepository.save(user);
     }

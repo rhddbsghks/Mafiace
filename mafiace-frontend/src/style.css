@@ -24,12 +24,16 @@
 body,
 h1,
 button,
-.counter {
+.counter,
+span {
   font-family: "Dongle", sans-serif !important;
 }
 
 .container {
   height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between;
 }
 .MuiTab-root {
   border-radius: 20px !important;
