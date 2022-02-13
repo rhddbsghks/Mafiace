@@ -142,27 +142,27 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public boolean leaveSession(String sessionName, String nickname) {
-        Game game = gameRepositorySupport.findById(sessionName);
+    public boolean leaveSession(String roomId, String nickname) {
+        Game game = gameRepositorySupport.findById(roomId);
         User leaveUser = userRepository.findByNickname(nickname).get();
-        List<User> curUserList = userList.get(sessionName);
-        System.err.println("before leave : " + userList.get(sessionName).size());
+        List<User> curUserList = userList.get(roomId);
+        System.err.println("before leave : " + userList.get(roomId).size());
         for (int i = 0; i < curUserList.size(); i++) {
             User searchUser = curUserList.get(i);
             if (searchUser.getNickname().equals(leaveUser.getNickname())) {
-                userList.get(sessionName).remove(searchUser);
+                userList.get(roomId).remove(searchUser);
                 if (searchUser.getUserId().equals(game.getOwnerId())) {
-                    gameRepositorySupport.updateOwnerId(sessionName,
+                    gameRepositorySupport.updateOwnerId(roomId,
                         curUserList.get(0).getNickname());
                     System.err.println(curUserList.get(0).getNickname() + " is owner now ");
-                    System.err.println("afeter leave : " + userList.get(sessionName).size());
+                    System.err.println("afeter leave : " + userList.get(roomId).size());
                     return true;
                 }
                 break;
             }
         }
 
-        System.err.println("afeter leave : " + userList.get(sessionName).size());
+        System.err.println("afeter leave : " + userList.get(roomId).size());
         return false;
     }
 
