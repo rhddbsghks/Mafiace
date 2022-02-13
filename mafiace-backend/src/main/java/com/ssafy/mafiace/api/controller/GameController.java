@@ -125,21 +125,18 @@ public class GameController {
     public void vote(@DestinationVariable String roomId, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
         manager.addVoteList(voted);
-        System.err.println(voted+"한테 투표함투표함투표함");
     }
 
     @MessageMapping("/heal/{roomId}")
     public void healByDoctor(@DestinationVariable String roomId, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
         manager.setHealTarget(voted);
-        System.err.println("힐힐힐힐힐힐힐힐힐힐힐" + voted);
     }
 
     @MessageMapping("/investigate/{roomId}/{nickname}")
     public void investigate(@DestinationVariable String roomId, @DestinationVariable String nickname, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
-        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(nickname);
-        System.err.println("조사조사조사조사" + voted);
+        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(voted);
         JSONObject data = new JSONObject();
         data.put("role",role);
         data.put("check","investigate");

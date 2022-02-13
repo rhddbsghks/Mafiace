@@ -28,6 +28,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [night, setNight] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [loading, setLoding] = useState(true);
+  const [startButton, setStartButton] = useState(true);
   const [start, setStart] = useState(false);
   const [count321, setCount321] = useState(false);
 
@@ -238,6 +239,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   const clickStart = () => {
     console.log("====================START======================");
+    setStartButton(false);
     $websocket.current.sendMessage(`/app/timer/${gameInfo.id}`);
     $websocket.current.sendMessage(`/app/start/${gameInfo.id}`);
   };
@@ -257,6 +259,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   const endGame = () => {
     setStart(false);
+    setStartButton(true);
     setDay(false);
     setNight(false);
     setIsVoted(false);
@@ -457,7 +460,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               >
                 {" "}
                 <button onClick={handleClick}>버튼</button>
-                {gameInfo.ownerId === userId && !start ? (
+                {gameInfo.ownerId === userId && startButton ? (
                   <button onClick={clickStart}>START</button>
                 ) : null}
                 <input
