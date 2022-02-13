@@ -125,21 +125,18 @@ public class GameController {
     public void vote(@DestinationVariable String roomId, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
         manager.addVoteList(voted);
-        System.err.println(voted+"한테 투표함투표함투표함");
     }
 
     @MessageMapping("/heal/{roomId}")
     public void healByDoctor(@DestinationVariable String roomId, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
         manager.setHealTarget(voted);
-        System.err.println("힐힐힐힐힐힐힐힐힐힐힐" + voted);
     }
 
     @MessageMapping("/investigate/{roomId}/{nickname}")
     public void investigate(@DestinationVariable String roomId, @DestinationVariable String nickname, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
-        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(nickname);
-        System.err.println("조사조사조사조사" + voted);
+        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(voted);
         JSONObject data = new JSONObject();
         data.put("role",role);
         data.put("check","investigate");
@@ -160,7 +157,7 @@ public class GameController {
         simpMessagingTemplate.convertAndSend("/topic/"+roomId, voteRes);
     }
 
-    //역할 확인
+    // 역할 확인
     @MessageMapping("/role/{roomId}/{nickname}")
     public void roleConfirm(@DestinationVariable String roomId, @DestinationVariable String nickname)
         throws JSONException {
@@ -171,5 +168,13 @@ public class GameController {
         data.put("role",role);
         data.put("check","role");
         simpMessagingTemplate.convertAndSend("/topic/"+ nickname, data.toString());
+    }
+
+    // 게임하다 나가면 사망처리
+    @MessageMapping("/exit/{roomId}/{nickname}")
+    public void exit(@DestinationVariable String roomId, @DestinationVariable String nickname) {
+        MafiaceManager manager = gameManagerMap.get(roomId);
+        manager.addDeathPlayer(nickname);
+        simpMessagingTemplate.convertAndSend("/topic/"+roomId, new VoteRes(nickname,"exit"));
     }
 }

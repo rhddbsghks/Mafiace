@@ -4,7 +4,7 @@ import OpenViduVideoComponent from "./OvVideo";
 import "./UserVideo.css";
 
 const UserVideoComponent = ({
-  publisher,
+  streamManager,
   sub,
   ownerId,
   myRole,
@@ -19,17 +19,9 @@ const UserVideoComponent = ({
   heal,
   investigate,
 }) => {
-  const [streamManager, setStreamManager] = useState();
-  const [nickNameTag, setNickNameTag] = useState();
-  const [id, setId] = useState();
+  const nickNameTag = JSON.parse(streamManager.stream.connection.data).nickName;
+  const id = JSON.parse(streamManager.stream.connection.data).id;
   const [checkAlive, setCheckAlive] = useState(true);
-
-  useEffect(() => {
-    const streamManager = publisher ? publisher : sub;
-    setStreamManager(streamManager);
-    setNickNameTag(JSON.parse(streamManager.stream.connection.data).nickName);
-    setId(JSON.parse(streamManager.stream.connection.data).id);
-  }, []);
 
   useEffect(() => {
     for (var n in deathList) {

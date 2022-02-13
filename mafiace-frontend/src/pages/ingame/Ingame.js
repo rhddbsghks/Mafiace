@@ -28,6 +28,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [night, setNight] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [loading, setLoding] = useState(true);
+  const [startButton, setStartButton] = useState(false);
   const [start, setStart] = useState(false);
   const [count321, setCount321] = useState(false);
 
@@ -199,6 +200,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   };
 
   const leaveSession = () => {
+    $websocket.current.sendMessage(`/app/exit/${gameInfo.id}/${nickname}`);
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     if (publisher && subscribers.length === 0) {
@@ -238,8 +240,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   const clickStart = () => {
     console.log("====================START======================");
-    $websocket.current.sendMessage(`/app/timer/${gameInfo.id}`);
-    $websocket.current.sendMessage(`/app/start/${gameInfo.id}`);
+    if (subscribers.length < 3) {
+      alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
+    } else {
+      setStartButton(false);
+      $websocket.current.sendMessage(`/app/timer/${gameInfo.id}`);
+      $websocket.current.sendMessage(`/app/start/${gameInfo.id}`);
+    }
   };
 
   const startGame = () => {
@@ -257,6 +264,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   const endGame = () => {
     setStart(false);
+    setStartButton(true);
     setDay(false);
     setNight(false);
     setIsVoted(false);
@@ -293,6 +301,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
             topics={topics}
             onConnect={() => {
               console.log("게임방 소켓 연결");
+              setStartButton(true);
             }}
             onDisconnect={() => {
               console.log("게임방 소켓 종료");
@@ -306,7 +315,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   $websocket.current.sendMessage(
                     `/app/role/${gameInfo.id}/${nickname}`
                   );
-                }, 3100);
+                }, 4000);
               } else if (msg === "day") {
                 setTimeout(() => {
                   for (var idx in subscribers) {
@@ -380,13 +389,15 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 setStateMessage("아무 일도 일어나지 않았습니다.");
               } else if (msg.end) {
                 if (msg.winTeam === "Mafia") {
-                  alert("마피아팀 승리!!!");
+                  alert("마피아팀 승리!!! 마피아는 " + msg.mafia + "였습니다!");
                 } else {
-                  alert("시민팀 승리!!!");
+                  alert("시민팀 승리!!! 마피아는 " + msg.mafia + "였습니다!");
                 }
                 endGame();
               } else if (!msg.end) {
                 toDay();
+              } else if (msg.check === "exit") {
+                setDeathList((prev) => [...prev, msg.nickname]);
               }
             }}
             ref={$websocket}
@@ -457,7 +468,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               >
                 {" "}
                 <button onClick={handleClick}>버튼</button>
-                {gameInfo.ownerId === userId && !start ? (
+                {gameInfo.ownerId === userId && startButton ? (
                   <button onClick={clickStart}>START</button>
                 ) : null}
                 <input
@@ -467,11 +478,11 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   onClick={leaveSession}
                   value="Leave session"
                 />
-                {day || night ? <h2>남은 시간 : {time}</h2> : null}
                 {myRole === "Mafia" ? <h2>당신의 직업 : 마피아</h2> : null}
                 {myRole === "Police" ? <h2>당신의 직업 : 경찰</h2> : null}
                 {myRole === "Doctor" ? <h2>당신의 직업 : 의사</h2> : null}
                 {myRole === "Citizen" ? <h2>당신의 직업 : 시민</h2> : null}
+                {day || night ? <h2>남은 시간 : {time}</h2> : null}
               </div>
             </div>
 
@@ -494,7 +505,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   onClick={() => handleMainVideoStream(publisher)}
                 >
                   <UserVideoComponent
-                    publisher={publisher}
+                    streamManager={publisher}
                     ownerId={gameInfo.ownerId}
                     myRole={myRole}
                     isAlive={isAlive}
@@ -516,7 +527,8 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 >
                   <div>
                     <UserVideoComponent
-                      sub={sub}
+                      streamManager={sub}
+                      sub="sub"
                       ownerId={gameInfo.ownerId}
                       myRole={myRole}
                       isAlive={isAlive}
