@@ -220,6 +220,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   };
 
   const handleClick = () => {
+    $websocket.current.sendMessage(`/app/end/${gameInfo.id}`);
     console.log(publisher);
     console.log(subscribers);
     console.log(mainStreamManager);
