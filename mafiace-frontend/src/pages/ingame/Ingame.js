@@ -5,6 +5,7 @@ import Loader from "../../components/common/Loader";
 import UserVideoComponent from "../../components/ingame/UserVideoComponent";
 import Day from "../../components/ingame/Day";
 import Night from "../../components/ingame/Night";
+import Count321 from "../../components/ingame/Count321";
 
 import * as React from "react";
 import axios from "axios";
@@ -15,19 +16,26 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     leaveSession();
   };
 
+  // 세션 관련
   let OV = new OpenVidu();
-
-  const [day, setDay] = useState(false);
-  const [night, setNight] = useState(false);
   const [session, setSession] = useState();
   const [mainStreamManager, setMainStreamManager] = useState();
   const [publisher, setPublisher] = useState();
   const [subscribers, setSubscribers] = useState([]);
-  const [loading, setLoding] = useState(true);
-  const [topics, setTopics] = useState();
-  const [start, setStart] = useState(false);
-  const [toggle, setToggle] = useState(false);
 
+  // 페이지 상태
+  const [day, setDay] = useState(false);
+  const [night, setNight] = useState(false);
+  const [toggle, setToggle] = useState(false);
+  const [loading, setLoding] = useState(true);
+  const [start, setStart] = useState(false);
+  const [count321, setCount321] = useState(false);
+
+  // 웹 소켓
+  const $websocket = useRef(null);
+  const [topics, setTopics] = useState();
+
+  // 인게임
   const [time, setTime] = useState(10); // 타이머
   const [timer, setTimer] = useState(); // 타이머
   const [count, setCount] = useState(1); // 날짜
@@ -37,16 +45,20 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [myVote, setMyVote] = useState("default"); // 내가 투표한 사람의 닉네임
   const [deathList, setDeathList] = useState([]); // 죽은 사람들 닉네임
   const [isAlive, setIsAlive] = useState("alive"); // 나의 상태
-  const $websocket = useRef(null);
 
-  const userId = jwt(localStorage.getItem("jwt")).sub;
-  const nickname = jwt(localStorage.getItem("jwt")).nickname;
+  // 내 정보
+  const [userId, setUserId] = useState("");
+  const [nickname, setNickname] = useState("");
+
   useEffect(() => {
     // 초기 세팅
-    const nickName = jwt(localStorage.getItem("jwt")).nickname;
+    const nickname = jwt(localStorage.getItem("jwt")).nickname;
     const id = jwt(localStorage.getItem("jwt")).sub;
 
-    setTopics([`/topic/${gameInfo.id}`, `/topic/${nickName}`]);
+    setNickname(nickname);
+    setUserId(id);
+
+    setTopics([`/topic/${gameInfo.id}`, `/topic/${nickname}`]);
     // --- 2) Init a session ---
     let mySession = OV.initSession();
     setSession(mySession);
@@ -80,7 +92,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
     // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
     mySession
-      .connect(token, { nickName, id })
+      .connect(token, { nickName: nickname, id })
       .then(() => {
         // --- 5) Get your own camera stream ---
 
@@ -232,6 +244,8 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   };
 
   const startGame = () => {
+    setCount321(false);
+    console.log("====================시작!============================");
     setStart(true);
     setDay(true);
     setToggle(!toggle);
@@ -266,7 +280,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   return (
     <div>
       {loading ? (
-        <Loader />
+        <Loader msg="입장 중..." />
       ) : (
         <>
           <SockJsClient
@@ -280,8 +294,8 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
             }}
             onMessage={(msg) => {
               if (msg === "start") {
-                alert("3초후 게임이 시작됩니다!");
-                setTimeout(startGame, 3000);
+                setCount321(true);
+                setTimeout(startGame, 5000);
                 // 역할 확인
                 setTimeout(() => {
                   $websocket.current.sendMessage(
@@ -364,12 +378,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
           {day ? <Day></Day> : null}
           {night ? <Night></Night> : null}
+          {count321 ? <Count321 /> : null}
 
           <div
             id="session"
             style={{
               position: "absolute",
-              zIndex: "10",
+              zIndex: "9",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
