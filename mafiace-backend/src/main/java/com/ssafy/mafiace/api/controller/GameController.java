@@ -142,7 +142,7 @@ public class GameController {
         data.put("role",role);
         data.put("check","investigate");
         simpMessagingTemplate.convertAndSend("/topic/"+ nickname, data.toString());
-
+        if(role.equals("Mafia")) manager.getPlayers().addInvestigateCount(); // 경찰 탐지횟수 +1
     }
 
     // 투표 결과를 얻어옴

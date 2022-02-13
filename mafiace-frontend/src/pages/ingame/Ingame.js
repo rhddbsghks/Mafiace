@@ -243,6 +243,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     }
   };
 
+
   const clickJob = () => {
     setopenJobCard(true);
   };

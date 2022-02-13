@@ -8,6 +8,7 @@ import java.util.List;
 public interface SessionService {
 
     NewSessionInfo openSession(String ownerId, SessionOpenReq sessionOpenReq) throws Exception;
+
     String getToken(String roomId, String userId) throws Exception;
     void closeSession(String roomId) throws Exception;
     boolean leaveSession(String roomId, String request);

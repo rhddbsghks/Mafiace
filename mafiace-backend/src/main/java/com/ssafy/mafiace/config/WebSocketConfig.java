@@ -14,6 +14,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         stompEndpointRegistry.addEndpoint("/ws")
             .setAllowedOriginPatterns("*")
             .withSockJS();
+        stompEndpointRegistry.addEndpoint("/room")
+            .setAllowedOriginPatterns("*")
+            .withSockJS();
     }
 
     @Override

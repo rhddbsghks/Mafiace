@@ -41,7 +41,6 @@ public class SessionController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-
     @PostMapping("/token")
     @ApiOperation(value = "세션방 생성", notes = "생성된 방 번호의 토큰 제공")
     @ApiResponses({

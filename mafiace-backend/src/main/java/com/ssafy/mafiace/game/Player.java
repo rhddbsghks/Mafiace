@@ -41,7 +41,18 @@ public class Player {
 
     public void saveGameLog(){
         Map<String, String> gameLogs = new HashMap<>();
-
         gameLogService.addGameLog(gameLogs);
+    }
+
+    public void addSaveCount(){
+        this.saveCount ++;
+    }
+
+    public void addInvestigateCount(){
+        this.investigateCount ++;
+    }
+
+    public void addKillCount(){
+        this.killCount ++;
     }
 }
