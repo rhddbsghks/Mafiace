@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Divider,
-  Form,
-  Grid,
-  Segment,
-  Message,
-} from "semantic-ui-react";
+import { Button, Form, Grid, Segment, Message } from "semantic-ui-react";
 
 import axios from "axios";
+import styles from "./styles.module.css";
+import "./logo.css";
 
 const Signup = ({ clickSignup }) => {
   const [values, setValues] = useState({
@@ -166,10 +161,14 @@ const Signup = ({ clickSignup }) => {
     <>
       <h1>회원가입</h1>
 
-      <Segment placeholder>
-        <Grid columns={2} relaxed="very" stackable>
+      <Segment
+        placeholder
+        className={styles["home-bottom"]}
+        style={{ height: "400px", justifyContent: "space-around" }}
+      >
+        <Grid relaxed="very" stackable>
           <Grid.Column>
-            <Form>
+            <Form className="signup-form">
               <Form.Group unstackable widths={2}>
                 <Form.Input
                   icon="user"
@@ -228,37 +227,51 @@ const Signup = ({ clickSignup }) => {
               </Form.Group>
             </Form>
 
-            {validId && validPw && validMail && validNick ? (
-              <Message color="green" size="tiny">
-                완벽해요! 이제 회원가입 버튼을 눌러주세요.
-              </Message>
-            ) : (
-              <Message color={color} size="tiny">
-                {msg}
-              </Message>
-            )}
-          </Grid.Column>
-
-          <Grid.Column textAlign="center" verticalAlign="middle">
-            <Button.Group>
-              <Button
-                onClick={onClickSignup}
-                content="Sign Up"
-                icon="signup"
-                inverted
-                color="red"
-                disabled={!(validId && validPw && validMail && validNick)}
-              />
-              <Button
-                onClick={clickSignup}
-                content="뒤로가기"
-                inverted
-                color="purple"
-              />
-            </Button.Group>
+            <div style={{ width: "80%", margin: "7% auto" }}>
+              {validId && validPw && validMail && validNick ? (
+                <Message color="green" size="tiny">
+                  완벽해요! 이제 회원가입 버튼을 눌러주세요.
+                </Message>
+              ) : (
+                <Message color={color} size="tiny">
+                  {msg}
+                </Message>
+              )}
+            </div>
           </Grid.Column>
         </Grid>
-        <Divider vertical>and</Divider>
+
+        <div
+          style={{
+            margin: "auto 0",
+          }}
+        >
+          <Button
+            onClick={onClickSignup}
+            content="회원가입"
+            icon="signup"
+            inverted
+            color="violet"
+            style={{
+              fontSize: "2em",
+              padding: "10px 20px",
+            }}
+            disabled={!(validId && validPw && validMail && validNick)}
+          />
+        </div>
+
+        <div
+          className="form-back"
+          style={{
+            position: "absolute",
+            top: "5%",
+            left: "1%",
+            fontSize: "2em",
+          }}
+          onClick={clickSignup}
+        >
+          뒤로가기
+        </div>
       </Segment>
     </>
   );
