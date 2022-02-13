@@ -36,7 +36,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [isVoted, setIsVoted] = useState(false); // 투표완료 유무
   const [myVote, setMyVote] = useState("default"); // 내가 투표한 사람의 닉네임
   const [deathList, setDeathList] = useState([]); // 죽은 사람들 닉네임
-  const [isAlive, setIsAlive] = useState("alive"); // 나의 상태
+  const [isAlive, setIsAlive] = useState(true); // 나의 상태
   const $websocket = useRef(null);
 
   const userId = jwt(localStorage.getItem("jwt")).sub;
@@ -247,7 +247,9 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     setDay(false);
     setNight(false);
     setIsVoted(false);
+    setIsAlive(true);
     setMyRole();
+    setDeathList([]);
     setStateMessage(gameInfo.gameTitle);
     setTime(10);
     setCount(1);
@@ -320,6 +322,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               } else if (msg.check === "role") {
                 setMyRole(msg.role);
               } else if (msg.check === "investigate") {
+                console.log(msg.role);
                 if (msg.role === "Mafia") {
                   alert(myVote + "님은 마피아입니다.");
                 } else {
@@ -332,7 +335,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   setStateMessage(msg.nickname + "님이 추방당했습니다.");
                   setDeathList((prev) => [...prev, msg.nickname]);
                   if (msg.nickname === nickname) {
-                    setIsAlive("false"); // 사망
+                    setIsAlive(false); // 사망
                     publisher.publishAudio(false);
                   }
                 } else {
@@ -341,7 +344,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   );
                   setDeathList((prev) => [...prev, msg.nickname]);
                   if (msg.nickname === nickname) {
-                    setIsAlive("false"); // 사망
+                    setIsAlive(false); // 사망
                   }
                 }
               } else if (msg.check === "save") {
@@ -463,8 +466,16 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   onClick={() => handleMainVideoStream(publisher)}
                 >
                   <UserVideoComponent
-                    streamManager={publisher}
+                    publisher={publisher}
                     ownerId={gameInfo.ownerId}
+                    myRole={myRole}
+                    isAlive={isAlive}
+                    deathList={deathList}
+                    setMyVote={setMyVote}
+                    isVoted={isVoted}
+                    setIsVoted={setIsVoted}
+                    night={night}
+                    heal={heal}
                   />
                 </div>
               ) : null}
@@ -477,9 +488,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 >
                   <div>
                     <UserVideoComponent
-                      streamManager={sub}
+                      sub={sub}
                       ownerId={gameInfo.ownerId}
                       myRole={myRole}
+                      isAlive={isAlive}
                       deathList={deathList}
                       setMyVote={setMyVote}
                       isVoted={isVoted}
