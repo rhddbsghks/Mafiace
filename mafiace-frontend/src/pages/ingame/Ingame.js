@@ -105,7 +105,6 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
         setMainStreamManager(publisher);
         setPublisher(publisher);
         setLoding(false);
-        console.log(subscribers);
       })
       .catch((error) => {
         console.log(
@@ -254,6 +253,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     setTime(10);
     setCount(1);
     publisher.publishAudio(true);
+    for (var idx in subscribers) {
+      subscribers[idx].subscribeToAudio(true);
+      subscribers[idx].subscribeToVideo(true);
+    }
   };
 
   const deleteRoom = () => {
@@ -292,6 +295,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 }, 3100);
               } else if (msg === "day") {
                 setTimeout(() => {
+                  for (var idx in subscribers) {
+                    subscribers[idx].subscribeToAudio(true);
+                    subscribers[idx].subscribeToVideo(true);
+                  }
                   setNight(false);
                   setDay(true);
                   setIsVoted(false);
@@ -302,6 +309,12 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 }, 3000);
               } else if (msg === "night") {
                 setTimeout(() => {
+                  if (myRole !== "Mafia") {
+                    for (var idx in subscribers) {
+                      subscribers[idx].subscribeToAudio(false);
+                      subscribers[idx].subscribeToVideo(false);
+                    }
+                  }
                   setDay(false);
                   setNight(true);
                   setIsVoted(false);
@@ -322,7 +335,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               } else if (msg.check === "role") {
                 setMyRole(msg.role);
               } else if (msg.check === "investigate") {
-                console.log(msg.role);
+                console.log("경찰이 조사한 대상의 직업" + msg.role);
                 if (msg.role === "Mafia") {
                   alert(myVote + "님은 마피아입니다.");
                 } else {
