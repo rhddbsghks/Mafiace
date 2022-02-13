@@ -28,7 +28,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [night, setNight] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [loading, setLoding] = useState(true);
-  const [startButton, setStartButton] = useState(true);
+  const [startButton, setStartButton] = useState(false);
   const [start, setStart] = useState(false);
   const [count321, setCount321] = useState(false);
 
@@ -200,6 +200,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   };
 
   const leaveSession = () => {
+    $websocket.current.sendMessage(`/app/exit/${gameInfo.id}/${nickname}`);
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     if (publisher && subscribers.length === 0) {
@@ -296,6 +297,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
             topics={topics}
             onConnect={() => {
               console.log("게임방 소켓 연결");
+              setStartButton(true);
             }}
             onDisconnect={() => {
               console.log("게임방 소켓 종료");
@@ -309,7 +311,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   $websocket.current.sendMessage(
                     `/app/role/${gameInfo.id}/${nickname}`
                   );
-                }, 3100);
+                }, 4000);
               } else if (msg === "day") {
                 setTimeout(() => {
                   for (var idx in subscribers) {
@@ -383,13 +385,15 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 setStateMessage("아무 일도 일어나지 않았습니다.");
               } else if (msg.end) {
                 if (msg.winTeam === "Mafia") {
-                  alert("마피아팀 승리!!!");
+                  alert("마피아팀 승리!!! 마피아는 " + msg.mafia + "였습니다!");
                 } else {
-                  alert("시민팀 승리!!!");
+                  alert("시민팀 승리!!! 마피아는 " + msg.mafia + "였습니다!");
                 }
                 endGame();
               } else if (!msg.end) {
                 toDay();
+              } else if (msg.check === "exit") {
+                setDeathList((prev) => [...prev, msg.nickname]);
               }
             }}
             ref={$websocket}
@@ -497,7 +501,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   onClick={() => handleMainVideoStream(publisher)}
                 >
                   <UserVideoComponent
-                    publisher={publisher}
+                    streamManager={publisher}
                     ownerId={gameInfo.ownerId}
                     myRole={myRole}
                     isAlive={isAlive}
@@ -519,7 +523,8 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 >
                   <div>
                     <UserVideoComponent
-                      sub={sub}
+                      streamManager={sub}
+                      sub="sub"
                       ownerId={gameInfo.ownerId}
                       myRole={myRole}
                       isAlive={isAlive}

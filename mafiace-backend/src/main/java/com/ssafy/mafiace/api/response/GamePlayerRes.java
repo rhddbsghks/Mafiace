@@ -87,7 +87,7 @@ public class GamePlayerRes {
         return cnt;
     }
 
-    public int CountAliveCitizen() {
+    public int countAliveCitizen() {
         int cnt = 0;
         for (Player player : players) {
             if (!player.getRole().equals("Mafia") && player.isAlive()) {
@@ -97,6 +97,15 @@ public class GamePlayerRes {
         return cnt;
     }
 
+    public List<String> getMafia(){
+        List<String> mafia=new ArrayList<>();
+        for (Player player : players) {
+            if (player.getRole().equals("Mafia")) {
+                mafia.add(player.getNickname());
+            }
+        }
+        return mafia;
+    }
 
     // 반환하는 String[]
     // "홍길동 Mafia"

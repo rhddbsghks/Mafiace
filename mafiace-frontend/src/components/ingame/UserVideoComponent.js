@@ -4,7 +4,6 @@ import OpenViduVideoComponent from "./OvVideo";
 import "./UserVideo.css";
 
 const UserVideoComponent = ({
-  publisher,
   streamManager,
   sub,
   ownerId,
@@ -109,7 +108,8 @@ const UserVideoComponent = ({
               <button onClick={clickVote}>Vote</button>
             ) : null}
 
-            {isAlive &&
+            {sub &&
+            isAlive &&
             checkAlive &&
             myRole === "Mafia" &&
             !isVoted &&
@@ -125,7 +125,8 @@ const UserVideoComponent = ({
               <button onClick={clickHeal}>SAVE</button>
             ) : null}
 
-            {isAlive &&
+            {sub &&
+            isAlive &&
             checkAlive &&
             myRole === "Police" &&
             !isVoted &&

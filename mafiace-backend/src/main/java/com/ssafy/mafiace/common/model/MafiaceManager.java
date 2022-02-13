@@ -142,14 +142,16 @@ public class MafiaceManager {
     public GameEndRes checkGameEnd(){
         GameEndRes gameEndRes=new GameEndRes();
         int mafiaCount = players.countAliveMafia();
-        int citizenCount = players.CountAliveCitizen();
+        int citizenCount = players.countAliveCitizen();
         if (mafiaCount == 0) {
             gameEndRes.setEnd(true);
             gameEndRes.setWinTeam("Citizen");
+            gameEndRes.setMafia(players.getMafia());
             return gameEndRes;
         } else if (mafiaCount >= citizenCount) {
             gameEndRes.setEnd(true);
             gameEndRes.setWinTeam("Mafia");
+            gameEndRes.setMafia(players.getMafia());
             return gameEndRes;
         }
         return gameEndRes;

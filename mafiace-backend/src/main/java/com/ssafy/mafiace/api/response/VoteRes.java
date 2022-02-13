@@ -12,4 +12,9 @@ public class VoteRes {
     public VoteRes(){
         this.check="nobody";
     }
+
+    public VoteRes(String nickname, String check) {
+        this.nickname = nickname;
+        this.check=check;
+    }
 }

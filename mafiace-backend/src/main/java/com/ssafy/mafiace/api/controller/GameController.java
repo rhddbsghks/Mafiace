@@ -157,7 +157,7 @@ public class GameController {
         simpMessagingTemplate.convertAndSend("/topic/"+roomId, voteRes);
     }
 
-    //역할 확인
+    // 역할 확인
     @MessageMapping("/role/{roomId}/{nickname}")
     public void roleConfirm(@DestinationVariable String roomId, @DestinationVariable String nickname)
         throws JSONException {
@@ -168,5 +168,13 @@ public class GameController {
         data.put("role",role);
         data.put("check","role");
         simpMessagingTemplate.convertAndSend("/topic/"+ nickname, data.toString());
+    }
+
+    // 게임하다 나가면 사망처리
+    @MessageMapping("/exit/{roomId}/{nickname}")
+    public void exit(@DestinationVariable String roomId, @DestinationVariable String nickname) {
+        MafiaceManager manager = gameManagerMap.get(roomId);
+        manager.addDeathPlayer(nickname);
+        simpMessagingTemplate.convertAndSend("/topic/"+roomId, new VoteRes(nickname,"exit"));
     }
 }
