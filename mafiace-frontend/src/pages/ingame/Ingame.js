@@ -7,6 +7,7 @@ import Day from "../../components/ingame/Day";
 import Night from "../../components/ingame/Night";
 import Count321 from "../../components/ingame/Count321";
 import JobCard from "../../components/ingame/JobCard";
+import "./ingame-btn.css";
 
 import * as React from "react";
 import axios from "axios";
@@ -240,7 +241,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   const clickStart = () => {
     console.log("====================START======================");
-    if (subscribers.length < 0) {
+    if (subscribers.length < 4) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
       setStartButton(false);
@@ -473,24 +474,44 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               <div
                 style={{
                   width: "20%",
+                  display: "flex",
+                  justifyContent: "center",
                 }}
               >
-                {gameInfo.ownerId === userId && startButton ? (
-                  <button onClick={clickStart}>START</button>
-                ) : null}
-                {start ? <button onClick={clickJob}> 내 직업</button> : null}
-                <input
-                  className="btn btn-large btn-danger"
-                  type="button"
-                  id="buttonLeaveSession"
-                  onClick={leaveSession}
-                  value="Leave session"
-                />
-                {myRole === "Mafia" ? <h2>당신의 직업 : 마피아</h2> : null}
-                {myRole === "Police" ? <h2>당신의 직업 : 경찰</h2> : null}
-                {myRole === "Doctor" ? <h2>당신의 직업 : 의사</h2> : null}
-                {myRole === "Citizen" ? <h2>당신의 직업 : 시민</h2> : null}
-                {day || night ? <h2>남은 시간 : {time}</h2> : null}
+                {!start ? (
+                  <>
+                    <div style={{ display: "flex" }}>
+                      {gameInfo.ownerId === userId && startButton ? (
+                        <button
+                          className="ingame-btn start"
+                          onClick={clickStart}
+                        >
+                          START
+                        </button>
+                      ) : null}
+                    </div>
+                    <div style={{ display: "flex", margin: "auto" }}>
+                      {!count321 ? (
+                        <button
+                          className="ingame-btn leave"
+                          onClick={leaveSession}
+                        >
+                          나가기
+                        </button>
+                      ) : null}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <div style={{ display: "flex" }}>
+                      <button className="ingame-btn job" onClick={clickJob}>
+                        내 직업
+                      </button>
+                      <div>남은 시간 : {time}</div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
