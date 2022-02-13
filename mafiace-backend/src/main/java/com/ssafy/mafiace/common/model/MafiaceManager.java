@@ -11,12 +11,6 @@ import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.GameLog;
 import com.ssafy.mafiace.db.entity.User;
-<<<<<<< HEAD
-=======
-import com.ssafy.mafiace.db.entity.UserRecords;
-import com.ssafy.mafiace.db.repository.UserRecordsRepository;
-import com.ssafy.mafiace.db.repository.UserRepository;
->>>>>>> f5003ec17580a3cee6c3cb66230db774464d3b0a
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -84,15 +78,12 @@ public class MafiaceManager {
         // 사용자 정보, 플레이시간, 이긴 팀, 본인 직업 , 죽인 횟수, 살린횟수, 탐지횟수
         endTime = LocalDateTime.now();
         Duration duration = Duration.between(this.startTime, this.endTime);
-<<<<<<< HEAD
         System.err.println("PlayTime : " + duration);
-=======
         System.err.println(duration);
         // list 회원별로
         // map < column값, value >
         // list 0 : 회원 1에 대한 로그 <column, value>
         // list 1 : 회원 2에 대한 로그
->>>>>>> f5003ec17580a3cee6c3cb66230db774464d3b0a
         List<Map<String, String>> GameLogs = this.players.makeGameLog();
         for (Map<String, String> gameLog : GameLogs) {
             gameLog.put("winTeam",this.winTeam);
@@ -160,20 +151,14 @@ public class MafiaceManager {
         if (mafiaCount == 0) {
             gameEndRes.setEnd("end");
             gameEndRes.setWinTeam("Citizen");
-<<<<<<< HEAD
             this.winTeam = "Citizen";
-=======
             gameEndRes.setMafia(players.getMafia());
->>>>>>> f5003ec17580a3cee6c3cb66230db774464d3b0a
             return gameEndRes;
         } else if (mafiaCount >= citizenCount) {
             gameEndRes.setEnd("end");
             gameEndRes.setWinTeam("Mafia");
-<<<<<<< HEAD
             this.winTeam = "Mafia";
-=======
             gameEndRes.setMafia(players.getMafia());
->>>>>>> f5003ec17580a3cee6c3cb66230db774464d3b0a
             return gameEndRes;
         }
         gameEndRes.setEnd(next);
