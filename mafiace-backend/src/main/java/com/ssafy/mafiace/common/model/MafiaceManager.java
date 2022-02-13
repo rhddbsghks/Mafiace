@@ -139,21 +139,23 @@ public class MafiaceManager {
         deathList.add(nickname);
     }
 
-    public GameEndRes checkGameEnd(){
+    public GameEndRes checkGameEnd(String next){
         GameEndRes gameEndRes=new GameEndRes();
         int mafiaCount = players.countAliveMafia();
         int citizenCount = players.countAliveCitizen();
+
         if (mafiaCount == 0) {
-            gameEndRes.setEnd(true);
+            gameEndRes.setEnd("end");
             gameEndRes.setWinTeam("Citizen");
             gameEndRes.setMafia(players.getMafia());
             return gameEndRes;
         } else if (mafiaCount >= citizenCount) {
-            gameEndRes.setEnd(true);
+            gameEndRes.setEnd("end");
             gameEndRes.setWinTeam("Mafia");
             gameEndRes.setMafia(players.getMafia());
             return gameEndRes;
         }
+        gameEndRes.setEnd(next);
         return gameEndRes;
     }
 }
