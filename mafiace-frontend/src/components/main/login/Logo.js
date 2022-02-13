@@ -57,12 +57,12 @@ const Logo = () => {
         <div className={styles.container}>
           <Trail open={open1}>
             <span></span>
-            <span>Mafia</span>
+            <span style={{ fontSize: "3em" }}>Mafia</span>
             <span></span>
           </Trail>
           <Trail open={open2}>
             <span></span>
-            <span>Face</span>
+            <span style={{ fontSize: "3em" }}>Face</span>
             <span></span>
           </Trail>
         </div>
@@ -70,7 +70,7 @@ const Logo = () => {
         <div className={styles.container}>
           <Trail open={open3}>
             <span></span>
-            <span>MaFiace</span>
+            <span style={{ fontSize: "3em" }}>MaFiace</span>
             <span></span>
           </Trail>
         </div>

@@ -19,7 +19,7 @@ const UserVideoComponent = ({ streamManager, ownerId }) => {
                 width: "35px",
                 position: "relative",
                 top: "10px",
-                left: "-5px",
+                left: "10px",
               }}
             />
           ) : (
@@ -31,18 +31,25 @@ const UserVideoComponent = ({ streamManager, ownerId }) => {
                 width: "35px",
                 position: "relative",
                 top: "10px",
-                left: "-5px",
+                left: "10px",
               }}
             />
           )}
           <OpenViduVideoComponent streamManager={streamManager} />
 
-          <div style={{ width: "11%", height: "5.5%", display: "flex" }}>
+          <div
+            style={{
+              width: "11%",
+              height: "5.5%",
+              display: "flex",
+              borderRadius: "2em",
+            }}
+          >
             <span
               style={{
                 margin: "auto",
-                fontSize: "2em",
-                letterSpacing: "0.2em",
+                fontSize: "2.2em",
+                letterSpacing: "0.1em",
               }}
             >
               {nickNameTag}
