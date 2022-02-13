@@ -240,9 +240,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   const clickStart = () => {
     console.log("====================START======================");
-    setStartButton(false);
-    $websocket.current.sendMessage(`/app/timer/${gameInfo.id}`);
-    $websocket.current.sendMessage(`/app/start/${gameInfo.id}`);
+    if (subscribers.length < 3) {
+      alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
+    } else {
+      setStartButton(false);
+      $websocket.current.sendMessage(`/app/timer/${gameInfo.id}`);
+      $websocket.current.sendMessage(`/app/start/${gameInfo.id}`);
+    }
   };
 
   const startGame = () => {
@@ -474,11 +478,11 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   onClick={leaveSession}
                   value="Leave session"
                 />
-                {day || night ? <h2>남은 시간 : {time}</h2> : null}
                 {myRole === "Mafia" ? <h2>당신의 직업 : 마피아</h2> : null}
                 {myRole === "Police" ? <h2>당신의 직업 : 경찰</h2> : null}
                 {myRole === "Doctor" ? <h2>당신의 직업 : 의사</h2> : null}
                 {myRole === "Citizen" ? <h2>당신의 직업 : 시민</h2> : null}
+                {day || night ? <h2>남은 시간 : {time}</h2> : null}
               </div>
             </div>
 
