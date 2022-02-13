@@ -175,6 +175,7 @@ public class GameController {
     public void exit(@DestinationVariable String roomId, @DestinationVariable String nickname) {
         MafiaceManager manager = gameManagerMap.get(roomId);
         manager.addDeathPlayer(nickname);
+        manager.getPlayers().getPlayer(nickname).setDead();
         simpMessagingTemplate.convertAndSend("/topic/"+roomId, new VoteRes(nickname,"exit"));
     }
 }
