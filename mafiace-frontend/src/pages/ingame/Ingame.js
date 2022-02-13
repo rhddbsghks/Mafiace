@@ -2,9 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import { OpenVidu } from "openvidu-browser";
 import SockJsClient from "react-stomp";
 import Loader from "../../components/common/Loader";
-import UserVideoComponent from "../../components/ingame/ingame/UserVideoComponent";
-import Day from "../../components/ingame/ingame/Day";
-import Night from "../../components/ingame/ingame/Night";
+import UserVideoComponent from "../../components/ingame/UserVideoComponent";
+import Day from "../../components/ingame/Day";
+import Night from "../../components/ingame/Night";
 
 import * as React from "react";
 import axios from "axios";
