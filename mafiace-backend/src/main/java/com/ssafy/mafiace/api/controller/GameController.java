@@ -97,6 +97,7 @@ public class GameController {
         MafiaceManager manager = gameManagerMap.get(roomId);
         GameEndRes gameEndRes=manager.checkGameEnd();
         if(gameEndRes.isEnd()){
+            manager.saveRecord();
             gameManagerMap.remove(roomId);
         }
         simpMessagingTemplate.convertAndSend("/topic/"+roomId, gameEndRes);
@@ -138,13 +139,13 @@ public class GameController {
     @MessageMapping("/investigate/{roomId}/{nickname}")
     public void investigate(@DestinationVariable String roomId, @DestinationVariable String nickname, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
-        String role = gameManagerMap.get(roomId).getPlayers().findRoleName(nickname);
+        String role = manager.getPlayers().findRoleName(nickname);
         System.err.println("조사조사조사조사" + voted);
         JSONObject data = new JSONObject();
         data.put("role",role);
         data.put("check","investigate");
         simpMessagingTemplate.convertAndSend("/topic/"+ nickname, data.toString());
-
+        if(role.equals("Mafia")) manager.getPlayers().addInvestigateCount(); // 경찰 탐지횟수 +1
     }
 
     // 투표 결과를 얻어옴

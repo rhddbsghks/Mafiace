@@ -29,7 +29,7 @@ import lombok.ToString;
 public class GameLog extends BaseEntity{
     @Column(name = "is_win")
     String winTeam;
-    @Column(name = "play_time")
+    @Column(name = "play_time  ")
     int playTime;
 
     @Builder

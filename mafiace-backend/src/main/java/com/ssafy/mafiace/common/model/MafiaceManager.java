@@ -1,22 +1,21 @@
 package com.ssafy.mafiace.common.model;
 
 import com.ssafy.mafiace.api.response.GameEndRes;
-import com.ssafy.mafiace.api.response.GamePlayerRes;
 import com.ssafy.mafiace.api.response.VoteRes;
 import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
+import com.ssafy.mafiace.api.service.UserGameLogService;
 import com.ssafy.mafiace.api.service.UserRecordsService;
+import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.db.entity.Game;
+import com.ssafy.mafiace.db.entity.GameLog;
 import com.ssafy.mafiace.db.entity.User;
-import com.ssafy.mafiace.db.repository.UserRecordsRepository;
-import com.ssafy.mafiace.db.repository.UserRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,13 +26,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class MafiaceManager {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private UserRecordsService userRecordsService;
 
     @Autowired
-    public UserRecordsRepository userRecordsRepository;
+    private UserGameLogService userGameLogService;
 
     @Autowired
     public GameLogService gameLogService;
@@ -43,7 +42,7 @@ public class MafiaceManager {
     private Game room;
     private int max;
     private List<User> userList = new ArrayList<>();
-    private GamePlayerRes players;
+    private PlayersManager players;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String winTeam;
@@ -65,7 +64,7 @@ public class MafiaceManager {
         this.gameService = gameService;
         this.room = gameService.getGameById(roomId);
         this.userList = sessionService.getParticipantList(roomId);
-        this.players = new GamePlayerRes(userList);
+        this.players = new PlayersManager(userList);
         this.room.setRoomStatus(true);
         players.setRole();
     }
@@ -81,16 +80,13 @@ public class MafiaceManager {
         System.err.println("PlayTime : " + duration);
         List<Map<String, String>> GameLogs = this.players.makeGameLog();
         for (Map<String, String> gameLog : GameLogs) {
-            // GameLog로 저장할 것과 userRecords로 저장할것 나눠서 저장
-            // Update or Save .
-            gameLog.put("winTeam", this.winTeam);
-            gameLog.put("playTime", String.valueOf(duration.toMinutes()));
-            Optional<User> user = userRepository.findByNickname(gameLog.get("nickname"));
-            if (user == null) {
-                return false;
-            }
-            gameLogService.addGameLog(gameLog);
-            userRecordsService.userUpdateUserRecords(gameLog);
+            gameLog.put("winTeam",this.winTeam);
+            gameLog.put("playTime",String.valueOf(duration.toMinutes()));
+            User user = userService.getUserByNickname(gameLog.get("nickname"));
+            if(user == null) return false;
+            GameLog savedGameLog = gameLogService.addGameLog(gameLog); // 게임로그id, 플레이 시간(분), 승리 여부 저장
+            userGameLogService.saveUserGameLog(savedGameLog, user, gameLog.get("role"), gameLog.get("winTeam")); // 유저, 역할, 이긴 팀 저장
+            userRecordsService.userUpdateUserRecords(gameLog); // 유저, 승,패, 직업별 기능 사용 횟수 저장
         }
         gameService.deleteById(this.room.getId());
         return true;
@@ -123,8 +119,11 @@ public class MafiaceManager {
             }
         }
         if (result.getNickname().equals(healTarget)) {
+            // 마피아가 실패 / 의사가 살린횟수 +1
+            players.addSaveCount();
             result.setCheck("save");
-        }
+        }else // 의사가 실패 / 마피아 죽인횟수 +1
+            players.addKillCount();
         return result;
     }
 
@@ -144,10 +143,12 @@ public class MafiaceManager {
         if (mafiaCount == 0) {
             gameEndRes.setEnd(true);
             gameEndRes.setWinTeam("Citizen");
+            this.winTeam = "Citizen";
             return gameEndRes;
         } else if (mafiaCount >= citizenCount) {
             gameEndRes.setEnd(true);
             gameEndRes.setWinTeam("Mafia");
+            this.winTeam = "Mafia";
             return gameEndRes;
         }
         return gameEndRes;

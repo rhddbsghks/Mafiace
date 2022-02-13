@@ -29,8 +29,11 @@ public class UserGameLog extends BaseEntity{
     boolean isWin;
 
     @Builder
-    private UserGameLog(String roleName){
+    private UserGameLog(String roleName, boolean isWin, GameLog gameLog, User user){
+        this.isWin = isWin;
         this.roleName = roleName;
+        this.gameLog = gameLog;
+        this.user = user;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
