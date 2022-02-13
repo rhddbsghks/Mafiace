@@ -117,7 +117,6 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
         setMainStreamManager(publisher);
         setPublisher(publisher);
         setLoding(false);
-        console.log(subscribers);
       })
       .catch((error) => {
         console.log(
@@ -261,11 +260,17 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     setDay(false);
     setNight(false);
     setIsVoted(false);
+    setIsAlive(true);
     setMyRole();
+    setDeathList([]);
     setStateMessage(gameInfo.gameTitle);
     setTime(10);
     setCount(1);
     publisher.publishAudio(true);
+    for (var idx in subscribers) {
+      subscribers[idx].subscribeToAudio(true);
+      subscribers[idx].subscribeToVideo(true);
+    }
   };
 
   const deleteRoom = () => {
@@ -304,6 +309,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 }, 3100);
               } else if (msg === "day") {
                 setTimeout(() => {
+                  for (var idx in subscribers) {
+                    subscribers[idx].subscribeToAudio(true);
+                    subscribers[idx].subscribeToVideo(true);
+                  }
                   setNight(false);
                   setDay(true);
                   setIsVoted(false);
@@ -314,6 +323,12 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 }, 3000);
               } else if (msg === "night") {
                 setTimeout(() => {
+                  if (myRole !== "Mafia") {
+                    for (var idx in subscribers) {
+                      subscribers[idx].subscribeToAudio(false);
+                      subscribers[idx].subscribeToVideo(false);
+                    }
+                  }
                   setDay(false);
                   setNight(true);
                   setIsVoted(false);
@@ -334,6 +349,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               } else if (msg.check === "role") {
                 setMyRole(msg.role);
               } else if (msg.check === "investigate") {
+                console.log("경찰이 조사한 대상의 직업" + msg.role);
                 if (msg.role === "Mafia") {
                   alert(myVote + "님은 마피아입니다.");
                 } else {
@@ -346,7 +362,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   setStateMessage(msg.nickname + "님이 추방당했습니다.");
                   setDeathList((prev) => [...prev, msg.nickname]);
                   if (msg.nickname === nickname) {
-                    setIsAlive("false"); // 사망
+                    setIsAlive(false); // 사망
                     publisher.publishAudio(false);
                   }
                 } else {
@@ -355,7 +371,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   );
                   setDeathList((prev) => [...prev, msg.nickname]);
                   if (msg.nickname === nickname) {
-                    setIsAlive("false"); // 사망
+                    setIsAlive(false); // 사망
                   }
                 }
               } else if (msg.check === "save") {
@@ -478,8 +494,16 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   onClick={() => handleMainVideoStream(publisher)}
                 >
                   <UserVideoComponent
-                    streamManager={publisher}
+                    publisher={publisher}
                     ownerId={gameInfo.ownerId}
+                    myRole={myRole}
+                    isAlive={isAlive}
+                    deathList={deathList}
+                    setMyVote={setMyVote}
+                    isVoted={isVoted}
+                    setIsVoted={setIsVoted}
+                    night={night}
+                    heal={heal}
                   />
                 </div>
               ) : null}
@@ -492,9 +516,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 >
                   <div>
                     <UserVideoComponent
-                      streamManager={sub}
+                      sub={sub}
                       ownerId={gameInfo.ownerId}
                       myRole={myRole}
+                      isAlive={isAlive}
                       deathList={deathList}
                       setMyVote={setMyVote}
                       isVoted={isVoted}
