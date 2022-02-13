@@ -11,6 +11,12 @@ import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.GameLog;
 import com.ssafy.mafiace.db.entity.User;
+<<<<<<< HEAD
+=======
+import com.ssafy.mafiace.db.entity.UserRecords;
+import com.ssafy.mafiace.db.repository.UserRecordsRepository;
+import com.ssafy.mafiace.db.repository.UserRepository;
+>>>>>>> f5003ec17580a3cee6c3cb66230db774464d3b0a
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -74,10 +80,19 @@ public class MafiaceManager {
     }
 
     // 게임 종료 후 Log 저장
-    public boolean saveRecord() {
+    public boolean saveRecord(){
+        // 사용자 정보, 플레이시간, 이긴 팀, 본인 직업 , 죽인 횟수, 살린횟수, 탐지횟수
         endTime = LocalDateTime.now();
         Duration duration = Duration.between(this.startTime, this.endTime);
+<<<<<<< HEAD
         System.err.println("PlayTime : " + duration);
+=======
+        System.err.println(duration);
+        // list 회원별로
+        // map < column값, value >
+        // list 0 : 회원 1에 대한 로그 <column, value>
+        // list 1 : 회원 2에 대한 로그
+>>>>>>> f5003ec17580a3cee6c3cb66230db774464d3b0a
         List<Map<String, String>> GameLogs = this.players.makeGameLog();
         for (Map<String, String> gameLog : GameLogs) {
             gameLog.put("winTeam",this.winTeam);
@@ -113,6 +128,7 @@ public class MafiaceManager {
             if (voteMap.get(key) > MAX) {
                 result.setCheck("selected");
                 result.setNickname(key);
+                MAX=voteMap.get(key);
             } else if (voteMap.get(key) == MAX) {
                 result.setCheck("nobody");
                 result.setNickname("x");
@@ -136,21 +152,31 @@ public class MafiaceManager {
         deathList.add(nickname);
     }
 
-    public GameEndRes checkGameEnd(){
+    public GameEndRes checkGameEnd(String next){
         GameEndRes gameEndRes=new GameEndRes();
         int mafiaCount = players.countAliveMafia();
-        int citizenCount = players.CountAliveCitizen();
+        int citizenCount = players.countAliveCitizen();
+
         if (mafiaCount == 0) {
-            gameEndRes.setEnd(true);
+            gameEndRes.setEnd("end");
             gameEndRes.setWinTeam("Citizen");
+<<<<<<< HEAD
             this.winTeam = "Citizen";
+=======
+            gameEndRes.setMafia(players.getMafia());
+>>>>>>> f5003ec17580a3cee6c3cb66230db774464d3b0a
             return gameEndRes;
         } else if (mafiaCount >= citizenCount) {
-            gameEndRes.setEnd(true);
+            gameEndRes.setEnd("end");
             gameEndRes.setWinTeam("Mafia");
+<<<<<<< HEAD
             this.winTeam = "Mafia";
+=======
+            gameEndRes.setMafia(players.getMafia());
+>>>>>>> f5003ec17580a3cee6c3cb66230db774464d3b0a
             return gameEndRes;
         }
+        gameEndRes.setEnd(next);
         return gameEndRes;
     }
 }

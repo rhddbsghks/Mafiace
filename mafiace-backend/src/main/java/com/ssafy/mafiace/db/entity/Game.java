@@ -23,7 +23,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.GeneratorType;
 
 @Getter
-@Setter
 @ToString
 @Entity
 @Table(name = "game")
@@ -70,21 +69,17 @@ public class Game extends BaseEntity {
         this.maxPlayer = maxPlayer;
         this.password = password;
         this.isActive = false;
-        this.user_List = new ArrayList<>();
-    }
-    @Transient
-    List<User> user_List;
-
-    public void initUserList(){
-        this.user_List = new ArrayList<>();
     }
 
-    public void addUserList(User user){
-        this.user_List.add(user);
+    public void updateOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
-
 
     public void setRoomStatus(boolean active) {
         isActive = active;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

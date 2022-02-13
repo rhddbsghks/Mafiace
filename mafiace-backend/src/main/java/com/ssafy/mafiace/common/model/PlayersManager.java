@@ -59,6 +59,7 @@ public class PlayersManager {
                 this.mafia.add(i);
             } else if (i < mafiaNum + citizenNum + 2) {
                 this.players.get(i).setRole("Citizen");
+                System.err.println(players.get(i).getNickname() + " :  CITIZEN" );
             }
         }
     }
@@ -70,7 +71,6 @@ public class PlayersManager {
                 myRoleName = player.getRole();
             }
         }
-        System.err.println(nickname + " : " + myRoleName);
         return myRoleName;
     }
 
@@ -93,7 +93,7 @@ public class PlayersManager {
         return cnt;
     }
 
-    public int CountAliveCitizen() {
+    public int countAliveCitizen() {
         int cnt = 0;
         for (Player player : players) {
             if (!player.getRole().equals("Mafia") && player.isAlive()) {
@@ -103,6 +103,15 @@ public class PlayersManager {
         return cnt;
     }
 
+    public List<String> getMafia(){
+        List<String> mafia=new ArrayList<>();
+        for (Player player : players) {
+            if (player.getRole().equals("Mafia")) {
+                mafia.add(player.getNickname());
+            }
+        }
+        return mafia;
+    }
 
     // 반환하는 String[]
     // "홍길동 Mafia"
@@ -145,6 +154,7 @@ public class PlayersManager {
             } else if (player.getRole().equals("Police")) {
                 buf.put("investigateCount", String.valueOf(player.getInvestigateCount()));
             }
+            // 1 참가자 (마피아) => <닉네임, 본인닉네임>, <role, 역할>, <killcount, 횟수>
             GameLogs.add(buf);
         }
         return GameLogs;

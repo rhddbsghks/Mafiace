@@ -11,7 +11,7 @@ public interface SessionService {
 
     String getToken(String roomId, String userId) throws Exception;
     void closeSession(String roomId) throws Exception;
-    void leaveSession(String roomId, String request);
+    boolean leaveSession(String roomId, String request);
     boolean toggleReady(String roomId, String userId);
     int getParticipantCount(String roomId);
     boolean isFull(String roomId);

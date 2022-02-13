@@ -92,8 +92,12 @@ public class SessionController {
             String nickname = jwtTokenProvider.getUserNickname(jwtToken);
             String token = sessionService.getToken(sessionName, nickname);
             //this.mapSessions.get(sessionName).createConnection(connectionProperties).getToken();
-            System.err.println(token);
-            // Return the response to the client
+            System.err.println(nickname+"'s token : "+token);
+            if(token.equals("Unauthorized")){
+                return ResponseEntity.status(403)
+                    .body(
+                        SessionTokenPostRes.of(403, "forbidden", null));
+            }
             return ResponseEntity.status(201)
                 .body(
                     SessionTokenPostRes.of(201, "Success", NewSessionInfo.of(token, sessionName)));
@@ -132,7 +136,11 @@ public class SessionController {
         try {
             String jwtToken = request.getHeader("Authorization").substring(7); // Id -> 닉네임으로 변경
             String nickname = jwtTokenProvider.getUserNickname(jwtToken);
-            sessionService.leaveSession(sessionName, nickname);
+            boolean ownerChange = sessionService.leaveSession(sessionName, nickname);
+            if(ownerChange){
+                return ResponseEntity.status(201)
+                    .body(BaseResponseBody.of(201, "Success and OwnerChanged"));
+            }
             return ResponseEntity.status(200)
                 .body(BaseResponseBody.of(200, "Success"));
         } catch (Exception e) {
