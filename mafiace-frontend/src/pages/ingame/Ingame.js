@@ -234,19 +234,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     }
   };
 
-  const handleClick = () => {
-    console.log(publisher);
-    console.log(subscribers);
-    console.log(mainStreamManager);
-  };
-
   const clickJob = () => {
     setopenJobCard(true);
   };
 
   const clickStart = () => {
     console.log("====================START======================");
-    if (subscribers.length < 3) {
+    if (subscribers.length < 0) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
       setStartButton(false);
@@ -262,7 +256,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     setStart(true);
     setDay(true);
     setToggle(!toggle);
-    setStateMessage("낮이 왔습니다. 마피아를 찾아주세요.");
+    setStateMessage("마피아를 찾아주세요!");
   };
 
   const checkGameEnd = () => {
@@ -356,15 +350,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   setToggle(!toggle);
                   setTime(15);
                   if (myRole === "Mafia") {
-                    setStateMessage("밤이 왔습니다. 죽일 사람을 투표해주세요.");
+                    setStateMessage("처리할 사람을 투표해주세요.");
                   } else if (myRole === "Police") {
-                    setStateMessage(
-                      "밤이 왔습니다. 조사할 사람을 선택해주세요."
-                    );
+                    setStateMessage("용의자 한 명을 조사해보세요.");
                   } else if (myRole === "Doctor") {
-                    setStateMessage("밤이 왔습니다. 살릴 사람을 선택해주세요.");
+                    setStateMessage("위급 환자 한 명을 진료해주세요.");
                   } else {
-                    setStateMessage("밤이 왔습니다. 죽지 않길 기도하세요.");
+                    setStateMessage("오늘 밤도 안녕하기를...");
                   }
                 }, 3000);
               } else if (msg.check === "role") {
@@ -457,21 +449,24 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               <div
                 style={{
                   width: "50%",
-                  backgroundColor: "red",
+                  backgroundColor: "rgba(255, 255, 255, 0.7)",
+                  display: "flex",
                   justifyContent: "space-between",
+                  fontSize: "4em",
+                  borderRadius: "1rem",
                 }}
               >
-                <span
-                  style={{
-                    justifyContent: "space-between",
-                    fontSize: "3em",
-                    margin: "auto",
-                    position: "relative",
-                    top: "40%",
-                  }}
+                {!start ? null : (
+                  <div style={{ margin: "auto" }}>
+                    Day {count} {day ? "낮" : "밤"}
+                  </div>
+                )}
+
+                <div
+                  style={{ margin: "auto", width: "60%", textAlign: "center" }}
                 >
-                  {start ? <span>Day {count}</span> : null} {stateMessage}
-                </span>
+                  {stateMessage}
+                </div>
               </div>
 
               {/* 버튼 타이머 영역 */}
@@ -480,14 +475,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   width: "20%",
                 }}
               >
-                {" "}
-                <button onClick={handleClick}>버튼</button>
                 {gameInfo.ownerId === userId && startButton ? (
                   <button onClick={clickStart}>START</button>
                 ) : null}
-                {start ? (
-                  <button onClick={clickJob}> 직업카드 열기</button>
-                ) : null}
+                {start ? <button onClick={clickJob}> 내 직업</button> : null}
                 <input
                   className="btn btn-large btn-danger"
                   type="button"

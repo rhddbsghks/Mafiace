@@ -10,7 +10,7 @@
   left: 50%;
   margin: 80px auto 0 auto;
   text-align: center;
-  font-size: 15em;
+  font-size: 25em;
   color: white;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
   transform: translate(-50%, -50%);
@@ -82,11 +82,11 @@
 
 .cd-number-two {
   opacity: 0;
-  -webkit-animation: cd-number-two-anim 1.2s ease 1.1s 1 normal;
-  -moz-animation: cd-number-two-anim 1.2s ease 1.1s 1 normal;
-  -ms-animation: cd-number-two-anim 1.2s ease 1.1s 1 normal;
-  -o-animation: cd-number-two-anim 1.2s ease 1.1s 1 normal;
-  animation: cd-number-two-anim 1.2s ease 1.1s 1 normal;
+  -webkit-animation: cd-number-two-anim 1.2s ease 1s 1 normal;
+  -moz-animation: cd-number-two-anim 1.2s ease 1s 1 normal;
+  -ms-animation: cd-number-two-anim 1.2s ease 1s 1 normal;
+  -o-animation: cd-number-two-anim 1.2s ease 1s 1 normal;
+  animation: cd-number-two-anim 1.2s ease 1s 1 normal;
 }
 
 @-webkit-keyframes cd-number-two-anim {
@@ -146,11 +146,11 @@
 
 .cd-number-one {
   opacity: 0;
-  -webkit-animation: cd-number-one-anim 1.2s ease 2.2s 1 normal;
-  -moz-animation: cd-number-one-anim 1.2s ease 2.2s 1 normal;
-  -ms-animation: cd-number-one-anim 1.2s ease 2.2s 1 normal;
-  -o-animation: cd-number-one-anim 1.2s ease 2.2s 1 normal;
-  animation: cd-number-one-anim 1.2s ease 2.2s 1 normal;
+  -webkit-animation: cd-number-one-anim 1.2s ease 2s 1 normal;
+  -moz-animation: cd-number-one-anim 1.2s ease 2s 1 normal;
+  -ms-animation: cd-number-one-anim 1.2s ease 2s 1 normal;
+  -o-animation: cd-number-one-anim 1.2s ease 2s 1 normal;
+  animation: cd-number-one-anim 1.2s ease 2s 1 normal;
 }
 
 @-webkit-keyframes cd-number-one-anim {
@@ -210,11 +210,11 @@
 
 .cd-start {
   opacity: 0;
-  -webkit-animation: cd-start-anim 1.2s ease 3.3s 1 normal;
-  -moz-animation: cd-start-anim 1.2s ease 3.3s 1 normal;
-  -ms-animation: cd-start-anim 1.2s ease 3.3s 1 normal;
-  -o-animation: cd-start-anim 1.2s ease 3.3s 1 normal;
-  animation: cd-start-anim 1.2s ease 3.3s 1 normal;
+  -webkit-animation: cd-start-anim 1.2s ease 3s 1 normal;
+  -moz-animation: cd-start-anim 1.2s ease 3s 1 normal;
+  -ms-animation: cd-start-anim 1.2s ease 3s 1 normal;
+  -o-animation: cd-start-anim 1.2s ease 3s 1 normal;
+  animation: cd-start-anim 1.2s ease 3s 1 normal;
 }
 
 @-webkit-keyframes cd-start-anim {
