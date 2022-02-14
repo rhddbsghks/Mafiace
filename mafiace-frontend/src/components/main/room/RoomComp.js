@@ -38,6 +38,11 @@ const RoomComp = ({
   };
 
   const enterRoom = () => {
+    if (game.active) {
+      alert("이미 진행중인 방입니다.");
+      return;
+    }
+
     if (!game.public) {
       if (!openPasswordModal) {
         setOpenPasswordModal(true);
@@ -75,7 +80,7 @@ const RoomComp = ({
           alert("자리가 없어요 ㅠㅠ");
         } else if (response.status === 500) {
           alert("존재하지 않는 방입니다.");
-        }
+        } else if (response.status === 412) alert("이미 진행중인 방입니다.");
 
         window.location.reload();
       });
