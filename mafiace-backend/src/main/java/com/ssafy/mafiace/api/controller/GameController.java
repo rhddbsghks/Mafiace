@@ -4,8 +4,12 @@ import com.ssafy.mafiace.api.response.BaseResponseBody;
 import com.ssafy.mafiace.api.response.GameEndRes;
 import com.ssafy.mafiace.api.response.GameRoomRes;
 import com.ssafy.mafiace.api.response.VoteRes;
+import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
+import com.ssafy.mafiace.api.service.UserGameLogService;
+import com.ssafy.mafiace.api.service.UserRecordsService;
+import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.model.GameInfo;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.common.model.MafiaceManager;
@@ -42,6 +46,18 @@ public class GameController {
 
     @Autowired
     private SessionService sessionService;
+
+    @Autowired
+    private GameLogService gameLogService;
+
+    @Autowired
+    UserGameLogService userGameLogService;
+
+    @Autowired
+    UserRecordsService userRecordsService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -89,9 +105,9 @@ public class GameController {
     public void ownerChangeMessage(String roomId, String ownerId) {
 
         JSONObject data = new JSONObject();
-        data.put("check","owner");
-        data.put("ownerNickname",ownerId);
-        simpMessagingTemplate.convertAndSend("/topic/"+ roomId, data.toString());
+        data.put("check", "owner");
+        data.put("ownerNickname", ownerId);
+        simpMessagingTemplate.convertAndSend("/topic/" + roomId, data.toString());
     }
 
     // 게임 시작
@@ -99,7 +115,8 @@ public class GameController {
     @SendTo("/topic/{roomId}") // 구독경로
     public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception {
         System.err.println(roomId + "  is clicked the start btn");
-        gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService, gameService));
+        gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService, gameService,
+            userService, userRecordsService, userGameLogService, gameLogService));
     }
 
     // 게임이 끝났는지 체크하고 승리팀 판단
@@ -185,6 +202,15 @@ public class GameController {
         data.put("role", role);
         data.put("check", "role");
         simpMessagingTemplate.convertAndSend("/topic/" + nickname, data.toString());
+    }
+
+    // 마피아 반환
+    @MessageMapping("/mafia/{roomId}/{nickname}")
+    public void whoIsMafia(@DestinationVariable String roomId, @DestinationVariable String nickname) {
+        GameEndRes mafiaTeam=new GameEndRes();
+        mafiaTeam.setEnd("MafiaTeam");
+        mafiaTeam.setMafia(gameManagerMap.get(roomId).getPlayers().getMafia());
+        simpMessagingTemplate.convertAndSend("/topic/" + nickname, mafiaTeam);
     }
 
     // 게임하다 나가면 사망처리

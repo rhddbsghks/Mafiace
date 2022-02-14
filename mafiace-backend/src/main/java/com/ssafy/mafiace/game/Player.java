@@ -39,11 +39,6 @@ public class Player {
         return this.user;
     }
 
-    public void saveGameLog(){
-        Map<String, String> gameLogs = new HashMap<>();
-        gameLogService.addGameLog(gameLogs);
-    }
-
     public void addSaveCount(){
         this.saveCount ++;
     }

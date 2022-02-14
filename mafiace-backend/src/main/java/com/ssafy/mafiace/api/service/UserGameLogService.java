@@ -6,6 +6,6 @@ import com.ssafy.mafiace.db.entity.UserGameLog;
 
 public interface UserGameLogService {
 
-    public UserGameLog saveUserGameLog(GameLog gameLog, User user, String roleName, String winTeam);
+    public UserGameLog saveUserGameLog(GameLog gameLog, User user, String roleName, boolean isWin);
 
 }
