@@ -80,10 +80,10 @@ public class UserRecords {
     @JoinColumn(name = "user_unique_id", referencedColumnName = "user_user_unique_id")
     private User user;
 
-    public void addCount(int killCount, int saveCount, int investigateCount,  boolean isWin){
+    public void addCount(int investigateCount, int killCount, int saveCount,  boolean isWin){
         this.killCount += killCount;
         this.saveCount += saveCount;
-        this.winCount += investigateCount;
+        this.investigateCount += investigateCount;
         this.winCount += isWin ? 1 : 0;
         this.loseCount += isWin ? 0 : 1;
     }

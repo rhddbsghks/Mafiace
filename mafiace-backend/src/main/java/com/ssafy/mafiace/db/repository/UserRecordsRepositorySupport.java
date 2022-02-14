@@ -26,9 +26,13 @@ public class UserRecordsRepositorySupport {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserGameLogRepositorySupport userGameLogRepositorySupport;
+
     private QUserRecords qUserRecords = QUserRecords.userRecords;
     private QUser qUser = QUser.user;
     private QUserGameLog qUserGameLog = QUserGameLog.userGameLog;
+
 
 
     // 0 반환 => 실패
@@ -41,21 +45,13 @@ public class UserRecordsRepositorySupport {
         int winCount = 0;
         int loseCount = 0;
         List<UserGameLog> userGameLogList
-            = getUserGameLogs(user.getId());
+            = userGameLogRepositorySupport.getUserGameLogs(user.getId());
         for(UserGameLog userGameLog : userGameLogList){
             if(userGameLog.isWin()) winCount +=1;
             else loseCount +=1;
         }
         prevUserRecords.addCount(investigateCount, killCount, saveCount, isWin);
         return userRecordsRepository.save(prevUserRecords);
-    }
-
-    private List<UserGameLog> getUserGameLogs(String id) {
-        return this.jpaQueryFactory.selectFrom(qUserGameLog)
-            .join(qUser).on(qUser.id.eq(qUserGameLog.user.id))
-            .fetchJoin()
-//            .where()
-            .fetch();
     }
 
 }
