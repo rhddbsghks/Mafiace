@@ -83,7 +83,7 @@ public class UserRecords {
     public void addCount(int investigateCount, int killCount, int saveCount,  boolean isWin){
         this.killCount += killCount;
         this.saveCount += saveCount;
-        this.winCount += investigateCount;
+        this.investigateCount += investigateCount;
         this.winCount += isWin ? 1 : 0;
         this.loseCount += isWin ? 0 : 1;
     }

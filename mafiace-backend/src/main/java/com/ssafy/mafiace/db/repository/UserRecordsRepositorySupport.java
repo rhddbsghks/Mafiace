@@ -54,7 +54,6 @@ public class UserRecordsRepositorySupport {
         return this.jpaQueryFactory.selectFrom(qUserGameLog)
             .join(qUser).on(qUser.id.eq(qUserGameLog.user.id))
             .fetchJoin()
-//            .where()
             .fetch();
     }
 
