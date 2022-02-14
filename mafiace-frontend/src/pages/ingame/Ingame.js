@@ -205,7 +205,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   };
 
   const leaveSession = () => {
-    $websocket.current.sendMessage(`/app/exit/${gameInfo.id}/${nickname}`);
+    // $websocket.current.sendMessage(`/app/exit/${gameInfo.id}/${nickname}`);
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     if (publisher && subscribers.length === 0) {
@@ -215,12 +215,6 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
       axios.delete("/mafiace/api/session/user", {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         params: { sessionName: gameInfo.id },
-      })
-      .then((res) => {
-        if(res.data.status === 201){
-          console.log(res.data.message);
-          // 방장 바꾸기
-        }
       });
     }
 
@@ -420,6 +414,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 }
               } else if (msg.check === "exit") {
                 setDeathList((prev) => [...prev, msg.nickname]);
+              }else if (msg.check === "owner") {
+                // 소켓을 받은 사람이 방장이 되게 하기
+                console.log( msg.ownerNickname+" is owner now!");
+                
               }
             }}
             ref={$websocket}
