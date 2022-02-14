@@ -250,8 +250,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
 
   const clickStart = () => {
     console.log("====================START======================");
-    // if (subscribers.length < 3) {
-    if (subscribers.length < 0) {
+    if (subscribers.length < 3) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
       setStartButton(false);
