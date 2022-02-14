@@ -48,13 +48,20 @@ const RoomComp = ({
             headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
             params: { sessionName: game.id, password },
           })
+          .then(() => {
+            setOpenPasswordModal(false);
+            getToken();
+          })
           .catch(() => {
             alert("비밀번호가 일치하지 않아요!");
             return;
           });
       }
-    }
+    } else getToken();
+  };
 
+  const getToken = () => {
+    console.log("입장한다!!!!!");
     axios
       .get("/mafiace/api/session/token", {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
