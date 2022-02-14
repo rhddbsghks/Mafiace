@@ -85,6 +85,15 @@ public class GameController {
             .body(BaseResponseBody.of(401, "비밀번호 불일치"));
     }
 
+    // 방장 교체
+    public void ownerChangeMessage(String roomId, String ownerId) {
+
+        JSONObject data = new JSONObject();
+        data.put("check","owner");
+        data.put("ownerNickname",ownerId);
+        simpMessagingTemplate.convertAndSend("/topic/"+ roomId, data.toString());
+    }
+
     // 게임 시작
     @MessageMapping("/start/{roomId}") // 발행경로
     @SendTo("/topic/{roomId}") // 구독경로

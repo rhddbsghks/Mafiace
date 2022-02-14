@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class SessionServiceImpl implements SessionService {
     private GameRepositorySupport gameRepositorySupport;
 
     // gameId -> userList
-    private Map<String, List<User>> userList = new ConcurrentHashMap<>();
+    private Map<String, List<User>> userList;
 
     // OpenVidu object as entrypoint of the SDK
     private OpenVidu openVidu;
@@ -45,10 +46,18 @@ public class SessionServiceImpl implements SessionService {
     private String SECRET;
 
     // Collection to pair session names and OpenVidu Session objects
-    private Map<String, Session> mapSessions = new ConcurrentHashMap<>();
+    private Map<String, Session> mapSessions;
 
     private int roomNum = 1;
-    private boolean[] availableRoomNum = new boolean[100];
+    private boolean[] availableRoomNum;
+
+    @PostConstruct
+    public void init(){
+        this.mapSessions = new ConcurrentHashMap<>();
+        this.userList = new ConcurrentHashMap<>();
+        this.availableRoomNum = new boolean[100];
+    }
+
 
     public SessionServiceImpl(@Value("${openvidu.secret}") String secret,
         @Value("${openvidu.url}") String openviduUrl, GameRepository gameRepository,
@@ -94,7 +103,7 @@ public class SessionServiceImpl implements SessionService {
                 .discussionTime(sessionOpenReq.getDiscussionTime())
                 .maxPlayer(sessionOpenReq.getMaxPlayer())
                 .isPublic(sessionOpenReq.isPublic())
-//            .isActive(false)
+                .isActive(false)
                 .password((sessionOpenReq.getPassword()))
                 .build());
         availableRoomNum[roomNum] = true;
@@ -116,8 +125,6 @@ public class SessionServiceImpl implements SessionService {
                 return "Unauthorized";
             }
         }
-
-        System.out.println("Existing session " + roomId);
 
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
             ConnectionType.WEBRTC).build();
@@ -142,7 +149,7 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public boolean leaveSession(String roomId, String nickname) {
+    public String leaveSession(String roomId, String nickname) {
         Game game = gameRepositorySupport.findById(roomId);
         User leaveUser = userRepository.findByNickname(nickname).get();
         List<User> curUserList = userList.get(roomId);
@@ -152,18 +159,19 @@ public class SessionServiceImpl implements SessionService {
             if (searchUser.getNickname().equals(leaveUser.getNickname())) {
                 userList.get(roomId).remove(searchUser);
                 if (searchUser.getUserId().equals(game.getOwnerId())) {
+                    String newOwnerId = curUserList.get(0).getNickname();
                     gameRepositorySupport.updateOwnerId(roomId,
-                        curUserList.get(0).getNickname());
-                    System.err.println(curUserList.get(0).getNickname() + " is owner now ");
+                        newOwnerId);
+                    System.err.println(newOwnerId + " is owner now ");
                     System.err.println("afeter leave : " + userList.get(roomId).size());
-                    return true;
+                    return newOwnerId;
                 }
                 break;
             }
         }
 
         System.err.println("afeter leave : " + userList.get(roomId).size());
-        return false;
+        return null;
     }
 
     @Override
@@ -191,7 +199,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public boolean isExist(String roomId) {
-
+        System.err.println("find room Id : " + roomId);
         if (mapSessions.get(roomId) == null) {
             gameRepository.delete(gameRepositorySupport.findById(roomId));
             return false;

@@ -58,13 +58,14 @@ public class Game extends BaseEntity {
 
     @Builder
     private Game(String gameId, int roomNum, String ownerId, String gameTitle, boolean isPublic,
-        int discussionTime,
+        int discussionTime,boolean isActive,
         int maxPlayer,  String password) {
         this.id = gameId;
         this.roomNum = roomNum;
         this.ownerId = ownerId;
         this.gameTitle = gameTitle;
         this.isPublic = isPublic;
+        this.isActive = isActive;
         this.discussionTime = discussionTime;
         this.maxPlayer = maxPlayer;
         this.password = password;
@@ -76,7 +77,7 @@ public class Game extends BaseEntity {
     }
 
     public void setRoomStatus(boolean active) {
-        isActive = active;
+        this.isActive = active;
     }
 
     public void setPassword(String password) {

@@ -13,7 +13,7 @@ public interface SessionService {
 
     void closeSession(String roomId) throws Exception;
 
-    boolean leaveSession(String roomId, String request);
+    String leaveSession(String roomId, String request);
 
     boolean toggleReady(String roomId, String userId);
 
