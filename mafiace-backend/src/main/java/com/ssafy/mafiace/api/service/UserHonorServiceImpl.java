@@ -37,27 +37,31 @@ public class UserHonorServiceImpl implements UserHonorService {
         } else if (userRecords.getWinnerStreak() == 5) {
             newAchievedHonors.add(HonorName.win5Streak);
         }
-        // 10번 살림 (3)
-        if (userRecords.getSaveCount() == 10) {
+        // 10번 죽임 (3)
+        if (userRecords.getKillCount() >= 10) {
+            newAchievedHonors.add(HonorName.kill10);
+        }
+        // 10번 살림 (4)
+        if (userRecords.getSaveCount() >= 10) {
             newAchievedHonors.add(HonorName.save10);
         }
-        // 10번 조사 (4)
-        if (userRecords.getInvestigateCount() == 10) {
+        // 10번 조사 (5)
+        if (userRecords.getInvestigateCount() >= 10) {
             newAchievedHonors.add(HonorName.investigate10);
         }
-        // 마피아 플레이 횟수 (5~6)
+        // 마피아 플레이 횟수 (6~7)
         if (userRecords.getMafiaCount() == 3) {
             newAchievedHonors.add(HonorName.mafia3Play);
         } else if (userRecords.getMafiaCount() == 10) {
             newAchievedHonors.add(HonorName.mafia10Play);
         }
-        // 의사 플레이 횟수 (7~8)
+        // 의사 플레이 횟수 (8~9)
         if (userRecords.getDoctorCount() == 3) {
             newAchievedHonors.add(HonorName.doctor3Play);
         } else if (userRecords.getDoctorCount() == 10) {
             newAchievedHonors.add(HonorName.doctor10Play);
         }
-        // 경찰 플레이 횟수 (9~10)
+        // 경찰 플레이 횟수 (10~11)
         if (userRecords.getPoliceCount() == 3) {
             newAchievedHonors.add(HonorName.police3Play);
         } else if (userRecords.getMafiaCount() == 10) {
