@@ -212,16 +212,17 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
       console.log("방 삭제");
       deleteRoom();
     } else {
-      axios.delete("/mafiace/api/session/user", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
-        params: { sessionName: gameInfo.id },
-      })
-      .then((res) => {
-        if(res.data.status === 201){
-          console.log(res.data.message);
-          // 방장 바꾸기
-        }
-      });
+      axios
+        .delete("/mafiace/api/session/user", {
+          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+          params: { sessionName: gameInfo.id },
+        })
+        .then((res) => {
+          if (res.data.status === 201) {
+            console.log(res.data.message);
+            // 방장 바꾸기
+          }
+        });
     }
 
     if (session) {
@@ -243,14 +244,14 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     }
   };
 
-
   const clickJob = () => {
     setopenJobCard(true);
   };
 
   const clickStart = () => {
     console.log("====================START======================");
-    if (subscribers.length < 3) {
+    // if (subscribers.length < 3) {
+    if (subscribers.length < 0) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
       setStartButton(false);

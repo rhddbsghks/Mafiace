@@ -26,12 +26,12 @@ public class GameRepositorySupport {
         if (isPublic == 0) {
             return jpaQueryFactory.selectFrom(qGame)
                 .where(qGame.maxPlayer.loe(maxPlayer))
-                .orderBy(qGame.roomNum.desc()).fetch();
+                .orderBy(qGame.isActive.asc(), qGame.roomNum.desc()).fetch();
         }
 
         return jpaQueryFactory.selectFrom(qGame)
             .where(qGame.maxPlayer.loe(maxPlayer),
-                qGame.isPublic.eq(isPublic == 1)).orderBy(qGame.roomNum.desc()).fetch();
+                qGame.isPublic.eq(isPublic == 1)).orderBy(qGame.isActive.asc(),  qGame.roomNum.desc()).fetch();
     }
 
     public Game findById(String gameId) {

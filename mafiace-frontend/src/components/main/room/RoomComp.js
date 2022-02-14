@@ -178,7 +178,7 @@ const RoomComp = ({
             {game.public ? <Icon name="user" /> : <Icon name="lock" />}
 
             <div style={{ fontSize: "2em" }}>
-              {game.maxPlayer % 2 === 0 ? (
+              {game.active ? (
                 <span style={{ color: "#7f7c824d" }}>PLAYING</span>
               ) : (
                 <span style={{ color: "#8157a8" }}>WAITING</span>
