@@ -97,7 +97,7 @@ const ChatCompo = () => {
         </div>
       </div>
       <SockJsClient
-        url="http://localhost:8080/mafiace/ws"
+        url="/mafiace/ws"
         topics={topics}
         onConnect={() => {
           console.log("Connected");
@@ -110,7 +110,6 @@ const ChatCompo = () => {
         }}
         ref={$websocket}
       />
-      <h1>Footer</h1>
     </div>
   );
 };

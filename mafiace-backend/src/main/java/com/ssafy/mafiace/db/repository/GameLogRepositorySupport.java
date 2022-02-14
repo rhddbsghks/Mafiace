@@ -25,7 +25,6 @@ public class GameLogRepositorySupport {
         List<UserGameLog> userGameLogList
             = user.getUserGameLogs();
         for(UserGameLog userGameLog : userGameLogList){
-            userGameLog.getGameLog();
             if(userGameLog.isWin()) returnArr[0] +=1;
             else returnArr[1] +=1;
         }

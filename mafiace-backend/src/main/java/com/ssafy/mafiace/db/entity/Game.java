@@ -23,7 +23,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.GeneratorType;
 
 @Getter
-@Setter
 @ToString
 @Entity
 @Table(name = "game")
@@ -59,32 +58,29 @@ public class Game extends BaseEntity {
 
     @Builder
     private Game(String gameId, int roomNum, String ownerId, String gameTitle, boolean isPublic,
-        int discussionTime,
+        int discussionTime,boolean isActive,
         int maxPlayer,  String password) {
         this.id = gameId;
         this.roomNum = roomNum;
         this.ownerId = ownerId;
         this.gameTitle = gameTitle;
         this.isPublic = isPublic;
+        this.isActive = isActive;
         this.discussionTime = discussionTime;
         this.maxPlayer = maxPlayer;
         this.password = password;
         this.isActive = false;
-        this.user_List = new ArrayList<>();
-    }
-    @Transient
-    List<User> user_List;
-
-    public void initUserList(){
-        this.user_List = new ArrayList<>();
     }
 
-    public void addUserList(User user){
-        this.user_List.add(user);
+    public void updateOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
-
 
     public void setRoomStatus(boolean active) {
-        isActive = active;
+        this.isActive = active;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
