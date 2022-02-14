@@ -172,13 +172,14 @@ public class GameController {
         @DestinationVariable String nickname, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
         String role = gameManagerMap.get(roomId).getPlayers().findRoleName(voted);
+        if (role.equals("Mafia")) {
+            manager.getPlayers().addInvestigateCount(); // 경찰 탐지횟수 +1
+        }
         JSONObject data = new JSONObject();
         data.put("role", role);
         data.put("check", "investigate");
         simpMessagingTemplate.convertAndSend("/topic/" + nickname, data.toString());
-        if (role.equals("Mafia")) {
-            manager.getPlayers().addInvestigateCount(); // 경찰 탐지횟수 +1
-        }
+
     }
 
     // 투표 결과를 얻어옴

@@ -100,8 +100,8 @@ public class MafiaceManager {
         for(Player player : players.getPlayers()){
             boolean isWin = isWin(player.getRole());
             GameLog savedGameLog = gameLogService.addGameLog(playTime, this.winTeam);
-            userGameLogService.saveUserGameLog(savedGameLog, player.getUser(), player.getRole(),isWin);
-            UserRecords userRecords = userRecordsService.updateUserRecords(player, isWin);
+            userGameLogService.saveUserGameLog(savedGameLog, player.getUser(),playTime, player.getRole(),isWin);
+            userRecordsService.updateUserRecords(player, isWin);
             userHonorService.saveHonor(userRecords);
         }
         this.room.setRoomStatus(false);
@@ -146,8 +146,10 @@ public class MafiaceManager {
             // 마피아가 실패 / 의사가 살린횟수 +1
             players.addSaveCount();
             result.setCheck("save");
-        }else // 의사가 실패 / 마피아 죽인횟수 +1
+        }else {
+            // 의사가 실패 / 마피아 죽인횟수 +1
             players.addKillCount();
+        }
         return result;
     }
 
