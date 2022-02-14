@@ -89,9 +89,9 @@ public class GameController {
     public void ownerChangeMessage(String roomId, String ownerId) {
 
         JSONObject data = new JSONObject();
-        data.put("check","owner");
-        data.put("ownerNickname",ownerId);
-        simpMessagingTemplate.convertAndSend("/topic/"+ roomId, data.toString());
+        data.put("check", "owner");
+        data.put("ownerNickname", ownerId);
+        simpMessagingTemplate.convertAndSend("/topic/" + roomId, data.toString());
     }
 
     // 게임 시작
@@ -185,6 +185,15 @@ public class GameController {
         data.put("role", role);
         data.put("check", "role");
         simpMessagingTemplate.convertAndSend("/topic/" + nickname, data.toString());
+    }
+
+    // 마피아 반환
+    @MessageMapping("/mafia/{roomId}/{nickname}")
+    public void whoIsMafia(@DestinationVariable String roomId, @DestinationVariable String nickname) {
+        GameEndRes mafiaTeam=new GameEndRes();
+        mafiaTeam.setEnd("MafiaTeam");
+        mafiaTeam.setMafia(gameManagerMap.get(roomId).getPlayers().getMafia());
+        simpMessagingTemplate.convertAndSend("/topic/" + nickname, mafiaTeam);
     }
 
     // 게임하다 나가면 사망처리

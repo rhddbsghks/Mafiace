@@ -49,6 +49,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [myVote, setMyVote] = useState("default"); // 내가 투표한 사람의 닉네임
   const [deathList, setDeathList] = useState([]); // 죽은 사람들 닉네임
   const [isAlive, setIsAlive] = useState("alive"); // 나의 상태
+  const [mafiaTeam, setMafiaTeam] = useState();
 
   // 내 정보
   const [userId, setUserId] = useState("");
@@ -276,6 +277,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     setIsVoted(false);
     setIsAlive(true);
     setMyRole();
+    setMafiaTeam();
     setDeathList([]);
     setStateMessage(gameInfo.gameTitle);
     setTime(gameInfo.discussionTime);
@@ -302,6 +304,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
         openJobCard={openJobCard}
         setopenJobCard={setopenJobCard}
         myRole={myRole}
+        mafiaTeam={mafiaTeam}
       />
       {loading ? (
         <Loader msg="입장 중..." />
@@ -365,11 +368,15 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   }
                 }, 3000);
               } else if (msg.check === "role") {
-                console.log("==================");
-                console.log(msg.role);
                 setMyRole(msg.role);
+                if (msg.role === "Mafia") {
+                  $websocket.current.sendMessage(
+                    `/app/mafia/${gameInfo.id}/${nickname}`
+                  );
+                }
+              } else if (msg.end === "MafiaTeam") {
+                setMafiaTeam(msg.mafia);
               } else if (msg.check === "investigate") {
-                console.log("경찰이 조사한 대상의 직업" + msg.role);
                 if (msg.role === "Mafia") {
                   alert(myVote + "님은 마피아입니다.");
                 } else {
@@ -414,10 +421,9 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 }
               } else if (msg.check === "exit" && start) {
                 setDeathList((prev) => [...prev, msg.nickname]);
-              }else if (msg.check === "owner") {
+              } else if (msg.check === "owner") {
                 // 소켓을 받은 사람이 방장이 되게 하기
-                console.log( msg.ownerNickname+" is owner now!");
-                
+                console.log(msg.ownerNickname + " is owner now!");
               }
             }}
             ref={$websocket}
