@@ -205,23 +205,26 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   };
 
   const leaveSession = () => {
-    $websocket.current.sendMessage(`/app/exit/${gameInfo.id}/${nickname}`);
+    if (start) {
+      $websocket.current.sendMessage(`/app/exit/${gameInfo.id}/${nickname}`);
+    }
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     if (publisher && subscribers.length === 0) {
       console.log("방 삭제");
       deleteRoom();
     } else {
-      axios.delete("/mafiace/api/session/user", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
-        params: { sessionName: gameInfo.id },
-      })
-      .then((res) => {
-        if(res.data.status === 201){
-          console.log(res.data.message);
-          // 방장 바꾸기
-        }
-      });
+      axios
+        .delete("/mafiace/api/session/user", {
+          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+          params: { sessionName: gameInfo.id },
+        })
+        .then((res) => {
+          if (res.data.status === 201) {
+            console.log(res.data.message);
+            // 방장 바꾸기
+          }
+        });
     }
 
     if (session) {
@@ -243,14 +246,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     }
   };
 
-
   const clickJob = () => {
     setopenJobCard(true);
   };
 
   const clickStart = () => {
     console.log("====================START======================");
-    if (subscribers.length < 4) {
+    if (subscribers.length < 3) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
       setStartButton(false);
@@ -397,6 +399,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   setDeathList((prev) => [...prev, msg.nickname]);
                   if (msg.nickname === nickname) {
                     setIsAlive(false); // 사망
+                    publisher.publishAudio(false);
                   }
                 }
               } else if (msg.check === "save") {
@@ -418,7 +421,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 if (gameInfo.ownerId === userId) {
                   toNight();
                 }
-              } else if (msg.check === "exit") {
+              } else if (msg.check === "exit" && start) {
                 setDeathList((prev) => [...prev, msg.nickname]);
               }
             }}
