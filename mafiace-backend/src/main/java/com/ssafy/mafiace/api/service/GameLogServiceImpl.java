@@ -29,12 +29,11 @@ public class GameLogServiceImpl implements GameLogService {
     private UserRepository userRepository;
 
 //    @Override
-    public GameLog addGameLog(Map<String, String> gameLogMap) {
+    public GameLog addGameLog(String playTime, String winTeam) {
         // gameLog (playtime, winTeam, user_unique_id, game_log_id)
         GameLog gameLog = GameLog.builder()
-//            .playTime(Integer.parseInt(gameLogMap.get("playTime")))
-            .playTime(0)
-//            .winTeam(gameLogResult.이긴 팀)
+            .playTime(playTime)
+            .winTeam(winTeam)
             .build();
         return gameLogRepository.save(gameLog);
     }

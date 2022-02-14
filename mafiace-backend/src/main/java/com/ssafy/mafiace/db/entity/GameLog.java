@@ -27,13 +27,13 @@ import lombok.ToString;
     @AttributeOverride(name = "id",column = @Column(name = "game_log_id",unique = true))
 })
 public class GameLog extends BaseEntity{
-    @Column(name = "is_win")
+    @Column(name = "win_team")
     String winTeam;
     @Column(name = "play_time  ")
-    int playTime;
+    String playTime;
 
     @Builder
-    private GameLog(String winTeam, int playTime){
+    private GameLog(String winTeam, String playTime){
         this.id = BaseEntity.shortUUID();
         this.winTeam = winTeam;
         this.playTime = playTime;

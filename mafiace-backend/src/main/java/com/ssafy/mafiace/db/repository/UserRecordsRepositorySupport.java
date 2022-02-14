@@ -28,26 +28,12 @@ public class UserRecordsRepositorySupport {
 
     // 0 반환 => 실패
     // 1 반환 => 성공
-    public long updateUserRecords(Map<String, String> gameLog){
+    public long updateUserRecords(String nickname, boolean isWin, int killCount, int saveCount, int investigateCount){
 //        이런식으로 기존 record와 현재 record 비교해서 map 에서 string 형태로 받아서 update..
-        User user = userRepository.findByNickname(gameLog.get("nickname")).get();
+        User user = userRepository.findByNickname(nickname).get();
         if(user == null) return 0;
         UserRecords prevUserRecords = userRecordsRepository.findById(user.getId()).get();
-        String role = gameLog.get("Role");
-        if(role.equals("Mafia")){
-            prevUserRecords.setKillCount(
-                prevUserRecords.getKillCount()+Integer.parseInt(gameLog.get("killCount"))
-                );
 
-        }else if(role.equals("Doctor")){
-            prevUserRecords.setSaveCount(
-                prevUserRecords.getSaveCount()+Integer.parseInt(gameLog.get("saveCount"))
-            );
-        }else if(role.equals("Police")){
-            prevUserRecords.setInvestigateCount(
-                prevUserRecords.getInvestigateCount()+Integer.parseInt(gameLog.get("investigateCount"))
-            );
-        }
         long[] winLose = gameLogRepositorySupport.getUserTotalRecord(user);
         int winCount = (int)winLose[0];
         int loseCount =(int)winLose[1];
@@ -55,11 +41,11 @@ public class UserRecordsRepositorySupport {
         long execute =
             jpaQueryFactory
                 .update(qUserRecords)
-                .set(qUserRecords.winCount, winCount)
-                .set(qUserRecords.loseCount,loseCount)
-                .set(qUserRecords.killCount, prevUserRecords.getKillCount())
-                .set(qUserRecords.saveCount, prevUserRecords.getSaveCount())
-                .set(qUserRecords.investigateCount, prevUserRecords.getInvestigateCount())
+                .set(qUserRecords.winCount, winCount + (isWin ? 1 : 0))
+                .set(qUserRecords.loseCount,loseCount + (isWin ? 0 : 1))
+                .set(qUserRecords.killCount, prevUserRecords.getKillCount()+killCount)
+                .set(qUserRecords.saveCount, prevUserRecords.getSaveCount()+saveCount)
+                .set(qUserRecords.investigateCount, prevUserRecords.getInvestigateCount()+investigateCount)
                 .where(qUserRecords.id.eq(user.getNickname()))
                 .execute();
 
