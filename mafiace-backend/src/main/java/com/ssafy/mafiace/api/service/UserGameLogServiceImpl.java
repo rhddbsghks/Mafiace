@@ -4,6 +4,7 @@ import com.ssafy.mafiace.db.entity.GameLog;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.entity.UserGameLog;
 import com.ssafy.mafiace.db.repository.UserGameLogRepositorySupport;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,13 @@ public class UserGameLogServiceImpl implements UserGameLogService{
     private UserGameLogRepositorySupport userGameLogRepositorySupport;
 
     @Override
-    public UserGameLog saveUserGameLog(GameLog gameLog, User user, String roleName, String winTeam) {
-        return userGameLogRepositorySupport.saveUserGameLog(gameLog, user, roleName, winTeam);
+    public UserGameLog saveUserGameLog(GameLog gameLog, User user, String playTime,
+        String role, boolean isWin) {
+        return userGameLogRepositorySupport.saveUserGameLog(gameLog, user, playTime, role, isWin);
+    }
+
+    @Override
+    public List<UserGameLog> getUserGameLogs(String id) {
+        return userGameLogRepositorySupport.getUserGameLogs(id);
     }
 }

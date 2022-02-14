@@ -39,6 +39,28 @@ const MypageCompo = () => {
     // console.log(form);
   }, []);
 
+  useEffect(() => {
+    axios
+      .post(
+        "/mafiace/api/user/userRecord",
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch(({ response }) => {
+        if (response.status === 500) {
+          alert("만료된 토큰입니다.");
+          localStorage.removeItem("jwt");
+          window.location.href = "/";
+        }
+      });
+    // console.log(form);
+  }, []);
+
   return (
     <div style={{ width: "95%", margin: "auto" }}>
       {loading ? (
@@ -65,27 +87,51 @@ const MypageCompo = () => {
                 >
                   ID
                 </Table.Cell>
-                <Table.Cell style={{ fontSize: "150%" }}>
+                <Table.Cell
+                  style={{
+                    fontSize: "150%",
+                    backgroundColor: "#CEBEE1",
+                    border: "none",
+                  }}
+                >
                   {form.userId}
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell
-                  style={{ fontSize: "150%", backgroundColor: "#D2D2FF" }}
+                  style={{
+                    fontSize: "150%",
+                    backgroundColor: "#D2D2FF",
+                  }}
                 >
                   Nick Name
                 </Table.Cell>
-                <Table.Cell style={{ fontSize: "150%" }}>
+                <Table.Cell
+                  style={{
+                    fontSize: "150%",
+                    backgroundColor: "#CEBEE1",
+                    border: "none",
+                  }}
+                >
                   {form.nickname}
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell
-                  style={{ fontSize: "150%", backgroundColor: "#D2D2FF" }}
+                  style={{
+                    fontSize: "150%",
+                    backgroundColor: "#D2D2FF",
+                  }}
                 >
                   E-mail
                 </Table.Cell>
-                <Table.Cell style={{ fontSize: "150%" }}>
+                <Table.Cell
+                  style={{
+                    fontSize: "150%",
+                    backgroundColor: "#CEBEE1",
+                    border: "none",
+                  }}
+                >
                   {form.email}
                 </Table.Cell>
               </Table.Row>

@@ -61,8 +61,8 @@ const UserVideoComponent = ({
               style={{
                 width: "35px",
                 position: "relative",
-                top: "10px",
-                left: "10px",
+                top: "20px",
+                left: "20px",
               }}
             />
           ) : (
@@ -73,36 +73,70 @@ const UserVideoComponent = ({
                 visibility: "hidden",
                 width: "35px",
                 position: "relative",
-                top: "10px",
-                left: "10px",
+                top: "20px",
+                left: "20px",
               }}
             />
           )}
           <OpenViduVideoComponent streamManager={streamManager} />
 
-          <div
-            style={{
-              width: "11%",
-              height: "5.5%",
-              display: "flex",
-              borderRadius: "2em",
-            }}
-          >
-            <span
+          {checkAlive ? (
+            <div
               style={{
-                margin: "auto",
-                fontSize: "2.2em",
-                letterSpacing: "0.1em",
+                width: "50%",
+                height: "15%",
+                display: "flex",
+                borderRadius: "2em",
               }}
             >
-              {nickNameTag}
-            </span>
-          </div>
-          <div>
+              <span
+                style={{
+                  margin: "auto",
+                  fontSize: "2.2em",
+                  letterSpacing: "0.1em",
+                }}
+              >
+                {nickNameTag}
+              </span>
+            </div>
+          ) : (
+            <div
+              style={{
+                width: "50%",
+                height: "15%",
+                display: "flex",
+                borderRadius: "2em",
+                backgroundColor: "#a1a0a0",
+              }}
+            >
+              <span
+                style={{
+                  margin: "auto",
+                  fontSize: "2.2em",
+                  letterSpacing: "0.1em",
+                }}
+              >
+                <del>{nickNameTag}</del>
+              </span>
+            </div>
+          )}
+
+          <div
+            style={{
+              background: "none",
+              bottom: "0%",
+              width: "35%",
+              height: "15%",
+              left: "5%",
+              textAlign: "center",
+            }}
+          >
             {!checkAlive ? <span>사망</span> : null}
 
             {isAlive && checkAlive && !isVoted && day ? (
-              <button onClick={clickVote}>Vote</button>
+              <button onClick={clickVote} className="select-btn vote">
+                투표
+              </button>
             ) : null}
 
             {sub &&
@@ -111,7 +145,9 @@ const UserVideoComponent = ({
             myRole === "Mafia" &&
             !isVoted &&
             night ? (
-              <button onClick={clickVote}>KILL</button>
+              <button onClick={clickVote} className="select-btn kill">
+                제거
+              </button>
             ) : null}
 
             {isAlive &&
@@ -119,7 +155,9 @@ const UserVideoComponent = ({
             myRole === "Doctor" &&
             !isVoted &&
             night ? (
-              <button onClick={clickHeal}>SAVE</button>
+              <button onClick={clickHeal} className="select-btn heal">
+                치료
+              </button>
             ) : null}
 
             {sub &&
@@ -128,7 +166,9 @@ const UserVideoComponent = ({
             myRole === "Police" &&
             !isVoted &&
             night ? (
-              <button onClick={clickInvestigate}>DETECT</button>
+              <button onClick={clickInvestigate} className="select-btn invest">
+                수사
+              </button>
             ) : null}
           </div>
         </div>

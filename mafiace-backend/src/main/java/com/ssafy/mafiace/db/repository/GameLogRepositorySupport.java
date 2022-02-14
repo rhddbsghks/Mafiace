@@ -3,6 +3,7 @@ package com.ssafy.mafiace.db.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.mafiace.db.entity.QGameLog;
 import com.ssafy.mafiace.db.entity.QUser;
+import com.ssafy.mafiace.db.entity.QUserGameLog;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.entity.UserGameLog;
 import java.util.List;
@@ -17,18 +18,16 @@ public class GameLogRepositorySupport {
 
     @Autowired
     private GameLogRepository gameLogRepository;
+
     QGameLog qGameLog = QGameLog.gameLog;
+    QUserGameLog qUserGameLog = QUserGameLog.userGameLog;
     QUser qUser = QUser.user;
 
-    public long[] getUserTotalRecord(User user){
-        long[] returnArr = new long[3];
-        List<UserGameLog> userGameLogList
-            = user.getUserGameLogs();
-        for(UserGameLog userGameLog : userGameLogList){
-            if(userGameLog.isWin()) returnArr[0] +=1;
-            else returnArr[1] +=1;
-        }
-        return returnArr;
+    public String getPlayTimeByGameLog(UserGameLog userGameLog) {
+        return this.jpaQueryFactory
+            .select(qGameLog.playTime)
+            .from(qGameLog)
+            .where(qGameLog.id.eq(userGameLog.getGameLog().getId()))
+            .fetchOne();
     }
-
 }
