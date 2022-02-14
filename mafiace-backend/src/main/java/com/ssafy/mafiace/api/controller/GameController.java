@@ -4,8 +4,12 @@ import com.ssafy.mafiace.api.response.BaseResponseBody;
 import com.ssafy.mafiace.api.response.GameEndRes;
 import com.ssafy.mafiace.api.response.GameRoomRes;
 import com.ssafy.mafiace.api.response.VoteRes;
+import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
+import com.ssafy.mafiace.api.service.UserGameLogService;
+import com.ssafy.mafiace.api.service.UserRecordsService;
+import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.model.GameInfo;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.common.model.MafiaceManager;
@@ -42,6 +46,18 @@ public class GameController {
 
     @Autowired
     private SessionService sessionService;
+
+    @Autowired
+    private GameLogService gameLogService;
+
+    @Autowired
+    UserGameLogService userGameLogService;
+
+    @Autowired
+    UserRecordsService userRecordsService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -99,7 +115,8 @@ public class GameController {
     @SendTo("/topic/{roomId}") // 구독경로
     public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception {
         System.err.println(roomId + "  is clicked the start btn");
-        gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService, gameService));
+        gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService, gameService,
+            userService, userRecordsService, userGameLogService, gameLogService));
     }
 
     // 게임이 끝났는지 체크하고 승리팀 판단

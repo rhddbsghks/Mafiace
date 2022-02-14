@@ -30,14 +30,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/session")
 public class SessionController {
 
+    @Autowired
     private SessionService sessionService;
+
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     private GameController gameController;
 
-    public SessionController(SessionService sessionService, JwtTokenProvider jwtTokenProvider) {
-        this.sessionService = sessionService;
+    public SessionController(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -96,10 +98,10 @@ public class SessionController {
             String token = sessionService.getToken(sessionName, nickname);
             //this.mapSessions.get(sessionName).createConnection(connectionProperties).getToken();
             System.err.println(nickname+"'s token : "+token);
-            if(token.equals("Unauthorized")){
-                return ResponseEntity.status(403)
+            if(token == null){
+                return ResponseEntity.status(204)
                     .body(
-                        SessionTokenPostRes.of(403, "forbidden", null));
+                        SessionTokenPostRes.of(204, "NoContent", null));
             }
             return ResponseEntity.status(201)
                 .body(

@@ -14,7 +14,7 @@ public class UserGameLogServiceImpl implements UserGameLogService{
     private UserGameLogRepositorySupport userGameLogRepositorySupport;
 
     @Override
-    public UserGameLog saveUserGameLog(GameLog gameLog, User user, String roleName, String winTeam) {
-        return userGameLogRepositorySupport.saveUserGameLog(gameLog, user, roleName, winTeam);
+    public UserGameLog saveUserGameLog(GameLog gameLog, User user, String roleName, boolean isWin) {
+        return userGameLogRepositorySupport.saveUserGameLog(gameLog, user, roleName, isWin);
     }
 }
