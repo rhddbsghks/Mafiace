@@ -9,5 +9,5 @@ public interface UserRecordsService {
     UserRecords getUserRecords(String id);
     UserRecords addUserRecords(User user);
 
-    void updateUserRecords(Player player, boolean isWin);
+    UserRecords updateUserRecords(Player player, boolean isWin);
 }

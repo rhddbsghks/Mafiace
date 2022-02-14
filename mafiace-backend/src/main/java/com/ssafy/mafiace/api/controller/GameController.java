@@ -8,6 +8,7 @@ import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
 import com.ssafy.mafiace.api.service.UserGameLogService;
+import com.ssafy.mafiace.api.service.UserHonorService;
 import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.model.GameInfo;
@@ -58,6 +59,9 @@ public class GameController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserHonorService userHonorService;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -116,7 +120,7 @@ public class GameController {
     public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception {
         System.err.println(roomId + "  is clicked the start btn");
         gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService, gameService,
-            userService, userRecordsService, userGameLogService, gameLogService));
+            userService, userRecordsService, userGameLogService, gameLogService, userHonorService));
     }
 
     // 게임이 끝났는지 체크하고 승리팀 판단

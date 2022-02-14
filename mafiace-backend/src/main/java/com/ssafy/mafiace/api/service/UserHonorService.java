@@ -6,5 +6,4 @@ import com.ssafy.mafiace.game.honor.HonorName;
 
 public interface UserHonorService {
     void saveHonor(UserRecords userRecords);
-    boolean isAchieved(User user, HonorName honorNo);
 }
