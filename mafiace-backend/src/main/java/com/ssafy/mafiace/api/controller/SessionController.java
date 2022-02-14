@@ -30,17 +30,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/session")
 public class SessionController {
 
+    @Autowired
     private SessionService sessionService;
+
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     private GameController gameController;
 
-    public SessionController(SessionService sessionService, JwtTokenProvider jwtTokenProvider) {
-        this.sessionService = sessionService;
+    public SessionController(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
-
 
     @PostMapping("/token")
     @ApiOperation(value = "세션방 생성", notes = "생성된 방 번호의 토큰 제공")
@@ -72,6 +73,9 @@ public class SessionController {
     })
     public ResponseEntity<SessionTokenPostRes> getToken(
         @ApiParam(value = "세션방 ID", required = true) String sessionName, HttpServletRequest request) {
+        if(sessionService.isActive(sessionName))
+            return ResponseEntity.status(412)
+                .body(SessionTokenPostRes.of(412, "이미 게임 진행중", null));
 
         if(!sessionService.isExist(sessionName))
             return ResponseEntity.status(404)
@@ -93,8 +97,12 @@ public class SessionController {
             String nickname = jwtTokenProvider.getUserNickname(jwtToken);
             String token = sessionService.getToken(sessionName, nickname);
             //this.mapSessions.get(sessionName).createConnection(connectionProperties).getToken();
-            System.err.println(token);
-            // Return the response to the client
+            System.err.println(nickname+"'s token : "+token);
+            if(token == null){
+                return ResponseEntity.status(204)
+                    .body(
+                        SessionTokenPostRes.of(204, "NoContent", null));
+            }
             return ResponseEntity.status(201)
                 .body(
                     SessionTokenPostRes.of(201, "Success", NewSessionInfo.of(token, sessionName)));
@@ -133,7 +141,13 @@ public class SessionController {
         try {
             String jwtToken = request.getHeader("Authorization").substring(7); // Id -> 닉네임으로 변경
             String nickname = jwtTokenProvider.getUserNickname(jwtToken);
-            sessionService.leaveSession(sessionName, nickname);
+            String ownerChange = sessionService.leaveSession(sessionName, nickname);
+            if(ownerChange != null){
+                // 새로운 방장 닉네임
+                gameController.ownerChangeMessage(sessionName, ownerChange);
+                return ResponseEntity.status(201)
+                    .body(BaseResponseBody.of(201, "Success and OwnerChanged"));
+            }
             return ResponseEntity.status(200)
                 .body(BaseResponseBody.of(200, "Success"));
         } catch (Exception e) {

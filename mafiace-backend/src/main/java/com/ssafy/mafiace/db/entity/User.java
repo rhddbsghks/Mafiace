@@ -12,6 +12,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -64,7 +65,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     // delete
-    public void adddeleteAccount(String userId) {
+    public void addDeleteAccount(String userId) {
         if(userId.equals(this.userId)) {
             this.isDeleted = true;
         }

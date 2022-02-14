@@ -1,11 +1,9 @@
 package com.ssafy.mafiace.api.service;
 
 import com.ssafy.mafiace.db.entity.Game;
-import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.repository.GameRepository;
 import com.ssafy.mafiace.db.repository.GameRepositorySupport;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +16,10 @@ public class GameServiceImpl implements GameService {
     @Autowired
     private GameRepository gameRepository;
 
-    public GameServiceImpl(GameRepositorySupport gameRepositorySupport) {
+    public GameServiceImpl(GameRepositorySupport gameRepositorySupport,
+        GameRepository gameRepository) {
         this.gameRepositorySupport = gameRepositorySupport;
+        this.gameRepository = gameRepository;
     }
 
     @Override
@@ -28,31 +28,28 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<User> getUserListById(String id) {
-        Optional<Game> game = gameRepository.findById(id);
-        if(game.isPresent()){
-            return game.get().getUser_List();
-        }
-        return null;
-    }
+    public boolean checkPassword(String roomId, String password) {
+        Game game = gameRepositorySupport.findById(roomId);
 
-    @Override
-    public boolean checkPassword(String sessionName, String password) {
-        Game game = gameRepositorySupport.findById(sessionName);
-
-        if(game.getPassword().equals(password))
+        if (game.getPassword().equals(password)) {
             return true;
+        }
 
         return false;
     }
 
     @Override
-    public Game getGameById(String gameId) {
-        return gameRepository.findGameById(gameId);
+    public Game getGameById(String roomId) {
+        return gameRepository.findGameById(roomId);
     }
 
     @Override
     public void deleteById(String id) {
         gameRepository.deleteById(id);
+    }
+
+    @Override
+    public void setGameStatus(Game game) {
+        gameRepository.save(game);
     }
 }

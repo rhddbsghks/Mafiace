@@ -2,14 +2,13 @@ package com.ssafy.mafiace.api.service;
 
 import com.ssafy.mafiace.db.entity.GameLog;
 import com.ssafy.mafiace.db.entity.User;
-import com.ssafy.mafiace.db.entity.UserRecords;
+import com.ssafy.mafiace.db.entity.UserGameLog;
 import com.ssafy.mafiace.db.repository.GameLogRepository;
+import com.ssafy.mafiace.db.repository.GameLogRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
-import java.util.Map;
-import java.util.Optional;
-import org.checkerframework.checker.signature.qual.IdentifierOrArray;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +27,15 @@ public class GameLogServiceImpl implements GameLogService {
     @Autowired
     private UserRepository userRepository;
 
-//    @Override
-    public GameLog addGameLog(Map<String, String> gameLogMap) {
+
+    @Override
+    public GameLog addGameLog(String playTime, String winTeam) {
+        // gameLog (playtime, winTeam, game_log_id)
         GameLog gameLog = GameLog.builder()
-            .playTime(Integer.parseInt(gameLogMap.get("playTime")))
-//            .winTeam(gameLogResult.이긴 팀)
+            .playTime(playTime)
+            .winTeam(winTeam)
             .build();
         return gameLogRepository.save(gameLog);
     }
+
 }

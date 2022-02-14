@@ -24,12 +24,16 @@
 body,
 h1,
 button,
-.counter {
+.counter,
+span {
   font-family: "Dongle", sans-serif !important;
 }
 
 .container {
   height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between;
 }
 .MuiTab-root {
   border-radius: 20px !important;
@@ -107,4 +111,8 @@ span {
     color-stop(0.75, rgba(170, 209, 233, 0.521)),
     color-stop(1, rgb(150, 197, 228))
   );
+}
+
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, 0) !important;
 }

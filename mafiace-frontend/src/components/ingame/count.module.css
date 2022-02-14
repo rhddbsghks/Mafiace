@@ -1,0 +1,280 @@
+@charset "utf-8";
+@import url("https://fonts.googleapis.com/css?family=Bowlby+One+SC|Londrina+Outline");
+
+.cd-number-wrapper {
+  position: absolute;
+  z-index: 10;
+  width: 500px;
+  height: 189px;
+  top: 45%;
+  left: 50%;
+  margin: 80px auto 0 auto;
+  text-align: center;
+  font-size: 25em;
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  transform: translate(-50%, -50%);
+}
+
+.cd-number-three {
+  opacity: 0;
+  -webkit-animation: cd-number-three-anim 1.2s ease 0s 1 normal;
+  -moz-animation: cd-number-three-anim 1.2s ease 0s 1 normal;
+  -ms-animation: cd-number-three-anim 1.2s ease 0s 1 normal;
+  -o-animation: cd-number-three-anim 1.2s ease 0s 1 normal;
+  animation: cd-number-three-anim 1.2s ease 0s 1 normal;
+}
+
+@-webkit-keyframes cd-number-three-anim {
+  from {
+    -webkit-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes cd-number-three-anim {
+  from {
+    -moz-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -moz-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@-o-keyframes cd-number-three-anim {
+  from {
+    -o-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -o-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes cd-number-three-anim {
+  from {
+    -ms-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -ms-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@keyframes cd-number-three-anim {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+.cd-number-two {
+  opacity: 0;
+  -webkit-animation: cd-number-two-anim 1.2s ease 1s 1 normal;
+  -moz-animation: cd-number-two-anim 1.2s ease 1s 1 normal;
+  -ms-animation: cd-number-two-anim 1.2s ease 1s 1 normal;
+  -o-animation: cd-number-two-anim 1.2s ease 1s 1 normal;
+  animation: cd-number-two-anim 1.2s ease 1s 1 normal;
+}
+
+@-webkit-keyframes cd-number-two-anim {
+  from {
+    -webkit-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes cd-number-two-anim {
+  from {
+    -moz-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -moz-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@-o-keyframes cd-number-two-anim {
+  from {
+    -o-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -o-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes cd-number-two-anim {
+  from {
+    -ms-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -ms-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@keyframes cd-number-two-anim {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+.cd-number-one {
+  opacity: 0;
+  -webkit-animation: cd-number-one-anim 1.2s ease 2s 1 normal;
+  -moz-animation: cd-number-one-anim 1.2s ease 2s 1 normal;
+  -ms-animation: cd-number-one-anim 1.2s ease 2s 1 normal;
+  -o-animation: cd-number-one-anim 1.2s ease 2s 1 normal;
+  animation: cd-number-one-anim 1.2s ease 2s 1 normal;
+}
+
+@-webkit-keyframes cd-number-one-anim {
+  from {
+    -webkit-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes cd-number-one-anim {
+  from {
+    -moz-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -moz-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@-o-keyframes cd-number-one-anim {
+  from {
+    -o-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -o-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes cd-number-one-anim {
+  from {
+    -ms-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -ms-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@keyframes cd-number-one-anim {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+.cd-start {
+  opacity: 0;
+  -webkit-animation: cd-start-anim 1.2s ease 3s 1 normal;
+  -moz-animation: cd-start-anim 1.2s ease 3s 1 normal;
+  -ms-animation: cd-start-anim 1.2s ease 3s 1 normal;
+  -o-animation: cd-start-anim 1.2s ease 3s 1 normal;
+  animation: cd-start-anim 1.2s ease 3s 1 normal;
+}
+
+@-webkit-keyframes cd-start-anim {
+  from {
+    -webkit-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes cd-start-anim {
+  from {
+    -moz-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -moz-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@-o-keyframes cd-start-anim {
+  from {
+    -o-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -o-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes cd-start-anim {
+  from {
+    -ms-transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    -ms-transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@keyframes cd-start-anim {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+.cd-number-three,
+.cd-number-two,
+.cd-number-one,
+.cd-start {
+  text-align: center;
+}

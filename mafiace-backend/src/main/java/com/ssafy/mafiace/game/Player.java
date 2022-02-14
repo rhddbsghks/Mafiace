@@ -15,7 +15,6 @@ public class Player {
     private String nickname;
     private String role;
     private boolean isAlive;
-    private boolean isBoss;
     private int saveCount ;
     private int killCount;
     private int investigateCount;
@@ -32,45 +31,23 @@ public class Player {
         this.investigateCount = 0;
     }
 
-    public void Alive(){
-        this.isAlive = true;
-    }
-
-    public void Dead(){
+    public void setDead(){
         this.isAlive = false;
     }
-
-    public boolean isAlive(){
-        return this.isAlive;
-    }
-
-    public boolean isBoss() { return this.isBoss; }
 
     public User getUser(){
         return this.user;
     }
 
-
-    public void kill() {
-        if(!isBoss) return;
-        // 보스일때만 kill가능~
-        // kill 로직
-        // 성공 시 kill_count +=1;
+    public void addSaveCount(){
+        this.saveCount ++;
     }
 
-    public void surgery() {
-        // 수술해서 살리기
-        // 성공 시 saveCount +=1;
+    public void addInvestigateCount(){
+        this.investigateCount ++;
     }
 
-    public void investigate() {
-        // 한명 조사하기
-        // 성공 시 invertigateCount +=1;
-    }
-
-    public void saveGameLog(){
-        Map<String, String> gameLogs = new HashMap<>();
-
-        gameLogService.addGameLog(gameLogs);
+    public void addKillCount(){
+        this.killCount ++;
     }
 }
