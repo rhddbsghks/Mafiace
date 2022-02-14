@@ -21,23 +21,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
+@Component
 public class MafiaceManager {
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserRecordsService userRecordsService;
-
-    @Autowired
-    private UserGameLogService userGameLogService;
-
-    @Autowired
-    public GameLogService gameLogService;
-
 
     // 게임 내에 사용되는 내부 로직
     private String roomId;
@@ -49,8 +38,18 @@ public class MafiaceManager {
     private LocalDateTime endTime;
     private String winTeam;
 
+    @Autowired
     private SessionService sessionService;
+    @Autowired
     private GameService gameService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserRecordsService userRecordsService;
+    @Autowired
+    private UserGameLogService userGameLogService;
+    @Autowired
+    private GameLogService gameLogService ;
 
     private List<String> deathList = new ArrayList<>();
     private Map<String, Integer> voteMap = new ConcurrentHashMap<>();  // 닉네임이 저장됨
@@ -60,16 +59,25 @@ public class MafiaceManager {
     }
 
     // 게임 시작할때 생성자 호출
-    public MafiaceManager(String roomId, SessionService sessionService, GameService gameService) {
+    public MafiaceManager(String roomId, SessionService sessionService, GameService gameService,
+        UserService userService,
+        UserRecordsService userRecordsService,
+        UserGameLogService userGameLogService,
+        GameLogService gameLogService) {
         this.roomId = roomId;
         this.sessionService = sessionService;
         this.gameService = gameService;
+        this.userService = userService;
+        this.userRecordsService = userRecordsService;
+        this.userGameLogService = userGameLogService;
+        this.gameLogService = gameLogService;
         this.room = gameService.getGameById(roomId);
         this.userList = sessionService.getParticipantList(roomId);
         this.players = new PlayersManager(userList);
         this.room.setRoomStatus(true);
         this.gameService.setGameStatus(this.room);
         players.setRole();
+        this.startTime = LocalDateTime.now();
     }
 
     public void gameSet() {
