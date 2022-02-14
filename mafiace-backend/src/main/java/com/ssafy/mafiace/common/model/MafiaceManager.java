@@ -37,6 +37,7 @@ public class MafiaceManager {
     @Autowired
     public GameLogService gameLogService;
 
+
     // 게임 내에 사용되는 내부 로직
     private String roomId;
     private Game room;
@@ -66,6 +67,7 @@ public class MafiaceManager {
         this.userList = sessionService.getParticipantList(roomId);
         this.players = new PlayersManager(userList);
         this.room.setRoomStatus(true);
+        this.gameService.setGameStatus(this.room);
         players.setRole();
     }
 
@@ -76,10 +78,9 @@ public class MafiaceManager {
     // 게임 종료 후 Log 저장
     public boolean saveRecord(){
         // 사용자 정보, 플레이시간, 이긴 팀, 본인 직업 , 죽인 횟수, 살린횟수, 탐지횟수
-        endTime = LocalDateTime.now();
-        Duration duration = Duration.between(this.startTime, this.endTime);
-        System.err.println("PlayTime : " + duration);
-        System.err.println(duration);
+//        endTime = LocalDateTime.now();
+//        Duration duration = Duration.between(this.startTime, this.endTime);
+//        System.err.println("PlayTime : " + duration);
         // list 회원별로
         // map < column값, value >
         // list 0 : 회원 1에 대한 로그 <column, value>
@@ -87,14 +88,15 @@ public class MafiaceManager {
         List<Map<String, String>> GameLogs = this.players.makeGameLog();
         for (Map<String, String> gameLog : GameLogs) {
             gameLog.put("winTeam",this.winTeam);
-            gameLog.put("playTime",String.valueOf(duration.toMinutes()));
+//            gameLog.put("playTime",String.valueOf(duration.toMinutes()));
             User user = userService.getUserByNickname(gameLog.get("nickname"));
             if(user == null) return false;
             GameLog savedGameLog = gameLogService.addGameLog(gameLog); // 게임로그id, 플레이 시간(분), 승리 여부 저장
             userGameLogService.saveUserGameLog(savedGameLog, user, gameLog.get("role"), gameLog.get("winTeam")); // 유저, 역할, 이긴 팀 저장
             userRecordsService.userUpdateUserRecords(gameLog); // 유저, 승,패, 직업별 기능 사용 횟수 저장
         }
-        gameService.deleteById(this.room.getId());
+        this.room.setRoomStatus(false);
+        gameService.setGameStatus(this.room);
         return true;
     }
 

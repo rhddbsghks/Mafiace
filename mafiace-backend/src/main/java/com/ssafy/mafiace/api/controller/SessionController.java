@@ -71,6 +71,9 @@ public class SessionController {
     })
     public ResponseEntity<SessionTokenPostRes> getToken(
         @ApiParam(value = "세션방 ID", required = true) String sessionName, HttpServletRequest request) {
+        if(sessionService.isActive(sessionName))
+            return ResponseEntity.status(412)
+                .body(SessionTokenPostRes.of(412, "이미 게임 진행중", null));
 
         if(!sessionService.isExist(sessionName))
             return ResponseEntity.status(404)
@@ -136,8 +139,10 @@ public class SessionController {
         try {
             String jwtToken = request.getHeader("Authorization").substring(7); // Id -> 닉네임으로 변경
             String nickname = jwtTokenProvider.getUserNickname(jwtToken);
-            boolean ownerChange = sessionService.leaveSession(sessionName, nickname);
-            if(ownerChange){
+            String ownerChange = sessionService.leaveSession(sessionName, nickname);
+            if(ownerChange != null){
+                // 새로운 방장 닉네임
+                gameController.ownerChangeMessage(sessionName, ownerChange);
                 return ResponseEntity.status(201)
                     .body(BaseResponseBody.of(201, "Success and OwnerChanged"));
             }

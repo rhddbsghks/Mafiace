@@ -21,6 +21,7 @@ public class PlayersManager {
     private List<Integer> mafia;
 
     public PlayersManager(List<User> users) {
+        this.mafia = new ArrayList<>();
         this.players = new ArrayList<>();
         for (User user : users) {
             this.players.add(new Player(user));
@@ -59,7 +60,6 @@ public class PlayersManager {
                 this.mafia.add(i);
             } else if (i < mafiaNum + citizenNum + 2) {
                 this.players.get(i).setRole("Citizen");
-                System.err.println(players.get(i).getNickname() + " :  CITIZEN" );
             }
         }
     }

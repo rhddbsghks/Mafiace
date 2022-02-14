@@ -214,17 +214,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
       console.log("방 삭제");
       deleteRoom();
     } else {
-      axios
-        .delete("/mafiace/api/session/user", {
-          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
-          params: { sessionName: gameInfo.id },
-        })
-        .then((res) => {
-          if (res.data.status === 201) {
-            console.log(res.data.message);
-            // 방장 바꾸기
-          }
-        });
+      axios.delete("/mafiace/api/session/user", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+        params: { sessionName: gameInfo.id },
+      });
     }
 
     if (session) {
@@ -423,6 +416,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 }
               } else if (msg.check === "exit" && start) {
                 setDeathList((prev) => [...prev, msg.nickname]);
+              }else if (msg.check === "owner") {
+                // 소켓을 받은 사람이 방장이 되게 하기
+                console.log( msg.ownerNickname+" is owner now!");
+                
               }
             }}
             ref={$websocket}
@@ -494,6 +491,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   width: "20%",
                   display: "flex",
                   justifyContent: "center",
+                  flexWrap: "wrap",
                 }}
               >
                 {!start ? (
