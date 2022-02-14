@@ -12,11 +12,10 @@ public class UserGameLogRepositorySupport {
     @Autowired
     private UserGameLogRepository userGameLogRepository;
 
-    public UserGameLog saveUserGameLog(GameLog gameLog, User user, String roleName, String winTeam){
-        String team = roleName.equals("Mafia") ? "Mafia" : "Citizen";
+    public UserGameLog saveUserGameLog(GameLog gameLog, User user, String roleName, boolean isWin){
         UserGameLog userGameLog = UserGameLog.builder()
             .roleName(roleName)
-            .isWin(team.equals(winTeam))
+            .isWin(isWin)
             .user(user)
             .gameLog(gameLog)
             .build();

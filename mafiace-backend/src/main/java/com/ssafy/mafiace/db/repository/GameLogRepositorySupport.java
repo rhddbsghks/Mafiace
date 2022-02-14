@@ -21,7 +21,7 @@ public class GameLogRepositorySupport {
     QUser qUser = QUser.user;
 
     public long[] getUserTotalRecord(User user){
-        long[] returnArr = new long[3];
+        long[] returnArr = new long[2];
         List<UserGameLog> userGameLogList
             = user.getUserGameLogs();
         for(UserGameLog userGameLog : userGameLogList){

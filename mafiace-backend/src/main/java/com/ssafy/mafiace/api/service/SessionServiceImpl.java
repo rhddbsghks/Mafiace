@@ -122,7 +122,7 @@ public class SessionServiceImpl implements SessionService {
         for(User inRoomUser : userList.get(roomId)){
             if(inRoomUser.getNickname().equals(nickname)){
                 System.err.println("====== already exist Member!!! ===== ");
-                return "Unauthorized";
+                return null;
             }
         }
 

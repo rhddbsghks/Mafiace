@@ -6,7 +6,7 @@ import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
 import com.ssafy.mafiace.db.repository.UserRepositorySupport;
-import java.util.Map;
+import com.ssafy.mafiace.game.Player;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,8 +50,9 @@ public class UserRecordsServiceImpl implements UserRecordsService {
     }
 
     @Override
-    public void userUpdateUserRecords(Map<String, String> gameLog) {
-        userRecordsRepositorySupport.updateUserRecords(gameLog);
+    public void updateUserRecords(Player player, boolean isWin) {
+        // 유저, 승,패, 직업별 기능 사용 횟수 저장
+        userRecordsRepositorySupport.updateUserRecords(player.getNickname() ,isWin, player.getKillCount(), player.getSaveCount(), player.getInvestigateCount());
     }
 
 

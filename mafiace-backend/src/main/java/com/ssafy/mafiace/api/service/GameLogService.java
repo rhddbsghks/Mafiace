@@ -6,5 +6,5 @@ import java.util.Map;
 
 public interface GameLogService {
 
-    GameLog addGameLog(Map<String, String> gameLogResult);
+    GameLog addGameLog(String playTime, String winTeam);
 }
