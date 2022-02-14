@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Dongle&display=swap");
+
+@-webkit-keyframes float {
+  0% {
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+    transform: translatey(0px);
+  }
+  50% {
+    box-shadow: 0 25px 15px 0px rgba(0, 0, 0, 0.2);
+    transform: translatey(-20px);
+  }
+  100% {
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+    transform: translatey(0px);
+  }
+}
+
+@keyframes float {
+  0% {
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+    transform: translatey(0px);
+  }
+  50% {
+    box-shadow: 0 25px 15px 0px rgba(0, 0, 0, 0.2);
+    transform: translatey(-20px);
+  }
+  100% {
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+    transform: translatey(0px);
+  }
+}
+
+.job-card {
+  box-sizing: border-box;
+  border-radius: 10% !important;
+  margin: auto !important;
+  box-shadow: 2px 12px 15px 2px rgb(0, 0, 0, 0.6) !important;
+  width: 100% !important;
+  font-size: 2.3em !important;
+}
+
+.job-card div {
+  font-family: "Dongle", sans-serif !important;
+}
+
+.job-card-modal {
+  -webkit-box-shadow: none !important;
+  background: none !important;
+  width: 350px !important;
+}
+
+.job-card-image {
+  width: 80%;
+  height: auto;
+  margin: auto;
+  padding: 1em !important;
+}

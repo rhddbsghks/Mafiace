@@ -17,146 +17,193 @@ const RulesCompo = () => {
   return (
     <>
       {/* <h1>Rules__Compo</h1> */}
-      <div
-        style={{
-          width: "100%",
-          height: "50%",
-        }}
-      >
-        <Segment
+      <div style={{ margin: "5%" }}>
+        <div
           style={{
-            borderRadius: "30px",
-            width: "97%",
-            backgroundColor: "#D5C2EE",
-            border: "none",
+            width: "100%",
+            height: "50%",
           }}
         >
-          <Header
-            as="h1"
+          <Segment
             style={{
-              marginBottom: "0",
-              fontSize: "500%",
-              marginLeft: "3%",
-              marginTop: "2%",
+              borderRadius: "30px",
+              width: "97%",
+              backgroundColor: "#D5C2EE",
+              border: "none",
             }}
           >
-            Rules
-          </Header>
+            <Header
+              as="h1"
+              style={{
+                marginBottom: "0",
+                fontSize: "500%",
+                marginLeft: "3%",
+                marginTop: "2%",
+              }}
+            >
+              Rules
+            </Header>
 
-          <Divider clearing />
-          <h2
-            style={{ textAlign: "left", marginLeft: "5%", marginRight: "5%" }}
-          >
-            <Container
-              style={{
-                backgroundColor: "#F4EBFC",
-                // border: "10px solid #D5C2EE",
-                borderRadius: "10px",
-                marginBottom: "1%",
-                padding: "2%",
-                paddingLeft: "5%",
-              }}
+            <Divider clearing />
+            <h2
+              style={{ textAlign: "left", marginLeft: "5%", marginRight: "5%" }}
             >
-              <i aria-hidden="true" class="users disabled icon"></i>
-              참여할 수 있는 최대 인원은 8명입니다.
-            </Container>
-            <Container
-              style={{
-                backgroundColor: "#F4EBFC",
-                // border: "10px solid #D5C2EE",
-                borderRadius: "10px",
-                marginBottom: "1%",
-                padding: "2%",
-                paddingLeft: "5%",
-              }}
-            >
-              <i aria-hidden="true" class="video play disabled icon"></i>
-              직업의 종류는 총 3개입니다.
-              <button
-                className="hover:text-blue-500 cursor-pointer"
-                onClick={handleModal}
+              <Container
                 style={{
-                  fontSize: "100%",
-                  border: "none",
-                  background: "none",
+                  backgroundColor: "#F4EBFC",
+                  // border: "10px solid #D5C2EE",
+                  borderRadius: "10px",
+                  marginBottom: "1%",
+                  padding: "2%",
+                  paddingLeft: "5%",
                 }}
               >
-                <strong style={{ color: "purple" }}>[직업 모두 보기]</strong>
-              </button>
-            </Container>
-            <Container
-              style={{
-                backgroundColor: "#F4EBFC",
-                // border: "10px solid #D5C2EE",
-                borderRadius: "10px",
-                marginBottom: "1%",
-                padding: "2%",
-                paddingLeft: "5%",
-              }}
-            >
-              <i aria-hidden="true" class="user circle disabled icon"></i>
-              게임 시작 시 참여하는 인원 수에 따라 마피아 배정 수가 다릅니다.
-            </Container>
-            <Container
-              style={{
-                backgroundColor: "#F4EBFC",
-                // border: "10px solid #D5C2EE",
-                borderRadius: "10px",
-                marginBottom: "1%",
-                padding: "2%",
-                paddingLeft: "5%",
-              }}
-            >
-              <i aria-hidden="true" class="user circle disabled icon"></i>
-              게임은 '낮'부터 시작합니다.
-            </Container>
-            <Container
-              style={{
-                backgroundColor: "#F4EBFC",
-                // border: "10px solid #D5C2EE",
-                borderRadius: "10px",
-                marginBottom: "1%",
-                padding: "2%",
-                paddingLeft: "5%",
-              }}
-            >
-              <i aria-hidden="true" class="user circle disabled icon"></i>
-              게임이 시작되면 임의의 직업을 배정받습니다.
-            </Container>
-            <Container
-              style={{
-                backgroundColor: "#F4EBFC",
-                // border: "10px solid #D5C2EE",
-                borderRadius: "10px",
-                marginBottom: "1%",
-                padding: "2%",
-                paddingLeft: "5%",
-              }}
-            >
-              <i aria-hidden="true" class="user circle disabled icon"></i>
-              낮에는 플레이어끼리 마피아가 누구인지 토론합니다.
-            </Container>
-            <Container
-              style={{
-                backgroundColor: "#F4EBFC",
-                // border: "10px solid #D5C2EE",
-                borderRadius: "10px",
-                marginBottom: "1%",
-                padding: "2%",
-                paddingLeft: "5%",
-              }}
-            >
-              <i aria-hidden="true" class="user circle disabled icon"></i>
-              표정 변화에 따라 마피아가 누군지 유추할 수 있습니다.
-            </Container>
-            {/* 전반적인 게임 룰 설명 쏼라 쏼라<br></br>
-            전반적인 게임 룰 설명 쏼라 쏼라<br></br>
-            전반적인 게임 룰 설명 쏼라 쏼라<br></br>
-            전반적인 게임 룰 설명 쏼라 쏼라<br></br>
-            전반적인 게임 룰 설명 쏼라 쏼라<br></br>
-            전반적인 게임 룰 설명 쏼라 쏼라<br></br> */}
-          </h2>
-        </Segment>
+                <div>
+                  <i
+                    aria-hidden="true"
+                    class="users disabled icon"
+                    style={{ float: "left" }}
+                  ></i>
+                  <p style={{ float: "left", marginLeft: "10px" }}>
+                    참여할 수 있는 최대 인원은 8명입니다.
+                  </p>
+                </div>
+              </Container>
+              <Container
+                style={{
+                  backgroundColor: "#F4EBFC",
+                  // border: "10px solid #D5C2EE",
+                  borderRadius: "10px",
+                  marginBottom: "1%",
+                  paddingBottom: "0",
+                  paddingTop: "2%",
+                  paddingLeft: "5%",
+                }}
+              >
+                <div style={{ height: "50px" }}>
+                  <i
+                    aria-hidden="true"
+                    class="video play disabled icon"
+                    style={{ float: "left" }}
+                  ></i>
+                  <p style={{ float: "left", marginLeft: "10px" }}>
+                    직업의 종류는 총 3개입니다.
+                  </p>
+                  <button
+                    className="hover:text-blue-500 cursor-pointer"
+                    onClick={handleModal}
+                    style={{
+                      fontSize: "100%",
+                      border: "none",
+                      background: "none",
+                      float: "right+",
+                    }}
+                  >
+                    <strong style={{ color: "purple", float: "left" }}>
+                      [직업 모두 보기]
+                    </strong>
+                  </button>
+                </div>
+              </Container>
+              <Container
+                style={{
+                  backgroundColor: "#F4EBFC",
+                  // border: "10px solid #D5C2EE",
+                  borderRadius: "10px",
+                  marginBottom: "1%",
+                  padding: "2%",
+                  paddingLeft: "5%",
+                }}
+              >
+                <div>
+                  <i
+                    aria-hidden="true"
+                    class="user circle disabled icon"
+                    style={{ float: "left" }}
+                  ></i>
+                  게임 시작 시 참여하는 인원 수에 따라 마피아 배정 수가
+                  다릅니다.
+                </div>
+              </Container>
+              <Container
+                style={{
+                  backgroundColor: "#F4EBFC",
+                  // border: "10px solid #D5C2EE",
+                  borderRadius: "10px",
+                  marginBottom: "1%",
+                  padding: "2%",
+                  paddingLeft: "5%",
+                }}
+              >
+                <div>
+                  <i
+                    aria-hidden="true"
+                    class="sun disabled icon"
+                    style={{ float: "left", zIndex: "0" }}
+                  ></i>
+                  게임은 '낮'부터 시작합니다.
+                </div>
+              </Container>
+              <Container
+                style={{
+                  backgroundColor: "#F4EBFC",
+                  // border: "10px solid #D5C2EE",
+                  borderRadius: "10px",
+                  marginBottom: "1%",
+                  padding: "2%",
+                  paddingLeft: "5%",
+                }}
+              >
+                <div>
+                  <i
+                    aria-hidden="true"
+                    class="spy disabled icon"
+                    style={{ float: "left" }}
+                  ></i>
+                  게임이 시작되면 임의의 직업을 배정받습니다.
+                </div>
+              </Container>
+              <Container
+                style={{
+                  backgroundColor: "#F4EBFC",
+                  // border: "10px solid #D5C2EE",
+                  borderRadius: "10px",
+                  marginBottom: "1%",
+                  padding: "2%",
+                  paddingLeft: "5%",
+                }}
+              >
+                <div>
+                  <i
+                    aria-hidden="true"
+                    class="talk disabled icon"
+                    style={{ float: "left" }}
+                  ></i>
+                  낮에는 플레이어끼리 마피아가 누구인지 토론합니다.
+                </div>
+              </Container>
+              <Container
+                style={{
+                  backgroundColor: "#F4EBFC",
+                  // border: "10px solid #D5C2EE",
+                  borderRadius: "10px",
+                  marginBottom: "1%",
+                  padding: "2%",
+                  paddingLeft: "5%",
+                }}
+              >
+                <div>
+                  <i
+                    aria-hidden="true"
+                    class="question circle disabled icon"
+                    style={{ float: "left" }}
+                  ></i>
+                  표정 변화에 따라 마피아가 누군지 유추할 수 있습니다.
+                </div>
+              </Container>
+            </h2>
+          </Segment>
+        </div>
       </div>
       {modalOn && (
         <RulesModal handleCancel={handleCancel} handleModal={handleModal} />

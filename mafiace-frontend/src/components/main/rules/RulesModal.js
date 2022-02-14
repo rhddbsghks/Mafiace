@@ -13,12 +13,18 @@ const RulesModal = ({ handleCancel }) => {
         style={{
           backgroundColor: "#BECDFF",
           borderRadius: "50px",
-          width: "65%",
+          width: "50%",
         }}
       >
         <button
           onClick={onCancel}
-          style={{ float: "right", marginTop: "5%", marginRight: "5%" }}
+          className="bg-blue-300 hover:bg-blue-500 px-3 py-1 rounded text-white"
+          style={{
+            float: "right",
+            marginTop: "5%",
+            marginRight: "5%",
+            border: "none",
+          }}
         >
           x
         </button>
@@ -60,19 +66,19 @@ const RulesModal = ({ handleCancel }) => {
                   <p>밤마다 1명을 선택하여 마피아인지 아닌지 확인할 수 있다.</p>
                 </div>
               </div>
-              <div id="slide-4">
+              {/* <div id="slide-4">
                 <p>네번째 규칙</p>
               </div>
               <div id="slide-5">
                 <p>다섯번째 규칙</p>
-              </div>
+              </div> */}
             </div>
 
             <a href="#slide-1">1</a>
             <a href="#slide-2">2</a>
             <a href="#slide-3">3</a>
-            <a href="#slide-4">4</a>
-            <a href="#slide-5">5</a>
+            {/* <a href="#slide-4">4</a>
+            <a href="#slide-5">5</a> */}
           </div>
         </div>
       </div>
