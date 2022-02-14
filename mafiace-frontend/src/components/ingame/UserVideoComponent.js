@@ -36,20 +36,17 @@ const UserVideoComponent = ({
   const clickVote = () => {
     setIsVoted(true);
     setMyVote(nickNameTag);
-    alert(nickNameTag + "님을 선택하였습니다.");
     vote(nickNameTag);
   };
 
   const clickHeal = () => {
     setIsVoted(true);
     setMyVote(nickNameTag);
-    alert(nickNameTag + "님을 선택하였습니다.");
     heal(nickNameTag);
   };
   const clickInvestigate = () => {
     setIsVoted(true);
     setMyVote(nickNameTag);
-    alert(nickNameTag + "님을 선택하였습니다.");
     investigate(nickNameTag);
   };
 
