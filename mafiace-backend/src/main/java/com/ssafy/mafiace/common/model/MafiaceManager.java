@@ -138,8 +138,10 @@ public class MafiaceManager {
             // 마피아가 실패 / 의사가 살린횟수 +1
             players.addSaveCount();
             result.setCheck("save");
-        }else // 의사가 실패 / 마피아 죽인횟수 +1
+        }else {
+            // 의사가 실패 / 마피아 죽인횟수 +1
             players.addKillCount();
+        }
         return result;
     }
 

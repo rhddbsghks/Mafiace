@@ -113,20 +113,6 @@ public class PlayersManager {
         return mafia;
     }
 
-    // 반환하는 String[]
-    // "홍길동 Mafia"
-    // "강감찬 Citizen"
-    // "전우치 Police"
-    // "김선달 Doctor"
-    public String[][] getRoleString() {
-        String[][] stringArr = new String[players.size()][2];
-        for (int i = 0; i < stringArr.length; i++) {
-            stringArr[i][0] = this.players.get(i).getUser().getNickname();
-            stringArr[i][1] = this.players.get(i).getRole();
-        }
-        return stringArr;
-    }
-
     public void addSaveCount(){
         this.players.get(this.doctor).addSaveCount();
     }
@@ -140,25 +126,5 @@ public class PlayersManager {
             this.players.get(i).addKillCount();
         }
     }
-
-    public List<Map<String, String>> makeGameLog() {
-        List<Map<String, String>> GameLogs = new ArrayList<>();
-        for (Player player : this.players) {
-            Map<String, String> buf = new HashMap<>();
-            buf.put("nickname", player.getNickname());
-            buf.put("role",player.getRole());
-            if (player.getRole().equals("Mafia")) {
-                buf.put("killCount", String.valueOf(player.getKillCount()));
-            } else if (player.getRole().equals("Doctor")) {
-                buf.put("saveCount", String.valueOf(player.getSaveCount()));
-            } else if (player.getRole().equals("Police")) {
-                buf.put("investigateCount", String.valueOf(player.getInvestigateCount()));
-            }
-            // 1 참가자 (마피아) => <닉네임, 본인닉네임>, <role, 역할>, <killcount, 횟수>
-            GameLogs.add(buf);
-        }
-        return GameLogs;
-    }
-
 
 }
