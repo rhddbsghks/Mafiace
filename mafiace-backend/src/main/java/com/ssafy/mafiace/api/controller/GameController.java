@@ -49,7 +49,9 @@ public class GameController {
     private Map<String, MafiaceManager> gameManagerMap;
 
     @PostConstruct
-    public void init() { gameManagerMap = new ConcurrentHashMap<>();}
+    public void init() {
+        gameManagerMap = new ConcurrentHashMap<>();
+    }
 
     @GetMapping("")
     @ApiOperation(value = "게임방 목록 조회")
@@ -87,20 +89,21 @@ public class GameController {
     @MessageMapping("/start/{roomId}") // 발행경로
     @SendTo("/topic/{roomId}") // 구독경로
     public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception {
-        System.err.println(roomId+"  is clicked the start btn");
+        System.err.println(roomId + "  is clicked the start btn");
         gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService, gameService));
     }
 
     // 게임이 끝났는지 체크하고 승리팀 판단
     @MessageMapping("/end/{roomId}")
-    public void gameEndBroadcasting(@DestinationVariable String roomId, String next) throws Exception{
+    public void gameEndBroadcasting(@DestinationVariable String roomId, String next)
+        throws Exception {
         MafiaceManager manager = gameManagerMap.get(roomId);
-        GameEndRes gameEndRes=manager.checkGameEnd(next);
-        if(gameEndRes.getEnd().equals("end")){
+        GameEndRes gameEndRes = manager.checkGameEnd(next);
+        if (gameEndRes.getEnd().equals("end")) {
             manager.saveRecord();
             gameManagerMap.remove(roomId);
         }
-        simpMessagingTemplate.convertAndSend("/topic/"+roomId, gameEndRes);
+        simpMessagingTemplate.convertAndSend("/topic/" + roomId, gameEndRes);
     }
 
 
@@ -135,40 +138,44 @@ public class GameController {
     }
 
     @MessageMapping("/investigate/{roomId}/{nickname}")
-    public void investigate(@DestinationVariable String roomId, @DestinationVariable String nickname, String voted) {
+    public void investigate(@DestinationVariable String roomId,
+        @DestinationVariable String nickname, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
         String role = gameManagerMap.get(roomId).getPlayers().findRoleName(voted);
         JSONObject data = new JSONObject();
-        data.put("role",role);
-        data.put("check","investigate");
-        simpMessagingTemplate.convertAndSend("/topic/"+ nickname, data.toString());
-        if(role.equals("Mafia")) manager.getPlayers().addInvestigateCount(); // 경찰 탐지횟수 +1
+        data.put("role", role);
+        data.put("check", "investigate");
+        simpMessagingTemplate.convertAndSend("/topic/" + nickname, data.toString());
+        if (role.equals("Mafia")) {
+            manager.getPlayers().addInvestigateCount(); // 경찰 탐지횟수 +1
+        }
     }
 
     // 투표 결과를 얻어옴
     @MessageMapping("/result/{roomId}")
     public void voteResult(@DestinationVariable String roomId) {
         MafiaceManager manager = gameManagerMap.get(roomId);
-        VoteRes voteRes=manager.getVoteResult();
+        VoteRes voteRes = manager.getVoteResult();
         manager.reset();
-        if(voteRes.getCheck().equals("selected")){
+        if (voteRes.getCheck().equals("selected")) {
             manager.addDeathPlayer(voteRes.getNickname());
             manager.getPlayers().getPlayer(voteRes.getNickname()).setDead();
         }
-        simpMessagingTemplate.convertAndSend("/topic/"+roomId, voteRes);
+        simpMessagingTemplate.convertAndSend("/topic/" + roomId, voteRes);
     }
 
     // 역할 확인
     @MessageMapping("/role/{roomId}/{nickname}")
-    public void roleConfirm(@DestinationVariable String roomId, @DestinationVariable String nickname)
+    public void roleConfirm(@DestinationVariable String roomId,
+        @DestinationVariable String nickname)
         throws JSONException {
         System.err.println("role socket recieved!");
         String role = gameManagerMap.get(roomId).getPlayers().findRoleName(nickname);
         System.err.println("nickname's role : " + role);
         JSONObject data = new JSONObject();
-        data.put("role",role);
-        data.put("check","role");
-        simpMessagingTemplate.convertAndSend("/topic/"+ nickname, data.toString());
+        data.put("role", role);
+        data.put("check", "role");
+        simpMessagingTemplate.convertAndSend("/topic/" + nickname, data.toString());
     }
 
     // 게임하다 나가면 사망처리
@@ -177,7 +184,7 @@ public class GameController {
         MafiaceManager manager = gameManagerMap.get(roomId);
         manager.addDeathPlayer(nickname);
         manager.getPlayers().getPlayer(nickname).setDead();
-        simpMessagingTemplate.convertAndSend("/topic/"+roomId, new VoteRes(nickname,"exit"));
+        simpMessagingTemplate.convertAndSend("/topic/" + roomId, new VoteRes(nickname, "exit"));
     }
 
 //    /gameset/{roomId}

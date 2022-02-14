@@ -200,6 +200,12 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
+    public boolean isActive(String roomId) {
+        return gameRepositorySupport.findById(roomId).isActive();
+    }
+
+
+    @Override
     public List<User> getParticipantList(String roomId) {
         return userList.get(roomId);
     }

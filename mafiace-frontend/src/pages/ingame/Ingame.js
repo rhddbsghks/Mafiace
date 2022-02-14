@@ -212,16 +212,17 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
       console.log("방 삭제");
       deleteRoom();
     } else {
-      axios.delete("/mafiace/api/session/user", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
-        params: { sessionName: gameInfo.id },
-      })
-      .then((res) => {
-        if(res.data.status === 201){
-          console.log(res.data.message);
-          // 방장 바꾸기
-        }
-      });
+      axios
+        .delete("/mafiace/api/session/user", {
+          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+          params: { sessionName: gameInfo.id },
+        })
+        .then((res) => {
+          if (res.data.status === 201) {
+            console.log(res.data.message);
+            // 방장 바꾸기
+          }
+        });
     }
 
     if (session) {
@@ -242,7 +243,6 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
       setMainStreamManager(stream);
     }
   };
-
 
   const clickJob = () => {
     setopenJobCard(true);
