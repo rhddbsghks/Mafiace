@@ -71,6 +71,9 @@ public class SessionController {
     })
     public ResponseEntity<SessionTokenPostRes> getToken(
         @ApiParam(value = "세션방 ID", required = true) String sessionName, HttpServletRequest request) {
+        if(sessionService.isActive(sessionName))
+            return ResponseEntity.status(412)
+                .body(SessionTokenPostRes.of(412, "이미 게임 진행중", null));
 
         if(!sessionService.isExist(sessionName))
             return ResponseEntity.status(404)

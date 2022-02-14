@@ -40,7 +40,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [topics, setTopics] = useState();
 
   // 인게임
-  const [time, setTime] = useState(10); // 타이머
+  const [time, setTime] = useState(gameInfo.discussionTime); // 타이머
   const [timer, setTimer] = useState(); // 타이머
   const [count, setCount] = useState(1); // 날짜
   const [stateMessage, setStateMessage] = useState(gameInfo.gameTitle); // 헤더 상태메세지
@@ -237,14 +237,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     }
   };
 
-
   const clickJob = () => {
     setopenJobCard(true);
   };
 
   const clickStart = () => {
     console.log("====================START======================");
-    if (subscribers.length < 4) {
+    if (subscribers.length < 3) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
       setStartButton(false);
@@ -277,7 +276,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     setMyRole();
     setDeathList([]);
     setStateMessage(gameInfo.gameTitle);
-    setTime(10);
+    setTime(gameInfo.discussionTime);
     setCount(1);
     publisher.publishAudio(true);
     for (var idx in subscribers) {
@@ -336,7 +335,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   setDay(true);
                   setIsVoted(false);
                   setToggle(!toggle);
-                  setTime(10);
+                  setTime(gameInfo.discussionTime);
                   setCount((prev) => prev + 1);
                   setStateMessage("낮이 왔습니다. 마피아를 찾아주세요.");
                 }, 3000);
@@ -489,6 +488,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   width: "20%",
                   display: "flex",
                   justifyContent: "center",
+                  flexWrap: "wrap",
                 }}
               >
                 {!start ? (
