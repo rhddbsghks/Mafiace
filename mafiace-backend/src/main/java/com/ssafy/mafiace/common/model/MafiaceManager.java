@@ -93,7 +93,7 @@ public class MafiaceManager {
         for(Player player : players.getPlayers()){
             boolean isWin = isWin(player.getRole());
             GameLog savedGameLog = gameLogService.addGameLog(playTime, this.winTeam);
-            userGameLogService.saveUserGameLog(savedGameLog, player.getUser(), player.getRole(),isWin);
+            userGameLogService.saveUserGameLog(savedGameLog, player.getUser(),playTime, player.getRole(),isWin);
             userRecordsService.updateUserRecords(player, isWin);
         }
         this.room.setRoomStatus(false);

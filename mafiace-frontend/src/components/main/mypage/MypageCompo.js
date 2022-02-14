@@ -40,6 +40,28 @@ const MypageCompo = () => {
     // console.log(form);
   }, []);
 
+  useEffect(() => {
+    axios
+      .post(
+        "/mafiace/api/user/userRecord",
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch(({ response }) => {
+        if (response.status === 500) {
+          alert("만료된 토큰입니다.");
+          localStorage.removeItem("jwt");
+          window.location.href = "/";
+        }
+      });
+    // console.log(form);
+  }, []);
+
   return (
     <div style={{ width: "95%", margin: "auto" }}>
       {loading ? (
