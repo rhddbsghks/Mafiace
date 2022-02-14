@@ -4,7 +4,7 @@ import styles from "./job-card.module.css";
 import "../../style.css";
 import { useEffect } from "react";
 
-const JobCard = ({ openJobCard, setopenJobCard, myRole }) => {
+const JobCard = ({ openJobCard, setopenJobCard, myRole, mafiaTeam }) => {
   const korJobName = {
     Police: "경찰",
     Doctor: "의사",
@@ -20,7 +20,8 @@ const JobCard = ({ openJobCard, setopenJobCard, myRole }) => {
     Citizen:
       "순진무구한 여러분 동네에 마피아가 잠입하였습니다. 다른 시민들과 힘을 합쳐 마을을 구해주세요!",
     Mafia:
-      "매일 밤 무고한 시민 한 명을 제거할 수 있습니다. 시민들을 속여 마을을 장악하세요!",
+      "매일 밤 무고한 시민 한 명을 제거할 수 있습니다. 시민들을 속여 마을을 장악하세요!\n마피아 : " +
+      mafiaTeam,
   };
 
   useEffect(() => {

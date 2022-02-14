@@ -8,13 +8,22 @@ import java.util.List;
 public interface SessionService {
 
     NewSessionInfo openSession(String ownerId, SessionOpenReq sessionOpenReq) throws Exception;
+
     String getToken(String roomId, String userId) throws Exception;
+
     void closeSession(String roomId) throws Exception;
-    void leaveSession(String roomId, String request);
+
+    String leaveSession(String roomId, String request);
+
     boolean toggleReady(String roomId, String userId);
+
     int getParticipantCount(String roomId);
+
     boolean isFull(String roomId);
+
     boolean isExist(String roomId);
+
+    boolean isActive(String roomId);
 
     List<User> getParticipantList(String roomId);
 }

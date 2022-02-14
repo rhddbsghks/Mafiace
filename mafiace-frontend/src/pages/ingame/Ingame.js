@@ -7,12 +7,13 @@ import Day from "../../components/ingame/Day";
 import Night from "../../components/ingame/Night";
 import Count321 from "../../components/ingame/Count321";
 import JobCard from "../../components/ingame/JobCard";
+import "./ingame-btn.css";
 
 import * as React from "react";
 import axios from "axios";
 import jwt from "jwt-decode";
 
-const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
+const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   window.onbeforeunload = () => {
     leaveSession();
   };
@@ -39,7 +40,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [topics, setTopics] = useState();
 
   // 인게임
-  const [time, setTime] = useState(10); // 타이머
+  const [time, setTime] = useState(gameInfo.discussionTime); // 타이머
   const [timer, setTimer] = useState(); // 타이머
   const [count, setCount] = useState(1); // 날짜
   const [stateMessage, setStateMessage] = useState(gameInfo.gameTitle); // 헤더 상태메세지
@@ -48,6 +49,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   const [myVote, setMyVote] = useState("default"); // 내가 투표한 사람의 닉네임
   const [deathList, setDeathList] = useState([]); // 죽은 사람들 닉네임
   const [isAlive, setIsAlive] = useState("alive"); // 나의 상태
+  const [mafiaTeam, setMafiaTeam] = useState();
 
   // 내 정보
   const [userId, setUserId] = useState("");
@@ -152,11 +154,13 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
         if (day) {
           // 낮->밤
           getVoteResult();
-          toNight();
+          setTimeout(() => {
+            checkGameEnd("toNight");
+          }, 1000);
         } else if (night) {
           getVoteResult();
           setTimeout(() => {
-            checkGameEnd();
+            checkGameEnd("toDay");
           }, 1000);
         }
       }
@@ -202,7 +206,9 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
   };
 
   const leaveSession = () => {
-    $websocket.current.sendMessage(`/app/exit/${gameInfo.id}/${nickname}`);
+    if (start) {
+      $websocket.current.sendMessage(`/app/exit/${gameInfo.id}/${nickname}`);
+    }
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     if (publisher && subscribers.length === 0) {
@@ -234,12 +240,6 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     }
   };
 
-  const handleClick = () => {
-    console.log(publisher);
-    console.log(subscribers);
-    console.log(mainStreamManager);
-  };
-
   const clickJob = () => {
     setopenJobCard(true);
   };
@@ -262,11 +262,11 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     setStart(true);
     setDay(true);
     setToggle(!toggle);
-    setStateMessage("낮이 왔습니다. 마피아를 찾아주세요.");
+    setStateMessage("마피아를 찾아주세요!");
   };
 
-  const checkGameEnd = () => {
-    $websocket.current.sendMessage(`/app/end/${gameInfo.id}`);
+  const checkGameEnd = (next) => {
+    $websocket.current.sendMessage(`/app/end/${gameInfo.id}`, next);
   };
 
   const endGame = () => {
@@ -277,9 +277,10 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
     setIsVoted(false);
     setIsAlive(true);
     setMyRole();
+    setMafiaTeam();
     setDeathList([]);
     setStateMessage(gameInfo.gameTitle);
-    setTime(10);
+    setTime(gameInfo.discussionTime);
     setCount(1);
     publisher.publishAudio(true);
     for (var idx in subscribers) {
@@ -303,6 +304,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
         openJobCard={openJobCard}
         setopenJobCard={setopenJobCard}
         myRole={myRole}
+        mafiaTeam={mafiaTeam}
       />
       {loading ? (
         <Loader msg="입장 중..." />
@@ -338,7 +340,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   setDay(true);
                   setIsVoted(false);
                   setToggle(!toggle);
-                  setTime(10);
+                  setTime(gameInfo.discussionTime);
                   setCount((prev) => prev + 1);
                   setStateMessage("낮이 왔습니다. 마피아를 찾아주세요.");
                 }, 3000);
@@ -356,23 +358,25 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                   setToggle(!toggle);
                   setTime(15);
                   if (myRole === "Mafia") {
-                    setStateMessage("밤이 왔습니다. 죽일 사람을 투표해주세요.");
+                    setStateMessage("처리할 사람을 투표해주세요.");
                   } else if (myRole === "Police") {
-                    setStateMessage(
-                      "밤이 왔습니다. 조사할 사람을 선택해주세요."
-                    );
+                    setStateMessage("용의자 한 명을 조사해보세요.");
                   } else if (myRole === "Doctor") {
-                    setStateMessage("밤이 왔습니다. 살릴 사람을 선택해주세요.");
+                    setStateMessage("위급 환자 한 명을 진료해주세요.");
                   } else {
-                    setStateMessage("밤이 왔습니다. 죽지 않길 기도하세요.");
+                    setStateMessage("오늘 밤도 안녕하기를...");
                   }
                 }, 3000);
               } else if (msg.check === "role") {
-                console.log("==================");
-                console.log(msg.role);
                 setMyRole(msg.role);
+                if (msg.role === "Mafia") {
+                  $websocket.current.sendMessage(
+                    `/app/mafia/${gameInfo.id}/${nickname}`
+                  );
+                }
+              } else if (msg.end === "MafiaTeam") {
+                setMafiaTeam(msg.mafia);
               } else if (msg.check === "investigate") {
-                console.log("경찰이 조사한 대상의 직업" + msg.role);
                 if (msg.role === "Mafia") {
                   alert(myVote + "님은 마피아입니다.");
                 } else {
@@ -389,29 +393,39 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                     publisher.publishAudio(false);
                   }
                 } else {
-                  setStateMessage(
-                    msg.nickname + "님이 마피아에게 살해당했습니다."
-                  );
+                  setStateMessage(msg.nickname + "님이 살해당했습니다.");
                   setDeathList((prev) => [...prev, msg.nickname]);
                   if (msg.nickname === nickname) {
                     setIsAlive(false); // 사망
+                    publisher.publishAudio(false);
                   }
                 }
               } else if (msg.check === "save") {
-                setStateMessage("밤에 아무도 죽지 않았습니다.");
+                setStateMessage("의사가 마피아로부터 시민을 살렸습니다.");
               } else if (msg.check === "nobody") {
                 setStateMessage("아무 일도 일어나지 않았습니다.");
-              } else if (msg.end) {
+              } else if (msg.end === "end") {
                 if (msg.winTeam === "Mafia") {
                   alert("마피아팀 승리!!! 마피아는 " + msg.mafia + "였습니다!");
                 } else {
                   alert("시민팀 승리!!! 마피아는 " + msg.mafia + "였습니다!");
                 }
                 endGame();
-              } else if (!msg.end) {
-                toDay();
-              } else if (msg.check === "exit") {
+              } else if (msg.end === "toDay") {
+                if (gameInfo.ownerId === userId) {
+                  toDay();
+                }
+              } else if (msg.end === "toNight") {
+                if (gameInfo.ownerId === userId) {
+                  toNight();
+                }
+              } else if (msg.check === "exit" && start) {
                 setDeathList((prev) => [...prev, msg.nickname]);
+              } else if (msg.check === "owner") {
+                // 소켓을 받은 사람이 방장이 되게 하기
+                setGameInfo((prev) => {
+                  return { ...prev, ownerId: msg.ownerNickname };
+                });
               }
             }}
             ref={$websocket}
@@ -457,49 +471,77 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
               <div
                 style={{
                   width: "50%",
-                  backgroundColor: "red",
+                  backgroundColor: "rgba(255, 255, 255, 0.7)",
+                  display: "flex",
                   justifyContent: "space-between",
+                  fontSize: "4em",
+                  borderRadius: "1rem",
                 }}
               >
-                <span
-                  style={{
-                    justifyContent: "space-between",
-                    fontSize: "3em",
-                    margin: "auto",
-                    position: "relative",
-                    top: "40%",
-                  }}
+                {!start ? null : (
+                  <div style={{ margin: "auto" }}>
+                    Day {count} {day ? "낮" : "밤"}
+                  </div>
+                )}
+
+                <div
+                  style={{ margin: "auto", width: "60%", textAlign: "center" }}
                 >
-                  {start ? <span>Day {count}</span> : null} {stateMessage}
-                </span>
+                  {stateMessage}
+                </div>
               </div>
 
               {/* 버튼 타이머 영역 */}
               <div
                 style={{
                   width: "20%",
+                  display: "flex",
+                  justifyContent: "center",
+                  flexWrap: "wrap",
                 }}
               >
-                {" "}
-                <button onClick={handleClick}>버튼</button>
-                {gameInfo.ownerId === userId && startButton ? (
-                  <button onClick={clickStart}>START</button>
-                ) : null}
-                {start ? (
-                  <button onClick={clickJob}> 직업카드 열기</button>
-                ) : null}
-                <input
-                  className="btn btn-large btn-danger"
-                  type="button"
-                  id="buttonLeaveSession"
-                  onClick={leaveSession}
-                  value="Leave session"
-                />
-                {myRole === "Mafia" ? <h2>당신의 직업 : 마피아</h2> : null}
-                {myRole === "Police" ? <h2>당신의 직업 : 경찰</h2> : null}
-                {myRole === "Doctor" ? <h2>당신의 직업 : 의사</h2> : null}
-                {myRole === "Citizen" ? <h2>당신의 직업 : 시민</h2> : null}
-                {day || night ? <h2>남은 시간 : {time}</h2> : null}
+                {!start ? (
+                  <>
+                    <div style={{ display: "flex" }}>
+                      {gameInfo.ownerId === userId && startButton ? (
+                        <button
+                          className="ingame-btn start"
+                          onClick={clickStart}
+                        >
+                          START
+                        </button>
+                      ) : null}
+                    </div>
+                    <div style={{ display: "flex", margin: "auto" }}>
+                      {!count321 ? (
+                        <button
+                          className="ingame-btn leave"
+                          onClick={leaveSession}
+                        >
+                          나가기
+                        </button>
+                      ) : null}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <div style={{ display: "flex" }}>
+                      <button className="ingame-btn job" onClick={clickJob}>
+                        내 직업
+                      </button>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        margin: "auto",
+                        fontSize: "10em",
+                      }}
+                    >
+                      <div className="ingame-timer">{time}</div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 

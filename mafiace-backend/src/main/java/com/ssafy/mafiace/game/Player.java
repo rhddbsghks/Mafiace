@@ -19,9 +19,6 @@ public class Player {
     private int killCount;
     private int investigateCount;
 
-    private GameLogService gameLogService;
-
-
     public Player(User user){
         this.user = user;
         this.nickname = user.getNickname();
@@ -39,9 +36,15 @@ public class Player {
         return this.user;
     }
 
-    public void saveGameLog(){
-        Map<String, String> gameLogs = new HashMap<>();
+    public void addSaveCount(){
+        this.saveCount ++;
+    }
 
-        gameLogService.addGameLog(gameLogs);
+    public void addInvestigateCount(){
+        this.investigateCount ++;
+    }
+
+    public void addKillCount(){
+        this.killCount ++;
     }
 }

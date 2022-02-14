@@ -16,8 +16,10 @@ public class GameServiceImpl implements GameService {
     @Autowired
     private GameRepository gameRepository;
 
-    public GameServiceImpl(GameRepositorySupport gameRepositorySupport) {
+    public GameServiceImpl(GameRepositorySupport gameRepositorySupport,
+        GameRepository gameRepository) {
         this.gameRepositorySupport = gameRepositorySupport;
+        this.gameRepository = gameRepository;
     }
 
     @Override
@@ -44,5 +46,10 @@ public class GameServiceImpl implements GameService {
     @Override
     public void deleteById(String id) {
         gameRepository.deleteById(id);
+    }
+
+    @Override
+    public void setGameStatus(Game game) {
+        gameRepository.save(game);
     }
 }

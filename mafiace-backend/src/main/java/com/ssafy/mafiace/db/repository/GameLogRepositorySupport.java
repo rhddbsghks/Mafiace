@@ -17,19 +17,8 @@ public class GameLogRepositorySupport {
 
     @Autowired
     private GameLogRepository gameLogRepository;
+
     QGameLog qGameLog = QGameLog.gameLog;
     QUser qUser = QUser.user;
-
-    public long[] getUserTotalRecord(User user){
-        long[] returnArr = new long[3];
-        List<UserGameLog> userGameLogList
-            = user.getUserGameLogs();
-        for(UserGameLog userGameLog : userGameLogList){
-            userGameLog.getGameLog();
-            if(userGameLog.isWin()) returnArr[0] +=1;
-            else returnArr[1] +=1;
-        }
-        return returnArr;
-    }
 
 }

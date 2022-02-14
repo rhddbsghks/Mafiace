@@ -1,4 +1,4 @@
-package com.ssafy.mafiace.api.response;
+package com.ssafy.mafiace.common.model;
 
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.game.Player;
@@ -13,11 +13,15 @@ import lombok.Setter;
 // 게임 참가자
 @Getter
 @Setter
-public class GamePlayerRes {
+public class PlayersManager {
 
     private List<Player> players;
+    private int doctor;
+    private int police;
+    private List<Integer> mafia;
 
-    public GamePlayerRes(List<User> users) {
+    public PlayersManager(List<User> users) {
+        this.mafia = new ArrayList<>();
         this.players = new ArrayList<>();
         for (User user : users) {
             this.players.add(new Player(user));
@@ -47,10 +51,13 @@ public class GamePlayerRes {
         for (int i = 0; i < playerNum; i++) {
             if (i == 0) {
                 this.players.get(i).setRole("Doctor");
+                doctor = i;
             } else if (i == 1) {
                 this.players.get(i).setRole("Police");
+                police = i;
             } else if (i < mafiaNum + 2) {
                 this.players.get(i).setRole("Mafia");
+                this.mafia.add(i);
             } else if (i < mafiaNum + citizenNum + 2) {
                 this.players.get(i).setRole("Citizen");
             }
@@ -64,7 +71,6 @@ public class GamePlayerRes {
                 myRoleName = player.getRole();
             }
         }
-        System.err.println(nickname + " : " + myRoleName);
         return myRoleName;
     }
 
@@ -107,39 +113,18 @@ public class GamePlayerRes {
         return mafia;
     }
 
-    // 반환하는 String[]
-    // "홍길동 Mafia"
-    // "강감찬 Citizen"
-    // "전우치 Police"
-    // "김선달 Doctor"
-    public String[][] getRoleString() {
-        String[][] stringArr = new String[players.size()][2];
-        for (int i = 0; i < stringArr.length; i++) {
-            stringArr[i][0] = this.players.get(i).getUser().getNickname();
-            stringArr[i][1] = this.players.get(i).getRole();
-        }
-        return stringArr;
+    public void addSaveCount(){
+        this.players.get(this.doctor).addSaveCount();
     }
 
-    public List<Map<String, String>> makeGameLog() {
-        List<Map<String, String>> GameLogs = new ArrayList<>();
-        for (Player player : this.players) {
-            Map<String, String> buf = new HashMap<>();
-            buf.put("nickname", player.getUser().getNickname());
-            buf.put("Role",player.getRole());
-//          추가 해야할 것 : 이긴 팀
-//            buf.put("winTeam",player.)
-            if (player.getRole().equals("Mafia")) {
-                buf.put("killCount", String.valueOf(player.getKillCount()));
-            } else if (player.getRole().equals("Doctor")) {
-                buf.put("saveCount", String.valueOf(player.getSaveCount()));
-            } else if (player.getRole().equals("Police")) {
-                buf.put("investigateCount", String.valueOf(player.getInvestigateCount()));
-            }
-            GameLogs.add(buf);
-        }
-        return GameLogs;
+    public void addInvestigateCount(){
+        this.players.get(this.police).addInvestigateCount();
     }
 
+    public void addKillCount(){
+        for (int i : mafia){
+            this.players.get(i).addKillCount();
+        }
+    }
 
 }

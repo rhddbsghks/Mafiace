@@ -25,6 +25,7 @@ function App() {
           setIngame={setIngame}
           ingame={ingame}
           gameInfo={gameInfo}
+          setGameInfo={setGameInfo}
           token={token}
         />
       )}
