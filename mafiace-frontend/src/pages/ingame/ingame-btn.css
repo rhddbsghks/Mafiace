@@ -37,5 +37,44 @@
   color: black;
 }
 
-.ingame-timer {
+.chat-container {
+  position: absolute;
+  bottom: 10%;
+  right: 10%;
+}
+.chat-button {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  background-color: dodgerblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 13px;
+  color: white;
+  font-size: 50px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+.chat-box {
+  position: absolute;
+  bottom: 100%;
+  right: 100%;
+  transform-origin: 100% 100%;
+  width: 400px;
+  height: 400px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  clip-path: circle(10px at 83% 8%);
+  -webkit-clip-path: circle(0px at 94% 94%);
+  /*       transition: all 1s cubic-bezier(0.215, 0.61, 0.355, 1); */
+  transition: all 0.3s ease;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+.chat-box.open {
+  -webkit-clip-path: circle(600px at 94% 94%);
+  opacity: 1;
 }

@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import SockJsClient from "react-stomp";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import "./MessageStyle.css";
 import jwt from "jwt-decode";
 
@@ -53,7 +51,8 @@ const ChatCompo = () => {
           <tbody>
             <tr>
               <td>
-                <TextField
+                <input
+                  type="text"
                   id="outlined-basic"
                   label="메세지를 입력해주세요."
                   variant="outlined"
@@ -65,9 +64,7 @@ const ChatCompo = () => {
               </td>
 
               <td>
-                <Button variant="contained" color="inherit" onClick={sendMsg}>
-                  Send
-                </Button>
+                <button onClick={sendMsg}>Send</button>
               </td>
             </tr>
           </tbody>

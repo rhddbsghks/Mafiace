@@ -17,7 +17,7 @@ const RoomMakeBtn = ({ setGameInfo, setToken, setIngame, ingame }) => {
     "서울 6반 짱",
     "포커페이스",
     "이거하다 밤샘",
-    "동작그만 마피아냐?",
+    "동작그만 마피아냐",
   ];
   const maxPlayerOptions = [
     { key: "8", value: 8, text: "8명 이하" },
