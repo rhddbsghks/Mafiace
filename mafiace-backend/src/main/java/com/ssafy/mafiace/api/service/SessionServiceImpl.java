@@ -159,7 +159,7 @@ public class SessionServiceImpl implements SessionService {
             if (searchUser.getNickname().equals(leaveUser.getNickname())) {
                 userList.get(roomId).remove(searchUser);
                 if (searchUser.getUserId().equals(game.getOwnerId())) {
-                    String newOwnerId = curUserList.get(0).getNickname();
+                    String newOwnerId = curUserList.get(0).getUserId();
                     gameRepositorySupport.updateOwnerId(roomId,
                         newOwnerId);
                     System.err.println(newOwnerId + " is owner now ");

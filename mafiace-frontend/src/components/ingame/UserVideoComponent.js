@@ -33,6 +33,12 @@ const UserVideoComponent = ({
     setCheckAlive(true);
   }, [deathList]);
 
+  useEffect(() => {
+    console.log("나는 " + id);
+    console.log("지금 방장은! " + ownerId);
+    console.log(ownerId === id);
+  });
+
   const clickVote = () => {
     setIsVoted(true);
     setMyVote(nickNameTag);

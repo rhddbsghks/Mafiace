@@ -13,7 +13,7 @@ import * as React from "react";
 import axios from "axios";
 import jwt from "jwt-decode";
 
-const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
+const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   window.onbeforeunload = () => {
     leaveSession();
   };
@@ -414,10 +414,11 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                 }
               } else if (msg.check === "exit" && start) {
                 setDeathList((prev) => [...prev, msg.nickname]);
-              }else if (msg.check === "owner") {
+              } else if (msg.check === "owner") {
                 // 소켓을 받은 사람이 방장이 되게 하기
-                console.log( msg.ownerNickname+" is owner now!");
-                
+                setGameInfo((prev) => {
+                  return { ...prev, ownerId: msg.ownerNickname };
+                });
               }
             }}
             ref={$websocket}
