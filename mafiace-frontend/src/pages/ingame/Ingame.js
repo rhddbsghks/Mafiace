@@ -391,9 +391,7 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                     publisher.publishAudio(false);
                   }
                 } else {
-                  setStateMessage(
-                    msg.nickname + "님이 마피아에게 살해당했습니다."
-                  );
+                  setStateMessage(msg.nickname + "님이 살해당했습니다.");
                   setDeathList((prev) => [...prev, msg.nickname]);
                   if (msg.nickname === nickname) {
                     setIsAlive(false); // 사망
@@ -524,7 +522,15 @@ const Ingame = ({ setIngame, gameInfo, token, ingame }) => {
                       <button className="ingame-btn job" onClick={clickJob}>
                         내 직업
                       </button>
-                      <div>남은 시간 : {time}</div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        margin: "auto",
+                        fontSize: "10em",
+                      }}
+                    >
+                      <div className="ingame-timer">{time}</div>
                     </div>
                   </>
                 )}
