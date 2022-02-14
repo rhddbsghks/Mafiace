@@ -5,6 +5,12 @@ video {
   cursor: pointer;
   border-radius: 3em;
 }
+
+.streamcomponent {
+  position: absolute;
+  width: 22%;
+}
+
 .streamcomponent div {
   position: absolute;
   background: #f8f8f8;
@@ -13,4 +19,32 @@ video {
   color: #777777;
   font-weight: bold;
   border-bottom-right-radius: 4px;
+}
+
+.select-btn {
+  width: 100%;
+  height: 100%;
+  border-radius: 2em;
+  font-size: 2.5em;
+  letter-spacing: 0.3em;
+}
+
+.select-btn:hover {
+  cursor: pointer;
+}
+
+.vote {
+  background: rgba(255, 255, 255, 0.664);
+}
+
+.heal {
+  background: rgba(188, 241, 212, 0.664);
+}
+
+.invest {
+  background: rgba(188, 202, 241, 0.664);
+}
+
+.kill {
+  background: rgba(241, 188, 188, 0.664);
 }

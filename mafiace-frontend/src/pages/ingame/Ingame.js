@@ -40,7 +40,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [topics, setTopics] = useState();
 
   // 인게임
-  const [time, setTime] = useState(gameInfo.discussionTime); // 타이머
+  const [time, setTime] = useState(1234123423); // 타이머
   const [timer, setTimer] = useState(); // 타이머
   const [count, setCount] = useState(1); // 날짜
   const [stateMessage, setStateMessage] = useState(gameInfo.gameTitle); // 헤더 상태메세지
@@ -246,7 +246,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
 
   const clickStart = () => {
     console.log("====================START======================");
-    if (subscribers.length < 3) {
+    if (subscribers.length < 0) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
       setStartButton(false);
@@ -342,7 +342,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   setToggle(!toggle);
                   setTime(gameInfo.discussionTime);
                   setCount((prev) => prev + 1);
-                  setStateMessage("낮이 왔습니다. 마피아를 찾아주세요.");
+                  setStateMessage("마피아를 찾아주세요!");
                 }, 3000);
               } else if (msg === "night") {
                 setTimeout(() => {
@@ -364,7 +364,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   } else if (myRole === "Doctor") {
                     setStateMessage("위급 환자 한 명을 진료해주세요.");
                   } else {
-                    setStateMessage("오늘 밤도 안녕하기를...");
+                    setStateMessage("걱정으로 가득한 채로 잠이 들었습니다.");
                   }
                 }, 3000);
               } else if (msg.check === "role") {
@@ -479,16 +479,26 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                 }}
               >
                 {!start ? null : (
-                  <div style={{ margin: "auto" }}>
+                  <div style={{ margin: "auto", fontSize: "0.7em" }}>
                     Day {count} {day ? "낮" : "밤"}
                   </div>
                 )}
 
-                <div
-                  style={{ margin: "auto", width: "60%", textAlign: "center" }}
-                >
-                  {stateMessage}
-                </div>
+                {!start ? (
+                  <div
+                    style={{
+                      margin: "auto",
+                      width: "60%",
+                      textAlign: "center",
+                    }}
+                  >
+                    {stateMessage}
+                  </div>
+                ) : (
+                  <div style={{ margin: "auto", width: "60%" }}>
+                    {stateMessage}
+                  </div>
+                )}
               </div>
 
               {/* 버튼 타이머 영역 */}
