@@ -8,6 +8,7 @@ import Night from "../../components/ingame/Night";
 import Count321 from "../../components/ingame/Count321";
 import JobCard from "../../components/ingame/JobCard";
 import "./ingame-btn.css";
+import "./ingame-chat.css";
 
 import * as React from "react";
 import axios from "axios";
@@ -34,10 +35,15 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [start, setStart] = useState(false);
   const [count321, setCount321] = useState(false);
   const [openJobCard, setopenJobCard] = useState(false);
+  const [chat, setChat] = useState(false);
 
   // 웹 소켓
   const $websocket = useRef(null);
   const [topics, setTopics] = useState();
+  const chatBox = useRef();
+  const chatMessage = useRef();
+  const [typedMessage, setTypedMessage] = useState("");
+  const [messages, setMessages] = useState([]);
 
   // 인게임
   const [time, setTime] = useState(gameInfo.discussionTime); // 타이머
@@ -49,7 +55,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [myVote, setMyVote] = useState("default"); // 내가 투표한 사람의 닉네임
   const [deathList, setDeathList] = useState([]); // 죽은 사람들 닉네임
   const [isAlive, setIsAlive] = useState("alive"); // 나의 상태
-  const [mafiaTeam, setMafiaTeam] = useState();
+  const [mafiaTeam, setMafiaTeam] = useState(); //마피아 닉네임 목록
 
   // 내 정보
   const [userId, setUserId] = useState("");
@@ -167,6 +173,16 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
     }
   }, [time]);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    if (chatBox.current) {
+      chatBox.current.scrollTop = chatBox.current.scrollHeight;
+    }
+  };
+
   const toDay = () => {
     $websocket.current.sendMessage(`/app/day/${gameInfo.id}`);
   };
@@ -282,6 +298,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
     setStateMessage(gameInfo.gameTitle);
     setTime(gameInfo.discussionTime);
     setCount(1);
+    setMessages([]);
     publisher.publishAudio(true);
     for (var idx in subscribers) {
       subscribers[idx].subscribeToAudio(true);
@@ -290,12 +307,32 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   };
 
   const deleteRoom = () => {
-    console.log(gameInfo);
-
     axios.delete("/mafiace/api/session", {
       headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
       params: { sessionName: gameInfo.id },
     });
+  };
+
+  const onEnter = (e) => {
+    if (e.key == "Enter") {
+      sendMsg();
+    }
+  };
+
+  const ghostChat = () => {
+    setChat(!chat);
+  };
+
+  const sendMsg = () => {
+    $websocket.current.sendMessage(
+      `/app/send/${gameInfo.id}`,
+      JSON.stringify({
+        nickname: nickname,
+        message: chatMessage.current.value,
+        check: "chat",
+      })
+    );
+    chatMessage.current.value = "";
   };
 
   return (
@@ -426,6 +463,8 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                 setGameInfo((prev) => {
                   return { ...prev, ownerId: msg.ownerNickname };
                 });
+              } else if (msg.check === "chat") {
+                setMessages((prev) => [...prev, msg]);
               }
             }}
             ref={$websocket}
@@ -614,6 +653,61 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   </div>
                 </div>
               ))}
+              {!isAlive ? (
+                <div className="chat-container">
+                  <button className="chat-button" onClick={ghostChat}>
+                    ㅁ
+                  </button>
+
+                  {chat ? (
+                    <div className="chat-box open">
+                      <div className="chat-head">사망자 채팅방</div>
+                      <div
+                        className="scrollbar chat-scroll chat-size"
+                        ref={chatBox}
+                      >
+                        {messages.map((msg, index) => {
+                          return (
+                            <div key={index}>
+                              {nickname === msg.nickname ? (
+                                <div className="chat" key={msg.nickname}>
+                                  <span className="chat-my">
+                                    {msg.nickname} :{" "}
+                                  </span>
+                                  <span className="chat-message">
+                                    {msg.message}
+                                  </span>
+                                </div>
+                              ) : (
+                                <div className="chat" key={msg.nickname}>
+                                  <span className="chat-other">
+                                    {msg.nickname} :{" "}
+                                  </span>
+                                  <span className="chat-message">
+                                    {msg.message}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div>
+                        <input
+                          type="text"
+                          size="42"
+                          placeholder="메세지를 입력해주세요."
+                          onKeyPress={onEnter}
+                          ref={chatMessage}
+                        />
+                        <button className="send-btn" onClick={sendMsg}>
+                          Send
+                        </button>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           </div>
         </>
