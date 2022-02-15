@@ -68,6 +68,14 @@ export default class OpenViduVideoComponent extends Component {
       },
     };
     this.handleClick = this.handleClick.bind(this);
+    Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+      faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+      faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+      faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+    ]).then(() => {
+      // console.log(faceapi.nets);
+    });
   }
 
   handleClick() {
@@ -81,20 +89,21 @@ export default class OpenViduVideoComponent extends Component {
     if (this.props && !!this.videoRef) {
       this.props.streamManager.addVideoElement(this.videoRef.current);
     }
-    Promise.all([
-      faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-      faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-      faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-      faceapi.nets.faceExpressionNet.loadFromUri("/models"),
-    ]).then(() => {
-      // console.log(faceapi.nets);
-    });
+    clearInterval(this.onPlay);
+    console.log("clearInterval_componentDidMount");
   }
 
   componentDidUpdate(props) {
     if (props && !!this.videoRef) {
       this.props.streamManager.addVideoElement(this.videoRef.current);
+      clearInterval(this.onPlay);
+      console.log("clearInterval_componentDidUpdate");
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.onPlay);
+    console.log("clearInterval_componentWillUnmount");
   }
 
   render() {
