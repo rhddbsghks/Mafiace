@@ -56,6 +56,7 @@ public class UserController {
     @Autowired
     UserHonorService userHonorService;
 
+
     @Autowired
     private EmailService emailService;
 
@@ -277,5 +278,21 @@ public class UserController {
         }
 
         return ResponseEntity.status(401).body(BaseResponseBody.of(401, "비밀번호가 틀렸습니다."));
+    }
+
+    @ApiOperation(value = "레이팅 점수", notes = "내 레이팅 점수를 반환한다.")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "success"),
+        @ApiResponse(code = 409, message = "failed"),
+    })
+    @GetMapping("/rating")
+    public ResponseEntity<BaseResponseBody> getMyRating(
+        @ApiParam(value = "나의 Rating", required = true) String userId) {
+        User user = userService.getUserByUserId(userId);
+        int Rating = userRecordsService.getUserRecords(user.getId()).getRating();
+        if (user == null) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, null));
+        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, String.valueOf(Rating)));
     }
 }
