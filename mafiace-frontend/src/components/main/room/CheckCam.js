@@ -41,10 +41,10 @@ const CheckCam = ({
   };
 
   const enterIngame = () => {
-    // if (!detected) {
-    //   alert("얼굴이 감지되지 않습니다!");
-    //   return;
-    // }
+    if (!detected) {
+      alert("얼굴이 감지되지 않습니다!");
+      return;
+    }
 
     if (isOwner) handleCamOff();
     else setIngame(!ingame);
