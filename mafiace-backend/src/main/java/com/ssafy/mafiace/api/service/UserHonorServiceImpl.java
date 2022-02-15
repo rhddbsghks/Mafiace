@@ -30,7 +30,7 @@ public class UserHonorServiceImpl implements UserHonorService {
         List<HonorName> newAchievedHonors = new ArrayList<>();
 
         // 첫 승 (0)
-        if (!achievedHonors.contains(HonorName.firstWin) && userRecords.getWinCount() == 1) {
+        if (!achievedHonors.contains(HonorName.firstWin) && userRecords.getWinCount() >= 1) {
             newAchievedHonors.add(HonorName.firstWin);
         }
 
@@ -47,24 +47,24 @@ public class UserHonorServiceImpl implements UserHonorService {
             newAchievedHonors.add(HonorName.investigate10);
         }
         // 마피아 플레이 횟수 (6~7)
-        if (!achievedHonors.contains(HonorName.mafia3Play) && userRecords.getMafiaCount() == 3) {
+        if (!achievedHonors.contains(HonorName.mafia3Play) && userRecords.getMafiaCount() >= 3) {
             newAchievedHonors.add(HonorName.mafia3Play);
         }
-        if (!achievedHonors.contains(HonorName.mafia10Play) && userRecords.getMafiaCount() == 10) {
+        if (!achievedHonors.contains(HonorName.mafia10Play) && userRecords.getMafiaCount() >= 10) {
             newAchievedHonors.add(HonorName.mafia10Play);
         }
         // 의사 플레이 횟수 (8~9)
-        if (!achievedHonors.contains(HonorName.doctor3Play) && userRecords.getDoctorCount() == 3) {
+        if (!achievedHonors.contains(HonorName.doctor3Play) && userRecords.getDoctorCount() >= 3) {
             newAchievedHonors.add(HonorName.doctor3Play);
         }
-        if (!achievedHonors.contains(HonorName.doctor10Play) && userRecords.getDoctorCount() == 10) {
+        if (!achievedHonors.contains(HonorName.doctor10Play) && userRecords.getDoctorCount() >= 10) {
             newAchievedHonors.add(HonorName.doctor10Play);
         }
             // 경찰 플레이 횟수 (10~11)
-        if (!achievedHonors.contains(HonorName.police3Play) && userRecords.getPoliceCount() == 3) {
+        if (!achievedHonors.contains(HonorName.police3Play) && userRecords.getPoliceCount() >= 3) {
             newAchievedHonors.add(HonorName.police3Play);
         }
-        if (!achievedHonors.contains(HonorName.police10Play) &&  userRecords.getMafiaCount() == 10) {
+        if (!achievedHonors.contains(HonorName.police10Play) &&  userRecords.getMafiaCount() >= 10) {
             newAchievedHonors.add(HonorName.police10Play);
         }
 
