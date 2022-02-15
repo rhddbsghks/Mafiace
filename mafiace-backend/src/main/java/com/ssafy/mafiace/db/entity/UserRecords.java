@@ -93,7 +93,7 @@ public class UserRecords {
         if(isWin){
                 if(role.equals("Mafia")){
                     this.mafiaCount +=1;
-                    this.rating = 34;
+                    this.rating = 39;
                 }else {
                     if (role.equals("Police"))
                         this.policeCount += 1;
@@ -103,8 +103,7 @@ public class UserRecords {
                     this.rating += 23;
                 }
        }else {
-            if(role.equals("Mafia")) this.rating -= 11;
-            else this.rating -= 16;
+            this.rating -= 10;
         }
     }
 
