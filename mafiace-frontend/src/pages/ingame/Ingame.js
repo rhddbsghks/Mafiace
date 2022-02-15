@@ -464,7 +464,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   width: "20%",
                 }}
               >
-                <h1 style={{ margin: 0, zIndex: "0" }}>Mafiace</h1>
+                <img src="img/Logo.png" alt="" width="20%" />
               </div>
 
               {/* 메세지 영역 */}
