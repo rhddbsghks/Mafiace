@@ -50,9 +50,9 @@ public class UserRecordsServiceImpl implements UserRecordsService {
     }
 
     @Override
-    public void updateUserRecords(Player player, boolean isWin) {
+    public UserRecords updateUserRecords(Player player, boolean isWin) {
         // 유저, 승,패, 직업별 기능 사용 횟수 저장
-        userRecordsRepositorySupport.updateUserRecords(player.getNickname() ,isWin, player.getKillCount(), player.getSaveCount(), player.getInvestigateCount());
+        return userRecordsRepositorySupport.updateUserRecords(player.getNickname() ,isWin, player.getKillCount(), player.getSaveCount(), player.getInvestigateCount());
     }
 
 
