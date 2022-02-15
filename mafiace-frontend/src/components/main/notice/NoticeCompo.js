@@ -19,6 +19,7 @@ const NoticeCompo = () => {
   const [postOn, setPostOn] = useState(false);
   const [detailOn, setDetailOn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [modifyNo, setModifyNo] = useState();
   const nextId = useState(1);
 
   //더미 데이터 호출
@@ -56,33 +57,6 @@ const NoticeCompo = () => {
     setSelected(selectedData);
   };
 
-  const handleSave = (data) => {
-    console.log(data);
-    //데이터 수정하기
-    if (data.postNum) {
-      setList(
-        list.map((row) =>
-          data.postNum === row.postNum
-            ? {
-                title: data.title,
-                content: data.content,
-                postNum: data.current,
-              }
-            : row
-        )
-      );
-    } else {
-      setList((list) =>
-        list.concat({
-          title: data.title,
-          content: data.content,
-          postNum: nextId.current,
-        })
-      );
-      nextId.current += 1;
-    }
-  };
-
   const handleRemove = (postNum) => {
     axios.delete("/mafiace/api/notice/" + postNum).then(() => {
       alert("게시물이 삭제되었습니다!");
@@ -95,14 +69,11 @@ const NoticeCompo = () => {
     console.log(list);
   };
 
-  const handleEdit = (item) => {
+  const handleEdit = (data) => {
+    setSelected(data);
     setModalOn(true);
-    const selectedData = {
-      title: item.title,
-      content: item.content,
-    };
-    // console.log(selectedData);
-    setSelected(selectedData);
+    setModifyNo(data.postNum);
+    console.log(data);
   };
 
   const handleCancel = () => {
@@ -117,10 +88,20 @@ const NoticeCompo = () => {
     setDetailOn(false);
   };
 
-  const handleEditSubmit = (item) => {
-    // console.log(item);
-    handleSave(item);
+  const handleEditSubmit = (data) => {
+    axios
+      .patch(`/mafiace/api/notice/` + modifyNo, {
+        title: data.title,
+        content: data.content,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     setModalOn(false);
+    window.location.reload();
   };
 
   return (
@@ -158,9 +139,7 @@ const NoticeCompo = () => {
               </Table>
               <br></br>
 
-              {postOn && (
-                <Post handleSave={handleSave} handleCancel2={handleCancel2} />
-              )}
+              {postOn && <Post handleCancel2={handleCancel2} />}
               {detailOn && (
                 <Detail
                   selectedData={selected}
