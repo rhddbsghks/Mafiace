@@ -8,6 +8,7 @@ import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.entity.UserGameLog;
 import com.ssafy.mafiace.db.entity.UserRecords;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -55,4 +56,10 @@ public class UserRecordsRepositorySupport {
         return userRecordsRepository.save(prevUserRecords);
     }
 
+    public UserRecords findByUserUniqueId(String userUniqueId) {
+        return this.jpaQueryFactory
+            .selectFrom(qUserRecords)
+            .where(qUserRecords.user.id.eq(userUniqueId))
+            .fetchOne();
+    }
 }

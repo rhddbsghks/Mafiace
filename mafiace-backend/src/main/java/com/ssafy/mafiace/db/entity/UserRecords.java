@@ -61,9 +61,9 @@ public class UserRecords {
     @ColumnDefault("0")
     @Column(name = "citizen_count")
     int citizenCount;
-    @ColumnDefault("0")
-    @Column(name = "winner_streak")
-    int winnerStreak;
+    @ColumnDefault("1000")
+    @Column(name = "rating")
+    int rating;
 
     @Builder
     private UserRecords() {
@@ -72,7 +72,7 @@ public class UserRecords {
         this.mafiaCount =0;
         this.doctorCount =0;
         this.policeCount =0;
-        this.winnerStreak =0;
+        this.rating =0;
         this.investigateCount =0;
         this.killCount =0;
         this.saveCount =0;
@@ -90,13 +90,18 @@ public class UserRecords {
         this.investigateCount += investigateCount;
         this.winCount += isWin ? 1 : 0;
         this.loseCount += isWin ? 0 : 1;
+        if(role.equals("Mafia")) mafiaCount +=1;
+        else {
+            if (role.equals("Police"))
+                policeCount += 1;
+            else if (role.equals("Doctor"))
+                doctorCount += 1;
+            citizenCount += 1;
+        }
         if(isWin){
-            if(role.equals("Mafia")) mafiaCount +=1;
-            else {
-                if(role.equals("Police")) policeCount +=1;
-                else if(role.equals("Doctor")) doctorCount +=1;
-                citizenCount +=1;
-            }
+            this.rating += 20;
+        }else {
+            this.rating -= 10;
         }
     }
 

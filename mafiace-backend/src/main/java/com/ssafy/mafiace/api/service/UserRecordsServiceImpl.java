@@ -27,14 +27,8 @@ public class UserRecordsServiceImpl implements UserRecordsService {
     UserRecordsRepository userRecordsRepository;
 
     @Override
-    public UserRecords getUserRecords(String nickname) {
-        Optional<User> user = userRepository.findByNickname(nickname);
-        if (user == null) {
-            return null;
-        }
-        Optional<UserRecords> userRecordsOpt =
-            userRepositorySupport.findUserRecordsByUser(user.get());
-        return userRecordsOpt.orElse(null);
+    public UserRecords getUserRecords(String userUniqueId) {
+        return userRecordsRepositorySupport.findByUserUniqueId(userUniqueId);
     }
 
     @Override
