@@ -19,7 +19,6 @@ const Post = ({ handleCancel2 }) => {
         }
       )
       .then((res) => {
-        console.log("post data");
         console.log(res.data);
       })
       .catch((err) => {
