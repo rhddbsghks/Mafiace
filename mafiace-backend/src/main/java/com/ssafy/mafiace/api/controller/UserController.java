@@ -8,13 +8,16 @@ import com.ssafy.mafiace.api.response.UserRecordsRes;
 import com.ssafy.mafiace.api.service.EmailService;
 import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.UserGameLogService;
+import com.ssafy.mafiace.api.service.UserHonorService;
 import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.auth.JwtTokenProvider;
 import com.ssafy.mafiace.db.entity.GameLog;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.entity.UserGameLog;
+import com.ssafy.mafiace.db.entity.UserHonor;
 import com.ssafy.mafiace.db.entity.UserRecords;
+import com.ssafy.mafiace.game.honor.HonorName;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -49,6 +52,9 @@ public class UserController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    UserHonorService userHonorService;
 
     @Autowired
     private EmailService emailService;
@@ -130,10 +136,12 @@ public class UserController {
         String userId = jwtTokenProvider.getUserPk(jwtToken);
         User user = userService.getUserByUserId(userId);
         List<UserGameLog> userGameLogs = userGameLogService.getUserGameLogs(user.getId());
+        UserRecords userRecords = userRecordsService.getUserRecords(user.getId());
+        List<HonorName> honors = userHonorService.getUserHonorsByUserUniqueId(user.getId());
         if (user != null) {
-            return ResponseEntity.status(200).body(UserRecordsRes.of(200, "성공", userGameLogs));
+            return ResponseEntity.status(200).body(UserRecordsRes.of(200, "성공", userGameLogs, userRecords, honors));
         }
-        return ResponseEntity.status(400).body(UserRecordsRes.of(400, "실패", null));
+        return ResponseEntity.status(400).body(UserRecordsRes.of(400, "실패", null, null, null));
     }
 
     @ApiOperation(value = "아이디 중복 체크", notes = "아이디를 전달받아서 중복 체크를 한다.")

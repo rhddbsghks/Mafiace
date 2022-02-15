@@ -6,8 +6,8 @@ import com.ssafy.mafiace.game.Player;
 
 public interface UserRecordsService {
 
-    UserRecords getUserRecords(String id);
+    UserRecords getUserRecords(String userUniqueId);
     UserRecords addUserRecords(User user);
 
-    UserRecords updateUserRecords(Player player, boolean isWin);
+    UserRecords updateUserRecords(Player player, boolean isWin, String role);
 }

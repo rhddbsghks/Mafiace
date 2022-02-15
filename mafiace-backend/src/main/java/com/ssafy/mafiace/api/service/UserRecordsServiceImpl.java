@@ -27,14 +27,8 @@ public class UserRecordsServiceImpl implements UserRecordsService {
     UserRecordsRepository userRecordsRepository;
 
     @Override
-    public UserRecords getUserRecords(String nickname) {
-        Optional<User> user = userRepository.findByNickname(nickname);
-        if (user == null) {
-            return null;
-        }
-        Optional<UserRecords> userRecordsOpt =
-            userRepositorySupport.findUserRecordsByUser(user.get());
-        return userRecordsOpt.orElse(null);
+    public UserRecords getUserRecords(String userUniqueId) {
+        return userRecordsRepositorySupport.findByUserUniqueId(userUniqueId);
     }
 
     @Override
@@ -50,9 +44,9 @@ public class UserRecordsServiceImpl implements UserRecordsService {
     }
 
     @Override
-    public UserRecords updateUserRecords(Player player, boolean isWin) {
+    public UserRecords updateUserRecords(Player player, boolean isWin, String role) {
         // 유저, 승,패, 직업별 기능 사용 횟수 저장
-        return userRecordsRepositorySupport.updateUserRecords(player.getNickname() ,isWin, player.getKillCount(), player.getSaveCount(), player.getInvestigateCount());
+        return userRecordsRepositorySupport.updateUserRecords(player.getNickname() ,isWin, player.getKillCount(), player.getSaveCount(), player.getInvestigateCount(), role);
     }
 
 
