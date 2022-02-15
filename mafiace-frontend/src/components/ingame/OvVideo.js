@@ -62,6 +62,7 @@ export default class OpenViduVideoComponent extends Component {
         opacity: 0.7,
       },
     };
+
     this.handleClick = this.handleClick.bind(this);
     this.onPlay = this.onPlay.bind(this);
     Promise.all([
