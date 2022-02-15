@@ -42,11 +42,10 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [topics, setTopics] = useState();
   const chatBox = useRef();
   const chatMessage = useRef();
-  const [typedMessage, setTypedMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
   // 인게임
-  const [time, setTime] = useState(gameInfo.discussionTime); // 타이머
+  const [time, setTime] = useState(12341234); // 타이머
   const [timer, setTimer] = useState(); // 타이머
   const [count, setCount] = useState(1); // 날짜
   const [stateMessage, setStateMessage] = useState(gameInfo.gameTitle); // 헤더 상태메세지
@@ -262,7 +261,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
 
   const clickStart = () => {
     console.log("====================START======================");
-    if (subscribers.length < 3) {
+    if (subscribers.length < 0) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
       setStartButton(false);
@@ -401,7 +400,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   } else if (myRole === "Doctor") {
                     setStateMessage("위급 환자 한 명을 진료해주세요.");
                   } else {
-                    setStateMessage("걱정으로 가득한 채로 잠이 들었습니다.");
+                    setStateMessage("걱정 가득한 채로 잠이 들었습니다.");
                   }
                 }, 3000);
               } else if (msg.check === "role") {
@@ -438,7 +437,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   }
                 }
               } else if (msg.check === "save") {
-                setStateMessage("의사가 마피아로부터 시민을 살렸습니다.");
+                setStateMessage("의사가 시민을 살렸습니다.");
               } else if (msg.check === "nobody") {
                 setStateMessage("아무 일도 일어나지 않았습니다.");
               } else if (msg.end === "end") {
@@ -507,21 +506,21 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                 style={{
                   position: "absolute",
                   top: "1%",
-                  left: "10%",
+                  left: "2%",
                 }}
               >
-                <img src="img/Logo.png" alt="" width="40%" />
+                <img src="img/Logo.png" alt="" width="60%" />
                 <div>
-                  <span style={{ fontSize: "1.8em" }} className="gray">
+                  <span style={{ fontSize: "2.5em" }} className="gray">
                     Ma
                   </span>
-                  <span style={{ fontSize: "1.8em" }} className="color">
+                  <span style={{ fontSize: "2.5em" }} className="color">
                     f
                   </span>
-                  <span style={{ fontSize: "1.8em" }} className="gray">
+                  <span style={{ fontSize: "2.5em" }} className="gray">
                     i
                   </span>
-                  <span style={{ fontSize: "1.8em" }} className="color">
+                  <span style={{ fontSize: "2.5em" }} className="color">
                     ace
                   </span>
                 </div>
@@ -530,11 +529,11 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
               {/* 메세지 영역 */}
               <div
                 style={{
-                  width: "50%",
+                  width: "55%",
                   backgroundColor: "rgba(255, 255, 255, 0.7)",
                   display: "flex",
                   justifyContent: "space-between",
-                  fontSize: "4em",
+                  fontSize: "5em",
                   borderRadius: "1rem",
                 }}
               >
@@ -548,14 +547,20 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   <div
                     style={{
                       margin: "auto",
-                      width: "60%",
+                      width: "80%",
                       textAlign: "center",
                     }}
                   >
                     {stateMessage}
                   </div>
                 ) : (
-                  <div style={{ margin: "auto", width: "60%" }}>
+                  <div
+                    style={{
+                      margin: "auto",
+                      width: "80%",
+                      textAlign: "center",
+                    }}
+                  >
                     {stateMessage}
                   </div>
                 )}
@@ -644,6 +649,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                     setIsVoted={setIsVoted}
                     night={night}
                     heal={heal}
+                    myVote={myVote}
                   />
                 </div>
               ) : null}
@@ -670,6 +676,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                       vote={vote}
                       heal={heal}
                       investigate={investigate}
+                      myVote={myVote}
                     />
                   </div>
                 </div>
