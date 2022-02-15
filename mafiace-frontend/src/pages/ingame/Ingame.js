@@ -502,8 +502,29 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                 style={{
                   width: "20%",
                 }}
+              ></div>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "1%",
+                  left: "10%",
+                }}
               >
-                <img src="img/Logo.png" alt="" width="20%" />
+                <img src="img/Logo.png" alt="" width="40%" />
+                <div>
+                  <span style={{ fontSize: "1.8em" }} className="gray">
+                    Ma
+                  </span>
+                  <span style={{ fontSize: "1.8em" }} className="color">
+                    f
+                  </span>
+                  <span style={{ fontSize: "1.8em" }} className="gray">
+                    i
+                  </span>
+                  <span style={{ fontSize: "1.8em" }} className="color">
+                    ace
+                  </span>
+                </div>
               </div>
 
               {/* 메세지 영역 */}

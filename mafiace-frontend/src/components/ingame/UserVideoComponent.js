@@ -61,7 +61,7 @@ const UserVideoComponent = ({
               style={{
                 width: "35px",
                 position: "relative",
-                top: "20px",
+                top: "10px",
                 left: "20px",
               }}
             />
@@ -73,7 +73,7 @@ const UserVideoComponent = ({
                 visibility: "hidden",
                 width: "35px",
                 position: "relative",
-                top: "20px",
+                top: "10px",
                 left: "20px",
               }}
             />
