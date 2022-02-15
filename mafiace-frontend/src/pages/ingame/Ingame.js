@@ -45,7 +45,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [messages, setMessages] = useState([]);
 
   // 인게임
-  const [time, setTime] = useState(12341234); // 타이머
+  const [time, setTime] = useState(gameInfo.discussionTime); // 타이머
   const [timer, setTimer] = useState(); // 타이머
   const [count, setCount] = useState(1); // 날짜
   const [stateMessage, setStateMessage] = useState(gameInfo.gameTitle); // 헤더 상태메세지
@@ -261,7 +261,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
 
   const clickStart = () => {
     console.log("====================START======================");
-    if (subscribers.length < 0) {
+    if (subscribers.length < 3) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
       setStartButton(false);
