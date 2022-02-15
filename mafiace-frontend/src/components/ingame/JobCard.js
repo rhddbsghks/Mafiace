@@ -20,8 +20,7 @@ const JobCard = ({ openJobCard, setopenJobCard, myRole, mafiaTeam }) => {
     Citizen:
       "순진무구한 여러분 동네에 마피아가 잠입하였습니다. 다른 시민들과 힘을 합쳐 마을을 구해주세요!",
     Mafia:
-      "매일 밤 무고한 시민 한 명을 제거할 수 있습니다. 시민들을 속여 마을을 장악하세요!\n마피아 : " +
-      mafiaTeam,
+      "매일 밤 무고한 시민 한 명을 제거할 수 있습니다. 시민들을 속여 마을을 장악하세요!",
   };
 
   useEffect(() => {
@@ -46,7 +45,8 @@ const JobCard = ({ openJobCard, setopenJobCard, myRole, mafiaTeam }) => {
             {korJobName[myRole]}{" "}
           </Card.Header>
           <Card.Description style={{ margin: 0 }}>
-            {jobDesc[myRole]}
+            <p>{jobDesc[myRole]}</p>
+            <p>{myRole === "Mafia" ? "마피아 : " + mafiaTeam : null}</p>
           </Card.Description>
         </Card.Content>
       </Card>
