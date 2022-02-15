@@ -30,49 +30,6 @@ const Modal = ({ selectedData, handleCancel, handleEditSubmit }) => {
           Update
         </div>
         <div className="border-b px-4 py-5 flex justify-center items-center"></div>
-        {/* <form>
-          <div class="p-3">
-            <div>
-              Title:
-              <input
-                type="text"
-                name="title"
-                value={edited.title}
-                onChange={onEditChange}
-                className="border-2 border-gray-300 text-gray-500"
-              />
-            </div>
-            <br></br>
-            <div>
-              Content:
-              <input
-                type="text"
-                name="content"
-                value={edited.content}
-                onChange={onEditChange}
-                className="border-2 border-gray-300 text-gray-500 pg-10"
-              />
-            </div>
-            <br></br>
-          </div>
-          <hr></hr>
-          <div className="flex justify-end items-center w-100 border-t p-3">
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 px-3 py-1 rounded text-white"
-              onSubmit={onSubmitEdit}
-            >
-              수정
-            </button>
-            <button
-              onClick={onCancel}
-              className="bg-red-500 hover:bg-red-700 px-3 py-1 rounded text-white"
-            >
-              취소
-            </button>
-          </div>
-        </form> */}
-
         <form>
           <br></br>
           <Form style={{ textAlign: "center" }}>
