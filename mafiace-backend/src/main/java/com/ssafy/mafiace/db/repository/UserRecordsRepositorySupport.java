@@ -8,6 +8,7 @@ import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.entity.UserGameLog;
 import com.ssafy.mafiace.db.entity.UserRecords;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -26,14 +27,19 @@ public class UserRecordsRepositorySupport {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserGameLogRepositorySupport userGameLogRepositorySupport;
+
     private QUserRecords qUserRecords = QUserRecords.userRecords;
     private QUser qUser = QUser.user;
     private QUserGameLog qUserGameLog = QUserGameLog.userGameLog;
 
 
+
     // 0 반환 => 실패
     // 1 반환 => 성공
-    public UserRecords updateUserRecords(String nickname, boolean isWin, int killCount, int saveCount, int investigateCount){
+    public UserRecords updateUserRecords(String nickname, boolean isWin, int killCount,
+        int saveCount, int investigateCount, String role){
 //        이런식으로 기존 record와 현재 record 비교해서 map 에서 string 형태로 받아서 update..
         User user = userRepository.findByNickname(nickname).get();
         if(user == null) return null;
@@ -41,21 +47,19 @@ public class UserRecordsRepositorySupport {
         int winCount = 0;
         int loseCount = 0;
         List<UserGameLog> userGameLogList
-            = getUserGameLogs(user.getId());
+            = userGameLogRepositorySupport.getUserGameLogs(user.getId());
         for(UserGameLog userGameLog : userGameLogList){
             if(userGameLog.isWin()) winCount +=1;
             else loseCount +=1;
         }
-        prevUserRecords.addCount(investigateCount, killCount, saveCount, isWin);
+        prevUserRecords.addCount(investigateCount, killCount, saveCount, isWin, role);
         return userRecordsRepository.save(prevUserRecords);
     }
 
-    private List<UserGameLog> getUserGameLogs(String id) {
-        return this.jpaQueryFactory.selectFrom(qUserGameLog)
-            .join(qUser).on(qUser.id.eq(qUserGameLog.user.id))
-            .fetchJoin()
-//            .where()
-            .fetch();
+    public UserRecords findByUserUniqueId(String userUniqueId) {
+        return this.jpaQueryFactory
+            .selectFrom(qUserRecords)
+            .where(qUserRecords.user.id.eq(userUniqueId))
+            .fetchOne();
     }
-
 }

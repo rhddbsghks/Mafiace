@@ -8,6 +8,7 @@ import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
 import com.ssafy.mafiace.api.service.UserGameLogService;
+import com.ssafy.mafiace.api.service.UserHonorService;
 import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.model.GameInfo;
@@ -58,6 +59,9 @@ public class GameController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserHonorService userHonorService;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -116,7 +120,7 @@ public class GameController {
     public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception {
         System.err.println(roomId + "  is clicked the start btn");
         gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService, gameService,
-            userService, userRecordsService, userGameLogService, gameLogService));
+            userService, userRecordsService, userGameLogService, gameLogService, userHonorService));
     }
 
     // 게임이 끝났는지 체크하고 승리팀 판단
@@ -168,13 +172,14 @@ public class GameController {
         @DestinationVariable String nickname, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
         String role = gameManagerMap.get(roomId).getPlayers().findRoleName(voted);
+        if (role.equals("Mafia")) {
+            manager.getPlayers().addInvestigateCount(); // 경찰 탐지횟수 +1
+        }
         JSONObject data = new JSONObject();
         data.put("role", role);
         data.put("check", "investigate");
         simpMessagingTemplate.convertAndSend("/topic/" + nickname, data.toString());
-        if (role.equals("Mafia")) {
-            manager.getPlayers().addInvestigateCount(); // 경찰 탐지횟수 +1
-        }
+
     }
 
     // 투표 결과를 얻어옴

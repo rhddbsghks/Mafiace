@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button, Form, Grid, Segment } from "semantic-ui-react";
 import styles from "./styles.module.css";
+import axios from "axios";
 
 const FindId = ({ clickFindId, clickFindPw }) => {
   const [email, setEmail] = useState("");
+  const [findId, setFindId] = useState("");
 
   // onChange state 값 갱신
   const handleChange = (e) => {
@@ -11,8 +13,15 @@ const FindId = ({ clickFindId, clickFindPw }) => {
   };
 
   const onclick = () => {
-    console.log(email);
-    alert("ID 찾기 api 없음");
+    axios
+      .get("/mafiace/api/user/id", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+        params: { email },
+      })
+      .then(({ data }) => {
+        setFindId(data.userId);
+      })
+      .catch((err) => alert("해당하는 아이디가 없습니다."));
   };
 
   return (
@@ -59,6 +68,16 @@ const FindId = ({ clickFindId, clickFindPw }) => {
               }}
             />
           </Grid.Column>
+          {"" === findId ? null : (
+            <div
+              style={{ fontSize: "2em", marginLeft: "15%", marginTop: "5%" }}
+            >
+              회원님의 아이디: &nbsp;
+              <span style={{ fontSize: "2em", fontWeight: "900" }}>
+                {findId}
+              </span>
+            </div>
+          )}
 
           <div
             className="form-back"

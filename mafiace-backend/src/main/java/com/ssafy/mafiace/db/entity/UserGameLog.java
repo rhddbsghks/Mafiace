@@ -28,10 +28,14 @@ public class UserGameLog extends BaseEntity{
     @NotNull @Column(name = "is_win")
     boolean isWin;
 
+    @Column(name = "play_time  ")
+    String playTime;
+
     @Builder
-    private UserGameLog(String roleName, boolean isWin, GameLog gameLog, User user){
+    private UserGameLog(String roleName, boolean isWin, String playTime, GameLog gameLog, User user){
         this.isWin = isWin;
         this.roleName = roleName;
+        this.playTime = playTime;
         this.gameLog = gameLog;
         this.user = user;
     }

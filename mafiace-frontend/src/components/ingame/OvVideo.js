@@ -4,13 +4,11 @@ import * as faceapi from "face-api.js";
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
 } from "recharts";
 import { Button, Popup } from "semantic-ui-react";
 
@@ -68,6 +66,14 @@ export default class OpenViduVideoComponent extends Component {
       },
     };
     this.handleClick = this.handleClick.bind(this);
+    Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+      faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+      faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+      faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+    ]).then(() => {
+      // console.log(faceapi.nets);
+    });
   }
 
   handleClick() {
@@ -81,20 +87,21 @@ export default class OpenViduVideoComponent extends Component {
     if (this.props && !!this.videoRef) {
       this.props.streamManager.addVideoElement(this.videoRef.current);
     }
-    Promise.all([
-      faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-      faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-      faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-      faceapi.nets.faceExpressionNet.loadFromUri("/models"),
-    ]).then(() => {
-      // console.log(faceapi.nets);
-    });
+    clearInterval(this.onPlay);
+    console.log("clearInterval_componentDidMount");
   }
 
   componentDidUpdate(props) {
     if (props && !!this.videoRef) {
       this.props.streamManager.addVideoElement(this.videoRef.current);
+      clearInterval(this.onPlay);
+      console.log("clearInterval_componentDidUpdate");
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.onPlay);
+    console.log("clearInterval_componentWillUnmount");
   }
 
   render() {
@@ -124,6 +131,7 @@ export default class OpenViduVideoComponent extends Component {
             ([, a], [, b]) => b - a
           );
           const arrExp = Object.entries(detections[0].expressions);
+
           this.setState({
             chk: true,
             faceExpressions: detections[0].expressions,
@@ -131,32 +139,39 @@ export default class OpenViduVideoComponent extends Component {
             topEmotion: valSort[0][0],
             data: [
               {
+                // neutral
                 name: arrExp[0][0],
-                uv: arrExp[0][1],
+                uv: arrExp[0][1] * 0.5,
               },
               {
+                // happy
                 name: arrExp[1][0],
-                uv: arrExp[1][1],
+                uv: arrExp[1][1] * 0.8,
               },
               {
+                // sad
                 name: arrExp[2][0],
-                uv: arrExp[2][1],
+                uv: (arrExp[2][1] + arrExp[5][1]) * 5,
               },
               {
+                // angry
                 name: arrExp[3][0],
-                uv: arrExp[3][1],
+                uv: arrExp[3][1] * 5,
               },
               {
+                // fearul
                 name: arrExp[4][0],
                 uv: arrExp[4][1],
               },
               {
+                // disgusted
                 name: arrExp[5][0],
                 uv: arrExp[5][1],
               },
               {
+                // surprised
                 name: arrExp[6][0],
-                uv: arrExp[6][1],
+                uv: arrExp[6][1] + arrExp[4][1],
               },
             ],
           });
@@ -166,7 +181,16 @@ export default class OpenViduVideoComponent extends Component {
     return (
       <>
         <video autoPlay={true} ref={this.videoRef} onPlaying={onPlay} />
-
+        <img
+          src={`/img/${this.state.topEmotion}.png`}
+          alt=""
+          style={{
+            position: "absolute",
+            width: "100px",
+            bottom: "15px",
+            right: "10%",
+          }}
+        />
         {/* <button onClick={this.handleClick}>button</button> */}
         <Popup
           trigger={<Button icon="eye" />}

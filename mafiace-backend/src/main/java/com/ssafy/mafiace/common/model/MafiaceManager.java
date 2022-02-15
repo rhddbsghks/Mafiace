@@ -6,11 +6,14 @@ import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.api.service.GameService;
 import com.ssafy.mafiace.api.service.SessionService;
 import com.ssafy.mafiace.api.service.UserGameLogService;
+import com.ssafy.mafiace.api.service.UserHonorService;
 import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.GameLog;
 import com.ssafy.mafiace.db.entity.User;
+import com.ssafy.mafiace.db.entity.UserHonor;
+import com.ssafy.mafiace.db.entity.UserRecords;
 import com.ssafy.mafiace.game.Player;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -50,6 +53,8 @@ public class MafiaceManager {
     private UserGameLogService userGameLogService;
     @Autowired
     private GameLogService gameLogService ;
+    @Autowired
+    private UserHonorService userHonorService;
 
     private List<String> deathList = new ArrayList<>();
     private Map<String, Integer> voteMap = new ConcurrentHashMap<>();  // 닉네임이 저장됨
@@ -63,7 +68,8 @@ public class MafiaceManager {
         UserService userService,
         UserRecordsService userRecordsService,
         UserGameLogService userGameLogService,
-        GameLogService gameLogService) {
+        GameLogService gameLogService,
+        UserHonorService userHonorService) {
         this.roomId = roomId;
         this.sessionService = sessionService;
         this.gameService = gameService;
@@ -78,6 +84,7 @@ public class MafiaceManager {
         this.gameService.setGameStatus(this.room);
         players.setRole();
         this.startTime = LocalDateTime.now();
+        this.userHonorService = userHonorService;
     }
 
     public void gameSet() {
@@ -93,8 +100,9 @@ public class MafiaceManager {
         for(Player player : players.getPlayers()){
             boolean isWin = isWin(player.getRole());
             GameLog savedGameLog = gameLogService.addGameLog(playTime, this.winTeam);
-            userGameLogService.saveUserGameLog(savedGameLog, player.getUser(), player.getRole(),isWin);
-            userRecordsService.updateUserRecords(player, isWin);
+            userGameLogService.saveUserGameLog(savedGameLog, player.getUser(),playTime, player.getRole(),isWin);
+            UserRecords userRecords = userRecordsService.updateUserRecords(player, isWin, player.getRole());
+            userHonorService.saveHonor(userRecords);
         }
         this.room.setRoomStatus(false);
         gameService.setGameStatus(this.room);
@@ -138,8 +146,10 @@ public class MafiaceManager {
             // 마피아가 실패 / 의사가 살린횟수 +1
             players.addSaveCount();
             result.setCheck("save");
-        }else // 의사가 실패 / 마피아 죽인횟수 +1
+        }else {
+            // 의사가 실패 / 마피아 죽인횟수 +1
             players.addKillCount();
+        }
         return result;
     }
 

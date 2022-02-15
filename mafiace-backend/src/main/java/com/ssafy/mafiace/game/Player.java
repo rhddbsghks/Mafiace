@@ -19,9 +19,6 @@ public class Player {
     private int killCount;
     private int investigateCount;
 
-    private GameLogService gameLogService;
-
-
     public Player(User user){
         this.user = user;
         this.nickname = user.getNickname();
