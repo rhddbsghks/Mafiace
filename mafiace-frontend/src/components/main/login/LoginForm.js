@@ -45,7 +45,9 @@ const LoginForm = ({ getLogin }) => {
       })
       .then((res) => {
         if (res.status === 204) {
-          alert("탈퇴처리중인 계정입니다.");
+          alert(
+            "탈퇴처리중인 계정입니다.\nmafiassafy@gmail.com로 문의해주세요."
+          );
         } else {
           localStorage.setItem("jwt", res.data.accessToken);
           getLogin(true);
