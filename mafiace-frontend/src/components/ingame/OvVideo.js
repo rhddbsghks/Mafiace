@@ -4,13 +4,11 @@ import * as faceapi from "face-api.js";
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
 } from "recharts";
 import { Button, Popup } from "semantic-ui-react";
 
