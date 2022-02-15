@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User changePassword(User user, String tmpPassword) {
-        if (tmpPassword.length() < 8 || tmpPassword.length() > 12) {
+        if (tmpPassword.length() < 8 || tmpPassword.length() > 16) {
             return null;
         }
         return userRepository.save(
