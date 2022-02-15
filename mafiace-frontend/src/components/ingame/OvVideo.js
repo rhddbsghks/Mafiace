@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import * as faceapi from "face-api.js";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import { BarChart, Bar, XAxis, CartesianGrid, Tooltip } from "recharts";
 import { Popup } from "semantic-ui-react";
 
 export default class OpenViduVideoComponent extends Component {
@@ -61,10 +61,13 @@ export default class OpenViduVideoComponent extends Component {
         height: 200,
         opacity: 0.7,
       },
+      // test: props.checkAlive,
     };
 
-    this.handleClick = this.handleClick.bind(this);
+    // this.handleClick = this.handleClick.bind(this);
     this.onPlay = this.onPlay.bind(this);
+    this.faceapiInterval = this.faceapiInterval.bind(this);
+
     Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
       faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
@@ -73,16 +76,19 @@ export default class OpenViduVideoComponent extends Component {
     ]).then(() => {
       // console.log(faceapi.nets);
     });
+
+    setInterval(this.faceapiInterval, 1000);
   }
 
-  handleClick() {
-    console.log(this.state.faceExpressions);
-    console.log(this.state.arrExpressions);
-    console.log(this.state.topEmotion);
-    console.log(this.state.data);
-  }
+  // handleClick() {
+  //   // console.log(this.state.faceExpressions);
+  //   // console.log(this.state.arrExpressions);
+  //   // console.log(this.state.topEmotion);
+  //   // console.log(this.state.data);
+  //   this.setState({ test: !this.state.test });
+  // }
 
-  async onPlay() {
+  onPlay() {
     if (
       this.videoRef.current.paused ||
       this.videoRef.current.ended ||
@@ -91,11 +97,15 @@ export default class OpenViduVideoComponent extends Component {
       setTimeout(() => this.onPlay());
       return;
     }
+  }
 
-    const video = this.videoRef.current;
-    setInterval(async () => {
+  async faceapiInterval() {
+    if (this.props.checkAlive) {
       const detections = await faceapi
-        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+        .detectAllFaces(
+          this.videoRef.current,
+          new faceapi.TinyFaceDetectorOptions()
+        )
         .withFaceLandmarks()
         .withFaceExpressions();
 
@@ -114,69 +124,48 @@ export default class OpenViduVideoComponent extends Component {
         );
 
         this.setState({
-          // faceExpressions: detections[0].expressions,
-          // arrExpressions: arrExp,
           topEmotion: valSort[0][0],
           data: [
             {
-              // neutral
-              // name: arrExp[0][0],
               name: "평온",
               uv: arrExp[0][1],
-              // uv: arrExp[0][1] * 0.5,
             },
             {
-              // happy
-              // name: arrExp[1][0],
               name: "기쁨",
               uv: arrExp[1][1],
-              // uv: arrExp[1][1] * 0.8,
             },
             {
-              // sad
-              // name: arrExp[2][0],
               name: "슬픔",
               uv: arrExp[2][1],
-              // uv: (arrExp[2][1] + arrExp[5][1]) * 5,
             },
             {
-              // angry
-              // name: arrExp[3][0],
               name: "화남",
               uv: arrExp[3][1],
-              // uv: arrExp[3][1] * 5,
             },
             {
-              // fearful
-              // name: arrExp[4][0],
               name: "두려움",
               uv: arrExp[4][1],
             },
             {
-              // disgusted
-              // name: arrExp[5][0],
               name: "역겨움",
               uv: arrExp[5][1],
             },
             {
-              // surprised
-              // name: arrExp[6][0],
               name: "놀람",
               uv: arrExp[6][1],
-              // uv: arrExp[6][1] + arrExp[4][1],
             },
           ],
         });
       }
-    }, 1000);
+    }
   }
 
   componentDidMount() {
+    console.log("componentDidMount");
     if (this.props && !!this.videoRef) {
       this.props.streamManager.addVideoElement(this.videoRef.current);
     }
-    this.onPlay();
-    console.log("componentDidmount");
+    // this.onPlay();
   }
 
   componentDidUpdate(props) {
@@ -185,49 +174,61 @@ export default class OpenViduVideoComponent extends Component {
     }
   }
 
-  componentWillUnmount() {
-    // clearInterval(this.setTimer);
-  }
+  componentWillUnmount() {}
 
   render() {
     return (
       <>
-        <video autoPlay={true} ref={this.videoRef} onPlaying={this.onPlay} />
+        {/* <button onClick={this.handleClick}>button</button> */}
+        {/* <video autoPlay={true} ref={this.videoRef} onPlaying={this.onPlay} /> */}
+        <video autoPlay={true} ref={this.videoRef} />
         <p></p>
-        <Popup
-          trigger={
-            <img
-              src={`/img/${this.state.topEmotion}.png`}
-              alt=""
-              style={{
-                position: "absolute",
-                width: "100px",
-                top: "15%",
-                right: "5%",
-              }}
-            />
-          }
-          style={this.state.style}
-          inverted
-        >
-          <BarChart
-            width={350}
-            height={200}
-            data={this.state.data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
+        {this.props.checkAlive ? (
+          <Popup
+            trigger={
+              <img
+                src={`/img/${this.state.topEmotion}.png`}
+                alt=""
+                style={{
+                  position: "absolute",
+                  width: "100px",
+                  top: "15%",
+                  right: "5%",
+                }}
+              />
+            }
+            style={this.state.style}
+            inverted
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="uv" fill="#8884d8" />
-          </BarChart>
-        </Popup>
+            <BarChart
+              width={350}
+              height={200}
+              data={this.state.data}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <Tooltip />
+              <Bar dataKey="uv" fill="#8884d8" />
+            </BarChart>
+          </Popup>
+        ) : (
+          <img
+            src={`/img/dead.png`}
+            alt=""
+            style={{
+              position: "absolute",
+              width: "150px",
+              top: "35%",
+              right: "30%",
+            }}
+          />
+        )}
       </>
     );
   }

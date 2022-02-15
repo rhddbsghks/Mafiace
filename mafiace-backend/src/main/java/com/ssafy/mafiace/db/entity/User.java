@@ -86,6 +86,19 @@ public class User extends BaseEntity implements UserDetails {
         return this;
     }
 
+    public User modifyPassword(String password){
+        this.password = password;
+
+        return this;
+    }
+
+    public User modifyNickname(String nickname){
+        this.nickname = nickname;
+
+        return this;
+    }
+
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserGameLog> userGameLogs = new ArrayList<>();
 

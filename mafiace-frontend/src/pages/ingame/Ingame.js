@@ -277,7 +277,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
     setStart(true);
     setDay(true);
     setToggle(!toggle);
-    setStateMessage("마피아를 찾아주세요!");
+    setStateMessage("자유롭게 대화를 나눠주세요.");
   };
 
   const checkGameEnd = (next) => {
@@ -666,6 +666,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                       sub="sub"
                       ownerId={gameInfo.ownerId}
                       myRole={myRole}
+                      count={count}
                       isAlive={isAlive}
                       deathList={deathList}
                       setMyVote={setMyVote}
