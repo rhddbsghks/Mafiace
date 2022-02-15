@@ -56,7 +56,6 @@ public class UserController {
     @Autowired
     UserHonorService userHonorService;
 
-
     @Autowired
     private EmailService emailService;
 
@@ -74,7 +73,7 @@ public class UserController {
         @RequestBody @ApiParam(value = "회원가입 요청 정보", required = true) UserRegisterPostReq registerReq) {
         try {
             User user = userService.registerUser(registerReq);
-            UserRecords userRecords = userRecordsService.addUserRecords(user);
+            userRecordsService.addUserRecords(user);
             if (user != null) {
                 return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입이 완료되었습니다."));
             } else {

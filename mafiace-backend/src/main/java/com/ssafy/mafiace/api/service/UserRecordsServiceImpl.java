@@ -35,11 +35,8 @@ public class UserRecordsServiceImpl implements UserRecordsService {
     public UserRecords addUserRecords(User user) {
 
         UserRecords userRecords = UserRecords.builder()
+            .user(user)
             .build();
-        user.setUserRecords(userRecords);
-        System.out.println("id : " + userRecords.getId());
-        System.out.println("wincount : " + userRecords.getWinCount());
-        System.out.println("nickname : " + userRecords.getUser().getNickname());
         return userRecordsRepository.save(userRecords);
     }
 

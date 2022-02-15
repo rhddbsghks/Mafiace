@@ -22,10 +22,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @ToString
 @Entity
-@Builder
 @Table(name = "user_records")
 public class UserRecords {
 
@@ -66,17 +64,18 @@ public class UserRecords {
     int rating;
 
     @Builder
-    private UserRecords() {
+    private UserRecords(User user) {
         this.winCount = 0;
         this.loseCount =0;
         this.mafiaCount =0;
         this.doctorCount =0;
         this.policeCount =0;
-        this.rating =1000;
+        this.rating = 1000;
         this.investigateCount =0;
         this.killCount =0;
         this.saveCount =0;
         this.citizenCount =0;
+        this.user = user;
     }
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -93,7 +92,7 @@ public class UserRecords {
         if(isWin){
                 if(role.equals("Mafia")){
                     this.mafiaCount +=1;
-                    this.rating = 39;
+                    this.rating += 39;
                 }else {
                     if (role.equals("Police"))
                         this.policeCount += 1;
