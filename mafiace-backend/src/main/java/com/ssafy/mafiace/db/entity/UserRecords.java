@@ -59,6 +59,9 @@ public class UserRecords {
     @Column(name = "kill_count")
     int killCount;
     @ColumnDefault("0")
+    @Column(name = "citizen_count")
+    int citizenCount;
+    @ColumnDefault("0")
     @Column(name = "winner_streak")
     int winnerStreak;
 
@@ -73,6 +76,7 @@ public class UserRecords {
         this.investigateCount =0;
         this.killCount =0;
         this.saveCount =0;
+        this.citizenCount =0;
     }
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -80,12 +84,20 @@ public class UserRecords {
     @JoinColumn(name = "user_unique_id", referencedColumnName = "user_user_unique_id")
     private User user;
 
-    public void addCount(int investigateCount, int killCount, int saveCount,  boolean isWin){
+    public void addCount(int investigateCount, int killCount, int saveCount,  boolean isWin, String role){
         this.killCount += killCount;
         this.saveCount += saveCount;
         this.investigateCount += investigateCount;
         this.winCount += isWin ? 1 : 0;
         this.loseCount += isWin ? 0 : 1;
+        if(isWin){
+            if(role.equals("Mafia")) mafiaCount +=1;
+            else {
+                if(role.equals("Police")) policeCount +=1;
+                else if(role.equals("Doctor")) doctorCount +=1;
+                citizenCount +=1;
+            }
+        }
     }
 
 }
