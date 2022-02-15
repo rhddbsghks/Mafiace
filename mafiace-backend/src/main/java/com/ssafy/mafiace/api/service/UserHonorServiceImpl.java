@@ -1,5 +1,8 @@
 package com.ssafy.mafiace.api.service;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.mafiace.db.entity.QUser;
+import com.ssafy.mafiace.db.entity.QUserHonor;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.entity.UserHonor;
 import com.ssafy.mafiace.db.entity.UserRecords;
@@ -21,6 +24,11 @@ public class UserHonorServiceImpl implements UserHonorService {
     @Autowired
     UserHonorRepositorySupport userHonorRepositorySupport;
 
+    @Autowired
+    JPAQueryFactory jpaQueryFactory;
+
+    private QUserHonor qUserHonor = QUserHonor.userHonor;
+
     public void saveHonor(UserRecords userRecords) {
         User user = userRecords.getUser();
         List<HonorName> achievedHonors = userHonorRepositorySupport.getUserHonor(user.getId())
@@ -31,12 +39,12 @@ public class UserHonorServiceImpl implements UserHonorService {
         if (userRecords.getWinCount() == 1) {
             newAchievedHonors.add(HonorName.firstWin);
         }
-        // 연승 (1~2)
-        if (userRecords.getWinnerStreak() == 3) {
-            newAchievedHonors.add(HonorName.win3Streak);
-        } else if (userRecords.getWinnerStreak() == 5) {
-            newAchievedHonors.add(HonorName.win5Streak);
-        }
+//        // 연승 (1~2)
+//        if (userRecords.getWinnerStreak() == 3) {
+//            newAchievedHonors.add(HonorName.win3Streak);
+//        } else if (userRecords.getWinnerStreak() == 5) {
+//            newAchievedHonors.add(HonorName.win5Streak);
+//        }
         // 10번 죽임 (3)
         if (userRecords.getKillCount() >= 10) {
             newAchievedHonors.add(HonorName.kill10);
@@ -74,8 +82,18 @@ public class UserHonorServiceImpl implements UserHonorService {
                 userHonorRepository.save(UserHonor.builder()
                     .honorNo(newAchievedHonor)
                     .user(user)
-                    .build());
+                    .build()
+                );
             }
         }
+    }
+
+    @Override
+    public List<HonorName> getUserHonorsByUserUniqueId(String userUniqueId) {
+        return this.jpaQueryFactory
+            .select(qUserHonor.honorNo)
+            .from(qUserHonor)
+            .where(qUserHonor.user.id.eq(userUniqueId))
+            .fetch();
     }
 }
