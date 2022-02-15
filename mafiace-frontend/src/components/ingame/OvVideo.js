@@ -65,6 +65,7 @@ export default class OpenViduVideoComponent extends Component {
         padding: "2em",
       },
     };
+
     this.handleClick = this.handleClick.bind(this);
     Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
