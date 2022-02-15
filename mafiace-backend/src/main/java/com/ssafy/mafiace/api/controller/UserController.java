@@ -107,6 +107,48 @@ public class UserController {
         }
     }
 
+    @PatchMapping("/update/password")
+    @ApiOperation(value = "비밀번호 변경", notes = "마이페이지에서 비밀번호를 변경한다.")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "비밀번호 변경 완료"),
+        @ApiResponse(code = 410, message = "비밀번호 변경에 실패하였습니다.")
+    })
+    public ResponseEntity<BaseResponseBody> updatePassword(
+        @RequestBody @ApiParam(value = "비밀번호 변경 요청 정보", required = true) UserRegisterPostReq registerReq) {
+        try {
+            User user = userService.updatePassword(registerReq);
+            if (user != null) {
+                return ResponseEntity.status(200).body(BaseResponseBody.of(200, "비밀번호 변경완료"));
+            } else {
+                return ResponseEntity.status(410)
+                    .body(BaseResponseBody.of(410, "올바르지 않은 비밀번호입니다."));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "비밀번호 변경에 실패하였습니다."));
+        }
+    }
+
+    @PatchMapping("/update/nickname")
+    @ApiOperation(value = "닉네임 변경", notes = "마이페이지에서 닉네임를 변경한다.")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "닉네임 변경 완료"),
+        @ApiResponse(code = 410, message = "닉네임 변경에 실패하였습니다.")
+    })
+    public ResponseEntity<BaseResponseBody> updateNickname(
+        @RequestBody @ApiParam(value = "닉네임 변경 요청 정보", required = true) UserRegisterPostReq registerReq) {
+        try {
+            User user = userService.updateNickname(registerReq);
+            if (user != null) {
+                return ResponseEntity.status(200).body(BaseResponseBody.of(200, "닉네임 변경완료"));
+            } else {
+                return ResponseEntity.status(410)
+                    .body(BaseResponseBody.of(410, "올바르지 않은 닉네임입니다."));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "닉네임 변경에 실패하였습니다."));
+        }
+    }
+
     @ApiOperation(value = "내 계정 정보", notes = "현재 로그인한 ID정보를 반환한다")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
@@ -243,7 +285,7 @@ public class UserController {
     public ResponseEntity<BaseResponseBody> deleteAccount
         (@RequestBody @ApiParam(value = "회원 탈퇴 신청 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
         User user = userService.getUserByUserId((deleteAccountReq.getUserId()));
-
+        System.err.println(deleteAccountReq.getUserId());
         if (user.isDeleted()) {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "이미 탈퇴 신청된 계정입니다."));
         }
