@@ -11,6 +11,7 @@ import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.GameLog;
 import com.ssafy.mafiace.db.entity.User;
+import com.ssafy.mafiace.db.entity.UserRecords;
 import com.ssafy.mafiace.game.Player;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -94,7 +95,7 @@ public class MafiaceManager {
             boolean isWin = isWin(player.getRole());
             GameLog savedGameLog = gameLogService.addGameLog(playTime, this.winTeam);
             userGameLogService.saveUserGameLog(savedGameLog, player.getUser(),playTime, player.getRole(),isWin);
-            userRecordsService.updateUserRecords(player, isWin, player.getRole());
+            UserRecords userRecords = userRecordsService.updateUserRecords(player, isWin, player.getRole());
         }
         this.room.setRoomStatus(false);
         gameService.setGameStatus(this.room);
