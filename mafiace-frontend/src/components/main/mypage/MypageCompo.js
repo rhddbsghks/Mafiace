@@ -87,27 +87,51 @@ const MypageCompo = () => {
                 >
                   ID
                 </Table.Cell>
-                <Table.Cell style={{ fontSize: "150%" }}>
+                <Table.Cell
+                  style={{
+                    fontSize: "150%",
+                    backgroundColor: "#CEBEE1",
+                    border: "none",
+                  }}
+                >
                   {form.userId}
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell
-                  style={{ fontSize: "150%", backgroundColor: "#D2D2FF" }}
+                  style={{
+                    fontSize: "150%",
+                    backgroundColor: "#D2D2FF",
+                  }}
                 >
                   Nick Name
                 </Table.Cell>
-                <Table.Cell style={{ fontSize: "150%" }}>
+                <Table.Cell
+                  style={{
+                    fontSize: "150%",
+                    backgroundColor: "#CEBEE1",
+                    border: "none",
+                  }}
+                >
                   {form.nickname}
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell
-                  style={{ fontSize: "150%", backgroundColor: "#D2D2FF" }}
+                  style={{
+                    fontSize: "150%",
+                    backgroundColor: "#D2D2FF",
+                  }}
                 >
                   E-mail
                 </Table.Cell>
-                <Table.Cell style={{ fontSize: "150%" }}>
+                <Table.Cell
+                  style={{
+                    fontSize: "150%",
+                    backgroundColor: "#CEBEE1",
+                    border: "none",
+                  }}
+                >
                   {form.email}
                 </Table.Cell>
               </Table.Row>

@@ -11,7 +11,7 @@ const Detail = ({ selectedData, handleCancel3 }) => {
       <Container text>
         <div
           className="bg-white rouded shadow-lg items-center"
-          style={{ marginTop: "10%" }}
+          style={{ marginTop: "10%", borderRadius: "10px" }}
         >
           <button
             onClick={onCancel}
@@ -57,7 +57,7 @@ const Detail = ({ selectedData, handleCancel3 }) => {
               >
                 {selectedData.postTime}
               </div>
-              <Form style={{ textAlign: "center" }}>
+              <Form style={{ textAlign: "center", marginBottom: "5%" }}>
                 <h3>Content</h3>
                 <Form.Group inline></Form.Group>
                 <Form.Field
