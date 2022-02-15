@@ -8,7 +8,7 @@ import Night from "../../components/ingame/Night";
 import Count321 from "../../components/ingame/Count321";
 import JobCard from "../../components/ingame/JobCard";
 import "./ingame-btn.css";
-import "./ingame-chat.css";
+// import "./ingame-chat.css";
 
 import * as React from "react";
 import axios from "axios";

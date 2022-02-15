@@ -42,6 +42,21 @@ const RulesCompo = () => {
               }}
             >
               Rules
+              <button
+                className="text-purple-500 hover:text-purple-700 cursor-pointer"
+                onClick={handleModal}
+                style={{
+                  fontSize: "50%",
+                  border: "none",
+                  background: "none",
+                  float: "right",
+                  marginRight: "5%",
+                  marginTop: "2%",
+                  fontWeight: "700",
+                }}
+              >
+                직업 모두 보기
+              </button>
             </Header>
 
             <Divider clearing />
@@ -89,20 +104,6 @@ const RulesCompo = () => {
                   <p style={{ float: "left", marginLeft: "10px" }}>
                     직업의 종류는 총 3개입니다.
                   </p>
-                  <button
-                    className="hover:text-blue-500 cursor-pointer"
-                    onClick={handleModal}
-                    style={{
-                      fontSize: "100%",
-                      border: "none",
-                      background: "none",
-                      float: "right+",
-                    }}
-                  >
-                    <strong style={{ color: "purple", float: "left" }}>
-                      [직업 모두 보기]
-                    </strong>
-                  </button>
                 </div>
               </Container>
               <Container

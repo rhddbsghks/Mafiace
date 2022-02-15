@@ -26,7 +26,7 @@ const MypageCompo = () => {
         }
       )
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         setLoading(false);
         setForm(res.data);
       })
@@ -38,9 +38,7 @@ const MypageCompo = () => {
         }
       });
     // console.log(form);
-  }, []);
 
-  useEffect(() => {
     axios
       .post(
         "/mafiace/api/user/userRecord",
@@ -53,13 +51,8 @@ const MypageCompo = () => {
         console.log(res.data);
       })
       .catch(({ response }) => {
-        if (response.status === 500) {
-          alert("만료된 토큰입니다.");
-          localStorage.removeItem("jwt");
-          window.location.href = "/";
-        }
+        console.log(response);
       });
-    // console.log(form);
   }, []);
 
   return (
