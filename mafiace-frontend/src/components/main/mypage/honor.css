@@ -66,6 +66,6 @@
   background-color: rgba(255, 255, 255, 0.7);
 }
 
-.honor-desc:hover {
+.badge-container:hover {
   cursor: pointer;
 }

@@ -48,6 +48,7 @@ const Honor = ({ honorName, get }) => {
         onMouseLeave={() => {
           setHover(false);
         }}
+        className="badge-container"
       >
         <div className={`badge ${get ? "get" : "not-yet"}`}>
           <img
