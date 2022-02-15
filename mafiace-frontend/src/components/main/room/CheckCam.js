@@ -20,16 +20,21 @@ const CheckCam = ({
   const [faceRecog, setFaceRecog] = useState();
 
   useEffect(() => {
-    Promise.all([
-      faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-      faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-      faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-      faceapi.nets.faceExpressionNet.loadFromUri("/models"),
-    ]).then(startVideo);
-  }, []);
+    if (checkCam) {
+      Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+        faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+        faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+        faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+      ]).then(startVideo);
+    }
+  }, [checkCam]);
 
   const startVideo = () => {
-    console.log(videoRef.current);
+    if (!videoRef.current) {
+      setTimeout(() => startVideo());
+      return;
+    }
     navigator.mediaDevices
       .getUserMedia({ video: true })
       .then(function (stream) {
@@ -46,8 +51,10 @@ const CheckCam = ({
       return;
     }
 
-    if (isOwner) handleCamOff();
-    else setIngame(!ingame);
+    if (isOwner) makeRoom();
+    else {
+      setIngame(!ingame);
+    }
 
     clearInterval(faceRecog);
   };
@@ -56,33 +63,36 @@ const CheckCam = ({
     setCheckCam(false);
     clearInterval(faceRecog);
 
-    if (isOwner) {
-      axios
-        .post("/mafiace/api/session/token", body, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
-        })
-        .then((res) => {
-          let newBody = body;
-          newBody.id = res.data.newSessionInfo.gameId;
-          newBody.password = "";
-          setGameInfo(newBody);
-          setToken(res.data.newSessionInfo.token);
-          setIngame(!ingame);
-        })
-        .catch(({ response }) => {
-          console.log(response);
-          if (response.status === 403) {
-            localStorage.removeItem("jwt");
-            window.location.reload();
-            alert("요청 권한이 없습니다");
-          }
-        });
-    } else {
-      axios.delete("/mafiace/api/session/user", {
+    if (!isOwner) leaveRoom();
+  };
+
+  const makeRoom = () => {
+    axios
+      .post("/mafiace/api/session/token", body, {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
-        params: { sessionName: gameId },
+      })
+      .then((res) => {
+        let newBody = body;
+        newBody.id = res.data.newSessionInfo.gameId;
+        newBody.password = "";
+        setGameInfo(newBody);
+        setToken(res.data.newSessionInfo.token);
+        setIngame(!ingame);
+      })
+      .catch(({ response }) => {
+        if (response.status === 403) {
+          localStorage.removeItem("jwt");
+          window.location.reload();
+          alert("요청 권한이 없습니다");
+        }
       });
-    }
+  };
+
+  const leaveRoom = () => {
+    axios.delete("/mafiace/api/session/user", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+      params: { sessionName: gameId },
+    });
   };
 
   const onPlay = async () => {
@@ -116,13 +126,11 @@ const CheckCam = ({
           faces.sad = faces.sad + faces.disgusted;
           faces.sad = faces.sad * 5;
 
-          console.log(detections[0].expressions);
           const valSort = Object.entries(detections[0].expressions).sort(
             ([, a], [, b]) => b - a
           );
           setTopEmotion(valSort[0][0]);
 
-          console.log(valSort[0][0]);
           setDetected(true);
         }
       }, 1000)
@@ -221,14 +229,13 @@ const CheckCam = ({
                 >
                   입장
                 </button>
-                {isOwner ? null : (
-                  <button
-                    className="create-room-btn cancel"
-                    onClick={() => handleCamOff()}
-                  >
-                    취소
-                  </button>
-                )}
+
+                <button
+                  className="create-room-btn cancel"
+                  onClick={() => handleCamOff()}
+                >
+                  취소
+                </button>
               </div>
             </div>
           </div>
