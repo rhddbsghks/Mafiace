@@ -42,21 +42,21 @@ const HeaderCompo = ({ getLogin }) => {
           style={{
             position: "absolute",
             top: "1%",
-            left: "10%",
+            left: "16%",
           }}
         >
-          <img src="img/Logo.png" alt="" width="40%" />
+          <img src="img/Logo.png" alt="" width="60%" />
           <div>
-            <span style={{ fontSize: "1.8em" }} className="gray">
+            <span style={{ fontSize: "2.3em" }} className="gray">
               Ma
             </span>
-            <span style={{ fontSize: "1.8em" }} className="color">
+            <span style={{ fontSize: "2.3em" }} className="color">
               f
             </span>
-            <span style={{ fontSize: "1.8em" }} className="gray">
+            <span style={{ fontSize: "2.3em" }} className="gray">
               i
             </span>
-            <span style={{ fontSize: "1.8em" }} className="color">
+            <span style={{ fontSize: "2.3em" }} className="color">
               ace
             </span>
           </div>

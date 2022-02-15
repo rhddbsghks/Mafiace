@@ -507,21 +507,21 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                 style={{
                   position: "absolute",
                   top: "1%",
-                  left: "10%",
+                  left: "5%",
                 }}
               >
-                <img src="img/Logo.png" alt="" width="40%" />
+                <img src="img/Logo.png" alt="" width="80%" />
                 <div>
-                  <span style={{ fontSize: "1.8em" }} className="gray">
+                  <span style={{ fontSize: "2.5em" }} className="gray">
                     Ma
                   </span>
-                  <span style={{ fontSize: "1.8em" }} className="color">
+                  <span style={{ fontSize: "2.5em" }} className="color">
                     f
                   </span>
-                  <span style={{ fontSize: "1.8em" }} className="gray">
+                  <span style={{ fontSize: "2.5em" }} className="gray">
                     i
                   </span>
-                  <span style={{ fontSize: "1.8em" }} className="color">
+                  <span style={{ fontSize: "2.5em" }} className="color">
                     ace
                   </span>
                 </div>
