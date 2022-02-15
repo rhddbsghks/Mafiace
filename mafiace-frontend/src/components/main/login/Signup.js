@@ -98,7 +98,7 @@ const Signup = ({ clickSignup }) => {
           setMsg("중복된 닉네임입니다.");
         });
     } else {
-      setMsg("닉네임은 2자 이상 10자 이하로 입력해야 합니다.");
+      setMsg("닉네임은 2자 이상 8자 이하로 입력해야 합니다.");
     }
   }, [values.nickname]);
   useEffect(() => {

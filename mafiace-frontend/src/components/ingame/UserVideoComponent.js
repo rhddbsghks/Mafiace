@@ -1,4 +1,3 @@
-import { Publisher } from "openvidu-browser";
 import React, { useEffect, useState } from "react";
 import OpenViduVideoComponent from "./OvVideo";
 import "./UserVideo.css";
@@ -8,6 +7,7 @@ const UserVideoComponent = ({
   sub,
   ownerId,
   myRole,
+  count,
   isAlive,
   deathList,
   setMyVote,
@@ -133,7 +133,7 @@ const UserVideoComponent = ({
           >
             {!checkAlive ? <span>사망</span> : null}
 
-            {isAlive && checkAlive && !isVoted && day ? (
+            {count > 1 && isAlive && checkAlive && !isVoted && day ? (
               <button onClick={clickVote} className="select-btn vote">
                 투표
               </button>

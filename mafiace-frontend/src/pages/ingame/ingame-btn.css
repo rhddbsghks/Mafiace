@@ -20,16 +20,13 @@
   position: relative;
   transition: 0.3s all ease-in-out;
 }
+
 .start {
   background: #8157a8d8;
 }
 
 .leave {
   background: #a85779d8;
-}
-
-.send {
-  background: rgb(27, 67, 241);
 }
 
 .ingame-btn:hover {

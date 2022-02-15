@@ -45,8 +45,6 @@ public class AuthController {
     public ResponseEntity<UserLoginPostRes> login(
         @ApiParam(value = "로그인 요청 정보", required = true) @RequestBody UserLoginPostReq loginReq) {
         User user = userService.getUserByUserId(loginReq.getUserId());
-        System.err.println("Userid : "+loginReq.getUserId());
-        System.err.println("password"+loginReq.getPassword());
 
         // 존재하지 않은 아이디인 경우, 404로 응답.
         if (user == null) {
@@ -54,8 +52,8 @@ public class AuthController {
                 .body(UserLoginPostRes.of(404, "존재하지 않는 계정입니다.", null));
         }else if(user.isDeleted()){
             System.err.println(" 2 0 4 Error : 탈퇴신청중인계정입니다.");
-            return ResponseEntity.status(214)
-                .body(UserLoginPostRes.of(214, "탈퇴 신청중인 계정입니다.", null));
+            return ResponseEntity.status(204)
+                .body(UserLoginPostRes.of(204, "탈퇴 신청중인 계정입니다.", null));
         }
 
         // 입력된 비밀번호와 디비에 저장된 유저의 암호화된 비밀번호가 같은지 확인
