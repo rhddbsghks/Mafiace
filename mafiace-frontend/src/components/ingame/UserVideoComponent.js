@@ -54,13 +54,13 @@ const UserVideoComponent = ({
         params: { userId: id },
       })
       .then(({ data }) => {
-        let idx = Math.ceil((data.message - 1000) / 100);
+        let idx = Math.floor((data.message - 1000) / 100);
         idx = idx < 0 ? 0 : idx;
         idx = idx > 19 ? 19 : idx;
         setTear(tearList[idx]);
       })
       .catch((err) => console.log(err));
-  });
+  }, []);
 
   useEffect(() => {
     for (var n in deathList) {

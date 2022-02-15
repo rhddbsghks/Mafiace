@@ -45,12 +45,9 @@ const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
         if (data.list.length !== 0) initPageNav(0);
       })
       .catch(({ response }) => {
-        console.log(response);
-        if (response.status === 403) {
-          localStorage.removeItem("jwt");
-          window.location.reload();
-          alert("요청 권한이 없습니다");
-        }
+        localStorage.removeItem("jwt");
+        window.location.reload();
+        alert("요청 권한이 없습니다");
       });
   };
 
