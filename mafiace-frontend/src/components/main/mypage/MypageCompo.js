@@ -12,13 +12,27 @@ import {
 } from "semantic-ui-react";
 import axios from "axios";
 import Loader from "../../common/Loader";
+import Honor from "./Honor";
 import jwt from "jwt-decode";
 
-// import jwt from "jwt-decode";
-
 const MypageCompo = () => {
+  const honors = [
+    "citizen3Play",
+    "police3Play",
+    "doctor3Play",
+    "mafia3Play",
+    "citizen10Play",
+    "police10Play",
+    "doctor10Play",
+    "mafia10Play",
+    "firstWin",
+    "investigate10",
+    "save10",
+    "kill10",
+  ];
   const [form, setForm] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [myHonors, setMyHonors] = useState(new Set());
   const [passwordModal, setPasswordModal] = useState(false);
   const [nicknameModal, setNicknameModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -49,9 +63,7 @@ const MypageCompo = () => {
           window.location.href = "/";
         }
       });
-  }, []);
 
-  useEffect(() => {
     axios
       .post(
         "/mafiace/api/user/userRecord",
@@ -60,11 +72,16 @@ const MypageCompo = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         }
       )
-      .then((res) => {
-        console.log(res.data);
+      .then(({ data }) => {
+        console.log(data);
+        setMyHonors(new Set(data.honors));
       })
       .catch(({ response }) => {
-        if (response.status === 500) {
+        if (
+          response.status === 500 ||
+          response.status === 401 ||
+          response.status === 403
+        ) {
           alert("만료된 토큰입니다.");
           localStorage.removeItem("jwt");
           window.location.href = "/";
@@ -502,9 +519,7 @@ const MypageCompo = () => {
               전적
             </Header>
           </Divider>
-          <br></br>
-
-          <Statistic.Group style={{ justifyContent: "center" }}>
+          <Statistic.Group style={{ justifyContent: "center", margin: "5%" }}>
             <Statistic>
               <Statistic.Value>22,321</Statistic.Value>
               <Statistic.Label
@@ -530,11 +545,29 @@ const MypageCompo = () => {
               </Statistic.Label>
             </Statistic>
           </Statistic.Group>
-          {/* <Segment.Group raised>
-      <Segment>승리</Segment>
-      <Segment>패배</Segment>
-      <Segment>+</Segment>
-    </Segment.Group> */}
+          <Divider horizontal>
+            <div style={{ fontSize: "3em" }}>
+              <Icon name="trophy" style={{ fontSize: "0.5em" }} />
+              업적
+            </div>
+          </Divider>
+
+          <section
+            style={{
+              width: "90%",
+              height: "700px",
+              position: "relative",
+              margin: "5% auto",
+              display: "flex",
+              justifyContent: "space-between",
+              alignContent: "space-between",
+              flexWrap: "wrap",
+            }}
+          >
+            {honors.map((item) => (
+              <Honor honorName={item} get={myHonors.has(item)} />
+            ))}
+          </section>
         </>
       )}
     </div>
