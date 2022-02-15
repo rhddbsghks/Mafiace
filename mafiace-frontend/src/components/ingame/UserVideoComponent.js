@@ -1,6 +1,7 @@
-import { Publisher } from "openvidu-browser";
 import React, { useEffect, useState } from "react";
 import OpenViduVideoComponent from "./OvVideo";
+import axios from "axios";
+
 import "./UserVideo.css";
 
 const UserVideoComponent = ({
@@ -21,7 +22,45 @@ const UserVideoComponent = ({
 }) => {
   const nickNameTag = JSON.parse(streamManager.stream.connection.data).nickName;
   const id = JSON.parse(streamManager.stream.connection.data).id;
+  const tearList = [
+    "bronze4",
+    "bronze3",
+    "bronze2",
+    "bronze1",
+    "silver4",
+    "silver3",
+    "silver2",
+    "silver1",
+    "gold4",
+    "gold3",
+    "gold2",
+    "gold1",
+    "platinum4",
+    "platinum3",
+    "platinum2",
+    "platinum1",
+    "rainbow4",
+    "rainbow3",
+    "rainbow2",
+    "rainbow1",
+  ];
   const [checkAlive, setCheckAlive] = useState(true);
+  const [tear, setTear] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("/mafiace/api/user/rating", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+        params: { userId: id },
+      })
+      .then(({ data }) => {
+        let idx = Math.floor((data.message - 1000) / 100);
+        idx = idx < 0 ? 0 : idx;
+        idx = idx > 19 ? 19 : idx;
+        setTear(tearList[idx]);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
     for (var n in deathList) {
@@ -61,7 +100,7 @@ const UserVideoComponent = ({
               style={{
                 width: "35px",
                 position: "relative",
-                top: "20px",
+                top: "10px",
                 left: "20px",
               }}
             />
@@ -73,12 +112,12 @@ const UserVideoComponent = ({
                 visibility: "hidden",
                 width: "35px",
                 position: "relative",
-                top: "20px",
+                top: "10px",
                 left: "20px",
               }}
             />
           )}
-          <OpenViduVideoComponent streamManager={streamManager} />
+          <OpenViduVideoComponent streamManager={streamManager} id={id} />
 
           {checkAlive ? (
             <div
@@ -89,6 +128,12 @@ const UserVideoComponent = ({
                 borderRadius: "2em",
               }}
             >
+              <img
+                src={`img/tear/${tear}.png`}
+                alt=""
+                style={{ position: "absolute" }}
+                width="15%"
+              />
               <span
                 style={{
                   margin: "auto",

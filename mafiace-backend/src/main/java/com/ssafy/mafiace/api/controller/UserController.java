@@ -56,6 +56,7 @@ public class UserController {
     @Autowired
     UserHonorService userHonorService;
 
+
     @Autowired
     private EmailService emailService;
 
@@ -196,10 +197,12 @@ public class UserController {
     })
     @GetMapping("/id")
     public ResponseEntity<UserInfoRes> findId(
-        @RequestBody UserRegisterPostReq registerReq) {
-        User user = userService.getUserByEmail(registerReq.getEmail());
+        String email) {
+        User user = userService.getUserByEmail(email);
+        System.out.println(email);
+
         if (user != null) {
-                return ResponseEntity.status(200).body(UserInfoRes.of(200, "아이디 찾기가 완료되었습니다.",user));
+            return ResponseEntity.status(200).body(UserInfoRes.of(200, "아이디 찾기가 완료되었습니다.", user));
         }
         return ResponseEntity.status(404)
             .body(UserInfoRes.of(404, "해당 계정이 존재하지 않습니다.", null));
@@ -239,7 +242,7 @@ public class UserController {
         @ApiResponse(code = 401, message = "비밀번호가 틀렸습니다.")
     })
     public ResponseEntity<BaseResponseBody> deleteAccount
-        (@RequestBody @ApiParam(value="회원 탈퇴 신청 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
+        (@RequestBody @ApiParam(value = "회원 탈퇴 신청 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
         User user = userService.getUserByUserId((deleteAccountReq.getUserId()));
 
         if (user.isDeleted()) {
@@ -262,7 +265,7 @@ public class UserController {
         @ApiResponse(code = 401, message = "비밀번호가 틀렸습니다.")
     })
     public ResponseEntity<BaseResponseBody> restoreAccount
-        (@RequestBody @ApiParam(value="회원 탈퇴 취소 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
+        (@RequestBody @ApiParam(value = "회원 탈퇴 취소 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
         User user = userService.getUserByUserId((deleteAccountReq.getUserId()));
 
         if (!user.isDeleted()) {
@@ -275,5 +278,21 @@ public class UserController {
         }
 
         return ResponseEntity.status(401).body(BaseResponseBody.of(401, "비밀번호가 틀렸습니다."));
+    }
+
+    @ApiOperation(value = "레이팅 점수", notes = "내 레이팅 점수를 반환한다.")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "success"),
+        @ApiResponse(code = 409, message = "failed"),
+    })
+    @GetMapping("/rating")
+    public ResponseEntity<BaseResponseBody> getMyRating(
+        @ApiParam(value = "나의 Rating", required = true) String userId) {
+        User user = userService.getUserByUserId(userId);
+        int Rating = userRecordsService.getUserRecords(user.getId()).getRating();
+        if (user == null) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, null));
+        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, String.valueOf(Rating)));
     }
 }

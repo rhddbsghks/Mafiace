@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.mafiace.db.entity.QUser;
 import com.ssafy.mafiace.db.entity.QUserHonor;
 import com.ssafy.mafiace.db.entity.UserHonor;
+import com.ssafy.mafiace.game.honor.HonorName;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,10 +18,11 @@ public class UserHonorRepositorySupport {
     private QUser qUser = QUser.user;
     private QUserHonor qUserHonor = QUserHonor.userHonor;
 
-    public List<UserHonor> getUserHonor(String id) {
-        return this.jpaQueryFactory.selectFrom(qUserHonor)
-            .join(qUser).on(qUser.id.eq(qUserHonor.user.id))
-            .fetchJoin()
+    public List<HonorName> getUserHonorsByUserUniqueId(String userUniqueId) {
+        return this.jpaQueryFactory
+            .select(qUserHonor.honorNo)
+            .from(qUserHonor)
+            .where(qUserHonor.user.id.eq(userUniqueId))
             .fetch();
     }
 

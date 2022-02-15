@@ -36,6 +36,7 @@ public class UserGameLogRepositorySupport {
     public List<UserGameLog> getUserGameLogs(String id){
         return this.jpaQueryFactory.selectFrom(qUserGameLog)
             .where(qUserGameLog.user.id.eq(id))
+            .limit(10)
             .fetch();
     }
 
