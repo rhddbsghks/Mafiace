@@ -118,7 +118,11 @@ const UserVideoComponent = ({
               }}
             />
           )}
-          <OpenViduVideoComponent streamManager={streamManager} id={id} />
+          <OpenViduVideoComponent
+            streamManager={streamManager}
+            id={id}
+            checkAlive={checkAlive}
+          />
 
           {checkAlive ? (
             <div

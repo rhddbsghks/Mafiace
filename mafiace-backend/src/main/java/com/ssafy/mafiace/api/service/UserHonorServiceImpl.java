@@ -64,8 +64,15 @@ public class UserHonorServiceImpl implements UserHonorService {
         if (!achievedHonors.contains(HonorName.police3Play) && userRecords.getPoliceCount() >= 3) {
             newAchievedHonors.add(HonorName.police3Play);
         }
-        if (!achievedHonors.contains(HonorName.police10Play) &&  userRecords.getMafiaCount() >= 10) {
+        if (!achievedHonors.contains(HonorName.police10Play) &&  userRecords.getPoliceCount() >= 10) {
             newAchievedHonors.add(HonorName.police10Play);
+        }
+        // 시민 플레이 횟수 (12~13)
+        if (!achievedHonors.contains(HonorName.citizen3Play) && userRecords.getCitizenCount() >= 3) {
+            newAchievedHonors.add(HonorName.citizen3Play);
+        }
+        if (!achievedHonors.contains(HonorName.citizen10Play) &&  userRecords.getCitizenCount() >= 10) {
+            newAchievedHonors.add(HonorName.citizen10Play);
         }
 
         // 업적 저장
