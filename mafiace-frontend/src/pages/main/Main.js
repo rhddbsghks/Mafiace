@@ -7,7 +7,6 @@ import Notice from "./Notice";
 import Rules from "./Rules";
 import Mypage from "./Mypage";
 import Ranking from "./Ranking";
-import Chat from "./Chat";
 import NotFound from "../../components/common/NotFound";
 
 const Main = ({ setIngame, ingame, setGameInfo, setToken }) => {
@@ -56,7 +55,6 @@ const Main = ({ setIngame, ingame, setGameInfo, setToken }) => {
                 <Route path="/rules" element={<Rules />} />
                 <Route path="/mypage" element={<Mypage />} />
                 <Route path="/ranking" element={<Ranking />} />
-                <Route path="/chat" element={<Chat />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>

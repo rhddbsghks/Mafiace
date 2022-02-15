@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Message {
-    private String name;
+    private String nickname;
     private String message;
-    private String to;
+    private String check;
 }
