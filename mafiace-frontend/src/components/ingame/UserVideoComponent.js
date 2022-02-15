@@ -19,6 +19,7 @@ const UserVideoComponent = ({
   vote,
   heal,
   investigate,
+  myVote,
 }) => {
   const nickNameTag = JSON.parse(streamManager.stream.connection.data).nickName;
   const id = JSON.parse(streamManager.stream.connection.data).id;
@@ -98,10 +99,10 @@ const UserVideoComponent = ({
               src={`/img/crown.png`}
               alt=""
               style={{
-                width: "35px",
+                width: "10%",
                 position: "relative",
                 top: "10px",
-                left: "20px",
+                left: "10%",
               }}
             />
           ) : (
@@ -122,7 +123,7 @@ const UserVideoComponent = ({
           {checkAlive ? (
             <div
               style={{
-                width: "50%",
+                width: "70%",
                 height: "15%",
                 display: "flex",
                 borderRadius: "2em",
@@ -131,8 +132,8 @@ const UserVideoComponent = ({
               <img
                 src={`img/tear/${tear}.png`}
                 alt=""
-                style={{ position: "absolute" }}
-                width="15%"
+                style={{ position: "absolute", left: "7%" }}
+                width="10%"
               />
               <span
                 style={{
@@ -170,9 +171,8 @@ const UserVideoComponent = ({
             style={{
               background: "none",
               bottom: "0%",
-              width: "35%",
+              width: "100%",
               height: "15%",
-              left: "5%",
               textAlign: "center",
             }}
           >
@@ -182,6 +182,10 @@ const UserVideoComponent = ({
               <button onClick={clickVote} className="select-btn vote">
                 투표
               </button>
+            ) : null}
+
+            {isVoted && myVote === nickNameTag && day ? (
+              <div className="selected vote">투표 완료</div>
             ) : null}
 
             {sub &&
@@ -195,6 +199,13 @@ const UserVideoComponent = ({
               </button>
             ) : null}
 
+            {myRole === "Mafia" &&
+            isVoted &&
+            myVote === nickNameTag &&
+            night ? (
+              <div className="selected kill">제거 시도</div>
+            ) : null}
+
             {isAlive &&
             checkAlive &&
             myRole === "Doctor" &&
@@ -203,6 +214,13 @@ const UserVideoComponent = ({
               <button onClick={clickHeal} className="select-btn heal">
                 치료
               </button>
+            ) : null}
+
+            {myRole === "Doctor" &&
+            isVoted &&
+            myVote === nickNameTag &&
+            night ? (
+              <div className="selected heal">치료 완료</div>
             ) : null}
 
             {sub &&
@@ -214,6 +232,13 @@ const UserVideoComponent = ({
               <button onClick={clickInvestigate} className="select-btn invest">
                 수사
               </button>
+            ) : null}
+
+            {myRole === "Police" &&
+            isVoted &&
+            myVote === nickNameTag &&
+            night ? (
+              <div className="selected invest">수사 완료</div>
             ) : null}
           </div>
         </div>
