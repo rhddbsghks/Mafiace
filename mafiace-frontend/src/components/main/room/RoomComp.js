@@ -193,7 +193,7 @@ const RoomComp = ({
               {game.active ? (
                 <span style={{ color: "#7f7c824d" }}>PLAYING</span>
               ) : (
-                <span style={{ color: "#0055ff" }}>WAITING</span>
+                <span style={{ color: "#391bc0ea" }}>WAITING</span>
               )}
             </div>
             <div>
