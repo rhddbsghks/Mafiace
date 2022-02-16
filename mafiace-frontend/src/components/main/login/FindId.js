@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Button, Form, Grid, Segment } from "semantic-ui-react";
 import styles from "./styles.module.css";
 import axios from "axios";
