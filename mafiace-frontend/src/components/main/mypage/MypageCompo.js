@@ -5,6 +5,7 @@ import {
   Header,
   Icon,
   Table,
+  Container,
   Statistic,
   Image,
   Form,
@@ -16,6 +17,12 @@ import Honor from "./Honor";
 import jwt from "jwt-decode";
 
 const MypageCompo = () => {
+  const korJobName = {
+    Police: "경찰",
+    Doctor: "의사",
+    Citizen: "시민",
+    Mafia: "마피아",
+  };
   const honors = [
     "citizen3Play",
     "police3Play",
@@ -32,6 +39,8 @@ const MypageCompo = () => {
   ];
   const [form, setForm] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [winlose, setWinlose] = useState([]);
+  const [latestLog, setLatestlog] = useState([]);
   const [myHonors, setMyHonors] = useState(new Set());
   const [passwordModal, setPasswordModal] = useState(false);
   const [nicknameModal, setNicknameModal] = useState(false);
@@ -62,6 +71,7 @@ const MypageCompo = () => {
           window.location.href = "/";
         }
       });
+    // console.log(form);
 
     axios
       .post(
@@ -74,8 +84,11 @@ const MypageCompo = () => {
       .then(({ data }) => {
         console.log(data);
         setMyHonors(new Set(data.honors));
+        setLatestlog(data.records);
+        setWinlose(data.userRecords);
       })
       .catch(({ response }) => {
+        console.log(response);
         if (
           response.status === 500 ||
           response.status === 401 ||
@@ -144,6 +157,7 @@ const MypageCompo = () => {
         } else if (response.status === 410) {
           alert("닉네임 변경에 실패하였습니다.");
         }
+        console.log(response);
       });
   };
   const deleteUser = () => {
@@ -176,7 +190,6 @@ const MypageCompo = () => {
         }
       });
   };
-
   return (
     <div style={{ width: "95%", margin: "auto" }}>
       {loading ? (
@@ -184,77 +197,112 @@ const MypageCompo = () => {
       ) : (
         <>
           <Divider horizontal>
-            <Header as="h4">
-              <Icon name="tag" />
+            <div style={{ fontSize: "3em" }}>
+              <Icon name="tag" style={{ fontSize: "0.5em" }} />
               회원 정보
-            </Header>
+            </div>
           </Divider>
-          <br></br>
           <Image src="" size="small" />
-          <Table definition style={{ width: "70%", marginLeft: "15%" }}>
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell
-                  style={{
-                    fontSize: "150%",
-                    width: "30%",
-                    backgroundColor: "#D2D2FF",
-                  }}
-                >
-                  ID
-                </Table.Cell>
-                <Table.Cell
-                  style={{
-                    fontSize: "150%",
-                    backgroundColor: "#CEBEE1",
-                    border: "none",
-                  }}
-                >
-                  {form.userId}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell
-                  style={{
-                    fontSize: "150%",
-                    backgroundColor: "#D2D2FF",
-                  }}
-                >
-                  닉네임
-                </Table.Cell>
-                <Table.Cell
-                  style={{
-                    fontSize: "150%",
-                    backgroundColor: "#CEBEE1",
-                    border: "none",
-                  }}
-                >
-                  {form.nickname}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell
-                  style={{
-                    fontSize: "150%",
-                    backgroundColor: "#D2D2FF",
-                  }}
-                >
-                  E-mail
-                </Table.Cell>
-                <Table.Cell
-                  style={{
-                    fontSize: "150%",
-                    backgroundColor: "#CEBEE1",
-                    border: "none",
-                  }}
-                >
-                  {form.email}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row></Table.Row>
-            </Table.Body>
-          </Table>
-          <div style={{ textAlign: "center" }}>
+          <div
+            style={{
+              textAlign: "left",
+              margin: "5%",
+            }}
+          >
+            <div style={{ display: "flex" }}>
+              <Container
+                aria-hidden="true"
+                style={{
+                  width: "20%",
+                  margin: "auto",
+                  fontSize: "4em",
+                  textAlign: "center",
+                }}
+              >
+                아이디
+              </Container>
+              <Container
+                style={{
+                  backgroundColor: "#F4EBFC",
+                  // border: "10px solid #D5C2EE",
+                  borderRadius: "10px",
+                  marginBottom: "1%",
+                  fontSize: "5em",
+                  width: "70%",
+                  textAlign: "center",
+                }}
+              >
+                <p style={{ marginLeft: "10px" }}>{form.userId}</p>
+              </Container>
+            </div>
+
+            <div style={{ display: "flex" }}>
+              <Container
+                aria-hidden="true"
+                style={{
+                  width: "20%",
+                  margin: "auto",
+                  fontSize: "4em",
+                  textAlign: "center",
+                }}
+              >
+                닉네임
+              </Container>
+              <Container
+                style={{
+                  backgroundColor: "#F4EBFC",
+                  // border: "10px solid #D5C2EE",
+                  borderRadius: "10px",
+                  marginBottom: "1%",
+                  width: "70%",
+                  fontSize: "5em",
+                  textAlign: "center",
+                }}
+              >
+                <div>
+                  <p style={{ marginLeft: "10px" }}>{form.nickname}</p>
+                </div>
+              </Container>
+            </div>
+
+            <div style={{ display: "flex" }}>
+              <Container
+                aria-hidden="true"
+                style={{
+                  width: "20%",
+                  margin: "auto",
+                  fontSize: "4em",
+                  textAlign: "center",
+                }}
+              >
+                이메일
+              </Container>
+
+              <Container
+                style={{
+                  backgroundColor: "#F4EBFC",
+                  borderRadius: "10px",
+                  marginBottom: "1%",
+                  width: "70%",
+                  fontSize: "5em",
+                  textAlign: "center",
+                }}
+              >
+                <div>
+                  <p style={{ marginLeft: "10px" }}>{form.email}</p>
+                </div>
+              </Container>
+            </div>
+          </div>
+
+          <div
+            style={{
+              width: "60%",
+              display: "flex",
+              justifyContent: "space-around",
+              margin: "auto",
+            }}
+          >
             <Modal
               dimmer="inverted"
               size="tiny"
@@ -274,7 +322,7 @@ const MypageCompo = () => {
               onClose={() => setPasswordModal(false)}
               onOpen={() => setPasswordModal(true)}
               className="make-body"
-              style={{ height: "550px" }}
+              style={{ height: "400px" }}
             >
               <div className="room-make-box" style={{ height: "100%" }}>
                 <Form unstackable style={{ height: "100%" }}>
@@ -368,7 +416,7 @@ const MypageCompo = () => {
               onClose={() => setNicknameModal(false)}
               onOpen={() => setNicknameModal(true)}
               className="make-body"
-              style={{ height: "550px" }}
+              style={{ height: "350px" }}
             >
               <div className="room-make-box" style={{ height: "100%" }}>
                 <Form unstackable style={{ height: "100%" }}>
@@ -447,7 +495,7 @@ const MypageCompo = () => {
               onClose={() => setDeleteModal(false)}
               onOpen={() => setDeleteModal(true)}
               className="make-body"
-              style={{ height: "550px" }}
+              style={{ height: "350px" }}
             >
               <div className="room-make-box" style={{ height: "100%" }}>
                 <Form unstackable style={{ height: "100%" }}>
@@ -460,7 +508,7 @@ const MypageCompo = () => {
                     }}
                   >
                     <div className="room-make-box-title">
-                      비밀번호를 입력해주십시오.
+                      비밀번호를 입력해주세요.
                     </div>
                     <div
                       style={{
@@ -511,47 +559,143 @@ const MypageCompo = () => {
             </Modal>
           </div>
 
-          <br></br>
-
-          <Divider horizontal>
-            <Header as="h4">
-              <Icon name="bar chart" />
+          <Divider horizontal style={{ marginTop: "10%" }}>
+            <div style={{ fontSize: "3em" }}>
+              <Icon name="bar chart" style={{ fontSize: "0.5em" }} />
               전적
-            </Header>
+            </div>
           </Divider>
-          <Statistic.Group style={{ justifyContent: "center", margin: "5%" }}>
-            <Statistic>
-              <Statistic.Value>22,321</Statistic.Value>
-              <Statistic.Label
-                style={{ color: "blue", fontSize: "25px", marginTop: "10%" }}
+
+          <div style={{ margin: "auto" }}>
+            <Statistic.Group style={{ justifyContent: "center" }}>
+              <Statistic>
+                <Statistic.Value style={{ fontSize: "6em !important" }}>
+                  {winlose.winCount}
+                </Statistic.Value>
+                <Statistic.Label
+                  style={{
+                    color: "#b465fdd8",
+                    fontSize: "30px",
+                    marginTop: "10%",
+                  }}
+                >
+                  Win
+                </Statistic.Label>
+              </Statistic>
+              <Statistic>
+                <Statistic.Value style={{ fontSize: "6em !important" }}>
+                  {winlose.loseCount}
+                </Statistic.Value>
+                <Statistic.Label
+                  style={{
+                    color: "#d36d97d8",
+                    fontSize: "30px",
+                    marginTop: "10%",
+                  }}
+                >
+                  Lose
+                </Statistic.Label>
+              </Statistic>
+              <Statistic>
+                <Statistic.Value style={{ fontSize: "6em !important" }}>
+                  {winlose.loseCount + winlose.winCount}
+                </Statistic.Value>
+                <Statistic.Label
+                  style={{
+                    color: "#7f7c8293",
+                    fontSize: "30px",
+                    marginTop: "10%",
+                  }}
+                >
+                  Total
+                </Statistic.Label>
+              </Statistic>
+            </Statistic.Group>
+
+            <div style={{ textAlign: "center", marginTop: "5%" }}>
+              <Icon name="chart line" />
+              <span style={{ fontSize: "2em" }}> 최근 10게임</span>
+            </div>
+
+            <Table>
+              <thead
+                style={{ textAlign: "center", backgroundColor: "purple-200" }}
               >
-                Win
-              </Statistic.Label>
-            </Statistic>
-            <Statistic>
-              <Statistic.Value>31,200</Statistic.Value>
-              <Statistic.Label
-                style={{ color: "red", fontSize: "25px", marginTop: "10%" }}
-              >
-                Lose
-              </Statistic.Label>
-            </Statistic>
-            <Statistic>
-              <Statistic.Value>60,020</Statistic.Value>
-              <Statistic.Label
-                style={{ color: "#006400", fontSize: "30px", marginTop: "10%" }}
-              >
-                Total
-              </Statistic.Label>
-            </Statistic>
-          </Statistic.Group>
-          <Divider horizontal>
+                <tr>
+                  <th style={{ fontSize: "2rem" }}>Job</th>
+                  <th style={{ fontSize: "2rem" }}>Result</th>
+                  <th style={{ fontSize: "2rem" }}>Play Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {latestLog.map((item) => {
+                  return (
+                    <tr
+                      className="bg-white border-2 border-gray-200"
+                      style={{
+                        textAlign: "center",
+                        borderBottom: "1px dotted gray",
+                      }}
+                    >
+                      <td
+                        className="px-4 py-3"
+                        style={{
+                          textAlign: "center",
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: "100px",
+                            height: "50px",
+                            margin: "1% auto",
+                          }}
+                        >
+                          <img
+                            src={`img/${item.role}.png`}
+                            alt=""
+                            height="100%"
+                          />
+                        </div>
+
+                        <span
+                          className="hover:text-blue-500 cursor-pointer"
+                          style={{ fontSize: "2em" }}
+                        >
+                          {korJobName[item.role]}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        {item.win === true ? (
+                          <p
+                            className="hover:text-blue-500 cursor-pointer"
+                            style={{ fontSize: "4em", color: "#b465fdd8" }}
+                          >
+                            Win
+                          </p>
+                        ) : (
+                          <p
+                            className="hover:text-blue-500 cursor-pointer"
+                            style={{ fontSize: "4em", color: "#d36d97d8" }}
+                          >
+                            Lose
+                          </p>
+                        )}
+                      </td>
+                      <td className="px-4 py-3" style={{ fontSize: "3em" }}>
+                        {item.playTime}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </div>
+          <Divider horizontal style={{ marginTop: "10%" }}>
             <div style={{ fontSize: "3em" }}>
               <Icon name="trophy" style={{ fontSize: "0.5em" }} />
               업적
             </div>
           </Divider>
-
           <section
             style={{
               width: "90%",
