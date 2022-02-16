@@ -269,7 +269,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
 
   const clickStart = () => {
     console.log("====================START======================");
-    if (subscribers.length < 0) {
+    if (subscribers.length < 3) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
       setStartButton(false);
@@ -721,8 +721,8 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   </div>
                 </div>
               ))}
-              {/* {!isAlive ? ( */}
-              {isAlive ? (
+              {!isAlive ? (
+                // {isAlive ? (
                 <div className="chat-container">
                   <div className="chatBtn">
                     {" "}

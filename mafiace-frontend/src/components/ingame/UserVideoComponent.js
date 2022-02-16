@@ -58,13 +58,15 @@ const UserVideoComponent = ({
       setIsBlur(false);
       return;
     }
+    let isCitizen = true;
+
     mafiaTeam.forEach((mafiaNick) => {
-      console.log(mafiaNick);
-      if (mafiaNick !== nickNameTag) {
-        setIsBlur(true);
-        return;
+      if (mafiaNick === nickNameTag) {
+        isCitizen = false;
       }
     });
+
+    setIsBlur(isCitizen);
   }, [night]);
 
   useEffect(() => {
