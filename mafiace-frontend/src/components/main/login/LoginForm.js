@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Divider, Form, Grid, Segment, Popup } from "semantic-ui-react";
+import { Form, Grid, Segment, Popup } from "semantic-ui-react";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
 import Signup from "./Signup";
@@ -44,14 +44,17 @@ const LoginForm = ({ getLogin }) => {
         headers: { "Content-Type": `application/json` },
       })
       .then((res) => {
-        // console.log(res.data);
-        // console.log(jwt(res.data.accessToken));
-        localStorage.setItem("jwt", res.data.accessToken);
-        getLogin(true);
-        clearValues();
+        if (res.status === 204) {
+          alert(
+            "탈퇴처리중인 계정입니다.\nmafiassafy@gmail.com로 문의해주세요."
+          );
+        } else {
+          localStorage.setItem("jwt", res.data.accessToken);
+          getLogin(true);
+          clearValues();
+        }
       })
       .catch((err) => {
-        // console.log(err.response.data);
         if (err.response.data.status === 404) {
           setMsg("존재하지 않는 ID 입니다.");
           setIdOpen(true);
@@ -95,7 +98,6 @@ const LoginForm = ({ getLogin }) => {
     <div>
       {up && id && pw ? (
         <a.div style={{ opacity: opacity.to((o) => 1 - o), transform }}>
-          <h1></h1>
           <Segment placeholder className={styles["home-bottom"]}>
             <Grid
               columns={2}

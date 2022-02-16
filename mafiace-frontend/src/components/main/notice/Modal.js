@@ -61,7 +61,7 @@ const Modal = ({ selectedData, handleCancel, handleEditSubmit }) => {
               onClick={onSubmitEdit}
               // onClick={handleSubmit}
               className="bg-purple-300 hover:bg-purple-500 py-2 text-center px-10 md:px-12 md:py-3 text-white rounded text-xl md:text-base mt-4"
-              style={{ margin: "5%" }}
+              style={{ margin: "5%", border: "none" }}
             >
               저장
             </button>
@@ -69,6 +69,7 @@ const Modal = ({ selectedData, handleCancel, handleEditSubmit }) => {
             <button
               onClick={onCancel}
               className="bg-purple-300 hover:bg-purple-500 py-2 text-center px-10 md:px-12 md:py-3 text-white rounded text-xl md:text-base mt-4"
+              style={{ border: "none" }}
             >
               취소
             </button>

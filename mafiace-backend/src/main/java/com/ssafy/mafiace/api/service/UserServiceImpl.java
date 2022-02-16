@@ -93,14 +93,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UserRegisterPostReq registerReq) {
-        if (registerReq.getPassword().length() < 8 || registerReq.getPassword().length() > 12) {
-            return null;
-        }
         User user = getUserByUserId(registerReq.getUserId());
 
         return userRepository.save(
             user.modifyUser(passwordEncoder.encode(registerReq.getPassword()),
                 registerReq.getEmail(), registerReq.getNickname()));
+    }
+
+    @Override
+    public User updatePassword(UserRegisterPostReq registerReq) {
+        Optional<User> opt = userRepository.findByUserId(registerReq.getUserId());
+        if (opt.isPresent() && passwordEncoder.matches(registerReq.getBeforePassword(), opt.get().getPassword())) {
+            return userRepository.save(opt.get().modifyPassword(passwordEncoder.encode(registerReq.getPassword())));
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -111,6 +118,16 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(
             user.modifyUser(passwordEncoder.encode(tmpPassword), user.getEmail(),
                 user.getNickname()));
+    }
+
+    @Override
+    public User updateNickname(UserRegisterPostReq registerReq) {
+        Optional<User> opt = userRepository.findByUserId(registerReq.getUserId());
+        if (opt.isPresent()) {
+            return userRepository.save(opt.get().modifyNickname(registerReq.getNickname()));
+        } else {
+            return null;
+        }
     }
 
     @Override

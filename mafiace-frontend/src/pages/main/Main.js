@@ -6,7 +6,7 @@ import Room from "./Room";
 import Notice from "./Notice";
 import Rules from "./Rules";
 import Mypage from "./Mypage";
-import Ranking from "./Ranking";
+import Record from "./Record";
 import NotFound from "../../components/common/NotFound";
 
 const Main = ({ setIngame, ingame, setGameInfo, setToken }) => {
@@ -53,8 +53,8 @@ const Main = ({ setIngame, ingame, setGameInfo, setToken }) => {
                 />
                 <Route path="/notice" element={<Notice />} />
                 <Route path="/rules" element={<Rules />} />
+                <Route path="/ranking" element={<Record />} />
                 <Route path="/mypage" element={<Mypage />} />
-                <Route path="/ranking" element={<Ranking />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>

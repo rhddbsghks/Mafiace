@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { Button, Divider, Form, Grid, Segment } from "semantic-ui-react";
+import { Button, Form, Grid, Segment } from "semantic-ui-react";
 import styles from "./styles.module.css";
 import Loader from "../../common/Loader";
 
