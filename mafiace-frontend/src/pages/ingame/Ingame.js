@@ -15,6 +15,7 @@ import "./ingame-btn.css";
 import * as React from "react";
 import axios from "axios";
 import jwt from "jwt-decode";
+import ResultCard from "../../components/ingame/ResultCard";
 
 const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   window.onbeforeunload = () => {
@@ -38,6 +39,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [count321, setCount321] = useState(false);
   const [openJobCard, setopenJobCard] = useState(false);
   const [openInvestCard, setopenInvestCard] = useState(false);
+  const [openResultCard, setopenResultCard] = useState(false);
   const [isMafia, setIsMafia] = useState(false);
   const [chat, setChat] = useState(false);
 
@@ -58,7 +60,9 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [myVote, setMyVote] = useState("default"); // 내가 투표한 사람의 닉네임
   const [deathList, setDeathList] = useState([]); // 죽은 사람들 닉네임
   const [isAlive, setIsAlive] = useState("alive"); // 나의 상태
+  const [isWin, setIsWin] = useState("false");
   const [mafiaTeam, setMafiaTeam] = useState(); //마피아 닉네임 목록
+  const [whoIsMafia, setWhoIsMafia] = useState("");
 
   // 내 정보
   const [userId, setUserId] = useState("");
@@ -352,6 +356,13 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
         myRole={myRole}
         mafiaTeam={mafiaTeam}
       />
+      <ResultCard
+        openResultCard={openResultCard}
+        setopenResultCard={setopenResultCard}
+        whoIsMafia={whoIsMafia}
+        isWin={isWin}
+        myRole={myRole}
+      />
       {loading ? (
         <Loader msg="입장 중..." />
       ) : (
@@ -403,14 +414,16 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   setIsVoted(false);
                   setToggle(!toggle);
                   setTime(15);
-                  if (myRole === "Mafia") {
-                    setStateMessage("처리할 사람을 투표해주세요.");
+                  if (!isAlive) {
+                    setStateMessage("죽은 자는 말이 없죠...🤐");
+                  } else if (myRole === "Mafia") {
+                    setStateMessage("처리할 사람을 투표해주세요.☠");
                   } else if (myRole === "Police") {
-                    setStateMessage("용의자 한 명을 조사해보세요.");
+                    setStateMessage("용의자 한 명을 조사해보세요.👮‍♀️");
                   } else if (myRole === "Doctor") {
-                    setStateMessage("위급 환자 한 명을 진료해주세요.");
+                    setStateMessage("위급 환자 한 명을 진료해주세요.👨‍⚕️");
                   } else {
-                    setStateMessage("걱정 가득한 채로 잠이 들었습니다.");
+                    setStateMessage("걱정 가득한 채로 잠이 들었습니다.😴");
                   }
                 }, 3000);
               } else if (msg.check === "role") {
@@ -452,11 +465,22 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
               } else if (msg.check === "nobody") {
                 setStateMessage("아무 일도 일어나지 않았습니다.");
               } else if (msg.end === "end") {
+                setWhoIsMafia(msg.mafia);
+
                 if (msg.winTeam === "Mafia") {
-                  alert("마피아팀 승리!!! 마피아는 " + msg.mafia + "였습니다!");
+                  if (myRole === "Mafia") {
+                    setIsWin(true);
+                  } else {
+                    setIsWin(false);
+                  }
                 } else {
-                  alert("시민팀 승리!!! 마피아는 " + msg.mafia + "였습니다!");
+                  if (myRole !== "Mafia") {
+                    setIsWin(true);
+                  } else {
+                    setIsWin(false);
+                  }
                 }
+                setopenResultCard(true);
                 endGame();
               } else if (msg.end === "toDay") {
                 if (gameInfo.ownerId === userId) {
@@ -661,6 +685,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                     night={night}
                     heal={heal}
                     myVote={myVote}
+                    count={count}
                   />
                 </div>
               ) : null}
@@ -688,6 +713,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                       heal={heal}
                       investigate={investigate}
                       myVote={myVote}
+                      count={count}
                     />
                   </div>
                 </div>

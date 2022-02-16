@@ -62,7 +62,7 @@ const UserVideoComponent = ({
         setTear(tearList[idx]);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [streamManager]);
 
   useEffect(() => {
     for (var n in deathList) {

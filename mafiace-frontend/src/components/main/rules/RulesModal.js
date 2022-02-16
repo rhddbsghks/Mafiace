@@ -48,9 +48,9 @@ const RulesModal = ({ handleCancel }) => {
                   <h2 style={{ fontSize: "50px" }}>마피아</h2>
                   <hr style={{ color: "red" }}></hr>
                   <p style={{ fontSize: "30px" }}>
-                    밤마다 한 명을 선택해 죽일 수 있다.<br></br>
-                    마피아 동료가 위기에 처했을 때 동료를 죽일 수 있다.<br></br>
-                    마피아가 죽이더라도 의사가 살리면 시민을 살 수 있다.
+                    밤마다 한 명을 선택해 죽일 수 있습니다.<br></br>
+                    동료가 있다면 선택이 같아야 죽일 수 있습니다.<br></br>
+                    처리 시도를 하더라도 의사가 살리면 시민은 죽지 않습니다.
                   </p>
                 </div>
               </div>
@@ -59,11 +59,9 @@ const RulesModal = ({ handleCancel }) => {
                   <h2 style={{ fontSize: "50px" }}>경찰</h2>
                   <hr style={{ color: "red" }}></hr>
                   <p>
-                    밤마다 1명을 선택하여 마피아인지 아닌지 확인할 수 있다.
+                    밤마다 1명을 선택하여 신분을 조사합니다.
                     <br></br>
-                    1명을 선택했을 경우 특수 직업은 알 수 없다.
-                    <br></br>
-                    마피아 or 시민인 경우만 알 수 있다.
+                    용의자의 특수 직업까지는 알 수 없습니다.
                   </p>
                 </div>
               </div>
@@ -72,10 +70,10 @@ const RulesModal = ({ handleCancel }) => {
                   <h2 style={{ fontSize: "50px" }}>의사</h2>
                   <hr style={{ color: "red" }}></hr>
                   <p>
-                    밤마다 1명을 선택하여 살릴 수 있다.<br></br>
-                    죽임을 당하지 않은 상대를 지목한다면 아무 일도 일어나지
-                    않는다.<br></br>
-                    의사는 자기 자신을 살릴 수 있다.
+                    밤마다 1명을 선택하여 치료합니다.<br></br>
+                    처리 시도를 당한 시민을 선택한다면 살릴 수 있습니다.{" "}
+                    <br></br>
+                    의사는 자기 자신도 살릴 수도 있습니다.
                   </p>
                 </div>
               </div>
