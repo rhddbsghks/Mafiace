@@ -181,7 +181,7 @@ const UserVideoComponent = ({
               textAlign: "center",
             }}
           >
-            {!checkAlive ? <span>사망</span> : null}
+            {!checkAlive ? <div className="selected dead">사망</div> : null}
 
             {count > 1 && isAlive && checkAlive && !isVoted && day ? (
               <button onClick={clickVote} className="select-btn vote">
