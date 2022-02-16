@@ -159,6 +159,9 @@ public class GameController {
     public void vote(@DestinationVariable String roomId, String voted) {
         MafiaceManager manager = gameManagerMap.get(roomId);
         manager.addVoteList(voted);
+        if(manager.voteAll()){
+            simpMessagingTemplate.convertAndSend("/topic/" + roomId, "skip");
+        }
     }
 
     @MessageMapping("/heal/{roomId}")
