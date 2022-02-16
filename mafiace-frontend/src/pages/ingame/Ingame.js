@@ -182,7 +182,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, chat]);
 
   const scrollToBottom = () => {
     if (chatBox.current) {
@@ -269,7 +269,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
 
   const clickStart = () => {
     console.log("====================START======================");
-    if (subscribers.length < 3) {
+    if (subscribers.length < 0) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
       setStartButton(false);
@@ -719,8 +719,8 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   </div>
                 </div>
               ))}
-              {!isAlive ? (
-                // {isAlive ? (
+              {/* {!isAlive ? ( */}
+              {isAlive ? (
                 <div className="chat-container">
                   <div className="chatBtn">
                     {" "}
@@ -742,32 +742,33 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                           사후 세계
                         </span>
                       </div>
+
                       <div
                         className="scrollbar chat-scroll chat-size"
                         ref={chatBox}
                       >
                         {messages.map((msg, index) => {
-                          return (
+                          console.log(nickname + " 모니");
+                          console.log(msg);
+                          console.log(index);
+
+                          return nickname === msg.nickname ? (
                             <div
                               className="chat"
                               key={index}
-                              style={{ margin: "7% auto" }}
+                              style={{ margin: "2%" }}
                             >
-                              {nickname === msg.nickname ? (
-                                <div
-                                  className="chat-my"
-                                  style={{ wordBreak: "break-all" }}
-                                >
-                                  {msg.nickname} :{" "}
-                                </div>
-                              ) : (
-                                <div
-                                  className="chat-other"
-                                  style={{ wordBreak: "break-all" }}
-                                >
-                                  {msg.nickname} :{" "}
-                                </div>
-                              )}
+                              <div className="chat-my">{msg.nickname}</div>
+
+                              <div className="chat-message">{msg.message}</div>
+                            </div>
+                          ) : (
+                            <div
+                              className="chat"
+                              key={index}
+                              style={{ margin: "2%", textAlign: "right" }}
+                            >
+                              <div className="chat-other">{msg.nickname}</div>
                               <div className="chat-message">{msg.message}</div>
                             </div>
                           );

@@ -142,12 +142,6 @@ const MypageCompo = () => {
         <Loader msg="로딩 중..." />
       ) : (
         <>
-          {/* <Divider horizontal>
-            <div style={{ fontSize: "3em" }}>
-              <Icon name="tag" style={{ fontSize: "0.5em" }} />
-              회원 정보
-            </div>
-          </Divider> */}
           <Image src="" size="small" />
           <div
             style={{
@@ -222,6 +216,35 @@ const MypageCompo = () => {
                 }}
               >
                 이메일
+              </Container>
+
+              <Container
+                style={{
+                  backgroundColor: "#F4EBFC",
+                  borderRadius: "10px",
+                  marginBottom: "1%",
+                  width: "70%",
+                  fontSize: "5em",
+                  textAlign: "center",
+                }}
+              >
+                <div>
+                  <p style={{ marginLeft: "10px" }}>{form.email}</p>
+                </div>
+              </Container>
+            </div>
+
+            <div style={{ display: "flex" }}>
+              <Container
+                aria-hidden="true"
+                style={{
+                  width: "20%",
+                  margin: "auto",
+                  fontSize: "4em",
+                  textAlign: "center",
+                }}
+              >
+                티어
               </Container>
 
               <Container

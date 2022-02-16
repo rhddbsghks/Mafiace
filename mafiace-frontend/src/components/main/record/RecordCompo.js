@@ -27,6 +27,29 @@ const RecordCompo = () => {
     "kill10",
   ];
 
+  const tearList = [
+    "bronze4",
+    "bronze3",
+    "bronze2",
+    "bronze1",
+    "silver4",
+    "silver3",
+    "silver2",
+    "silver1",
+    "gold4",
+    "gold3",
+    "gold2",
+    "gold1",
+    "platinum4",
+    "platinum3",
+    "platinum2",
+    "platinum1",
+    "rainbow4",
+    "rainbow3",
+    "rainbow2",
+    "rainbow1",
+  ];
+
   const [latestLog, setLatestlog] = useState([]);
   const [myHonors, setMyHonors] = useState(new Set());
   const [winlose, setWinlose] = useState([]);
@@ -89,7 +112,7 @@ const RecordCompo = () => {
                 </Statistic.Value>
                 <Statistic.Label
                   style={{
-                    color: "#b465fdd8",
+                    color: "#2f33e9f1",
                     fontSize: "30px",
                   }}
                 >

@@ -68,6 +68,7 @@ const UserVideoComponent = ({
   }, [night]);
 
   useEffect(() => {
+    console.log(streamManager);
     axios
       .get("/mafiace/api/user/rating", {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },

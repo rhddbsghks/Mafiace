@@ -68,7 +68,18 @@ const ResultCard = ({
           <Card.Description
             style={{ margin: 0, fontSize: "1em", textAlign: "center" }}
           >
-            마피아는 <div>{whoIsMafia} </div>였습니다.
+            마피아는{" "}
+            <div>
+              {whoIsMafia
+                ? whoIsMafia.map((item, index) => (
+                    <span style={{ color: "black", fontWeight: "600" }}>
+                      {item}
+                      {index === whoIsMafia.length - 1 ? null : ", "}
+                    </span>
+                  ))
+                : null}
+            </div>
+            였습니다.
           </Card.Description>
         </Card.Content>
       </Card>
