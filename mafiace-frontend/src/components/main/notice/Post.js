@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Form, Input, TextArea } from "semantic-ui-react";
 
-const Post = ({ handleSave, handleCancel2 }) => {
+const Post = ({ handleCancel2 }) => {
   const [form, setForm] = useState({
     title: "",
     content: "",
@@ -21,7 +21,6 @@ const Post = ({ handleSave, handleCancel2 }) => {
       .then((res) => {
         console.log("post data");
         console.log(res.data);
-        handleSave(form);
       })
       .catch((err) => {
         console.log(err.response);

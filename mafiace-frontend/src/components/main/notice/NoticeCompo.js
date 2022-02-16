@@ -19,6 +19,7 @@ const NoticeCompo = () => {
   const [postOn, setPostOn] = useState(false);
   const [detailOn, setDetailOn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [modifyNo, setModifyNo] = useState();
   const nextId = useState(1);
 
   //더미 데이터 호출
@@ -56,32 +57,6 @@ const NoticeCompo = () => {
     setSelected(selectedData);
   };
 
-  const handleSave = (data) => {
-    console.log(data);
-    //데이터 수정하기
-    if (data.postNum) {
-      setList(
-        list.map((row) =>
-          data.postNum === row.postNum
-            ? {
-                title: data.title,
-                content: data.content,
-                postNum: data.current,
-              }
-            : row
-        )
-      );
-    } else {
-      setList((list) =>
-        list.concat({
-          title: data.title,
-          content: data.content,
-          postNum: nextId.current,
-        })
-      );
-    }
-  };
-
   const handleRemove = (postNum) => {
     axios.delete("/mafiace/api/notice/" + postNum).then(() => {
       alert("게시물이 삭제되었습니다!");
@@ -94,14 +69,11 @@ const NoticeCompo = () => {
     console.log(list);
   };
 
-  const handleEdit = (item) => {
+  const handleEdit = (data) => {
+    setSelected(data);
     setModalOn(true);
-    const selectedData = {
-      title: item.title,
-      content: item.content,
-    };
-    // console.log(selectedData);
-    setSelected(selectedData);
+    setModifyNo(data.postNum);
+    console.log(data);
   };
 
   const handleCancel = () => {
@@ -116,71 +88,72 @@ const NoticeCompo = () => {
     setDetailOn(false);
   };
 
-  const handleEditSubmit = (item) => {
-    // console.log(item);
-    handleSave(item);
+  const handleEditSubmit = (data) => {
+    axios
+      .patch(`/mafiace/api/notice/` + modifyNo, {
+        title: data.title,
+        content: data.content,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     setModalOn(false);
+    window.location.reload();
   };
 
   return (
-
     <>
       {loading ? (
         <Loader msg="로딩 중..." />
       ) : (
         <div>
-      {admin === "sixman" ? (
-        <div className="ml-20" style={{ marginTop: "5%" }}>
-          <button
-            onClick={handleCreate}
-            className="bg-purple-300 hover:bg-purple-500 px-3 py-1 rounded text-white"
-            style={{
-              border: "none",
-              float: "right",
-              margin: "5%",
-              marginTop: "0",
-            }}
-          >
-            생성
-          </button>
+          {admin === "sixman" ? (
+            <div className="ml-20" style={{}}>
+              <button
+                onClick={handleCreate}
+                className="bg-purple-300 hover:bg-purple-500 px-3 py-1 rounded text-white"
+                style={{ border: "none", margin: "3%", float: "right" }}
+              >
+                생성
+              </button>
+              <Table>
+                <thead>
+                  <tr>
+                    <th style={{ fontSize: "2rem" }}>No.</th>
+                    <th style={{ fontSize: "2rem" }}>Title</th>
+                    <th style={{ fontSize: "2rem" }}>Time</th>
+                    <th style={{ fontSize: "2rem" }}>Edit</th>
+                    <th style={{ fontSize: "2rem" }}>Delete</th>
+                  </tr>
+                </thead>
+                <br></br>
+                <Tr
+                  list={list}
+                  handleRemove={handleRemove}
+                  handleEdit={handleEdit}
+                  handleDetail={handleDetail}
+                />
+              </Table>
+              <br></br>
 
-          <Table>
-            <thead>
-              <tr>
-                <th style={{ fontSize: "2rem" }}>No.</th>
-                <th style={{ fontSize: "2rem" }}>Title</th>
-                <th style={{ fontSize: "2rem" }}>Time</th>
-                <th style={{ fontSize: "2rem" }}>Edit</th>
-                <th style={{ fontSize: "2rem" }}>Delete</th>
-              </tr>
-            </thead>
-            <br></br>
-            <Tr
-              list={list}
-              handleRemove={handleRemove}
-              handleEdit={handleEdit}
-              handleDetail={handleDetail}
-            />
-          </Table>
-          <br></br>
-
-          {postOn && (
-            <Post handleSave={handleSave} handleCancel2={handleCancel2} />
-          )}
-          {detailOn && (
-            <Detail
-              selectedData={selected}
-              handleCancel3={handleCancel3}
-            ></Detail>
-          )}
-          {modalOn && (
-            <Modal
-              selectedData={selected}
-              handleCancel={handleCancel}
-              handleEditSubmit={handleEditSubmit}
-            />
-          )}
-        </div>
+              {postOn && <Post handleCancel2={handleCancel2} />}
+              {detailOn && (
+                <Detail
+                  selectedData={selected}
+                  handleCancel3={handleCancel3}
+                ></Detail>
+              )}
+              {modalOn && (
+                <Modal
+                  selectedData={selected}
+                  handleCancel={handleCancel}
+                  handleEditSubmit={handleEditSubmit}
+                />
+              )}
+            </div>
           ) : (
             <div className="ml-50" style={{ marginTop: "5%" }}>
               <Table>
