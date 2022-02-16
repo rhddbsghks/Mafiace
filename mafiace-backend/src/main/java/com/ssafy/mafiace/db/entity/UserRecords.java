@@ -24,6 +24,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = "user_records")
 public class UserRecords {
 

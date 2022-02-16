@@ -7,6 +7,8 @@ import Day from "../../components/ingame/Day";
 import Night from "../../components/ingame/Night";
 import Count321 from "../../components/ingame/Count321";
 import JobCard from "../../components/ingame/JobCard";
+import InvestCard from "../../components/ingame/InvestCard";
+
 import "./ingame-btn.css";
 // import "./ingame-chat.css";
 
@@ -35,6 +37,8 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [start, setStart] = useState(false);
   const [count321, setCount321] = useState(false);
   const [openJobCard, setopenJobCard] = useState(false);
+  const [openInvestCard, setopenInvestCard] = useState(false);
+  const [isMafia, setIsMafia] = useState(false);
   const [chat, setChat] = useState(false);
 
   // 웹 소켓
@@ -45,7 +49,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [messages, setMessages] = useState([]);
 
   // 인게임
-  const [time, setTime] = useState(12341234); // 타이머
+  const [time, setTime] = useState(gameInfo.discussionTime); // 타이머
   const [timer, setTimer] = useState(); // 타이머
   const [count, setCount] = useState(1); // 날짜
   const [stateMessage, setStateMessage] = useState(gameInfo.gameTitle); // 헤더 상태메세지
@@ -261,7 +265,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
 
   const clickStart = () => {
     console.log("====================START======================");
-    if (subscribers.length < 0) {
+    if (subscribers.length < 3) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
       setStartButton(false);
@@ -336,6 +340,12 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
 
   return (
     <div>
+      <InvestCard
+        openInvestCard={openInvestCard}
+        setopenInvestCard={setopenInvestCard}
+        myVote={myVote}
+        isMafia={isMafia}
+      />
       <JobCard
         openJobCard={openJobCard}
         setopenJobCard={setopenJobCard}
@@ -413,10 +423,11 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
               } else if (msg.end === "MafiaTeam") {
                 setMafiaTeam(msg.mafia);
               } else if (msg.check === "investigate") {
+                setopenInvestCard(true);
                 if (msg.role === "Mafia") {
-                  alert(myVote + "님은 마피아입니다.");
+                  setIsMafia(true);
                 } else {
-                  alert(myVote + "님은 시민입니다.");
+                  setIsMafia(false);
                 }
               }
               //getVoteResult

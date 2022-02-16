@@ -18,6 +18,10 @@ public interface UserService {
 
     User updateUser(UserRegisterPostReq registerReq);
 
+    User updatePassword(UserRegisterPostReq registerReq);
+
+    User updateNickname(UserRegisterPostReq registerReq);
+
     User changePassword(User user, String tmpPassword);
 
     User deleteAccount(User user);

@@ -78,6 +78,10 @@ const RoomComp = ({
         setCheckCam(true);
       })
       .catch(({ response }) => {
+        if (!response) {
+          localStorage.removeItem("jwt");
+          window.location.reload();
+        }
         if (response.status === 404) {
           alert("존재하지 않는 방입니다.");
         } else if (response.status === 403) {

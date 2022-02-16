@@ -9,6 +9,7 @@ const UserVideoComponent = ({
   sub,
   ownerId,
   myRole,
+  count,
   isAlive,
   deathList,
   setMyVote,
@@ -118,7 +119,11 @@ const UserVideoComponent = ({
               }}
             />
           )}
-          <OpenViduVideoComponent streamManager={streamManager} id={id} />
+          <OpenViduVideoComponent
+            streamManager={streamManager}
+            id={id}
+            checkAlive={checkAlive}
+          />
 
           {checkAlive ? (
             <div
@@ -176,9 +181,9 @@ const UserVideoComponent = ({
               textAlign: "center",
             }}
           >
-            {!checkAlive ? <span>사망</span> : null}
+            {!checkAlive ? <div className="selected dead">사망</div> : null}
 
-            {isAlive && checkAlive && !isVoted && day ? (
+            {count > 1 && isAlive && checkAlive && !isVoted && day ? (
               <button onClick={clickVote} className="select-btn vote">
                 투표
               </button>
