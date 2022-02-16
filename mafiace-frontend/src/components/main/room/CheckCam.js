@@ -60,9 +60,8 @@ const CheckCam = ({
   };
 
   const handleCamOff = () => {
-    setCheckCam(false);
     clearInterval(faceRecog);
-
+    setCheckCam(false);
     if (!isOwner) leaveRoom();
   };
 
