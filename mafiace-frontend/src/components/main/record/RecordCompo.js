@@ -182,7 +182,7 @@ const RecordCompo = () => {
                         {item.win === true ? (
                           <p
                             className="hover:text-blue-500 cursor-pointer"
-                            style={{ fontSize: "4em", color: "#a142fad8" }}
+                            style={{ fontSize: "4em", color: "#2f33e9f1" }}
                           >
                             Win
                           </p>

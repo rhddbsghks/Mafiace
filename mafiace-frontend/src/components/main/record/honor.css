@@ -71,9 +71,10 @@
 }
 
 .win {
-  background-color: #a142fa42 !important;
+  background-color: #7d7fe742 !important;
+  /* background-color: #2f33e9f1 !important; */
 }
 
 .lose {
-  background-color: #d36d974f !important;
+  background-color: #c491a64f !important;
 }

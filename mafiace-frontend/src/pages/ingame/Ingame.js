@@ -714,6 +714,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                       investigate={investigate}
                       myVote={myVote}
                       count={count}
+                      mafiaTeam={mafiaTeam}
                     />
                   </div>
                 </div>

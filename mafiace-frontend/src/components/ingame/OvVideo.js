@@ -158,7 +158,11 @@ export default class OpenViduVideoComponent extends Component {
   render() {
     return (
       <>
-        <video autoPlay={true} ref={this.videoRef} />
+        <video
+          autoPlay={true}
+          ref={this.videoRef}
+          className={this.props.isBlur ? "blured" : null}
+        />
         <p></p>
         {this.props.checkAlive ? (
           <Popup

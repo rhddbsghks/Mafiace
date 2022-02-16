@@ -67,20 +67,24 @@ const RulesCompo = () => {
               <Container
                 style={{
                   backgroundColor: "#F4EBFC",
-                  // border: "10px solid #D5C2EE",
                   borderRadius: "10px",
                   marginBottom: "1%",
                   padding: "2%",
                   paddingLeft: "5%",
                 }}
               >
-                <div>
+                <div className="rule-box ">
                   <i
                     aria-hidden="true"
                     class="users disabled icon"
-                    style={{ float: "left" }}
+                    style={{ margin: "auto" }}
                   ></i>
-                  <p style={{ float: "left", marginLeft: "10px" }}>
+                  <p
+                    style={{
+                      marginLeft: "10px",
+                      width: "90%",
+                    }}
+                  >
                     참여할 수 있는 최대 인원은 8명입니다.
                   </p>
                 </div>
@@ -88,21 +92,24 @@ const RulesCompo = () => {
               <Container
                 style={{
                   backgroundColor: "#F4EBFC",
-                  // border: "10px solid #D5C2EE",
                   borderRadius: "10px",
                   marginBottom: "1%",
-                  paddingBottom: "0",
-                  paddingTop: "2%",
+                  padding: "2%",
                   paddingLeft: "5%",
                 }}
               >
-                <div style={{ height: "50px" }}>
+                <div className="rule-box">
                   <i
                     aria-hidden="true"
                     class="video play disabled icon"
-                    style={{ float: "left" }}
+                    style={{ margin: "auto" }}
                   ></i>
-                  <p style={{ float: "left", marginLeft: "10px" }}>
+                  <p
+                    style={{
+                      marginLeft: "10px",
+                      width: "90%",
+                    }}
+                  >
                     직업의 종류는 총 3개입니다.
                   </p>
                 </div>
@@ -117,14 +124,21 @@ const RulesCompo = () => {
                   paddingLeft: "5%",
                 }}
               >
-                <div>
+                <div className="rule-box ">
                   <i
                     aria-hidden="true"
                     class="user circle disabled icon"
-                    style={{ float: "left" }}
+                    style={{ margin: "auto" }}
                   ></i>
-                  게임 시작 시 참여하는 인원 수에 따라 마피아 배정 수가
-                  다릅니다.
+                  <p
+                    style={{
+                      marginLeft: "10px",
+                      width: "90%",
+                    }}
+                  >
+                    게임 시작 시 참여하는 인원 수에 따라 마피아 배정 수가
+                    다릅니다.
+                  </p>
                 </div>
               </Container>
               <Container
@@ -137,13 +151,21 @@ const RulesCompo = () => {
                   paddingLeft: "5%",
                 }}
               >
-                <div>
+                <div className="rule-box ">
                   <i
                     aria-hidden="true"
                     class="sun disabled icon"
-                    style={{ float: "left", zIndex: "0" }}
+                    style={{ margin: "auto" }}
                   ></i>
-                  게임은 '낮'부터 시작합니다.
+                  <p
+                    style={{
+                      marginLeft: "10px",
+                      width: "90%",
+                    }}
+                  >
+                    {" "}
+                    게임은 '낮'부터 시작합니다.
+                  </p>
                 </div>
               </Container>
               <Container
@@ -156,13 +178,21 @@ const RulesCompo = () => {
                   paddingLeft: "5%",
                 }}
               >
-                <div>
+                <div className="rule-box ">
                   <i
                     aria-hidden="true"
                     class="spy disabled icon"
-                    style={{ float: "left" }}
+                    style={{ margin: "auto" }}
                   ></i>
-                  게임이 시작되면 임의의 직업을 배정받습니다.
+                  <p
+                    style={{
+                      marginLeft: "10px",
+                      width: "90%",
+                    }}
+                  >
+                    {" "}
+                    게임이 시작되면 임의의 직업을 배정받습니다.
+                  </p>
                 </div>
               </Container>
               <Container
@@ -175,13 +205,21 @@ const RulesCompo = () => {
                   paddingLeft: "5%",
                 }}
               >
-                <div>
+                <div className="rule-box ">
                   <i
                     aria-hidden="true"
                     class="talk disabled icon"
-                    style={{ float: "left" }}
+                    style={{ margin: "auto" }}
                   ></i>
-                  낮에는 플레이어끼리 마피아가 누구인지 토론합니다.
+                  <p
+                    style={{
+                      marginLeft: "10px",
+                      width: "90%",
+                    }}
+                  >
+                    {" "}
+                    낮에는 플레이어끼리 마피아가 누구인지 토론합니다.
+                  </p>
                 </div>
               </Container>
               <Container
@@ -194,13 +232,21 @@ const RulesCompo = () => {
                   paddingLeft: "5%",
                 }}
               >
-                <div>
+                <div className="rule-box ">
                   <i
                     aria-hidden="true"
                     class="question circle disabled icon"
-                    style={{ float: "left" }}
+                    style={{ margin: "auto" }}
                   ></i>
-                  표정 변화에 따라 마피아가 누군지 유추할 수 있습니다.
+                  <p
+                    style={{
+                      marginLeft: "10px",
+                      width: "90%",
+                    }}
+                  >
+                    {" "}
+                    표정 변화에 따라 마피아가 누군지 유추할 수 있습니다.
+                  </p>
                 </div>
               </Container>
             </h2>

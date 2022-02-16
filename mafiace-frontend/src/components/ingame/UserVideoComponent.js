@@ -21,6 +21,7 @@ const UserVideoComponent = ({
   heal,
   investigate,
   myVote,
+  mafiaTeam,
 }) => {
   const nickNameTag = JSON.parse(streamManager.stream.connection.data).nickName;
   const id = JSON.parse(streamManager.stream.connection.data).id;
@@ -48,6 +49,16 @@ const UserVideoComponent = ({
   ];
   const [checkAlive, setCheckAlive] = useState(true);
   const [tear, setTear] = useState("");
+  const [isBlur, setIsBlur] = useState(true);
+
+  useEffect(() => {
+    mafiaTeam.forEach((mafiaNick) => {
+      if (mafiaNick === nickNameTag) {
+        setIsBlur(true);
+        return;
+      }
+    });
+  }, []);
 
   useEffect(() => {
     axios
@@ -123,6 +134,7 @@ const UserVideoComponent = ({
             streamManager={streamManager}
             id={id}
             checkAlive={checkAlive}
+            isBlur={isBlur}
           />
 
           {checkAlive ? (
