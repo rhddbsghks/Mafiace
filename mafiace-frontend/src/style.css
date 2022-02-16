@@ -26,7 +26,10 @@ h1,
 h2,
 button,
 .counter,
-span {
+span,
+h4,
+.label,
+.value {
   font-family: "Dongle", sans-serif !important;
 }
 
@@ -120,4 +123,9 @@ span {
 
 #logout:hover {
   cursor: pointer;
+}
+
+.ui.statistic > .value,
+.ui.statistics .statistic > .value {
+  font-size: 6em !important;
 }
