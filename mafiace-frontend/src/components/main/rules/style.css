@@ -35,8 +35,8 @@
   .slides > div {
     scroll-snap-align: start;
     flex-shrink: 0;
-    width: 600px;
-    height: 600px;
+    width: 550px;
+    height: 500px;
     margin-right: 50px;
     border-radius: 10px;
     overflow: hidden;
@@ -52,11 +52,11 @@
   .slide-1 ::before{
     content: "";
     background: url("../../../../public/img/Mafia.png");
-    background-size: 100% 100%;
+    background-size: 520px 500px;
     opacity: 0.1;
     position: absolute;
     top: 0px;
-    left: 0px;
+    left: 30px;
     right: 0px;
     bottom: 0px;
     z-index: -1;
@@ -68,7 +68,7 @@
     opacity: 0.1;
     position: absolute;
     top: 0px;
-    left: 0px;
+    left: 30px;
     right: 0px;
     bottom: 0px;
     z-index: -1;
@@ -80,7 +80,7 @@
     opacity: 0.1;
     position: absolute;
     top: 0px;
-    left: 0px;
+    left: 30px;
     right: 0px;
     bottom: 0px;
     z-index: -1;

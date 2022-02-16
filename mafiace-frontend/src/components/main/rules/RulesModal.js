@@ -13,7 +13,8 @@ const RulesModal = ({ handleCancel }) => {
         style={{
           backgroundColor: "#BECDFF",
           borderRadius: "50px",
-          width: "45%",
+          width: "700px",
+          height: "700px",
         }}
       >
         <button
