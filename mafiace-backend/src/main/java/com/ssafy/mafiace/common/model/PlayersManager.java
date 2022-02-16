@@ -37,13 +37,11 @@ public class PlayersManager {
         int mafiaNum = 0, citizenNum;
         if (playerNum < 4) {
             System.err.println(playerNum+"명입니다. 인원이 적습니다.");
-        } else if (playerNum < 6) {
+        } else if (playerNum < 7) {
             mafiaNum = 1;
-        } else if (playerNum < 8) {
+        } else if (playerNum < 9) {
             mafiaNum = 2;
-        } else if (playerNum == 8) {
-            mafiaNum = 3;
-        } else {
+        }else {
             System.err.println("인원이 너무 많습니다? 에러");
         }
         Collections.shuffle(this.players);
