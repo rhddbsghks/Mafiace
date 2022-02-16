@@ -7,6 +7,8 @@ import Day from "../../components/ingame/Day";
 import Night from "../../components/ingame/Night";
 import Count321 from "../../components/ingame/Count321";
 import JobCard from "../../components/ingame/JobCard";
+import InvestCard from "../../components/ingame/InvestCard";
+
 import "./ingame-btn.css";
 import "./ingame-chat.css";
 
@@ -35,6 +37,8 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [start, setStart] = useState(false);
   const [count321, setCount321] = useState(false);
   const [openJobCard, setopenJobCard] = useState(false);
+  const [openInvestCard, setopenInvestCard] = useState(false);
+  const [isMafia, setIsMafia] = useState(false);
   const [chat, setChat] = useState(false);
 
   // 웹 소켓
@@ -277,7 +281,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
     setStart(true);
     setDay(true);
     setToggle(!toggle);
-    setStateMessage("자유롭게 대화를 나눠주세요.");
+    setStateMessage("마피아를 찾아주세요!");
   };
 
   const checkGameEnd = (next) => {
@@ -336,6 +340,12 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
 
   return (
     <div>
+      <InvestCard
+        openInvestCard={openInvestCard}
+        setopenInvestCard={setopenInvestCard}
+        myVote={myVote}
+        isMafia={isMafia}
+      />
       <JobCard
         openJobCard={openJobCard}
         setopenJobCard={setopenJobCard}
@@ -413,10 +423,11 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
               } else if (msg.end === "MafiaTeam") {
                 setMafiaTeam(msg.mafia);
               } else if (msg.check === "investigate") {
+                setopenInvestCard(true);
                 if (msg.role === "Mafia") {
-                  alert(myVote + "님은 마피아입니다.");
+                  setIsMafia(true);
                 } else {
-                  alert(myVote + "님은 시민입니다.");
+                  setIsMafia(false);
                 }
               }
               //getVoteResult
@@ -666,7 +677,6 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                       sub="sub"
                       ownerId={gameInfo.ownerId}
                       myRole={myRole}
-                      count={count}
                       isAlive={isAlive}
                       deathList={deathList}
                       setMyVote={setMyVote}
