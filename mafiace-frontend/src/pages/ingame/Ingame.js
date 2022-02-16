@@ -10,7 +10,7 @@ import JobCard from "../../components/ingame/JobCard";
 import InvestCard from "../../components/ingame/InvestCard";
 
 import "./ingame-btn.css";
-// import "./ingame-chat.css";
+import "./ingame-chat.css";
 
 import * as React from "react";
 import axios from "axios";
@@ -51,7 +51,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [messages, setMessages] = useState([]);
 
   // 인게임
-  const [time, setTime] = useState(gameInfo.discussionTime); // 타이머
+  const [time, setTime] = useState(12312312); // 타이머
   const [timer, setTimer] = useState(); // 타이머
   const [count, setCount] = useState(1); // 날짜
   const [stateMessage, setStateMessage] = useState(gameInfo.gameTitle); // 헤더 상태메세지
@@ -719,54 +719,88 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                 </div>
               ))}
               {!isAlive ? (
+                // {isAlive ? (
                 <div className="chat-container">
-                  <button className="chat-button" onClick={ghostChat}>
-                    ㅁ
-                  </button>
+                  <div className="chatBtn">
+                    {" "}
+                    <img
+                      src="img/dead.png"
+                      alt=""
+                      onClick={ghostChat}
+                      width="100%"
+                    />
+                    <div style={{ textAlign: "center", fontSize: "2.6em" }}>
+                      사후 세계
+                    </div>
+                  </div>
 
                   {chat ? (
                     <div className="chat-box open">
-                      <div className="chat-head">사망자 채팅방</div>
+                      <div className="chat-head">
+                        <span style={{ margin: "auto", fontSize: "2em" }}>
+                          사후 세계
+                        </span>
+                      </div>
                       <div
                         className="scrollbar chat-scroll chat-size"
                         ref={chatBox}
                       >
                         {messages.map((msg, index) => {
                           return (
-                            <div key={index}>
+                            <div
+                              className="chat"
+                              key={index}
+                              style={{ margin: "7% auto" }}
+                            >
                               {nickname === msg.nickname ? (
-                                <div className="chat" key={msg.nickname}>
-                                  <span className="chat-my">
-                                    {msg.nickname} :{" "}
-                                  </span>
-                                  <span className="chat-message">
-                                    {msg.message}
-                                  </span>
+                                <div
+                                  className="chat-my"
+                                  style={{ wordBreak: "break-all" }}
+                                >
+                                  {msg.nickname} :{" "}
                                 </div>
                               ) : (
-                                <div className="chat" key={msg.nickname}>
-                                  <span className="chat-other">
-                                    {msg.nickname} :{" "}
-                                  </span>
-                                  <span className="chat-message">
-                                    {msg.message}
-                                  </span>
+                                <div
+                                  className="chat-other"
+                                  style={{ wordBreak: "break-all" }}
+                                >
+                                  {msg.nickname} :{" "}
                                 </div>
                               )}
+                              <div className="chat-message">{msg.message}</div>
                             </div>
                           );
                         })}
                       </div>
-                      <div>
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: "2%",
+                          left: "4%",
+                          display: "flex",
+                          width: "90%",
+                          justifyContent: "space-between",
+                        }}
+                      >
                         <input
                           type="text"
-                          size="42"
+                          size="35"
                           placeholder="메세지를 입력해주세요."
                           onKeyPress={onEnter}
                           ref={chatMessage}
+                          style={{ borderRadius: "1em" }}
                         />
-                        <button className="send-btn" onClick={sendMsg}>
-                          Send
+                        <button
+                          className="send-btn"
+                          onClick={sendMsg}
+                          style={{
+                            borderRadius: "15px",
+                            width: "20%",
+                            margin: "0",
+                            backgroundColor: "rgba(32, 46, 33, 0.9)",
+                          }}
+                        >
+                          전송
                         </button>
                       </div>
                     </div>
