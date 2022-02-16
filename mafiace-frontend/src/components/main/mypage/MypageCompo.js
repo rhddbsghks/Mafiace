@@ -91,9 +91,11 @@ const MypageCompo = () => {
         }
       )
       .then((res) => {
-        alert("닉네임 변경이 완료되었습니다!");
+        alert("닉네임 변경이 완료되었습니다. 다시 로그인 해주세요.");
         window.location.reload();
         setNicknameModal(false);
+        localStorage.removeItem("jwt");
+        window.location.href = "/";
       })
       .catch(({ response }) => {
         if (response.status === 500) {

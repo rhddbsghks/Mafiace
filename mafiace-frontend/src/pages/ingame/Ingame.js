@@ -426,6 +426,8 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                     setStateMessage("걱정 가득한 채로 잠이 들었습니다.😴");
                   }
                 }, 3000);
+              } else if (msg === "skip") {
+                setTime(0);
               } else if (msg.check === "role") {
                 setMyRole(msg.role);
                 if (msg.role === "Mafia") {

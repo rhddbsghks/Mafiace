@@ -153,6 +153,17 @@ public class MafiaceManager {
         return result;
     }
 
+    public boolean voteAll(){
+        int cnt=0;
+        for (String key : voteMap.keySet()) {
+            cnt+=voteMap.get(key);
+        }
+        if(players.countAliveMafia()+players.countAliveCitizen()==cnt){
+            return true;
+        }
+        return false;
+    }
+
     public void reset() {
         voteMap.clear();
         healTarget = "";
