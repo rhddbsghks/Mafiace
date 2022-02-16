@@ -33,6 +33,8 @@ const MypageCompo = () => {
   ];
   const [form, setForm] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [winlose, setWinlose] = useState([]);
+  const [latestLog, setLatestlog] = useState([]);
   const [myHonors, setMyHonors] = useState(new Set());
   const [passwordModal, setPasswordModal] = useState(false);
   const [nicknameModal, setNicknameModal] = useState(false);
@@ -64,10 +66,7 @@ const MypageCompo = () => {
           window.location.href = "/";
         }
       });
-<<<<<<< HEAD
     // console.log(form);
-=======
->>>>>>> ac6b4240da33a5d9af05d530187bcc15e386b829
 
     axios
       .post(
@@ -80,8 +79,11 @@ const MypageCompo = () => {
       .then(({ data }) => {
         console.log(data);
         setMyHonors(new Set(data.honors));
+        setLatestlog(data.records);
+        setWinlose(data.userRecords);
       })
       .catch(({ response }) => {
+        console.log(response);
         if (
           response.status === 500 ||
           response.status === 401 ||
@@ -142,11 +144,6 @@ const MypageCompo = () => {
         setNicknameModal(false);
       })
       .catch(({ response }) => {
-<<<<<<< HEAD
-        console.log(response);
-      });
-  }, []);
-=======
         if (response.status === 500) {
           alert("만료된 토큰입니다.");
           localStorage.removeItem("jwt");
@@ -154,6 +151,7 @@ const MypageCompo = () => {
         } else if (response.status === 410) {
           alert("닉네임 변경에 실패하였습니다.");
         }
+        console.log(response);
       });
   };
   const deleteUser = () => {
@@ -186,8 +184,6 @@ const MypageCompo = () => {
         }
       });
   };
->>>>>>> ac6b4240da33a5d9af05d530187bcc15e386b829
-
   return (
     <div style={{ width: "95%", margin: "auto" }}>
       {loading ? (
@@ -202,70 +198,6 @@ const MypageCompo = () => {
           </Divider>
           <br></br>
           <Image src="" size="small" />
-          {/* <Table definition style={{ width: "70%", marginLeft: "15%" }}>
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell
-                  style={{
-                    fontSize: "150%",
-                    width: "30%",
-                    backgroundColor: "#D2D2FF",
-                  }}
-                >
-                  ID
-                </Table.Cell>
-                <Table.Cell
-                  style={{
-                    fontSize: "150%",
-                    backgroundColor: "#CEBEE1",
-                    border: "none",
-                  }}
-                >
-                  {form.userId}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell
-                  style={{
-                    fontSize: "150%",
-                    backgroundColor: "#D2D2FF",
-                  }}
-                >
-                  닉네임
-                </Table.Cell>
-                <Table.Cell
-                  style={{
-                    fontSize: "150%",
-                    backgroundColor: "#CEBEE1",
-                    border: "none",
-                  }}
-                >
-                  {form.nickname}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell
-                  style={{
-                    fontSize: "150%",
-                    backgroundColor: "#D2D2FF",
-                  }}
-                >
-                  E-mail
-                </Table.Cell>
-                <Table.Cell
-                  style={{
-                    fontSize: "150%",
-                    backgroundColor: "#CEBEE1",
-                    border: "none",
-                  }}
-                >
-                  {form.email}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row></Table.Row>
-            </Table.Body>
-<<<<<<< HEAD
-          </Table> */}
           <h2
             style={{
               textAlign: "left",
@@ -351,8 +283,6 @@ const MypageCompo = () => {
               </div>
             </Container>
           </h2>
-=======
-          </Table>
           <div style={{ textAlign: "center" }}>
             <Modal
               dimmer="inverted"
@@ -609,8 +539,6 @@ const MypageCompo = () => {
               </div>
             </Modal>
           </div>
-
->>>>>>> ac6b4240da33a5d9af05d530187bcc15e386b829
           <br></br>
 
           <Divider horizontal>
@@ -619,25 +547,29 @@ const MypageCompo = () => {
               전적
             </Header>
           </Divider>
-          <Statistic.Group style={{ justifyContent: "center", margin: "5%" }}>
+          <br></br>
+
+          <Statistic.Group style={{ justifyContent: "center" }}>
             <Statistic>
-              <Statistic.Value>22,321</Statistic.Value>
+              <Statistic.Value>{winlose.winCount}</Statistic.Value>
               <Statistic.Label
-                style={{ color: "blue", fontSize: "25px", marginTop: "10%" }}
+                style={{ color: "blue", fontSize: "30px", marginTop: "10%" }}
               >
                 Win
               </Statistic.Label>
             </Statistic>
             <Statistic>
-              <Statistic.Value>31,200</Statistic.Value>
+              <Statistic.Value>{winlose.loseCount}</Statistic.Value>
               <Statistic.Label
-                style={{ color: "red", fontSize: "25px", marginTop: "10%" }}
+                style={{ color: "red", fontSize: "30px", marginTop: "10%" }}
               >
                 Lose
               </Statistic.Label>
             </Statistic>
             <Statistic>
-              <Statistic.Value>60,020</Statistic.Value>
+              <Statistic.Value>
+                {winlose.loseCount + winlose.winCount}
+              </Statistic.Value>
               <Statistic.Label
                 style={{ color: "#006400", fontSize: "30px", marginTop: "10%" }}
               >
@@ -645,13 +577,67 @@ const MypageCompo = () => {
               </Statistic.Label>
             </Statistic>
           </Statistic.Group>
+          <br></br>
           <Divider horizontal>
-            <div style={{ fontSize: "3em" }}>
-              <Icon name="trophy" style={{ fontSize: "0.5em" }} />
-              업적
-            </div>
+            <Header as="h4">
+              <Icon name="chart line" />
+              최근 전적
+            </Header>
           </Divider>
-
+          <br></br>
+          <Table style={{ marginBottom: "20%" }}>
+            <thead
+              style={{ textAlign: "center", backgroundColor: "purple-200" }}
+            >
+              <tr>
+                <th style={{ fontSize: "2rem" }}>Job</th>
+                <th style={{ fontSize: "2rem" }}>Result</th>
+                <th style={{ fontSize: "2rem" }}>Play Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {latestLog.map((item) => {
+                return (
+                  <tr
+                    className="bg-white border-2 border-gray-200"
+                    style={{
+                      textAlign: "center",
+                      borderBottom: "1px dotted gray",
+                    }}
+                  >
+                    <td className="px-4 py-3">
+                      <p
+                        className="hover:text-blue-500 cursor-pointer"
+                        style={{ fontSize: "150%" }}
+                      >
+                        {item.role}
+                      </p>
+                    </td>
+                    <td className="px-4 py-3">
+                      {item.win === true ? (
+                        <p
+                          className="hover:text-blue-500 cursor-pointer"
+                          style={{ fontSize: "150%" }}
+                        >
+                          Win
+                        </p>
+                      ) : (
+                        <p
+                          className="hover:text-blue-500 cursor-pointer"
+                          style={{ fontSize: "150%" }}
+                        >
+                          Lose
+                        </p>
+                      )}
+                    </td>
+                    <td className="px-4 py-3" style={{ fontSize: "150%" }}>
+                      {item.playTime}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
           <section
             style={{
               width: "90%",
