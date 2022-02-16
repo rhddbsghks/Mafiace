@@ -66,7 +66,6 @@ const RoomComp = ({
   };
 
   const getToken = () => {
-    console.log("입장한다!!!!!");
     axios
       .get("/mafiace/api/session/token", {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },

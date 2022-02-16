@@ -39,9 +39,6 @@ const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
         setTotalRoom(data.list.length);
         setLoading(false);
 
-        console.log("방 불러옴");
-        console.log(`max: ${maxPlayer}, public: ${isPublic}`);
-
         if (data.list.length !== 0) initPageNav(0);
       })
       .catch(({ response }) => {

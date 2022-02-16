@@ -19,7 +19,6 @@ const Td = ({ item, handleRemove, handleEdit, handleDetail }) => {
   useEffect(() => {
     const admin_storage = jwt(localStorage.getItem("jwt"));
     setAdmin(admin_storage.sub);
-    // console.log(admin);
   }, []);
 
   return (

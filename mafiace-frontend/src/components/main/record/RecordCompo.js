@@ -71,7 +71,6 @@ const RecordCompo = () => {
         setLoading(false);
       })
       .catch(({ response }) => {
-        console.log(response);
         if (
           response.status === 500 ||
           response.status === 401 ||

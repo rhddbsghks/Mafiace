@@ -18,13 +18,8 @@ const Post = ({ handleCancel2 }) => {
           headers: { "Content-Type": `application/json` },
         }
       )
-      .then((res) => {
-        console.log("post data");
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
+      .then((res) => {})
+      .catch((err) => {});
   };
 
   const handleChange = (e) => {

@@ -26,17 +26,13 @@ const NoticeCompo = () => {
   useEffect(() => {
     const admin_storage = jwt(localStorage.getItem("jwt"));
     setAdmin(admin_storage.sub);
-    // console.log(admin);
     axios
       .get("/mafiace/api/notice/")
       .then((res) => {
-        // console.log("get data");
-        console.log(res.data);
         setLoading(false);
         setList(res.data);
       })
       .catch(({ response }) => {
-        console.log(response);
         if (response.status === 403) {
           localStorage.removeItem("jwt");
           window.location.reload();
@@ -53,7 +49,6 @@ const NoticeCompo = () => {
       content: item.content,
       postTime: item.postTime,
     };
-    // console.log(selectedData);
     setSelected(selectedData);
   };
 
@@ -66,14 +61,12 @@ const NoticeCompo = () => {
 
   const handleCreate = () => {
     setPostOn(true);
-    console.log(list);
   };
 
   const handleEdit = (data) => {
     setSelected(data);
     setModalOn(true);
     setModifyNo(data.postNum);
-    console.log(data);
   };
 
   const handleCancel = () => {
@@ -94,12 +87,8 @@ const NoticeCompo = () => {
         title: data.title,
         content: data.content,
       })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .then(function (response) {})
+      .catch(function (error) {});
     setModalOn(false);
     window.location.reload();
   };

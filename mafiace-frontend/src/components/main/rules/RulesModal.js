@@ -3,7 +3,6 @@ import React from "react";
 
 const RulesModal = ({ handleCancel }) => {
   const onCancel = () => {
-    console.log("없어져라");
     handleCancel();
   };
   return (

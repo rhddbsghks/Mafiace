@@ -64,18 +64,14 @@ const Signup = ({ clickSignup }) => {
 
   // 회원가입 클릭
   const onClickSignup = () => {
-    console.log(values);
     axios
       .post("/mafiace/api/user", values, {
         headers: { "Content-Type": `application/json` },
       })
       .then((res) => {
-        // console.dir(res);
         clickSignup();
       })
-      .catch((err) => {
-        // console.log(err.response);
-      });
+      .catch((err) => {});
   };
 
   // 유효성 검사 & 중복 검사 api
@@ -88,13 +84,11 @@ const Signup = ({ clickSignup }) => {
           params: { nickname: values.nickname },
         })
         .then((res) => {
-          // console.log(res);
           setValidNick(true);
           setColor("green");
           setMsg("사용 가능한 닉네임입니다.");
         })
         .catch((err) => {
-          // console.log(err.response);
           setMsg("중복된 닉네임입니다.");
         });
     } else {
@@ -110,13 +104,11 @@ const Signup = ({ clickSignup }) => {
           params: { email: values.email },
         })
         .then((res) => {
-          // console.log(res);
           setValidMail(true);
           setColor("green");
           setMsg("사용 가능한 이메일입니다.");
         })
         .catch((err) => {
-          // console.log(err.response);
           setMsg("중복된 이메일입니다.");
         });
     } else {
@@ -143,13 +135,11 @@ const Signup = ({ clickSignup }) => {
           params: { userId: values.userId },
         })
         .then((res) => {
-          // console.log(res);
           setValidId(true);
           setColor("green");
           setMsg("사용 가능한 아이디입니다.");
         })
         .catch((err) => {
-          // console.dir(err);
           setMsg("중복된 아이디입니다.");
         });
     } else {

@@ -235,7 +235,6 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     if (publisher && subscribers.length === 0) {
-      console.log("방 삭제");
       deleteRoom();
     } else {
       axios.delete("/mafiace/api/session/user", {
@@ -268,7 +267,6 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   };
 
   const clickStart = () => {
-    console.log("====================START======================");
     if (subscribers.length < 3) {
       alert("게임을 시작하기 위해 최소 4명의 유저가 필요합니다.");
     } else {
@@ -281,7 +279,6 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const startGame = () => {
     setCount321(false);
     setopenJobCard(true);
-    console.log("====================시작!============================");
     setStart(true);
     setDay(true);
     setToggle(!toggle);
@@ -371,12 +368,9 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
             url="/mafiace/ws"
             topics={topics}
             onConnect={() => {
-              console.log("게임방 소켓 연결");
               setStartButton(true);
             }}
-            onDisconnect={() => {
-              console.log("게임방 소켓 종료");
-            }}
+            onDisconnect={() => {}}
             onMessage={(msg) => {
               if (msg === "start") {
                 setCount321(true);

@@ -19,7 +19,6 @@ const FindPw = ({ clickFindPw }) => {
   };
 
   const onclick = () => {
-    console.log(values);
     axiosPatch();
   };
 
@@ -28,7 +27,6 @@ const FindPw = ({ clickFindPw }) => {
     axios
       .patch("/mafiace/api/user/password", values)
       .then((res) => {
-        console.log(res);
         setSending(false);
         window.alert(
           `${values.email}로 임시 비밀번호가 발송되었습니다.\n메일 확인 후 임시 비밀번호로 로그인 해주세요.`

@@ -40,9 +40,7 @@ const CheckCam = ({
       .then(function (stream) {
         videoRef.current.srcObject = stream;
       })
-      .catch(function (err) {
-        console.log(err);
-      });
+      .catch(function (err) {});
   };
 
   const enterIngame = () => {

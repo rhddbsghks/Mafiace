@@ -142,7 +142,6 @@ const MypageCompo = () => {
         } else if (response.status === 410) {
           alert("닉네임 변경에 실패하였습니다.");
         }
-        console.log(response);
       });
   };
   const deleteUser = () => {
