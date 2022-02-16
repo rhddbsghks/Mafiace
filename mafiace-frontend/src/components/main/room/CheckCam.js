@@ -104,6 +104,7 @@ const CheckCam = ({
 
     setFaceRecog(
       setInterval(async () => {
+        if (!videoRef.current) return;
         const detections = await faceapi
           .detectAllFaces(
             videoRef.current,

@@ -254,6 +254,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
     setMainStreamManager(undefined);
     setPublisher(undefined);
     setIngame(!ingame);
+    window.location.reload();
   };
 
   const handleMainVideoStream = (stream) => {
