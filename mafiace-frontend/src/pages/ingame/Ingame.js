@@ -10,7 +10,7 @@ import JobCard from "../../components/ingame/JobCard";
 import InvestCard from "../../components/ingame/InvestCard";
 
 import "./ingame-btn.css";
-import "./ingame-chat.css";
+// import "./ingame-chat.css";
 
 import * as React from "react";
 import axios from "axios";
