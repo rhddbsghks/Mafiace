@@ -5,26 +5,12 @@
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-<<<<<<< HEAD
-    "@mui/material": "^5.3.1",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
-    "autoprefixer": "^10.4.2",
-    "axios": "^0.25.0",
-    "bootstrap": "^5.1.3",
-    "jwt-decode": "^3.1.2",
-    "openvidu-browser": "2.20.0",
-    "postcss": "^8.4.6",
-    "prop-types": "^15.8.1",
-=======
     "@mui/material": "^5.4.1",
     "axios": "^0.25.0",
     "face-api.js": "^0.22.2",
     "http-proxy-middleware": "^2.0.2",
     "jwt-decode": "^3.1.2",
     "openvidu-browser": "2.20.0",
->>>>>>> 72ff2927f67baf85d940564a5fd5d2690f6f1598
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-dom": "^17.0.2",
@@ -35,12 +21,7 @@
     "recharts": "^2.1.9",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.1.0",
-<<<<<<< HEAD
-    "tailwindcss": "^3.0.18",
-    "web-vitals": "^2.1.4"
-=======
     "sockjs-client": "^1.5.2"
->>>>>>> 72ff2927f67baf85d940564a5fd5d2690f6f1598
   },
   "scripts": {
     "start": "react-scripts start",
@@ -65,10 +46,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-<<<<<<< HEAD
-  },
-  "proxy": "http://localhost:8080"
-=======
   }
->>>>>>> 72ff2927f67baf85d940564a5fd5d2690f6f1598
 }
