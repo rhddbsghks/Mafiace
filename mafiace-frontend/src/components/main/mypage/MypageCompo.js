@@ -18,11 +18,36 @@ const MypageCompo = () => {
   const [passwordModal, setPasswordModal] = useState(false);
   const [nicknameModal, setNicknameModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [tear, setTear] = useState("");
+  const [rating, setRating] = useState("");
   const beforePassword = useRef();
   const afterPassword = useRef();
   const curPassword = useRef();
   const inputNickname = useRef();
   const userId = jwt(localStorage.getItem("jwt")).sub;
+
+  const tearList = [
+    "bronze4",
+    "bronze3",
+    "bronze2",
+    "bronze1",
+    "silver4",
+    "silver3",
+    "silver2",
+    "silver1",
+    "gold4",
+    "gold3",
+    "gold2",
+    "gold1",
+    "platinum4",
+    "platinum3",
+    "platinum2",
+    "platinum1",
+    "rainbow4",
+    "rainbow3",
+    "rainbow2",
+    "rainbow1",
+  ];
 
   useEffect(() => {
     axios
@@ -44,7 +69,19 @@ const MypageCompo = () => {
           window.location.href = "/";
         }
       });
-    // console.log(form);
+
+    axios
+      .get("/mafiace/api/user/rating", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+        params: { userId: jwt(localStorage.getItem("jwt")).sub },
+      })
+      .then(({ data }) => {
+        setRating(data.message);
+        let idx = Math.floor((data.message - 1000) / 100);
+        idx = idx < 0 ? 0 : idx;
+        idx = idx > 19 ? 19 : idx;
+        setTear(tearList[idx]);
+      });
   }, []);
 
   const modifyPassword = () => {
@@ -149,7 +186,43 @@ const MypageCompo = () => {
               margin: "5%",
             }}
           >
-            <div style={{ display: "flex" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                height: "350px",
+              }}
+            >
+              <Container
+                style={{
+                  backgroundColor: "#F4EBFC",
+                  borderRadius: "140em",
+                  marginBottom: "10%",
+                  width: "50%",
+                  fontSize: "3em",
+                  textAlign: "center",
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <img
+                    src={`img/tear/${tear}.png`}
+                    alt=""
+                    width="30%"
+                    style={{ margin: "5% auto" }}
+                  />
+                  <span>{tear}</span>
+                  <span style={{ fontSize: "0.7em" }}>({rating}점)</span>
+                </div>
+              </Container>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                width: "70%",
+                margin: "5% auto",
+                marginBottom: "1%",
+              }}
+            >
               <Container
                 aria-hidden="true"
                 style={{
@@ -176,7 +249,7 @@ const MypageCompo = () => {
               </Container>
             </div>
 
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", width: "70%", margin: "1% auto" }}>
               <Container
                 aria-hidden="true"
                 style={{
@@ -205,7 +278,7 @@ const MypageCompo = () => {
               </Container>
             </div>
 
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", width: "70%", margin: "1% auto" }}>
               <Container
                 aria-hidden="true"
                 style={{
@@ -216,35 +289,6 @@ const MypageCompo = () => {
                 }}
               >
                 이메일
-              </Container>
-
-              <Container
-                style={{
-                  backgroundColor: "#F4EBFC",
-                  borderRadius: "10px",
-                  marginBottom: "1%",
-                  width: "70%",
-                  fontSize: "5em",
-                  textAlign: "center",
-                }}
-              >
-                <div>
-                  <p style={{ marginLeft: "10px" }}>{form.email}</p>
-                </div>
-              </Container>
-            </div>
-
-            <div style={{ display: "flex" }}>
-              <Container
-                aria-hidden="true"
-                style={{
-                  width: "20%",
-                  margin: "auto",
-                  fontSize: "4em",
-                  textAlign: "center",
-                }}
-              >
-                티어
               </Container>
 
               <Container
@@ -527,6 +571,10 @@ const MypageCompo = () => {
               </div>
             </Modal>
           </div>
+          <br />
+          <br />
+          <br />
+          <br />
         </>
       )}
     </div>
