@@ -2,12 +2,8 @@ package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.request.NoticePatchReq;
 import com.ssafy.mafiace.api.request.NoticePostReq;
-import com.ssafy.mafiace.api.response.GameRoomRes;
 import com.ssafy.mafiace.api.response.NoticeRes;
-import com.ssafy.mafiace.api.response.UserLoginPostRes;
 import com.ssafy.mafiace.api.service.NoticeService;
-import com.ssafy.mafiace.common.model.GameInfo;
-import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.Notice;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
