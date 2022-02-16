@@ -750,25 +750,20 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                         ref={chatBox}
                       >
                         {messages.map((msg, index) => {
-                          console.log(nickname + " 모니");
-                          console.log(msg);
-                          console.log(index);
-
                           return nickname === msg.nickname ? (
                             <div
                               className="chat"
                               key={index}
-                              style={{ margin: "2%" }}
+                              style={{ margin: "2%", textAlign: "right" }}
                             >
                               <div className="chat-my">{msg.nickname}</div>
-
                               <div className="chat-message">{msg.message}</div>
                             </div>
                           ) : (
                             <div
                               className="chat"
                               key={index}
-                              style={{ margin: "2%", textAlign: "right" }}
+                              style={{ margin: "2%" }}
                             >
                               <div className="chat-other">{msg.nickname}</div>
                               <div className="chat-message">{msg.message}</div>
