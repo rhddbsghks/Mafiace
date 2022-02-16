@@ -6,6 +6,7 @@ import {
   Container,
   Statistic,
   Image,
+  Table,
 } from "semantic-ui-react";
 import axios from "axios";
 import Loader from "../../common/Loader";
@@ -15,6 +16,7 @@ const MypageCompo = () => {
   const [form, setForm] = useState([]);
   const [loading, setLoading] = useState(true);
   const [winlose, setWinlose] = useState([]);
+  const [latestLog, setLatestlog] = useState([]);
 
   useEffect(() => {
     axios
@@ -48,7 +50,8 @@ const MypageCompo = () => {
         }
       )
       .then((res) => {
-        // console.log(res.data.userRecords);
+        console.log(res.data.records);
+        setLatestlog(res.data.records);
         setWinlose(res.data.userRecords);
       })
       .catch(({ error }) => {
@@ -193,6 +196,67 @@ const MypageCompo = () => {
               </Statistic.Label>
             </Statistic>
           </Statistic.Group>
+          <br></br>
+          <Divider horizontal>
+            <Header as="h4">
+              <Icon name="chart line" />
+              최근 전적
+            </Header>
+          </Divider>
+          <br></br>
+          <Table style={{ marginBottom: "20%" }}>
+            <thead
+              style={{ textAlign: "center", backgroundColor: "purple-200" }}
+            >
+              <tr>
+                <th style={{ fontSize: "2rem" }}>Job</th>
+                <th style={{ fontSize: "2rem" }}>Result</th>
+                <th style={{ fontSize: "2rem" }}>Play Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {latestLog.map((item) => {
+                return (
+                  <tr
+                    className="bg-white border-2 border-gray-200"
+                    style={{
+                      textAlign: "center",
+                      borderBottom: "1px dotted gray",
+                    }}
+                  >
+                    <td className="px-4 py-3">
+                      <p
+                        className="hover:text-blue-500 cursor-pointer"
+                        style={{ fontSize: "150%" }}
+                      >
+                        {item.role}
+                      </p>
+                    </td>
+                    <td className="px-4 py-3">
+                      {item.win === true ? (
+                        <p
+                          className="hover:text-blue-500 cursor-pointer"
+                          style={{ fontSize: "150%" }}
+                        >
+                          Win
+                        </p>
+                      ) : (
+                        <p
+                          className="hover:text-blue-500 cursor-pointer"
+                          style={{ fontSize: "150%" }}
+                        >
+                          Lose
+                        </p>
+                      )}
+                    </td>
+                    <td className="px-4 py-3" style={{ fontSize: "150%" }}>
+                      {item.playTime}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
         </>
       )}
     </div>
