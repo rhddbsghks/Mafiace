@@ -1,5 +1,6 @@
 package com.ssafy.mafiace.db.entity;
 
+import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Getter
 @ToString
@@ -28,8 +30,11 @@ public class UserGameLog extends BaseEntity{
     @NotNull @Column(name = "is_win")
     boolean isWin;
 
-    @Column(name = "play_time  ")
+    @Column(name = "play_time")
     String playTime;
+
+    @Column(name = "start_time")
+    LocalDateTime startTime;
 
     @Builder
     private UserGameLog(String roleName, boolean isWin, String playTime, GameLog gameLog, User user){
@@ -37,6 +42,7 @@ public class UserGameLog extends BaseEntity{
         this.roleName = roleName;
         this.playTime = playTime;
         this.gameLog = gameLog;
+        this.startTime = LocalDateTime.now();
         this.user = user;
     }
 
