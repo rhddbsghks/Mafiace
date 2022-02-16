@@ -30,6 +30,10 @@ const Modal = ({ selectedData, handleCancel, handleEditSubmit }) => {
           Update
         </div>
         <div className="border-b px-4 py-5 flex justify-center items-center"></div>
+<<<<<<< HEAD
+
+=======
+>>>>>>> 72ff2927f67baf85d940564a5fd5d2690f6f1598
         <form>
           <br></br>
           <Form style={{ textAlign: "center" }}>
@@ -61,7 +65,7 @@ const Modal = ({ selectedData, handleCancel, handleEditSubmit }) => {
               onClick={onSubmitEdit}
               // onClick={handleSubmit}
               className="bg-purple-300 hover:bg-purple-500 py-2 text-center px-10 md:px-12 md:py-3 text-white rounded text-xl md:text-base mt-4"
-              style={{ margin: "5%" }}
+              style={{ margin: "5%", border: "none" }}
             >
               저장
             </button>
@@ -69,6 +73,7 @@ const Modal = ({ selectedData, handleCancel, handleEditSubmit }) => {
             <button
               onClick={onCancel}
               className="bg-purple-300 hover:bg-purple-500 py-2 text-center px-10 md:px-12 md:py-3 text-white rounded text-xl md:text-base mt-4"
+              style={{ border: "none" }}
             >
               취소
             </button>

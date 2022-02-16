@@ -1,4 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Dongle&display=swap");
+<<<<<<< HEAD
+/* @import "tailwindcss/base"; */
+=======
+>>>>>>> 72ff2927f67baf85d940564a5fd5d2690f6f1598
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
