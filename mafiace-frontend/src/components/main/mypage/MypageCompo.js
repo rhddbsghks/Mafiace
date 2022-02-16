@@ -303,7 +303,7 @@ const MypageCompo = () => {
               onClose={() => setPasswordModal(false)}
               onOpen={() => setPasswordModal(true)}
               className="make-body"
-              style={{ height: "550px" }}
+              style={{ height: "400px" }}
             >
               <div className="room-make-box" style={{ height: "100%" }}>
                 <Form unstackable style={{ height: "100%" }}>
@@ -397,7 +397,7 @@ const MypageCompo = () => {
               onClose={() => setNicknameModal(false)}
               onOpen={() => setNicknameModal(true)}
               className="make-body"
-              style={{ height: "550px" }}
+              style={{ height: "350px" }}
             >
               <div className="room-make-box" style={{ height: "100%" }}>
                 <Form unstackable style={{ height: "100%" }}>
@@ -476,7 +476,7 @@ const MypageCompo = () => {
               onClose={() => setDeleteModal(false)}
               onOpen={() => setDeleteModal(true)}
               className="make-body"
-              style={{ height: "550px" }}
+              style={{ height: "350px" }}
             >
               <div className="room-make-box" style={{ height: "100%" }}>
                 <Form unstackable style={{ height: "100%" }}>
@@ -489,7 +489,7 @@ const MypageCompo = () => {
                     }}
                   >
                     <div className="room-make-box-title">
-                      비밀번호를 입력해주십시오.
+                      비밀번호를 입력해주세요.
                     </div>
                     <div
                       style={{
