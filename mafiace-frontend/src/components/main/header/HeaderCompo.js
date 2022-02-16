@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const HeaderCompo = ({ getLogin }) => {
-  const menu = ["/notice", "/rules", "/", "/mypage", "/ranking"];
+  const menu = ["/notice", "/rules", "/", "/ranking", "/mypage"];
   const newV = useRef(window.location.pathname).current;
   const [value, setValue] = useState(menu.indexOf(newV));
 
@@ -80,8 +80,8 @@ const HeaderCompo = ({ getLogin }) => {
         <Tab label="공지사항" />
         <Tab label="게임방법" />
         <Tab label="방 목록" />
+        <Tab label="기록실" />
         <Tab label="내 정보" />
-        <Tab label="명예의 전당" />
       </Tabs>
     </>
   );

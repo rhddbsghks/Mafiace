@@ -28,7 +28,7 @@ const Honor = ({ honorName, get }) => {
     firstWin: "마피아스에 오신 것을 환영합니다.",
     investigate10: "마피아 수사 10건 성공",
     kill10: "시민 제거 10번 성공",
-    save10: "시민 진료 10번 성공",
+    save10: "시민 치료 10번 성공",
   };
 
   const [hover, setHover] = useState(false);

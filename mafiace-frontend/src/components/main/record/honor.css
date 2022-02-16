@@ -68,4 +68,13 @@
 
 .badge-container:hover {
   cursor: pointer;
+  color: #a142fa4b;
+}
+
+.win {
+  background-color: #a142fa42 !important;
+}
+
+.lose {
+  background-color: #d36d974f !important;
 }

@@ -421,7 +421,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   } else if (myRole === "Police") {
                     setStateMessage("용의자 한 명을 조사해보세요.👮‍♀️");
                   } else if (myRole === "Doctor") {
-                    setStateMessage("위급 환자 한 명을 진료해주세요.👨‍⚕️");
+                    setStateMessage("위급 환자 한 명을 치료해주세요.👨‍⚕️");
                   } else {
                     setStateMessage("걱정 가득한 채로 잠이 들었습니다.😴");
                   }
