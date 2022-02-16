@@ -51,9 +51,11 @@
 }
 .slide-1 ::before {
   content: "";
-  background: url("../../../../public/img/Mafia.png");
-  background-size: 520px 500px;
-  opacity: 0.1;
+  background-image: url("../../../../public/img/Mafia.png");
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  opacity: 0.05;
   position: absolute;
   top: 0px;
   left: 30px;
@@ -64,8 +66,10 @@
 .slide-2 ::before {
   content: "";
   background: url("../../../../public/img/Police.png");
-  background-size: 100% 100%;
-  opacity: 0.1;
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  opacity: 0.05;
   position: absolute;
   top: 0px;
   left: 30px;
@@ -76,8 +80,10 @@
 .slide-3 ::before {
   content: "";
   background: url("../../../../public/img/Doctor.png");
-  background-size: 100% 100%;
-  opacity: 0.1;
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  opacity: 0.05;
   position: absolute;
   top: 0px;
   left: 30px;

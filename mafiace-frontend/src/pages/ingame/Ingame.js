@@ -51,7 +51,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [messages, setMessages] = useState([]);
 
   // 인게임
-  const [time, setTime] = useState(12312312); // 타이머
+  const [time, setTime] = useState(gameInfo.discussionTime); // 타이머
   const [timer, setTimer] = useState(); // 타이머
   const [count, setCount] = useState(1); // 날짜
   const [stateMessage, setStateMessage] = useState(gameInfo.gameTitle); // 헤더 상태메세지

@@ -49,16 +49,23 @@ const UserVideoComponent = ({
   ];
   const [checkAlive, setCheckAlive] = useState(true);
   const [tear, setTear] = useState("");
-  const [isBlur, setIsBlur] = useState(true);
+  const [isBlur, setIsBlur] = useState(false);
 
   useEffect(() => {
+    if (!mafiaTeam) return;
+
+    if (!night) {
+      setIsBlur(false);
+      return;
+    }
     mafiaTeam.forEach((mafiaNick) => {
-      if (mafiaNick === nickNameTag) {
+      console.log(mafiaNick);
+      if (mafiaNick !== nickNameTag) {
         setIsBlur(true);
         return;
       }
     });
-  }, []);
+  }, [night]);
 
   useEffect(() => {
     axios
