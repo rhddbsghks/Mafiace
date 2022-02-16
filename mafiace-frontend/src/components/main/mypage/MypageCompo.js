@@ -60,7 +60,6 @@ const MypageCompo = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
         setLoading(false);
         setForm(res.data);
       })
@@ -146,6 +145,7 @@ const MypageCompo = () => {
       )
       .then((res) => {
         alert("닉네임 변경이 완료되었습니다!");
+        window.location.reload();
         setNicknameModal(false);
       })
       .catch(({ response }) => {
