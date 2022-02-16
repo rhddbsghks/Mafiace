@@ -6,6 +6,10 @@
     width: 600px;
     text-align: center;
     border-radius: 10px;
+    /* overflow: hidden; */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     margin:auto;
   }
   
@@ -45,10 +49,34 @@
     align-items: center;
     font-size: 32px;
   }
-  .slides ::before{
+  .slide-1 ::before{
     content: "";
-    background: url("../../../../public/img/carousel1.png");
-    background-size: 100%;
+    background: url("../../../../public/img/Mafia.png");
+    background-size: 100% 100%;
+    opacity: 0.1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: -1;
+  }
+  .slide-2 ::before{
+    content: "";
+    background: url("../../../../public/img/Police.png");
+    background-size: 100% 100%;
+    opacity: 0.1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: -1;
+  }
+  .slide-3 ::before{
+    content: "";
+    background: url("../../../../public/img/Doctor.png");
+    background-size: 100% 100%;
     opacity: 0.1;
     position: absolute;
     top: 0px;
