@@ -34,7 +34,7 @@ video {
 .selected {
   width: 100% !important;
   height: 100% !important;
-  bottom: 100%;
+  bottom: 50%;
   font-size: 3em;
   padding-top: 4%;
 }
