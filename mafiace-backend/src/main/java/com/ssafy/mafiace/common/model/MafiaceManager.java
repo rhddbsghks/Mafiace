@@ -12,7 +12,6 @@ import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.GameLog;
 import com.ssafy.mafiace.db.entity.User;
-import com.ssafy.mafiace.db.entity.UserHonor;
 import com.ssafy.mafiace.db.entity.UserRecords;
 import com.ssafy.mafiace.game.Player;
 import java.time.Duration;
@@ -158,6 +157,16 @@ public class MafiaceManager {
         healTarget = "";
     }
 
+    public boolean voteAll(){
+        int cnt=0;
+        for (String key : voteMap.keySet()) {
+            cnt+=voteMap.get(key);
+        }
+        if(players.countAliveMafia()+players.countAliveCitizen()==cnt){
+            return true;
+        }
+        return false;
+    }
     public void addDeathPlayer(String nickname){
         deathList.add(nickname);
     }
