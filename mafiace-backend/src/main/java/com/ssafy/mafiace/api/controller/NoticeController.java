@@ -2,14 +2,18 @@ package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.request.NoticePatchReq;
 import com.ssafy.mafiace.api.request.NoticePostReq;
+import com.ssafy.mafiace.api.response.GameRoomRes;
 import com.ssafy.mafiace.api.response.NoticeRes;
 import com.ssafy.mafiace.api.response.UserLoginPostRes;
 import com.ssafy.mafiace.api.service.NoticeService;
+import com.ssafy.mafiace.common.model.GameInfo;
+import com.ssafy.mafiace.db.entity.Game;
 import com.ssafy.mafiace.db.entity.Notice;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +61,14 @@ public class NoticeController {
     @ApiResponses({
         @ApiResponse(code = 200, message = "공지사항을 성공적으로 조회하였습니다."),
     })
-    public List<Notice> getNoticeList() {
-        return noticeService.getAllNotice();
+    public List<NoticeRes> getNoticeList() {
+        List<Notice> allNotice = noticeService.getAllNotice();
+        List<NoticeRes> allNoticeRes = new ArrayList<>();
+
+        for(Notice notice : allNotice) {
+            allNoticeRes.add(NoticeRes.of(200, "Success", notice));
+        }
+        return allNoticeRes;
     }
 
     // 특정 공지사항 조회
