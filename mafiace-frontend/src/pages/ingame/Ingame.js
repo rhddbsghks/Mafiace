@@ -7,6 +7,8 @@ import Day from "../../components/ingame/Day";
 import Night from "../../components/ingame/Night";
 import Count321 from "../../components/ingame/Count321";
 import JobCard from "../../components/ingame/JobCard";
+import InvestCard from "../../components/ingame/InvestCard";
+
 import "./ingame-btn.css";
 // import "./ingame-chat.css";
 
@@ -35,6 +37,8 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [start, setStart] = useState(false);
   const [count321, setCount321] = useState(false);
   const [openJobCard, setopenJobCard] = useState(false);
+  const [openInvestCard, setopenInvestCard] = useState(false);
+  const [isMafia, setIsMafia] = useState(false);
   const [chat, setChat] = useState(false);
 
   // 웹 소켓
@@ -42,7 +46,6 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   const [topics, setTopics] = useState();
   const chatBox = useRef();
   const chatMessage = useRef();
-  const [typedMessage, setTypedMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
   // 인게임
@@ -337,6 +340,12 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
 
   return (
     <div>
+      <InvestCard
+        openInvestCard={openInvestCard}
+        setopenInvestCard={setopenInvestCard}
+        myVote={myVote}
+        isMafia={isMafia}
+      />
       <JobCard
         openJobCard={openJobCard}
         setopenJobCard={setopenJobCard}
@@ -401,7 +410,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   } else if (myRole === "Doctor") {
                     setStateMessage("위급 환자 한 명을 진료해주세요.");
                   } else {
-                    setStateMessage("걱정으로 가득한 채로 잠이 들었습니다.");
+                    setStateMessage("걱정 가득한 채로 잠이 들었습니다.");
                   }
                 }, 3000);
               } else if (msg.check === "role") {
@@ -414,10 +423,11 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
               } else if (msg.end === "MafiaTeam") {
                 setMafiaTeam(msg.mafia);
               } else if (msg.check === "investigate") {
+                setopenInvestCard(true);
                 if (msg.role === "Mafia") {
-                  alert(myVote + "님은 마피아입니다.");
+                  setIsMafia(true);
                 } else {
-                  alert(myVote + "님은 시민입니다.");
+                  setIsMafia(false);
                 }
               }
               //getVoteResult
@@ -438,7 +448,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   }
                 }
               } else if (msg.check === "save") {
-                setStateMessage("의사가 마피아로부터 시민을 살렸습니다.");
+                setStateMessage("의사가 시민을 살렸습니다.");
               } else if (msg.check === "nobody") {
                 setStateMessage("아무 일도 일어나지 않았습니다.");
               } else if (msg.end === "end") {
@@ -507,10 +517,10 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                 style={{
                   position: "absolute",
                   top: "1%",
-                  left: "5%",
+                  left: "2%",
                 }}
               >
-                <img src="img/Logo.png" alt="" width="80%" />
+                <img src="img/Logo.png" alt="" width="60%" />
                 <div>
                   <span style={{ fontSize: "2.5em" }} className="gray">
                     Ma
@@ -530,11 +540,11 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
               {/* 메세지 영역 */}
               <div
                 style={{
-                  width: "50%",
+                  width: "55%",
                   backgroundColor: "rgba(255, 255, 255, 0.7)",
                   display: "flex",
                   justifyContent: "space-between",
-                  fontSize: "4em",
+                  fontSize: "5em",
                   borderRadius: "1rem",
                 }}
               >
@@ -548,14 +558,20 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                   <div
                     style={{
                       margin: "auto",
-                      width: "60%",
+                      width: "80%",
                       textAlign: "center",
                     }}
                   >
                     {stateMessage}
                   </div>
                 ) : (
-                  <div style={{ margin: "auto", width: "60%" }}>
+                  <div
+                    style={{
+                      margin: "auto",
+                      width: "80%",
+                      textAlign: "center",
+                    }}
+                  >
                     {stateMessage}
                   </div>
                 )}
@@ -644,6 +660,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                     setIsVoted={setIsVoted}
                     night={night}
                     heal={heal}
+                    myVote={myVote}
                   />
                 </div>
               ) : null}
@@ -670,6 +687,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                       vote={vote}
                       heal={heal}
                       investigate={investigate}
+                      myVote={myVote}
                     />
                   </div>
                 </div>
