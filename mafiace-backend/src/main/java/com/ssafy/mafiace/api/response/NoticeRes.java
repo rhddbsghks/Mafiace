@@ -2,6 +2,7 @@ package com.ssafy.mafiace.api.response;
 
 import com.ssafy.mafiace.db.entity.Notice;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,7 @@ import lombok.Setter;
 public class NoticeRes extends BaseResponseBody {
     private String title;
     private String content;
-    private LocalDateTime postTime;
+    private String postTime;
     private int postNum;
 
     public static NoticeRes of(Integer statusCode, String message, Notice notice) {
@@ -23,7 +24,7 @@ public class NoticeRes extends BaseResponseBody {
         // 조회하는 공지사항에서 가져올 값
         res.setTitle(notice.getTitle());
         res.setContent(notice.getContent());
-        res.setPostTime(notice.getPostTime());
+        res.setPostTime(notice.getPostTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         res.setPostNum(notice.getPostNum());
 
         return res;
