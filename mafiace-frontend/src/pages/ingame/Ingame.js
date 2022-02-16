@@ -685,6 +685,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                     night={night}
                     heal={heal}
                     myVote={myVote}
+                    count={count}
                   />
                 </div>
               ) : null}
@@ -712,6 +713,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
                       heal={heal}
                       investigate={investigate}
                       myVote={myVote}
+                      count={count}
                     />
                   </div>
                 </div>
