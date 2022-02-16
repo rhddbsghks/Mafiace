@@ -8,14 +8,14 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
+@NoArgsConstructor
 @Entity(name = "user_game_log")
 @AttributeOverrides({
     @AttributeOverride(name = "id",column = @Column(name = "user_game_log_id", unique = true))
@@ -23,11 +23,21 @@ import lombok.ToString;
 public class UserGameLog extends BaseEntity{
 
     @NotNull @Column(name = "job")
-    int job;
+    String roleName;
+
+    @NotNull @Column(name = "is_win")
+    boolean isWin;
+
+    @Column(name = "play_time  ")
+    String playTime;
 
     @Builder
-    private UserGameLog(int job){
-        this.job = job;
+    private UserGameLog(String roleName, boolean isWin, String playTime, GameLog gameLog, User user){
+        this.isWin = isWin;
+        this.roleName = roleName;
+        this.playTime = playTime;
+        this.gameLog = gameLog;
+        this.user = user;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

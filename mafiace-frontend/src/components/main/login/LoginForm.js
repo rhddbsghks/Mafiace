@@ -3,10 +3,11 @@ import { Button, Divider, Form, Grid, Segment, Popup } from "semantic-ui-react";
 import FindId from "./FindId";
 import FindPw from "./FindPw";
 import Signup from "./Signup";
-
+import styles from "./styles.module.css";
 import { useSpring, a } from "@react-spring/web";
 import axios from "axios";
-// import jwt from "jwt-decode";
+import "./logo.css";
+import btns from "../room/room.module.css";
 
 const LoginForm = ({ getLogin }) => {
   const [id, setId] = useState(true); // ID 찾기
@@ -39,18 +40,21 @@ const LoginForm = ({ getLogin }) => {
   // 로그인 클릭
   const onClickLogin = () => {
     axios
-      .post("/api/auth/login", values, {
+      .post("/mafiace/api/auth/login", values, {
         headers: { "Content-Type": `application/json` },
       })
       .then((res) => {
-        // console.log(res.data);
-        // console.log(jwt(res.data.accessToken));
-        localStorage.setItem("jwt", res.data.accessToken);
-        getLogin(true);
-        clearValues();
+        if (res.status === 204) {
+          alert(
+            "탈퇴처리중인 계정입니다.\nmafiassafy@gmail.com로 문의해주세요."
+          );
+        } else {
+          localStorage.setItem("jwt", res.data.accessToken);
+          getLogin(true);
+          clearValues();
+        }
       })
       .catch((err) => {
-        // console.log(err.response.data);
         if (err.response.data.status === 404) {
           setMsg("존재하지 않는 ID 입니다.");
           setIdOpen(true);
@@ -91,14 +95,19 @@ const LoginForm = ({ getLogin }) => {
   };
 
   return (
-    <>
+    <div>
       {up && id && pw ? (
         <a.div style={{ opacity: opacity.to((o) => 1 - o), transform }}>
-          <h1>로그인</h1>
-          <Segment placeholder>
-            <Grid columns={2} relaxed="very" stackable>
-              <Grid.Column>
-                <Form>
+          <h1></h1>
+          <Segment placeholder className={styles["home-bottom"]}>
+            <Grid
+              columns={2}
+              relaxed="very"
+              stackable
+              style={{ height: "350px" }}
+            >
+              <Grid.Column style={{ width: "100%" }}>
+                <Form className="login-form">
                   <Popup
                     content={msg}
                     open={idOpen}
@@ -107,7 +116,7 @@ const LoginForm = ({ getLogin }) => {
                         icon="user"
                         iconPosition="left"
                         label="ID"
-                        placeholder="type your ID here"
+                        placeholder="아이디를 입력하세요."
                         name="userId"
                         value={values.userId}
                         onChange={handleChange}
@@ -124,54 +133,100 @@ const LoginForm = ({ getLogin }) => {
                         icon="lock"
                         iconPosition="left"
                         label="PW"
-                        placeholder="type your PW here"
+                        placeholder="비밀번호를 입력하세요."
                         type="password"
                         name="password"
                         value={values.password}
                         onChange={handleChange}
+                        onKeyUp={(e) => {
+                          if (e.key === "Enter") onClickLogin();
+                        }}
                       />
                     }
                     position="bottom center"
                     style={{ color: "red" }}
                   />
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-around",
+                      maxWidth: "300px",
+                      margin: "auto",
+                      marginTop: "5%",
+                    }}
+                  >
+                    <div
+                      className="form-back"
+                      onClick={clickFindId}
+                      style={{ fontSize: "1.5em" }}
+                    >
+                      아이디 찾기
+                    </div>
+                    <div
+                      className="form-back"
+                      onClick={clickFindPw}
+                      style={{ fontSize: "1.5em" }}
+                    >
+                      비밀번호 찾기
+                    </div>
+                    <div
+                      className="form-back"
+                      onClick={clickSignup}
+                      style={{ fontSize: "1.5em" }}
+                    >
+                      회원가입
+                    </div>
+                    {/* <Button
+                      onClick={clickFindId}
+                      content="Find ID"
+                      inverted
+                      color="blue"
+                    />
+                    <Button
+                      onClick={clickFindPw}
+                      content="Find PW"
+                      inverted
+                      color="blue"
+                    /> */}
+                  </div>
+                </Form>
+              </Grid.Column>
 
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+              >
+                <button
+                  className={`${btns.button} ${btns["btn-2"]}`}
+                  style={{ margin: "auto", width: "60%", height: "60%" }}
+                  onClick={onClickLogin}
+                >
+                  로그인
+                </button>
+              </div>
+
+              {/* <Grid.Column textAlign="center" verticalAlign="middle">
+                <Button.Group>
                   <Button
                     onClick={onClickLogin}
                     content="LOGIN"
                     inverted
                     color="green"
                   />
-                </Form>
-              </Grid.Column>
-
-              <Grid.Column textAlign="center" verticalAlign="middle">
-                <Button
-                  onClick={clickSignup}
-                  content="Sign Up"
-                  icon="signup"
-                  inverted
-                  color="red"
-                ></Button>
-
-                <p></p>
-                <Button.Group>
                   <Button
-                    onClick={clickFindId}
-                    content="Find ID"
+                    onClick={clickSignup}
+                    content="Sign Up"
+                    // icon="signup"
                     inverted
-                    color="blue"
-                  />
-                  <Button.Or text="OR" />
-                  <Button
-                    onClick={clickFindPw}
-                    content="Find PW"
-                    inverted
-                    color="blue"
-                  />
+                    color="red"
+                  ></Button>
                 </Button.Group>
-              </Grid.Column>
+              </Grid.Column> */}
             </Grid>
-            <Divider vertical>Or</Divider>
+            {/* <Divider vertical>Or</Divider> */}
           </Segment>
         </a.div>
       ) : null}
@@ -182,7 +237,7 @@ const LoginForm = ({ getLogin }) => {
       )}
       {id ? null : (
         <a.div style={{ opacity, transform, rotateX: "180deg" }}>
-          <FindId clickFindId={clickFindId} />
+          <FindId clickFindId={clickFindId} clickFindPw={clickFindPw} />
         </a.div>
       )}
       {pw ? null : (
@@ -190,7 +245,7 @@ const LoginForm = ({ getLogin }) => {
           <FindPw clickFindPw={clickFindPw} />
         </a.div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Tr from "./Tr";
 import Post from "./Post";
@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import Detail from "./Detail";
 import { Table } from "@mui/material";
 import jwt from "jwt-decode";
+import Loader from "../../common/Loader";
 
 const NoticeCompo = () => {
   // const [form, setForm] = useState({ title: "", content: "", postNum: "" });
@@ -17,8 +18,8 @@ const NoticeCompo = () => {
   const [modalOn, setModalOn] = useState(false);
   const [postOn, setPostOn] = useState(false);
   const [detailOn, setDetailOn] = useState(false);
-
-  const nextId = useRef(1);
+  const [loading, setLoading] = useState(true);
+  const nextId = useState(1);
 
   //더미 데이터 호출
   useEffect(() => {
@@ -26,13 +27,21 @@ const NoticeCompo = () => {
     setAdmin(admin_storage.sub);
     // console.log(admin);
     axios
-      .get("/api/notice/")
+      .get("/mafiace/api/notice/")
       .then((res) => {
         // console.log("get data");
-        // console.log(res.data);
+        console.log(res.data);
+        setLoading(false);
         setList(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch(({ response }) => {
+        console.log(response);
+        if (response.status === 403) {
+          localStorage.removeItem("jwt");
+          window.location.reload();
+          alert("요청 권한이 없습니다");
+        }
+      });
   }, [refreshed]);
 
   //디테일 열기
@@ -74,11 +83,10 @@ const NoticeCompo = () => {
   };
 
   const handleRemove = (postNum) => {
-    axios.delete("/api/notice/" + postNum).then(() => {
+    axios.delete("/mafiace/api/notice/" + postNum).then(() => {
       alert("게시물이 삭제되었습니다!");
       setRefreshed(!refreshed);
     });
-    nextId.current -= 1;
   };
 
   const handleCreate = () => {
@@ -92,7 +100,7 @@ const NoticeCompo = () => {
       title: item.title,
       content: item.content,
     };
-    console.log(selectedData);
+    // console.log(selectedData);
     setSelected(selectedData);
   };
 
@@ -109,13 +117,18 @@ const NoticeCompo = () => {
   };
 
   const handleEditSubmit = (item) => {
-    console.log(item);
+    // console.log(item);
     handleSave(item);
     setModalOn(false);
   };
 
   return (
-    <div>
+
+    <>
+      {loading ? (
+        <Loader msg="로딩 중..." />
+      ) : (
+        <div>
       {admin === "sixman" ? (
         <div className="ml-20" style={{ marginTop: "5%" }}>
           <button
@@ -168,28 +181,30 @@ const NoticeCompo = () => {
             />
           )}
         </div>
-      ) : (
-        <div className="ml-50" style={{ marginTop: "5%" }}>
-          <Table>
-            <thead>
-              <tr>
-                <th style={{ fontSize: "2rem" }}>No.</th>
-                <th style={{ fontSize: "2rem" }}>Title</th>
-                <th style={{ fontSize: "2rem" }}>Time</th>
-              </tr>
-            </thead>
-            <Tr list={list} handleDetail={handleDetail} />
-          </Table>
+          ) : (
+            <div className="ml-50" style={{ marginTop: "5%" }}>
+              <Table>
+                <thead>
+                  <tr>
+                    <th style={{ fontSize: "2rem" }}>No.</th>
+                    <th style={{ fontSize: "2rem" }}>Title</th>
+                    <th style={{ fontSize: "2rem" }}>Time</th>
+                  </tr>
+                </thead>
+                <Tr list={list} handleDetail={handleDetail} />
+              </Table>
 
-          {detailOn && (
-            <Detail
-              selectedData={selected}
-              handleCancel3={handleCancel3}
-            ></Detail>
+              {detailOn && (
+                <Detail
+                  selectedData={selected}
+                  handleCancel3={handleCancel3}
+                ></Detail>
+              )}
+            </div>
           )}
         </div>
       )}
-    </div>
+    </>
   );
 };
 

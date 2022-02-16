@@ -30,7 +30,10 @@ const Modal = ({ selectedData, handleCancel, handleEditSubmit }) => {
           Update
         </div>
         <div className="border-b px-4 py-5 flex justify-center items-center"></div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 72ff2927f67baf85d940564a5fd5d2690f6f1598
         <form>
           <br></br>
           <Form style={{ textAlign: "center" }}>

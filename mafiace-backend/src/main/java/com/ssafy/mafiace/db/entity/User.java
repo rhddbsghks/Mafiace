@@ -4,7 +4,6 @@ import java.util.Collection;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +12,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -38,13 +38,22 @@ public class User extends BaseEntity implements UserDetails {
     @NotNull
     @Column(name = "email", unique = true)
     String email;
-    @Pattern(regexp = "[a-zA-Z1-9가-힣\\s]{2,10}")
+    @Pattern(regexp = "[a-zA-Z1-9가-힣\\s]{2,8}")
     @NotNull
     @Column(name = "nickname", unique = true)
     String nickname;
-
     @Column(name = "is_deleted")
     boolean isDeleted;
+    @Transient
+    boolean isReady;
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
+    }
 
     @Builder
     private User(String userId, String password, String email, String nickname) {
@@ -56,7 +65,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     // delete
-    public void deleteAccount(String userId) {
+    public void addDeleteAccount(String userId) {
         if(userId.equals(this.userId)) {
             this.isDeleted = true;
         }
@@ -77,16 +86,29 @@ public class User extends BaseEntity implements UserDetails {
         return this;
     }
 
+    public User modifyPassword(String password){
+        this.password = password;
+
+        return this;
+    }
+
+    public User modifyNickname(String nickname){
+        this.nickname = nickname;
+
+        return this;
+    }
+
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserGameLog> userGameLogs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserHonor> userHonors = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", orphanRemoval = true)
     private DeleteAccount deleteAccount;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private UserRecords userRecords;
 
     public void setUserRecords(UserRecords userRecords) {
@@ -102,6 +124,11 @@ public class User extends BaseEntity implements UserDetails {
     public void addUserHonors(UserHonor userHonor) {
         this.userHonors.add(userHonor);
         userHonor.setUser(this);
+    }
+
+    public void setDeleteAccount(DeleteAccount deleteAccount) {
+        this.deleteAccount = deleteAccount;
+        deleteAccount.setUser(this);
     }
 
 
@@ -135,7 +162,5 @@ public class User extends BaseEntity implements UserDetails {
         return true;
     }
 
-    public void setDeleteAccount(DeleteAccount deleteAccount) {
-        this.deleteAccount = deleteAccount;
-    }
+
 }

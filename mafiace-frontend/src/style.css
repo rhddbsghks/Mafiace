@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Dongle&display=swap");
+<<<<<<< HEAD
 /* @import "tailwindcss/base"; */
+=======
+>>>>>>> 72ff2927f67baf85d940564a5fd5d2690f6f1598
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
@@ -24,13 +27,18 @@
 
 body,
 h1,
+h2,
 button,
-.counter {
+.counter,
+span {
   font-family: "Dongle", sans-serif !important;
 }
 
 .container {
   height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between;
 }
 .MuiTab-root {
   border-radius: 20px !important;
@@ -51,8 +59,8 @@ button,
 }
 
 .MuiTab-root.Mui-selected {
-  color: #8157a8 !important;
-  background-color: #f3f1f5;
+  color: #ffffff !important;
+  background-color: #9a79bb;
 }
 
 .css-1aquho2-MuiTabs-indicator {
@@ -108,4 +116,12 @@ span {
     color-stop(0.75, rgba(170, 209, 233, 0.521)),
     color-stop(1, rgb(150, 197, 228))
   );
+}
+
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+#logout:hover {
+  cursor: pointer;
 }

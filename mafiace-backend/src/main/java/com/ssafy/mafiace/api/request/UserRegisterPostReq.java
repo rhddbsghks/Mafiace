@@ -11,6 +11,8 @@ import lombok.Setter;
 public class UserRegisterPostReq {
     @ApiModelProperty(name="유저 아이디", example="ssafy")
     String userId;
+    @ApiModelProperty(name="이전 비밀번호", example="1234")
+    String beforePassword;
     @ApiModelProperty(name="비밀번호", example="1234")
     String password;
     @ApiModelProperty(name="이메일", example="ssafy@ssafy.com")

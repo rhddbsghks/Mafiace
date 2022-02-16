@@ -3,12 +3,9 @@ package com.ssafy.mafiace.api.service;
 import com.ssafy.mafiace.api.request.UserRegisterPostReq;
 import com.ssafy.mafiace.db.entity.DeleteAccount;
 import com.ssafy.mafiace.db.entity.User;
-import com.ssafy.mafiace.db.entity.UserRecords;
 import com.ssafy.mafiace.db.repository.DeleteAccountRepositorySupport;
-import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
-import com.ssafy.mafiace.db.repository.UserRepositorySupport;
 import com.ssafy.mafiace.db.repository.DeleteAccountRepository;
 import java.time.LocalDate;
 import java.util.List;
@@ -96,9 +93,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UserRegisterPostReq registerReq) {
-        if (registerReq.getPassword().length() < 8 || registerReq.getPassword().length() > 12) {
-            return null;
-        }
         User user = getUserByUserId(registerReq.getUserId());
 
         return userRepository.save(
@@ -107,13 +101,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User updatePassword(UserRegisterPostReq registerReq) {
+        Optional<User> opt = userRepository.findByUserId(registerReq.getUserId());
+        if (opt.isPresent() && passwordEncoder.matches(registerReq.getBeforePassword(), opt.get().getPassword())) {
+            return userRepository.save(opt.get().modifyPassword(passwordEncoder.encode(registerReq.getPassword())));
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public User changePassword(User user, String tmpPassword) {
-        if (tmpPassword.length() < 8 || tmpPassword.length() > 12) {
+        if (tmpPassword.length() < 8 || tmpPassword.length() > 16) {
             return null;
         }
         return userRepository.save(
             user.modifyUser(passwordEncoder.encode(tmpPassword), user.getEmail(),
                 user.getNickname()));
+    }
+
+    @Override
+    public User updateNickname(UserRegisterPostReq registerReq) {
+        Optional<User> opt = userRepository.findByUserId(registerReq.getUserId());
+        if (opt.isPresent()) {
+            return userRepository.save(opt.get().modifyNickname(registerReq.getNickname()));
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -123,9 +137,8 @@ public class UserServiceImpl implements UserService {
             .finishDate(LocalDate.now().plusDays(30))
             .build();
 
-        deleteAccount.setUser(user);
         user.setDeleteAccount(deleteAccount);
-        user.deleteAccount(user.getUserId());
+        user.addDeleteAccount(user.getUserId());
         deleteAccountRepository.save(deleteAccount);
         return userRepository.save(user);
     }

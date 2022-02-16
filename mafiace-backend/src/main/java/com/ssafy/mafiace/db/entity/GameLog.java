@@ -1,6 +1,7 @@
 package com.ssafy.mafiace.db.entity;
 
 
+import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.AttributeOverride;
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -21,18 +23,20 @@ import lombok.ToString;
 @Getter
 @ToString
 @Entity
+@NoArgsConstructor
 @Table(name = "game_log")
 @AttributeOverrides({
     @AttributeOverride(name = "id",column = @Column(name = "game_log_id",unique = true))
 })
 public class GameLog extends BaseEntity{
     @Column(name = "win_team")
-    int winTeam;
-    @Column(name = "play_time")
-    int playTime;
+    String winTeam;
+    @Column(name = "play_time  ")
+    String playTime;
 
     @Builder
-    private GameLog(int winTeam, int playTime){
+    private GameLog(String winTeam, String playTime){
+        this.id = BaseEntity.shortUUID();
         this.winTeam = winTeam;
         this.playTime = playTime;
     }

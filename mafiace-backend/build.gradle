@@ -51,8 +51,17 @@ dependencies {
 	// openVidu
 	compile group: 'io.openvidu', name: 'openvidu-java-client', version: '2.20.0'
 
+	// JSON
+	implementation 'org.json:json:20200518'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+bootJar {
+	archiveBaseName = '-'
+	archiveFileName = 'mafiace-backend.jar'
+	archiveVersion = '0.0.0'
 }

@@ -1,5 +1,9 @@
+.home-bottom {
+  margin-bottom: 10% !important;
+}
+
 .trailsText {
-  position: relative;
+  /* position: relative; */
   width: 100%;
   height: 80px;
   line-height: 80px;
@@ -8,9 +12,11 @@
   font-weight: 800;
   letter-spacing: -0.05em;
   will-change: transform, opacity;
+  line-height: 170px !important;
   overflow: hidden;
+  height: 100%;
 }
-  
+
 .trailsText > div {
   padding-right: 0.05em;
   overflow: hidden;
@@ -19,8 +25,8 @@
 .container {
   display: flex;
   align-items: center;
-  height: 100%;
   justify-content: center;
+  height: 30%;
 }
 
 .c {

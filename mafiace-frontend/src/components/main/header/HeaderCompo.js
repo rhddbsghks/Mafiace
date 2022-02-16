@@ -1,12 +1,14 @@
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Button from "@mui/material/Button";
-import { useEffect, useState } from "react";
+// import { Tab } from "semantic-ui-react";
+// import Button from "@mui/material/Button";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const HeaderCompo = ({ getLogin }) => {
   const menu = ["/notice", "/rules", "/", "/mypage", "/ranking"];
-  const [value, setValue] = useState();
+  const newV = useRef(window.location.pathname).current;
+  const [value, setValue] = useState(menu.indexOf(newV));
 
   let navigate = useNavigate();
 
@@ -25,28 +27,53 @@ const HeaderCompo = ({ getLogin }) => {
     switchChange(idx);
   };
 
-  useEffect(() => {
-    let newV = window.location.pathname;
-    navigate(newV);
-    setValue(menu.indexOf(newV));
-  }, []);
-
   return (
     <>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          width: "90%",
-          height: "3.7em",
+          width: "100%",
+          height: "1%",
           margin: "auto",
-          paddingTop: "2%",
         }}
       >
-        <h1>Logo</h1>
-        <Button variant="outlined" onClick={clickLogout}>
+        <div
+          style={{
+            position: "absolute",
+            top: "1%",
+            left: "16%",
+          }}
+        >
+          <img src="img/Logo.png" alt="" width="60%" />
+          <div>
+            <span style={{ fontSize: "2.3em" }} className="gray">
+              Ma
+            </span>
+            <span style={{ fontSize: "2.3em" }} className="color">
+              f
+            </span>
+            <span style={{ fontSize: "2.3em" }} className="gray">
+              i
+            </span>
+            <span style={{ fontSize: "2.3em" }} className="color">
+              ace
+            </span>
+          </div>
+        </div>
+        <div></div>
+        <span
+          style={{
+            margin: "auto 0",
+            fontWeight: "900",
+            fontSize: "1.5em",
+            color: "gray",
+          }}
+          onClick={clickLogout}
+          id="logout"
+        >
           로그아웃
-        </Button>
+        </span>
       </div>
 
       <Tabs value={value} onChange={handleChange} centered>

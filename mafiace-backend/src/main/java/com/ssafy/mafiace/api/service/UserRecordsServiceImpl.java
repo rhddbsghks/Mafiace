@@ -6,6 +6,7 @@ import com.ssafy.mafiace.db.repository.UserRecordsRepository;
 import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
 import com.ssafy.mafiace.db.repository.UserRepositorySupport;
+import com.ssafy.mafiace.game.Player;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,26 +27,23 @@ public class UserRecordsServiceImpl implements UserRecordsService {
     UserRecordsRepository userRecordsRepository;
 
     @Override
-    public UserRecords getUserRecords(String id) {
-        Optional<User> user = userRepository.findByUserId(id);
-        if (user == null) {
-            return null;
-        }
-        Optional<UserRecords> userRecordsOpt =
-            userRepositorySupport.findUserRecordsByUser(user.get());
-        return userRecordsOpt.orElse(null);
+    public UserRecords getUserRecords(String userUniqueId) {
+        return userRecordsRepositorySupport.findByUserUniqueId(userUniqueId);
     }
 
     @Override
     public UserRecords addUserRecords(User user) {
 
         UserRecords userRecords = UserRecords.builder()
+            .user(user)
             .build();
-        user.setUserRecords(userRecords);
-        System.out.println("id : " + userRecords.getId());
-        System.out.println("wincount : " + userRecords.getWinCount());
-        System.out.println("userid : " + userRecords.getUser().getUserId());
         return userRecordsRepository.save(userRecords);
+    }
+
+    @Override
+    public UserRecords updateUserRecords(Player player, boolean isWin, String role) {
+        // 유저, 승,패, 직업별 기능 사용 횟수 저장
+        return userRecordsRepositorySupport.updateUserRecords(player.getNickname() ,isWin, player.getKillCount(), player.getSaveCount(), player.getInvestigateCount(), role);
     }
 
 

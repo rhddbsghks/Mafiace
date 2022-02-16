@@ -1,8 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 import { Button, Divider, Form, Grid, Segment } from "semantic-ui-react";
+import styles from "./styles.module.css";
+import Loader from "../../common/Loader";
 
 const FindPw = ({ clickFindPw }) => {
+  const [sending, setSending] = useState(false);
+
   const [values, setValues] = useState({
     userId: "",
     email: "",
@@ -20,13 +24,16 @@ const FindPw = ({ clickFindPw }) => {
   };
 
   const axiosPatch = () => {
+    setSending(true);
     axios
-      .patch("http://localhost:8080/api/user/password", values)
+      .patch("/mafiace/api/user/password", values)
       .then((res) => {
         console.log(res);
+        setSending(false);
         window.alert(
           `${values.email}로 임시 비밀번호가 발송되었습니다.\n메일 확인 후 임시 비밀번호로 로그인 해주세요.`
         );
+
         clickFindPw();
       })
       .catch((err) => {
@@ -37,12 +44,96 @@ const FindPw = ({ clickFindPw }) => {
 
   return (
     <>
-      <h1>PW 찾기</h1>
+      <h1>비밀번호 찾기</h1>
 
-      <Segment placeholder>
-        <Grid columns={2} relaxed="very" stackable>
-          <Grid.Column>
-            <Form>
+      <Segment
+        placeholder
+        className={styles["home-bottom"]}
+        style={{ height: "350px", justifyContent: "flex-start" }}
+      >
+        {sending ? (
+          <Loader msg={"이메일 전송중..."} />
+        ) : (
+          <Grid
+            columns={2}
+            relaxed="very"
+            stackable
+            // style={{ height: "350px" }}
+          >
+            <Grid.Column
+              style={{
+                width: "100%",
+                display: "flex",
+                height: "100px",
+                marginTop: "10%",
+                justifyContent: "center",
+              }}
+            >
+              <Form className="findPw-form">
+                <Form.Input
+                  icon="user"
+                  iconPosition="left"
+                  label="ID"
+                  placeholder="아이디를 입력하세요."
+                  name="userId"
+                  style={{ width: "80%" }}
+                  onChange={handleChange}
+                />
+                <Form.Input
+                  icon="user"
+                  iconPosition="left"
+                  label="Email"
+                  placeholder="이메일을 입력하세요."
+                  style={{ width: "80%" }}
+                  name="email"
+                  value={values.email}
+                  onChange={handleChange}
+                />
+              </Form>
+
+              <Button
+                onClick={onclick}
+                content="찾기"
+                inverted
+                color="violet"
+                style={{
+                  fontSize: "2em",
+                  padding: "0 20px",
+                  height: "50%",
+                  margin: "auto 0",
+                }}
+              />
+            </Grid.Column>
+
+            <div
+              className="form-back"
+              style={{
+                position: "absolute",
+                top: "5%",
+                left: "1%",
+                fontSize: "2em",
+              }}
+              onClick={clickFindPw}
+            >
+              뒤로가기
+            </div>
+          </Grid>
+        )}
+      </Segment>
+      {/* <h1>비밀번호 찾기</h1>
+
+      <Segment placeholder className={styles["home-bottom"]}>
+        <Grid columns={2} relaxed="very" stackable style={{ height: "350px" }}>
+          <Grid.Column
+            style={{
+              width: "100%",
+              display: "flex",
+              height: "100px",
+              marginTop: "10%",
+              justifyContent: "center",
+            }}
+          >
+            <Form className="findPw-form">
               <Form.Input
                 icon="user"
                 iconPosition="left"
@@ -81,8 +172,7 @@ const FindPw = ({ clickFindPw }) => {
             </Button.Group>
           </Grid.Column>
         </Grid>
-        <Divider vertical>and</Divider>
-      </Segment>
+      </Segment> */}
     </>
   );
 };

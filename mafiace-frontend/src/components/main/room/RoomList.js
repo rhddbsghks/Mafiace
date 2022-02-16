@@ -14,7 +14,7 @@ const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
   const [maxPlayer, setMaxPlayer] = useState(8);
   const [isPublic, setIsPublic] = useState(0);
   const [page, setPage] = useState(0);
-  const [totalRoom, setTotalRoom] = useState();
+  const [totalRoom, setTotalRoom] = useState(1);
 
   const maxPlayerOptions = [
     { key: "8", value: 8, text: "8명 이하" },
@@ -30,7 +30,7 @@ const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
 
   const getGameList = (maxPlayer, isPublic) => {
     axios
-      .get("/api/game", {
+      .get("/mafiace/api/game", {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         params: { maxPlayer, isPublic },
       })
@@ -43,6 +43,11 @@ const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
         console.log(`max: ${maxPlayer}, public: ${isPublic}`);
 
         if (data.list.length !== 0) initPageNav(0);
+      })
+      .catch(({ response }) => {
+        localStorage.removeItem("jwt");
+        window.location.reload();
+        alert("요청 권한이 없습니다");
       });
   };
 
@@ -76,7 +81,7 @@ const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
   return (
     <>
       {loading ? (
-        <Loader />
+        <Loader msg="로딩 중..." />
       ) : (
         // 로딩 완료
         <div>
@@ -209,8 +214,9 @@ const RoomList = ({ setIngame, ingame, setGameInfo, setToken }) => {
               >
                 {list.slice(page * 6, page * 6 + 6).map((item) => (
                   <RoomComp
-                    key={item.id}
-                    game={item}
+                    key={item.game.id}
+                    game={item.game}
+                    participantCount={item.participantCount}
                     setIngame={setIngame}
                     setToken={setToken}
                     ingame={ingame}

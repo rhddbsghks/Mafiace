@@ -4,17 +4,26 @@ import com.ssafy.mafiace.api.request.DeleteAccountReq;
 import com.ssafy.mafiace.api.request.UserRegisterPostReq;
 import com.ssafy.mafiace.api.response.BaseResponseBody;
 import com.ssafy.mafiace.api.response.UserInfoRes;
+import com.ssafy.mafiace.api.response.UserRecordsRes;
 import com.ssafy.mafiace.api.service.EmailService;
+import com.ssafy.mafiace.api.service.GameLogService;
+import com.ssafy.mafiace.api.service.UserGameLogService;
+import com.ssafy.mafiace.api.service.UserHonorService;
 import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.auth.JwtTokenProvider;
+import com.ssafy.mafiace.db.entity.GameLog;
 import com.ssafy.mafiace.db.entity.User;
+import com.ssafy.mafiace.db.entity.UserGameLog;
+import com.ssafy.mafiace.db.entity.UserHonor;
 import com.ssafy.mafiace.db.entity.UserRecords;
+import com.ssafy.mafiace.game.honor.HonorName;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +45,16 @@ public class UserController {
     UserRecordsService userRecordsService;
 
     @Autowired
+    UserGameLogService userGameLogService;
+
+    @Autowired
+    GameLogService gameLogService;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    UserHonorService userHonorService;
 
     @Autowired
     private EmailService emailService;
@@ -55,7 +73,7 @@ public class UserController {
         @RequestBody @ApiParam(value = "회원가입 요청 정보", required = true) UserRegisterPostReq registerReq) {
         try {
             User user = userService.registerUser(registerReq);
-            UserRecords userRecords = userRecordsService.addUserRecords(user);
+            userRecordsService.addUserRecords(user);
             if (user != null) {
                 return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입이 완료되었습니다."));
             } else {
@@ -89,6 +107,85 @@ public class UserController {
         }
     }
 
+    @PatchMapping("/update/password")
+    @ApiOperation(value = "비밀번호 변경", notes = "마이페이지에서 비밀번호를 변경한다.")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "비밀번호 변경 완료"),
+        @ApiResponse(code = 410, message = "비밀번호 변경에 실패하였습니다.")
+    })
+    public ResponseEntity<BaseResponseBody> updatePassword(
+        @RequestBody @ApiParam(value = "비밀번호 변경 요청 정보", required = true) UserRegisterPostReq registerReq) {
+        try {
+            User user = userService.updatePassword(registerReq);
+            if (user != null) {
+                return ResponseEntity.status(200).body(BaseResponseBody.of(200, "비밀번호 변경완료"));
+            } else {
+                return ResponseEntity.status(410)
+                    .body(BaseResponseBody.of(410, "올바르지 않은 비밀번호입니다."));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "비밀번호 변경에 실패하였습니다."));
+        }
+    }
+
+    @PatchMapping("/update/nickname")
+    @ApiOperation(value = "닉네임 변경", notes = "마이페이지에서 닉네임를 변경한다.")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "닉네임 변경 완료"),
+        @ApiResponse(code = 410, message = "닉네임 변경에 실패하였습니다.")
+    })
+    public ResponseEntity<BaseResponseBody> updateNickname(
+        @RequestBody @ApiParam(value = "닉네임 변경 요청 정보", required = true) UserRegisterPostReq registerReq) {
+        try {
+            User user = userService.updateNickname(registerReq);
+            if (user != null) {
+                return ResponseEntity.status(200).body(BaseResponseBody.of(200, "닉네임 변경완료"));
+            } else {
+                return ResponseEntity.status(410)
+                    .body(BaseResponseBody.of(410, "올바르지 않은 닉네임입니다."));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "닉네임 변경에 실패하였습니다."));
+        }
+    }
+
+    @ApiOperation(value = "내 계정 정보", notes = "현재 로그인한 ID정보를 반환한다")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 214, message = "실패"),
+    })
+    @PostMapping("/userinfo")
+    public ResponseEntity<UserInfoRes> getUserInfo(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        String userId = jwtTokenProvider.getUserPk(jwtToken);
+        System.err.println(userId);
+        User user = userService.getUserByUserId(userId);
+        System.err.println(user.getUsername());
+        if (user != null) {
+            return ResponseEntity.status(200).body(UserInfoRes.of(200, "성공", user));
+        }
+        return ResponseEntity.status(214).body(UserInfoRes.of(214, "실패", null));
+    }
+
+    @ApiOperation(value = "내 전적 정보", notes = "현재 로그인한 ID의 전적 정보를 반환한다")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 400, message = "실패"),
+    })
+    @PostMapping("/userRecord")
+    public ResponseEntity<UserRecordsRes> getUserRecords(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        String userId = jwtTokenProvider.getUserPk(jwtToken);
+        User user = userService.getUserByUserId(userId);
+        List<UserGameLog> userGameLogs = userGameLogService.getUserGameLogs(user.getId());
+        UserRecords userRecords = userRecordsService.getUserRecords(user.getId());
+        List<HonorName> honors = userHonorService.getUserHonorsByUserUniqueId(user.getId());
+        if (user != null) {
+            return ResponseEntity.status(200).body(UserRecordsRes.of(200, "성공", userGameLogs, userRecords, honors));
+        }
+        return ResponseEntity.status(400).body(UserRecordsRes.of(400, "실패", null, null, null));
+    }
+
     @ApiOperation(value = "아이디 중복 체크", notes = "아이디를 전달받아서 중복 체크를 한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "사용 가능한 아이디입니다."),
@@ -111,7 +208,7 @@ public class UserController {
     })
     @GetMapping("/emailcheck")
     public ResponseEntity<BaseResponseBody> checkEmail(
-        @ApiParam(value = "유저 이메일", required = true) String email) {
+        @ApiParam(value = "유저 이메일 중복 체크", required = true) String email) {
         User user = userService.getUserByEmail(email);
         if (user != null) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 이메일입니다."));
@@ -126,12 +223,30 @@ public class UserController {
     })
     @GetMapping("/nicknamecheck")
     public ResponseEntity<BaseResponseBody> checkNickname(
-        @ApiParam(value = "유저 닉네임", required = true) String nickname) {
+        @ApiParam(value = "유저 닉네임 중복 체크", required = true) String nickname) {
         User user = userService.getUserByNickname(nickname);
         if (user != null) {
             return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사용 가능한 닉네임입니다."));
+    }
+
+    @ApiOperation(value = "아이디 찾기", notes = "이메일을 입력받아 아이디의 일부를 알려준다.")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "아이디 찾기가 완료되었습니다."),
+        @ApiResponse(code = 404, message = "해당 계정이 존재하지 않습니다."),
+    })
+    @GetMapping("/id")
+    public ResponseEntity<UserInfoRes> findId(
+        String email) {
+        User user = userService.getUserByEmail(email);
+        System.out.println(email);
+
+        if (user != null) {
+            return ResponseEntity.status(200).body(UserInfoRes.of(200, "아이디 찾기가 완료되었습니다.", user));
+        }
+        return ResponseEntity.status(404)
+            .body(UserInfoRes.of(404, "해당 계정이 존재하지 않습니다.", null));
     }
 
     @ApiOperation(value = "비밀번호 찾기", notes = "아이디와 이메일을 입력받아서 임시 비밀번호를 해당 이메일로 전송한다.")
@@ -168,9 +283,9 @@ public class UserController {
         @ApiResponse(code = 401, message = "비밀번호가 틀렸습니다.")
     })
     public ResponseEntity<BaseResponseBody> deleteAccount
-        (@RequestBody @ApiParam(value="회원 탈퇴 신청 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
+        (@RequestBody @ApiParam(value = "회원 탈퇴 신청 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
         User user = userService.getUserByUserId((deleteAccountReq.getUserId()));
-
+        System.err.println(deleteAccountReq.getUserId());
         if (user.isDeleted()) {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "이미 탈퇴 신청된 계정입니다."));
         }
@@ -191,7 +306,7 @@ public class UserController {
         @ApiResponse(code = 401, message = "비밀번호가 틀렸습니다.")
     })
     public ResponseEntity<BaseResponseBody> restoreAccount
-        (@RequestBody @ApiParam(value="회원 탈퇴 취소 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
+        (@RequestBody @ApiParam(value = "회원 탈퇴 취소 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
         User user = userService.getUserByUserId((deleteAccountReq.getUserId()));
 
         if (!user.isDeleted()) {
@@ -206,20 +321,19 @@ public class UserController {
         return ResponseEntity.status(401).body(BaseResponseBody.of(401, "비밀번호가 틀렸습니다."));
     }
 
-
-    @ApiOperation(value = "내 계정 정보", notes = "현재 로그인한 ID정보를 반환한다")
+    @ApiOperation(value = "레이팅 점수", notes = "내 레이팅 점수를 반환한다.")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 409, message = "실패"),
+        @ApiResponse(code = 200, message = "success"),
+        @ApiResponse(code = 409, message = "failed"),
     })
-    @PostMapping("/userinfo")
-    public ResponseEntity<UserInfoRes> getUserInfo(HttpServletRequest request) {
-        String jwtToken = request.getHeader("Authorization").substring(7);
-        String userId = jwtTokenProvider.getUserPk(jwtToken);
+    @GetMapping("/rating")
+    public ResponseEntity<BaseResponseBody> getMyRating(
+        @ApiParam(value = "나의 Rating", required = true) String userId) {
         User user = userService.getUserByUserId(userId);
-        if (user != null) {
-            return ResponseEntity.status(200).body(UserInfoRes.of(200, "성공", user));
+        int Rating = userRecordsService.getUserRecords(user.getId()).getRating();
+        if (user == null) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, null));
         }
-        return ResponseEntity.status(409).body(UserInfoRes.of(409, "실패", null));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, String.valueOf(Rating)));
     }
 }
