@@ -9,16 +9,6 @@ export default class OpenViduVideoComponent extends Component {
     super(props);
     this.videoRef = React.createRef(null);
     this.state = {
-      // faceExpressions: {
-      //   neutral: 0,
-      //   happy: 0,
-      //   sad: 0,
-      //   angry: 0,
-      //   fearful: 0,
-      //   disgusted: 0,
-      //   surprised: 0,
-      // },
-      // arrExpressions: [],
       topEmotion: "",
       data: [
         {
@@ -41,16 +31,16 @@ export default class OpenViduVideoComponent extends Component {
           name: "화남",
           uv: 0,
         },
-        {
-          // name: "fearful",
-          name: "두려움",
-          uv: 0,
-        },
-        {
-          // name: "disgusted",
-          name: "역겨움",
-          uv: 0,
-        },
+        // {
+        //   // name: "fearful",
+        //   name: "두려움",
+        //   uv: 0,
+        // },
+        // {
+        //   // name: "disgusted",
+        //   name: "역겨움",
+        //   uv: 0,
+        // },
         {
           // name: "surprised",
           name: "놀람",
@@ -58,13 +48,11 @@ export default class OpenViduVideoComponent extends Component {
         },
       ],
       style: {
-        height: 200,
+        height: 230,
         opacity: 0.7,
       },
-      // test: props.checkAlive,
     };
 
-    // this.handleClick = this.handleClick.bind(this);
     this.onPlay = this.onPlay.bind(this);
     this.faceapiInterval = this.faceapiInterval.bind(this);
 
@@ -79,14 +67,6 @@ export default class OpenViduVideoComponent extends Component {
 
     setInterval(this.faceapiInterval, 1000);
   }
-
-  // handleClick() {
-  //   // console.log(this.state.faceExpressions);
-  //   // console.log(this.state.arrExpressions);
-  //   // console.log(this.state.topEmotion);
-  //   // console.log(this.state.data);
-  //   this.setState({ test: !this.state.test });
-  // }
 
   onPlay() {
     if (
@@ -142,14 +122,14 @@ export default class OpenViduVideoComponent extends Component {
               name: "화남",
               uv: arrExp[3][1],
             },
-            {
-              name: "두려움",
-              uv: arrExp[4][1],
-            },
-            {
-              name: "역겨움",
-              uv: arrExp[5][1],
-            },
+            // {
+            //   name: "두려움",
+            //   uv: arrExp[4][1],
+            // },
+            // {
+            //   name: "역겨움",
+            //   uv: arrExp[5][1],
+            // },
             {
               name: "놀람",
               uv: arrExp[6][1],
@@ -165,7 +145,6 @@ export default class OpenViduVideoComponent extends Component {
     if (this.props && !!this.videoRef) {
       this.props.streamManager.addVideoElement(this.videoRef.current);
     }
-    // this.onPlay();
   }
 
   componentDidUpdate(props) {
@@ -179,8 +158,6 @@ export default class OpenViduVideoComponent extends Component {
   render() {
     return (
       <>
-        {/* <button onClick={this.handleClick}>button</button> */}
-        {/* <video autoPlay={true} ref={this.videoRef} onPlaying={this.onPlay} /> */}
         <video autoPlay={true} ref={this.videoRef} />
         <p></p>
         {this.props.checkAlive ? (
@@ -212,7 +189,11 @@ export default class OpenViduVideoComponent extends Component {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis
+                dataKey="name"
+                style={{ fontSize: "20px" }}
+                stroke="#8884d8"
+              />
               <Tooltip />
               <Bar dataKey="uv" fill="#8884d8" />
             </BarChart>

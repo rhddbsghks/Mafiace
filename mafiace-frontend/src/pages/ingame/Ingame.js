@@ -321,7 +321,7 @@ const Ingame = ({ setIngame, gameInfo, setGameInfo, token, ingame }) => {
   };
 
   const onEnter = (e) => {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
       sendMsg();
     }
   };
