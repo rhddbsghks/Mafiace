@@ -28,6 +28,7 @@ const RulesCompo = () => {
             style={{
               borderRadius: "30px",
               width: "97%",
+              height: "80%",
               backgroundColor: "#D5C2EE",
               border: "none",
             }}
