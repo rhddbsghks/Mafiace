@@ -118,7 +118,6 @@ public class GameController {
     @MessageMapping("/start/{roomId}") // 발행경로
     @SendTo("/topic/{roomId}") // 구독경로
     public void gameStartBroadcasting(@DestinationVariable String roomId) throws Exception {
-        System.err.println(roomId + "  is clicked the start btn");
         gameManagerMap.put(roomId, new MafiaceManager(roomId, sessionService, gameService,
             userService, userRecordsService, userGameLogService, gameLogService, userHonorService));
     }
@@ -203,9 +202,7 @@ public class GameController {
     public void roleConfirm(@DestinationVariable String roomId,
         @DestinationVariable String nickname)
         throws JSONException {
-        System.err.println("role socket recieved!");
         String role = gameManagerMap.get(roomId).getPlayers().findRoleName(nickname);
-        System.err.println("nickname's role : " + role);
         JSONObject data = new JSONObject();
         data.put("role", role);
         data.put("check", "role");

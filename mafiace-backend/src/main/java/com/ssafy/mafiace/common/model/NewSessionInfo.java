@@ -1,6 +1,5 @@
 package com.ssafy.mafiace.common.model;
 
-import com.ssafy.mafiace.api.response.BaseResponseBody;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;

@@ -77,8 +77,6 @@ public class SessionServiceImpl implements SessionService {
         Optional<User> user = userRepository.findByNickname(ownerNickname);
 
         // New session
-        System.out.println("New session " + gameId);
-
         // Create a new OpenVidu Session
         Session session = this.openVidu.createSession();
         // Generate a new Connection with the recently created connectionProperties
@@ -109,8 +107,7 @@ public class SessionServiceImpl implements SessionService {
         availableRoomNum[roomNum] = true;
         userList.put(gameId, new ArrayList<>()); // us
         userList.get(gameId).add(user.get());
-        System.err.println("Room available : " + userList.get(gameId).size() + " / "
-            + sessionOpenReq.getMaxPlayer());
+
         // Return the token
         return NewSessionInfo.of(token, gameId);
     }
@@ -118,10 +115,8 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public String getToken(String roomId, String nickname) throws Exception {
         // Session already exists
-        System.out.println("Existing session " + roomId);
         for(User inRoomUser : userList.get(roomId)){
             if(inRoomUser.getNickname().equals(nickname)){
-                System.err.println("====== already exist Member!!! ===== ");
                 return null;
             }
         }
@@ -135,7 +130,6 @@ public class SessionServiceImpl implements SessionService {
 
         Optional<User> user = userRepository.findByNickname(nickname);
         userList.get(roomId).add(user.get());
-        System.err.println(nickname + " : is entered room");
 
         return token;
     }
@@ -153,7 +147,6 @@ public class SessionServiceImpl implements SessionService {
         Game game = gameRepositorySupport.findById(roomId);
         User leaveUser = userRepository.findByNickname(nickname).get();
         List<User> curUserList = userList.get(roomId);
-        System.err.println("before leave : " + userList.get(roomId).size());
         for (int i = 0; i < curUserList.size(); i++) {
             User searchUser = curUserList.get(i);
             if (searchUser.getNickname().equals(leaveUser.getNickname())) {
@@ -162,15 +155,12 @@ public class SessionServiceImpl implements SessionService {
                     String newOwnerId = curUserList.get(0).getUserId();
                     gameRepositorySupport.updateOwnerId(roomId,
                         newOwnerId);
-                    System.err.println(newOwnerId + " is owner now ");
-                    System.err.println("afeter leave : " + userList.get(roomId).size());
                     return newOwnerId;
                 }
                 break;
             }
         }
 
-        System.err.println("afeter leave : " + userList.get(roomId).size());
         return null;
     }
 
@@ -199,7 +189,6 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public boolean isExist(String roomId) {
-        System.err.println("find room Id : " + roomId);
         if (mapSessions.get(roomId) == null) {
             gameRepository.delete(gameRepositorySupport.findById(roomId));
             return false;

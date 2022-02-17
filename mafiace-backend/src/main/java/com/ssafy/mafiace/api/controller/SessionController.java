@@ -89,15 +89,12 @@ public class SessionController {
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(
             ConnectionType.WEBRTC).build();
 
-        // Session already exists
-        System.out.println("Existing session " + sessionName);
         try {
             // Generate a new Connection with the recently created connectionProperties
             String jwtToken = request.getHeader("Authorization").substring(7);
             String nickname = jwtTokenProvider.getUserNickname(jwtToken);
             String token = sessionService.getToken(sessionName, nickname);
             //this.mapSessions.get(sessionName).createConnection(connectionProperties).getToken();
-            System.err.println(nickname+"'s token : "+token);
             if(token == null){
                 return ResponseEntity.status(204)
                     .body(

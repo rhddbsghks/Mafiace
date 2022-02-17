@@ -1,7 +1,6 @@
 package com.ssafy.mafiace.common.auth;
 
 import com.ssafy.mafiace.api.service.UserService;
-import com.ssafy.mafiace.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

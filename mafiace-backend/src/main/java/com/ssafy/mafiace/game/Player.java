@@ -1,9 +1,6 @@
 package com.ssafy.mafiace.game;
 
-import com.ssafy.mafiace.api.service.GameLogService;
 import com.ssafy.mafiace.db.entity.User;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 
