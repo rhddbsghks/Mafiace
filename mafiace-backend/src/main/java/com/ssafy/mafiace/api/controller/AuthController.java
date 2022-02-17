@@ -1,14 +1,10 @@
 package com.ssafy.mafiace.api.controller;
 
 import com.ssafy.mafiace.api.request.UserLoginPostReq;
-import com.ssafy.mafiace.api.response.SessionTokenPostRes;
-import com.ssafy.mafiace.api.response.UserInfoRes;
 import com.ssafy.mafiace.api.response.UserLoginPostRes;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.auth.JwtTokenProvider;
 import com.ssafy.mafiace.db.entity.User;
-import io.openvidu.java.client.ConnectionProperties;
-import io.openvidu.java.client.ConnectionType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -51,7 +47,6 @@ public class AuthController {
             return ResponseEntity.status(404)
                 .body(UserLoginPostRes.of(404, "존재하지 않는 계정입니다.", null));
         }else if(user.isDeleted()){
-            System.err.println(" 2 0 4 Error : 탈퇴신청중인계정입니다.");
             return ResponseEntity.status(204)
                 .body(UserLoginPostRes.of(204, "탈퇴 신청중인 계정입니다.", null));
         }

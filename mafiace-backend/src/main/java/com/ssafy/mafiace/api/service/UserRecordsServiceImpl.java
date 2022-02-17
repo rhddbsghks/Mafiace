@@ -7,7 +7,6 @@ import com.ssafy.mafiace.db.repository.UserRecordsRepositorySupport;
 import com.ssafy.mafiace.db.repository.UserRepository;
 import com.ssafy.mafiace.db.repository.UserRepositorySupport;
 import com.ssafy.mafiace.game.Player;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
