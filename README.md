@@ -12,9 +12,9 @@
 
 ## 👤 프로젝트 개요
 
->  **[Mafiace](https://i6a602.p.ssafy.io/)**는 다양한 직업과 얼굴 감정 인식 API를 활용한 **온라인 마피아 게임 서비스**입니다.
+>  [**Mafiace**](https://i6a602.p.ssafy.io/)는 다양한 직업과 얼굴 감정 인식 API를 활용한 **온라인 마피아 게임 서비스**입니다.
 >
->  누구나 쉽게 즐길 수 있는 신감각 시스루 게임 Mafiace!! 지금 만나보세요.
+>  누구나 쉽게 즐길 수 있는 신감각 시스루 게임 Mafiace!! 지금 바로 만나보세요.
 
 
 
@@ -48,10 +48,10 @@
 
 - **김동현**: 팀장, Frontend 담당, 서비스 디자인 전반, CSS 및 React
 - **연진우**: Frontend 담당, 서비스 디자인 전반, Face API 관련 기능
-- **공윤환**: Backend 담당, 서버 관리, WebSocket 및 OpenVidu, Frontend 보조
-- **천재원**: Backend 담당, 게임 로직 전반, JPA 및 QueryDSL, 게임 기록 및 전적
-- **조영운**: Backend 담당, 회원 기능, 게임 로직 전반, 채팅 관련 기능
+- **공윤환**: Backend 담당, Frontend 보조, 서버 관리, OpenVidu, Docker 
 - **김종우**: Backend 담당, 회원 탈퇴, 업적 기능, 서비스용 그래픽 제작
+- **조영운**: Backend 담당, 회원 기능, 게임 로직 전반, WebSocket 관련 기능
+- **천재원**: Backend 담당, 게임 로직 전반, JPA 및 QueryDSL, 게임 기록 및 전적, 영상 제작
 
 
 
@@ -59,7 +59,7 @@
 
 - Frontend: JavaScript, React, OpenVidu 2.20.0, Face API 0.22.2
 - Backend: Spring Boot, JPA, Hibernate, QueryDSL, MySQL, Docker
-- 협업: Git, GitLab, Sourcetree, Jira
+- 협업: Git, GitLab, Sourcetree, Jira, Mattermost
 
 
 
