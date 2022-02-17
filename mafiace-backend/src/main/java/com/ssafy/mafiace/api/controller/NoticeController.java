@@ -62,10 +62,9 @@ public class NoticeController {
         List<Notice> allNotice = noticeService.getAllNotice();
         List<NoticeRes> allNoticeRes = new ArrayList<>();
 
-        for(Notice notice : allNotice) {
+        for (Notice notice : allNotice) {
             allNoticeRes.add(NoticeRes.of(200, "Success", notice));
         }
-        Collections.reverse(allNoticeRes);
         return allNoticeRes;
     }
 
