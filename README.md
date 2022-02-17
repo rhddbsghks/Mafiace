@@ -2,13 +2,13 @@
 
 ![MafiaceBanner](README.assets/MafiaceBanner.png)
 
-
+<br>
 
 [[_TOC_]]
 
+<br>
+
 ---
-
-
 
 ## 👤 프로젝트 개요
 
@@ -32,7 +32,7 @@
 - COVID-19로 인해 자주 만나지 못하는 20대
 - 여러 명이 함께 하는 온라인 게임을 즐기는 MZ 세대
 
-
+<br>
 
 ## 💻 개발 환경
 
@@ -89,7 +89,7 @@
   - Mattermost 4.7.0
   - Sourcetree 3.4.7
 
-
+<br>
 
 ## 🏢 프로젝트 파일 구조
 
@@ -146,7 +146,7 @@ com
 		└── honor
 ```
 
-
+<br>
 
 ## 💡 프로젝트 Wiki
 
@@ -158,7 +158,7 @@ com
 - [OpenVidu 미디어 서버 구축](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/openVidu-%EB%AF%B8%EB%94%94%EC%96%B4-%EC%84%9C%EB%B2%84-%EA%B5%AC%EC%B6%95)
 - [WebSocket을 이용한 채팅](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/websocket%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%B1%84%ED%8C%85)
 
-
+<br>
 
 ## 🎁 프로젝트 산출물
 
