@@ -27,26 +27,26 @@ const MypageCompo = () => {
   const userId = jwt(localStorage.getItem("jwt")).sub;
 
   const tearList = [
-    "bronze4",
-    "bronze3",
-    "bronze2",
-    "bronze1",
-    "silver4",
-    "silver3",
-    "silver2",
-    "silver1",
-    "gold4",
-    "gold3",
-    "gold2",
-    "gold1",
-    "platinum4",
-    "platinum3",
-    "platinum2",
-    "platinum1",
-    "rainbow4",
-    "rainbow3",
-    "rainbow2",
-    "rainbow1",
+    "Bronze4",
+    "Bronze3",
+    "Bronze2",
+    "Bronze1",
+    "Silver4",
+    "Silver3",
+    "Silver2",
+    "Silver1",
+    "Gold4",
+    "Gold3",
+    "Gold2",
+    "Gold1",
+    "Platinum4",
+    "Platinum3",
+    "Platinum2",
+    "Platinum1",
+    "Rainbow4",
+    "Rainbow3",
+    "Rainbow2",
+    "Rainbow1",
   ];
 
   useEffect(() => {
@@ -84,66 +84,96 @@ const MypageCompo = () => {
       });
   }, []);
 
+  const pwVal = (item) => {
+    let regExp = /^.{8,16}$/; // 8자 이상 16자 이하
+    if (item.match(regExp) != null) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const nickVal = (item) => {
+    let regExp = /^.{2,8}$/; // 2자 이상 8자 이하
+    if (item.match(regExp) != null) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const modifyPassword = () => {
-    axios
-      .patch(
-        "/mafiace/api/user/update/password",
-        {
-          userId: userId,
-          beforePassword: beforePassword.current.value,
-          password: afterPassword.current.value,
-        },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
-        }
-      )
-      .then(() => {
-        alert("비밀번호 변경이 완료되었습니다!");
-        setPasswordModal(false);
-      })
-      .catch(({ response }) => {
-        if (response.status === 500) {
-          alert("만료된 토큰입니다.");
-          localStorage.removeItem("jwt");
-          window.location.href = "/";
-        }
-        if (response.status === 410) {
-          alert(
-            "비밀번호 변경에 실패하였습니다. 현재 비밀번호를 다시 확인해주세요."
-          );
-        }
-      });
+    if (
+      pwVal(beforePassword.current.value) &&
+      pwVal(afterPassword.current.value)
+    ) {
+      axios
+        .patch(
+          "/mafiace/api/user/update/password",
+          {
+            userId: userId,
+            beforePassword: beforePassword.current.value,
+            password: afterPassword.current.value,
+          },
+          {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+          }
+        )
+        .then(() => {
+          alert("비밀번호 변경이 완료되었습니다!");
+          setPasswordModal(false);
+        })
+        .catch(({ response }) => {
+          if (response.status === 500) {
+            alert("만료된 토큰입니다.");
+            localStorage.removeItem("jwt");
+            window.location.href = "/";
+          }
+          if (response.status === 410) {
+            alert(
+              "비밀번호 변경에 실패하였습니다. 현재 비밀번호를 다시 확인해주세요."
+            );
+          }
+        });
+    } else {
+      alert("비밀번호는 8자 이상 16자 이하로 입력해야 합니다.");
+    }
   };
 
   const modifyNickname = () => {
-    axios
-      .patch(
-        "/mafiace/api/user/update/nickname",
-        {
-          userId: userId,
-          nickname: inputNickname.current.value,
-        },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
-        }
-      )
-      .then((res) => {
-        alert("닉네임 변경이 완료되었습니다. 다시 로그인 해주세요.");
-        window.location.reload();
-        setNicknameModal(false);
-        localStorage.removeItem("jwt");
-        window.location.href = "/";
-      })
-      .catch(({ response }) => {
-        if (response.status === 500) {
-          alert("만료된 토큰입니다.");
+    if (nickVal(inputNickname.current.value)) {
+      axios
+        .patch(
+          "/mafiace/api/user/update/nickname",
+          {
+            userId: userId,
+            nickname: inputNickname.current.value,
+          },
+          {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+          }
+        )
+        .then((res) => {
+          alert("닉네임 변경이 완료되었습니다. 다시 로그인 해주세요.");
+          window.location.reload();
+          setNicknameModal(false);
           localStorage.removeItem("jwt");
           window.location.href = "/";
-        } else if (response.status === 410) {
-          alert("닉네임 변경에 실패하였습니다.");
-        }
-      });
+        })
+        .catch(({ response }) => {
+          if (response.status === 500) {
+            alert("만료된 토큰입니다.");
+            localStorage.removeItem("jwt");
+            window.location.href = "/";
+          } else if (response.status === 410) {
+            alert("닉네임 변경에 실패하였습니다.");
+          }
+        });
+    } else {
+      alert("닉네임은 2자 이상 8자 이하로 입력해야 합니다.");
+    }
   };
+
   const deleteUser = () => {
     axios
       .post(
