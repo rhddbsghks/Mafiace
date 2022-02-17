@@ -76,73 +76,79 @@ const Signup = ({ clickSignup }) => {
 
   // 유효성 검사 & 중복 검사 api
   useEffect(() => {
-    setValidNick(false);
-    setColor("red");
     if (nickVal(values.nickname)) {
       axios
         .get("/mafiace/api/user/nicknamecheck", {
           params: { nickname: values.nickname },
         })
         .then((res) => {
-          setValidNick(true);
           setColor("green");
+          setValidNick(true);
           setMsg("사용 가능한 닉네임입니다.");
         })
         .catch((err) => {
+          setColor("red");
+          setValidNick(false);
           setMsg("중복된 닉네임입니다.");
         });
     } else {
+      setColor("red");
+      setValidNick(false);
       setMsg("닉네임은 2자 이상 8자 이하로 입력해야 합니다.");
     }
   }, [values.nickname]);
   useEffect(() => {
-    setValidMail(false);
-    setColor("red");
     if (mailVal(values.email)) {
       axios
         .get("/mafiace/api/user/emailcheck", {
           params: { email: values.email },
         })
         .then((res) => {
-          setValidMail(true);
           setColor("green");
+          setValidMail(true);
           setMsg("사용 가능한 이메일입니다.");
         })
         .catch((err) => {
+          setColor("red");
+          setValidMail(false);
           setMsg("중복된 이메일입니다.");
         });
     } else {
+      setColor("red");
+      setValidMail(false);
       setMsg("유효한 이메일 양식이 아닙니다.");
     }
   }, [values.email]);
   useEffect(() => {
     if (pwVal(values.password)) {
-      setValidPw(true);
       setColor("green");
+      setValidPw(true);
       setMsg("사용 가능한 패스워드입니다.");
     } else {
-      setValidPw(false);
       setColor("red");
+      setValidPw(false);
       setMsg("비밀번호는 8자 이상 16자 이하로 입력해야 합니다.");
     }
   }, [values.password]);
   useEffect(() => {
-    setValidId(false);
-    setColor("red");
     if (idVal(values.userId)) {
       axios
         .get("/mafiace/api/user/idcheck", {
           params: { userId: values.userId },
         })
         .then((res) => {
-          setValidId(true);
           setColor("green");
+          setValidId(true);
           setMsg("사용 가능한 아이디입니다.");
         })
         .catch((err) => {
+          setColor("red");
+          setValidId(false);
           setMsg("중복된 아이디입니다.");
         });
     } else {
+      setColor("red");
+      setValidId(false);
       setMsg("아이디는 5자 이상 12자 이하로 입력해야 합니다.");
     }
   }, [values.userId]);

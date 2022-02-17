@@ -4,9 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.mafiace.db.entity.QGameLog;
 import com.ssafy.mafiace.db.entity.QUser;
 import com.ssafy.mafiace.db.entity.QUserGameLog;
-import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.entity.UserGameLog;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

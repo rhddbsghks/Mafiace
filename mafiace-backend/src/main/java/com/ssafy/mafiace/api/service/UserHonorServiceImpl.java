@@ -1,8 +1,5 @@
 package com.ssafy.mafiace.api.service;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.mafiace.db.entity.QUser;
-import com.ssafy.mafiace.db.entity.QUserHonor;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.entity.UserHonor;
 import com.ssafy.mafiace.db.entity.UserRecords;
@@ -11,7 +8,6 @@ import com.ssafy.mafiace.db.repository.UserHonorRepositorySupport;
 import com.ssafy.mafiace.game.honor.HonorName;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

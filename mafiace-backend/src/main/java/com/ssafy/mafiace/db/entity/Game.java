@@ -1,26 +1,16 @@
 package com.ssafy.mafiace.db.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.GeneratorType;
 
 @Getter
 @ToString

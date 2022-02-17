@@ -12,10 +12,8 @@ import com.ssafy.mafiace.api.service.UserHonorService;
 import com.ssafy.mafiace.api.service.UserRecordsService;
 import com.ssafy.mafiace.api.service.UserService;
 import com.ssafy.mafiace.common.auth.JwtTokenProvider;
-import com.ssafy.mafiace.db.entity.GameLog;
 import com.ssafy.mafiace.db.entity.User;
 import com.ssafy.mafiace.db.entity.UserGameLog;
-import com.ssafy.mafiace.db.entity.UserHonor;
 import com.ssafy.mafiace.db.entity.UserRecords;
 import com.ssafy.mafiace.game.honor.HonorName;
 import io.swagger.annotations.Api;
@@ -158,9 +156,7 @@ public class UserController {
     public ResponseEntity<UserInfoRes> getUserInfo(HttpServletRequest request) {
         String jwtToken = request.getHeader("Authorization").substring(7);
         String userId = jwtTokenProvider.getUserPk(jwtToken);
-        System.err.println(userId);
         User user = userService.getUserByUserId(userId);
-        System.err.println(user.getUsername());
         if (user != null) {
             return ResponseEntity.status(200).body(UserInfoRes.of(200, "성공", user));
         }
@@ -181,7 +177,8 @@ public class UserController {
         UserRecords userRecords = userRecordsService.getUserRecords(user.getId());
         List<HonorName> honors = userHonorService.getUserHonorsByUserUniqueId(user.getId());
         if (user != null) {
-            return ResponseEntity.status(200).body(UserRecordsRes.of(200, "성공", userGameLogs, userRecords, honors));
+            return ResponseEntity.status(200)
+                .body(UserRecordsRes.of(200, "성공", userGameLogs, userRecords, honors));
         }
         return ResponseEntity.status(400).body(UserRecordsRes.of(400, "실패", null, null, null));
     }
@@ -240,7 +237,6 @@ public class UserController {
     public ResponseEntity<UserInfoRes> findId(
         String email) {
         User user = userService.getUserByEmail(email);
-        System.out.println(email);
 
         if (user != null) {
             return ResponseEntity.status(200).body(UserInfoRes.of(200, "아이디 찾기가 완료되었습니다.", user));
@@ -285,7 +281,6 @@ public class UserController {
     public ResponseEntity<BaseResponseBody> deleteAccount
         (@RequestBody @ApiParam(value = "회원 탈퇴 신청 요청 정보", required = true) DeleteAccountReq deleteAccountReq) {
         User user = userService.getUserByUserId((deleteAccountReq.getUserId()));
-        System.err.println(deleteAccountReq.getUserId());
         if (user.isDeleted()) {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "이미 탈퇴 신청된 계정입니다."));
         }

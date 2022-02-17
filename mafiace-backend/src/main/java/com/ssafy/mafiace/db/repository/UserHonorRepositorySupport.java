@@ -3,7 +3,6 @@ package com.ssafy.mafiace.db.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.mafiace.db.entity.QUser;
 import com.ssafy.mafiace.db.entity.QUserHonor;
-import com.ssafy.mafiace.db.entity.UserHonor;
 import com.ssafy.mafiace.game.honor.HonorName;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

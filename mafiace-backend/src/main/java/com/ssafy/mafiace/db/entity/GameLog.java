@@ -1,12 +1,10 @@
 package com.ssafy.mafiace.db.entity;
 
 
-import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
