@@ -72,18 +72,22 @@ const RulesModal = ({ handleCancel }) => {
                   <hr style={{ color: "red" }}></hr>
                   <p style={{ fontSize: "1.3em" }}>
                     밤마다 1명을 선택하여 치료합니다.<br></br>
-                    처리 시도를 당한 시민을 선택한다면 살릴 수 있습니다.{" "}
+                    처리 시도를 당한 시민을 선택한다면 살릴 수 있습니다.
                     <br></br>
                     의사는 자기 자신도 살릴 수도 있습니다.
                   </p>
                 </div>
               </div>
-              {/* <div id="slide-4">
-                <p>네번째 규칙</p>
+              <div id="slide-4" className="slide-4">
+                <div style={{ height: "80%" }}>
+                  <h2 style={{ fontSize: "3em" }}>시민</h2>
+                  <hr style={{ color: "red" }}></hr>
+                  <p style={{ fontSize: "1.3em" }}>
+                    밤마다 기도를 하며 잠이듭니다.<br></br>
+                    시민(경찰, 의사 포함)은 밤이되면 자신만 볼 수 있습니다.
+                  </p>
+                </div>
               </div>
-              <div id="slide-5">
-                <p>다섯번째 규칙</p>
-              </div> */}
             </div>
 
             <a
@@ -113,6 +117,17 @@ const RulesModal = ({ handleCancel }) => {
               }}
             >
               3
+            </a>
+            <a
+              href="#slide-4"
+              style={{
+                marginLeft: "30px",
+                width: "30px",
+                height: "30px",
+                fontSize: "20px",
+              }}
+            >
+              4
             </a>
           </div>
         </div>

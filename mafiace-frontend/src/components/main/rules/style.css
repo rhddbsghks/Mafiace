@@ -92,6 +92,21 @@
   z-index: -1;
 }
 
+.slide-4 ::before {
+  content: "";
+  background: url("../../../../public/img/Citizen.png");
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  opacity: 0.05;
+  position: absolute;
+  top: 0px;
+  left: 30px;
+  right: 0px;
+  bottom: 0px;
+  z-index: -1;
+}
+
 .slides > div {
   color: black;
   text-align: center;
