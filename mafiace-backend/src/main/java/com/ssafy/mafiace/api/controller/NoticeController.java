@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,7 @@ public class NoticeController {
         for(Notice notice : allNotice) {
             allNoticeRes.add(NoticeRes.of(200, "Success", notice));
         }
+        Collections.reverse(allNoticeRes);
         return allNoticeRes;
     }
 
