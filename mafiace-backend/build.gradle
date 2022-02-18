@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.3'
+	id 'org.springframework.boot' version '2.4.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -21,8 +21,12 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly("mysql:mysql-connector-java")
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -30,8 +34,34 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// swagger
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+	implementation("com.google.guava:guava:29.0-jre")
+	annotationProcessor("com.google.guava:guava:29.0-jre")
+
+	// QueryDsl
+	implementation("com.querydsl:querydsl-jpa:4.4.0")
+	implementation("com.querydsl:querydsl-apt:4.4.0")
+	annotationProcessor("com.querydsl:querydsl-apt:4.4.0:jpa")
+
+	// JPA NotNull
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// openVidu
+	compile group: 'io.openvidu', name: 'openvidu-java-client', version: '2.20.0'
+
+	// JSON
+	implementation 'org.json:json:20200518'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+bootJar {
+	archiveBaseName = '-'
+	archiveFileName = 'mafiace-backend.jar'
+	archiveVersion = '0.0.0'
 }

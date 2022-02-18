@@ -2,14 +2,10 @@ package com.ssafy.mafiace.db.entity;
 
 import java.nio.ByteBuffer;
 import java.util.UUID;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -24,8 +20,8 @@ import javax.persistence.MappedSuperclass;
 @Setter
 @MappedSuperclass
 public class BaseEntity {
-    @Id
-    String id = shortUUID() ;
+    @Id @NotNull
+    String id = shortUUID();
 
     public static String shortUUID() {
         UUID uuid = UUID.randomUUID();

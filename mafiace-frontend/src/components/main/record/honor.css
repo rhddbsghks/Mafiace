@@ -1,0 +1,80 @@
+.badge {
+  width: 50%;
+  height: 50%;
+  margin: auto;
+  border-radius: 6em;
+  text-align: center;
+  display: flex;
+}
+
+.get {
+  background: linear-gradient(270deg, #f1f0f2, #dcd9ff, #ffffff);
+  background-size: 600% 600%;
+
+  -webkit-animation: AnimationName 3s ease infinite;
+  -moz-animation: AnimationName 3s ease infinite;
+  animation: AnimationName 3s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+  0% {
+    background-position: 17% 0%;
+  }
+  50% {
+    background-position: 84% 100%;
+  }
+  100% {
+    background-position: 17% 0%;
+  }
+}
+@-moz-keyframes AnimationName {
+  0% {
+    background-position: 17% 0%;
+  }
+  50% {
+    background-position: 84% 100%;
+  }
+  100% {
+    background-position: 17% 0%;
+  }
+}
+@keyframes AnimationName {
+  0% {
+    background-position: 17% 0%;
+  }
+  50% {
+    background-position: 84% 100%;
+  }
+  100% {
+    background-position: 17% 0%;
+  }
+}
+
+.not-yet {
+  mix-blend-mode: luminosity;
+  background: gray;
+}
+
+.honor-desc {
+  position: absolute;
+  width: 25%;
+  height: 10%;
+  background: red;
+  font-size: 2em;
+  margin-top: 10%;
+  border-radius: 1em;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.badge-container:hover {
+  cursor: pointer;
+}
+
+.win {
+  background-color: #7d7fe742 !important;
+  /* background-color: #2f33e9f1 !important; */
+}
+
+.lose {
+  background-color: #c491a64f !important;
+}

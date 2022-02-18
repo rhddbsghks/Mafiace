@@ -1,0 +1,40 @@
+.home-bottom {
+  margin-bottom: 10% !important;
+}
+
+.trailsText {
+  /* position: relative; */
+  width: 100%;
+  height: 80px;
+  line-height: 80px;
+  color: black;
+  font-size: 6em;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  will-change: transform, opacity;
+  line-height: 170px !important;
+  overflow: hidden;
+  height: 100%;
+}
+
+.trailsText > div {
+  padding-right: 0.05em;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30%;
+}
+
+.c {
+  position: absolute;
+  max-width: 3500px;
+  max-height: 500px;
+  width: 1200px;
+  height: 200px;
+  cursor: pointer;
+  will-change: transform, opacity;
+}

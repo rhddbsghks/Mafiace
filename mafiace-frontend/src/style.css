@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css2?family=Dongle&display=swap");
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+#root {
+  height: 100vh;
+  background-image: linear-gradient(
+    to top,
+    #dad4ec 0%,
+    #dad4ec 1%,
+    #f3e7e9 100%
+  );
+
+  /* background-image: linear-gradient(
+    to top,
+    #f3e7e9 0%,
+    #e3eeff 99%,
+    #e3eeff 100%
+  ); */
+
+  /* background-image: linear-gradient(to top, #cd9cf2 0%, #f6f3ff 100%); */
+}
+
+body,
+h1,
+h2,
+button,
+.counter,
+span,
+h4,
+.label,
+.value {
+  font-family: "Dongle", sans-serif !important;
+}
+
+.container {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between;
+}
+.MuiTab-root {
+  border-radius: 20px !important;
+}
+.MuiButton-root {
+  font-size: 1.5em !important;
+  margin: auto;
+}
+.MuiButtonBase-root.MuiButton-root {
+  color: #8157a8 !important;
+}
+
+.MuiTab-textColorPrimary {
+  font-size: 2.2em !important;
+  font-weight: 500 !important;
+  margin: 0 3% !important;
+  padding: 0;
+}
+
+.MuiTab-root.Mui-selected {
+  color: #ffffff !important;
+  background-color: #9a79bb;
+}
+
+.css-1aquho2-MuiTabs-indicator {
+  height: 0px !important;
+}
+
+.css-jpln7h-MuiTabs-scroller {
+  position: unset !important;
+}
+
+span {
+  border: none !important;
+}
+
+.scrollbar {
+  overflow-y: scroll;
+  margin-bottom: 25px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
+  border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+
+  background-color: #f5f5f5;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.25, rgb(216, 166, 223)),
+    color-stop(0.5, rgba(223, 174, 230, 0.555)),
+    color-stop(0.75, rgba(170, 209, 233, 0.521)),
+    color-stop(1, rgb(150, 197, 228))
+  );
+}
+
+.scrollbar:hover::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.25, rgb(216, 166, 223)),
+    color-stop(0.5, rgba(223, 174, 230, 0.555)),
+    color-stop(0.75, rgba(170, 209, 233, 0.521)),
+    color-stop(1, rgb(150, 197, 228))
+  );
+}
+
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+#logout:hover {
+  cursor: pointer;
+}
+
+.ui.statistic > .value,
+.ui.statistics .statistic > .value {
+  font-size: 6em !important;
+}

@@ -1,0 +1,81 @@
+.chat-container {
+  position: absolute;
+  bottom: 3%;
+  right: 2%;
+  width: 5%;
+}
+.chatBtn:hover {
+  cursor: pointer;
+}
+
+.chat-box {
+  position: absolute;
+  bottom: 100%;
+  right: 100%;
+  transform-origin: 100% 100%;
+  width: 400px;
+  height: 420px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s ease;
+  z-index: 5;
+  opacity: 1;
+  border-radius: 2em;
+}
+
+.chat-size {
+  height: 310px;
+}
+
+.chat-my {
+  color: #269ceb;
+  font-size: 2rem;
+}
+
+.chat-other {
+  color: #ff9d00;
+  margin-top: 0px;
+  font-size: 2rem;
+}
+
+.send-btn {
+  margin-right: 5%;
+  border: none;
+  margin: auto;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.95);
+  cursor: pointer;
+  text-align: center;
+  display: inline-block;
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  position: relative;
+  will-change: transform;
+  letter-spacing: 0.1rem;
+  position: relative;
+  color: #f3f1f5;
+  position: relative;
+  transition: 0.3s all ease-in-out;
+  background: rgb(27, 67, 241);
+}
+
+.chat-message {
+  font-size: 2.3rem;
+  line-height: 90%;
+  margin-bottom: 4%;
+  word-break: break-all;
+}
+
+.chat-head {
+  height: 13%;
+  display: flex;
+  justify-content: center;
+  font-size: 25px;
+  background-color: rgb(124, 143, 125);
+}
+
+.chat-scroll {
+  margin-bottom: 0px;
+}

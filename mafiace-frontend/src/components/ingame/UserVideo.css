@@ -1,0 +1,64 @@
+video {
+  width: 100%;
+  height: auto;
+  float: left;
+  cursor: pointer;
+  border-radius: 2em;
+}
+
+.streamcomponent {
+  position: absolute;
+  width: 22%;
+}
+
+.streamcomponent div {
+  position: absolute;
+  background: #f8f8f8;
+  color: #777777;
+  font-weight: bold;
+  border-bottom-right-radius: 4px;
+}
+
+.select-btn {
+  width: 45%;
+  height: 100%;
+  border-radius: 2em;
+  font-size: 2.5em;
+  letter-spacing: 0.3em;
+}
+
+.select-btn:hover {
+  cursor: pointer;
+}
+
+.selected {
+  width: 100% !important;
+  height: 100% !important;
+  bottom: 50%;
+  font-size: 3em;
+  padding-top: 4%;
+}
+
+.vote {
+  background: rgba(255, 255, 255, 0.664) !important;
+}
+
+.heal {
+  background: rgba(188, 241, 212, 0.664) !important;
+}
+
+.invest {
+  background: rgba(188, 202, 241, 0.664) !important;
+}
+
+.kill {
+  background: rgba(241, 188, 188, 0.664) !important;
+}
+
+.dead {
+  background: rgba(32, 46, 33, 0.664) !important;
+}
+
+.blured {
+  filter: blur(10px);
+}

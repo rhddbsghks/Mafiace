@@ -1,0 +1,39 @@
+.ingame-btn {
+  margin-right: 5%;
+  border: none;
+  margin: auto;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.95);
+  cursor: pointer;
+  padding: 1rem 3rem;
+  text-align: center;
+  display: inline-block;
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  position: relative;
+  will-change: transform;
+  letter-spacing: 0.1rem;
+  position: relative;
+  color: #f3f1f5;
+  border-radius: 3rem;
+  position: relative;
+  transition: 0.3s all ease-in-out;
+}
+
+.start {
+  background: #8157a8d8;
+}
+
+.leave {
+  background: #a85779d8;
+}
+
+.ingame-btn:hover {
+  transform: scale(1.08);
+}
+
+.job {
+  background: rgba(255, 255, 255, 0.7);
+  color: black;
+}
