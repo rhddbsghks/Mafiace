@@ -14,7 +14,7 @@
 
 ![day](README.assets/day.png)
 
-![night](../../../night.png)
+![night](README.assets/night.png)
 
 >  [**Mafiace**](https://i6a602.p.ssafy.io/)는 다양한 직업과 얼굴 감정 인식 API를 활용한 **온라인 마피아 게임 서비스**입니다.
 >
