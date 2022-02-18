@@ -12,6 +12,10 @@
 
 ## 👤 프로젝트 개요
 
+![day](README.assets/day.png)
+
+![night](../../../night.png)
+
 >  [**Mafiace**](https://i6a602.p.ssafy.io/)는 다양한 직업과 얼굴 감정 인식 API를 활용한 **온라인 마피아 게임 서비스**입니다.
 >
 >  누구나 쉽게 즐길 수 있는 신감각 시스루 게임 Mafiace!! 지금 바로 만나보세요.
@@ -56,6 +60,8 @@
 
 
 ### 기술 스택
+
+![stack](README.assets/stack.png)
 
 - IDE
   - IntelliJ IDEA Community Edition 2021.3.1
@@ -163,7 +169,6 @@ com
 ## 🎁 프로젝트 산출물
 
 - [중간 발표 자료](https://docs.google.com/presentation/d/1MGD5Phwqq-WI5f14q6P44MnWq7EZLTsd/edit#slide=id.g10be5616b1f_0_147)
-- 최종 발표 자료
 - [포팅 매뉴얼](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/blob/develop/exec/%EB%B0%B0%ED%8F%AC.md)
-- 시연 시나리오
+- [시연 시나리오](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/blob/master/exec/%EC%8B%9C%EC%97%B0%20%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4.pptx)
 
