@@ -48,7 +48,7 @@
 
 - **김동현**: 팀장, Frontend 담당, 서비스 디자인 전반, CSS 및 React
 - **연진우**: Frontend 담당, 서비스 디자인 전반, Face API 관련 기능
-- **공윤환**: Backend 담당, Frontend 보조, 서버 관리, OpenVidu, Docker 
+- **공윤환**: Web RTC Session API 개발, 게임/업적 관련 Frontend, 서버 관리, OpenVidu 환경 구축
 - **김종우**: Backend 담당, 회원 탈퇴, 업적 기능, 서비스용 그래픽 제작
 - **조영운**: Backend 담당, 회원 기능, 게임 로직 전반, WebSocket 관련 기능
 - **천재원**: Backend 담당, 게임 로직 전반, JPA 및 QueryDSL, 게임 기록 및 전적, 영상 제작
