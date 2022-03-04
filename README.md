@@ -4,26 +4,26 @@
 
 <br>
 
-[프로젝트 개요](#프로젝트-개요)
+[1. 프로젝트 개요](#1-프로젝트-개요)
 - [프로젝트 목표](#프로젝트-목표)
 - [주 사용자 대상](#주-사용자-대상)
 
-[개발 환경](#개발-환경)
+[2. 개발 환경](#2-개발-환경)
 - [일정](#일정)
 - [개발 팀: SIXMAN](#개발-팀-sixman)
 - [기술 스택](#기술-스택)
 
-[프로젝트 파일 구조](#프로젝트-파일-구조)
+[3. 프로젝트 파일 구조](#3-프로젝트-파일-구조)
 
-[프로젝트 Wiki](#프로젝트-wiki)
+[4. 프로젝트 Wiki](#4-프로젝트-wiki)
 
-[프로젝트 산출물](#프로젝트-산출물)
+[5. 프로젝트 산출물](#5-프로젝트-산출물)
 
 <br>
 
 ---
 
-## 프로젝트 개요
+## 1. 프로젝트 개요
 
 ![day](README.assets/day.png)
 
@@ -51,7 +51,7 @@
 
 <br>
 
-## 개발 환경
+## 2. 개발 환경
 
 ### 일정
 
@@ -110,7 +110,7 @@
 
 <br>
 
-## 프로젝트 파일 구조
+## 3. 프로젝트 파일 구조
 
 >  Frontend
 
@@ -167,7 +167,7 @@ com
 
 <br>
 
-## 프로젝트 Wiki
+## 4. 프로젝트 Wiki
 
 - [프로젝트 ERD](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/ERD)
 - [프로젝트 API](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/API)
@@ -179,7 +179,7 @@ com
 
 <br>
 
-## 프로젝트 산출물
+## 5. 프로젝트 산출물
 
 - [중간 발표 자료](https://docs.google.com/presentation/d/1MGD5Phwqq-WI5f14q6P44MnWq7EZLTsd/edit#slide=id.g10be5616b1f_0_147)
 - [포팅 매뉴얼](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/blob/develop/exec/%EB%B0%B0%ED%8F%AC.md)
