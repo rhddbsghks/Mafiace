@@ -183,5 +183,5 @@ com
 
 - [중간 발표 자료](https://docs.google.com/presentation/d/1MGD5Phwqq-WI5f14q6P44MnWq7EZLTsd/edit#slide=id.g10be5616b1f_0_147)
 - [포팅 매뉴얼](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/blob/develop/exec/%EB%B0%B0%ED%8F%AC.md)
-- [시연 시나리오](exec/시연-시나리오.pdf)
+- [시연 시나리오](exec/시연%20시나리오.pdf)
 
