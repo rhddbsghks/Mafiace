@@ -169,7 +169,7 @@ com
 
 ## 4. 프로젝트 Wiki
 
-- [프로젝트 ERD](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/ERD)
+- [프로젝트 ERD](exec/erd)
 - [프로젝트 API](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/API)
 - [서비스 기능](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/%EC%84%9C%EB%B9%84%EC%8A%A4-%EA%B8%B0%EB%8A%A5)
 - [Git 및 개발 컨벤션](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/Git-%EB%B0%8F-%EA%B0%9C%EB%B0%9C-%EC%BB%A8%EB%B2%A4%EC%85%98)
