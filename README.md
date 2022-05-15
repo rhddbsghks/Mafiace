@@ -61,7 +61,7 @@
 
 
 
-### 개발 팀: SIXMAN
+### 개발 팀: SIXMAN (SSAFY 6th 서울 6반 2팀)
 
 - **김동현**: 팀장, Frontend 담당, 서비스 디자인 전반, CSS 및 React
 - **연진우**: Frontend 담당, 서비스 디자인 전반, Face API 관련 기능
@@ -169,19 +169,20 @@ com
 
 ## 4. 프로젝트 Wiki
 
-- [프로젝트 ERD](exec/erd)
-- [프로젝트 API](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/API)
-- [서비스 기능](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/%EC%84%9C%EB%B9%84%EC%8A%A4-%EA%B8%B0%EB%8A%A5)
-- [Git 및 개발 컨벤션](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/Git-%EB%B0%8F-%EA%B0%9C%EB%B0%9C-%EC%BB%A8%EB%B2%A4%EC%85%98)
-- [JPA를 사용하여 DB 구축하기](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/JPA%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-DB%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0)
-- [OpenVidu 미디어 서버 구축](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/openVidu-%EB%AF%B8%EB%94%94%EC%96%B4-%EC%84%9C%EB%B2%84-%EA%B5%AC%EC%B6%95)
-- [WebSocket을 이용한 채팅](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/wikis/websocket%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%B1%84%ED%8C%85)
+- [프로젝트 ERD](exec/erd.png)
+- [프로젝트 API](exec/API.md)
+- [서비스 기능](https://github.com/rhddbsghks/Mafiace/wiki/%EC%84%9C%EB%B9%84%EC%8A%A4-%EA%B8%B0%EB%8A%A5)
+- [Git 및 개발 컨벤션](exec/컨벤션.md)
+- [JPA를 사용하여 DB 구축하기](https://github.com/rhddbsghks/Mafiace/wiki/JPA%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-DB%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0)
+- [OpenVidu 미디어 서버 구축](https://github.com/rhddbsghks/Mafiace/wiki/openVidu-%EB%AF%B8%EB%94%94%EC%96%B4-%EC%84%9C%EB%B2%84-%EA%B5%AC%EC%B6%95)
+- [WebSocket을 이용한 채팅](https://github.com/rhddbsghks/Mafiace/wiki/websocket%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%B1%84%ED%8C%85)
 
 <br>
 
 ## 5. 프로젝트 산출물
 
-- [중간 발표 자료](https://docs.google.com/presentation/d/1MGD5Phwqq-WI5f14q6P44MnWq7EZLTsd/edit#slide=id.g10be5616b1f_0_147)
-- [포팅 매뉴얼](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12A602/-/blob/develop/exec/%EB%B0%B0%ED%8F%AC.md)
+- [발표 자료](exec/서울_6반_A602_발표자료.pdf)
+- [포팅 매뉴얼](exec/배포.md)
 - [시연 시나리오](exec/시연%20시나리오.pdf)
+- [UCC](https://youtu.be/fDAJ249o7Vg)
 
