@@ -1,0 +1,26 @@
+- 로그인 `/api/auth`
+  - 로그인: POST `/login`
+- 게임 방 관리 `/api/game`
+  - 게임 방 목록 조회: GET
+  - 방 비밀번호 확인: GET `/checkpw`
+- 공지사항 `/api/notice`
+  - 작성: POST
+  - 전체 조회: GET
+  - 특정 공지사항 조회: GET `/{postNum}`
+  - 수정: PATCH `/{postNum}`
+  - 삭제: DELETE `/{postNum}`
+- 세션 관리 `/api/session`
+  - 세션방 생성: POST `/token`
+  - 토큰 얻기: GET `/token`
+  - 세션방 삭제: DELETE
+  - 세션방 나가기: DELETE `/user`
+  - 게임방 Ready: GET `/Ready`
+- 유저 관련 `/api/user`
+  - 회원 가입: POST
+  - 회원정보 수정: PATCH
+  - 비밀번호, 닉네임 변경: PATCH `/update/password`, `/update/nickname`
+  - 계정 및 전적 정보: POST `/userinfo`, `/userRecord`
+  - 레이팅: GET `/rating`
+  - 아이디, 이메일, 닉네임 중복 확인: GET `/idcheck`, `/emailcheck`, `/nicknamecheck`
+  - 아이디 및 비밀번호 찾기: GET `/id`, `/password`
+  - 회원 탈퇴 및 탈퇴 취소: POST `/deleteaccount`, `/restoreaccount`
